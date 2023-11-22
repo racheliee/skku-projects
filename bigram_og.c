@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_SIZE 100000000
+#define HASH_SIZE 100000
 #define MAX_WORD_SIZE 100
-#define BUCKET_SIZE 1021 //199999
+#define BUCKETS 1021 //199999
+#define MAX_BIGRAMS 100000000
 
 // structs ==============================================
 // change this to a single bigram word structure later
@@ -16,7 +17,7 @@ typedef struct Node{
 } Node;
 
 // helper functions ======================================
-/*Each word is read from the file and converted to lowercase.Our initial version used the function lower1 (Figure 5.7), 
+/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
 which we know to have quadratic run time due to repeated calls to strlen.*/
 void lower_case1(char* s){
     for(long i ; i < strlen(s); i++){
@@ -44,6 +45,30 @@ void remove_punctuation(char* word){
     }
 }
 
+
+// free memory of hash table
+void free_table(Node** hashtable){
+    for(int i = 0; i < HASH_SIZE; i++){
+        Node* temp = hashtable[i];
+        while(temp != NULL){
+            Node* temp2 = temp;
+            temp = temp->next;
+            free(temp2);
+        }
+    }
+}
+
+void print_hash(Node** hashtable){
+    for(int i = 0; i < HASH_SIZE; i++){
+        Node* temp = hashtable[i];
+        while(temp != NULL){
+            printf("%d: %s %s %d\n", i, temp->word1, temp->word2, temp->count);
+            temp = temp->next;
+        }
+    }
+
+}
+
 // functions ============================================
 
 /*A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
@@ -58,32 +83,44 @@ int hash_function(char* word1, char* word2){
         ascii_sum += word2[i];
     }
 
-    return ascii_sum % BUCKET_SIZE;
+    return ascii_sum % BUCKETS;
 }
 
 //insert a new bigram into the hashtable
 void insert(Node** hashtable, char* first_w, char* second_w){
+    //create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
-    new_node->word1 = first_w;
-    new_node->word2 = second_w;
+
+    new_node->word1 = (char*)malloc(sizeof(char) * strlen(first_w));
+    new_node->word2 = (char*)malloc(sizeof(char) * strlen(second_w));  
+    strcpy(new_node->word1, first_w);
+    strcpy(new_node->word2, second_w);
+
     new_node->count = 1;
     new_node->next = NULL;
 
-    int hash_value = hash_function(first_w, second_w); 
-    if(hashtable[hash_value] == NULL){
-        hashtable[hash_value] = new_node;
+    //int hash_value = hash_function(first_w, second_w); 
+
+    if(hashtable[hash_function(first_w, second_w)] == NULL){
+        hashtable[hash_function(first_w, second_w)] = new_node;
     }
     else{
-        Node* temp = hashtable[hash_value];
+        Node* temp = hashtable[hash_function(first_w, second_w)];
+
         while(temp->next != NULL){
             // if the bigram already exists, increment the count
-            // compare in lower case and remove punctuation
-            if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w)){
+            if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
                 temp->count++;
                 return;
             }
+
             // otherwise, go to the next node
             temp = temp->next;
+        }
+        // if the bigram already exists and is at the end of the linked list, increment the count
+        if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
+            temp->count++;
+            return;
         }
         // if the bigram doesn't exist, add it to the end of the linked list
         temp->next = new_node;
@@ -115,7 +152,7 @@ void read_file_and_hash(Node** hashtable){
         remove_punctuation(first_w);
         remove_punctuation(second_w);
 
-        printf("%s %s\n", first_w, second_w);
+        //printf("%s %s\n", first_w, second_w);
         insert(hashtable, first_w, second_w);
         
         strcpy(first_w, second_w); //change the first word to the second word
@@ -126,8 +163,9 @@ void read_file_and_hash(Node** hashtable){
 void sort(Node** hashtable, Node** sorted_bigrams){
     int sorted_index = 0;
     // add all hash elements to the array
-    for(int i = 0; i < MAX_SIZE; i++){
+    for(int i = 0; i < HASH_SIZE; i++){
         Node* current_bigram = hashtable[i];
+
         while(current_bigram != NULL){
             sorted_bigrams[sorted_index] = current_bigram;
             sorted_index++;
@@ -135,61 +173,41 @@ void sort(Node** hashtable, Node** sorted_bigrams){
         }
     }
     //check
-    for(int i = 0;i < MAX_SIZE; i++){
-        //printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
+    for(int i = 0;i < HASH_SIZE; i++){
+        printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
     }
 
     // sort the array with insertion sort
-    int key;
-    int j;
+    // int key;
+    // int j;
 
-    for(int i = 1; i < sorted_index+1; i++){
-        key = sorted_bigrams[i]->count;
-        j = i - 1;
+    // for(int i = 1; i < sorted_index+1; i++){
+    //     key = sorted_bigrams[i]->count;
+    //     j = i - 1;
 
-        while(j >= 0 && sorted_bigrams[j]->count < key){
-            sorted_bigrams[j + 1] = sorted_bigrams[j];
-            j = j - 1;
-        }
-        sorted_bigrams[j + 1]->count = key;
-    }
+    //     while(j >= 0 && sorted_bigrams[j]->count < key){
+    //         sorted_bigrams[j + 1] = sorted_bigrams[j];
+    //         j = j - 1;
+    //     }
+    //     sorted_bigrams[j + 1]->count = key;
+    // }
 }
 
-// free memory of hash table
-void free_table(Node** hashtable){
-    for(int i = 0; i < MAX_SIZE; i++){
-        Node* temp = hashtable[i];
-        while(temp != NULL){
-            Node* temp2 = temp;
-            temp = temp->next;
-            free(temp2);
-        }
-    }
-}
-
-void print_hash(Node** hashtable){
-    for(int i = 0; i < MAX_SIZE; i++){
-        Node* temp = hashtable[i];
-        while(temp != NULL){
-            printf("%s %s %d\n", temp->word1, temp->word2, temp->count);
-            temp = temp->next;
-        }
-    }
-
-}
 
 // main function ========================================
 int main(){
-    //initialize hash table
-    Node** hashtable = (Node**)malloc(sizeof(Node*) * MAX_SIZE);
-    for(int i = 0; i < MAX_SIZE; i++){
+    //initialize hash table, an array of pointers to nodes
+    Node** hashtable = (Node**)malloc(sizeof(Node*) * HASH_SIZE);
+    for(int i = 0; i < HASH_SIZE; i++){
         hashtable[i] = NULL;
     }
 
     read_file_and_hash(hashtable);
     //use num_bigrams later to malloc the array
-    Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_SIZE);
-    for(int i = 0; i < MAX_SIZE; i++){
+    Node* sorted_bigrams[MAX_BIGRAMS];
+
+    Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * HASH_SIZE);
+    for(int i = 0; i < HASH_SIZE; i++){
         sorted_bigrams[i] = NULL;
     }
 
