@@ -4,12 +4,11 @@
 
 #define HASH_SIZE 100000
 #define MAX_WORD_SIZE 100
-#define BUCKETS 1021 //199999
+#define BUCKETS 1021
 #define MAX_BIGRAMS 100000000
 #define FILE_NAME "shakespeare.txt"
 
 // structs ==============================================
-// change this to a single bigram word structure later
 typedef struct Node{
     char* word1;
     char* word2;
@@ -18,10 +17,10 @@ typedef struct Node{
 } Node;
 
 // helper functions ======================================
-//Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
-//which we know to have quadratic run time due to repeated calls to strlen.
+/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
+which we know to have quadratic run time due to repeated calls to strlen.*/
 void lower_case1(char* s){
-    for(long i ; i < strlen(s); i++){
+    for(long i = 0; i < strlen(s); i++){
         if(s[i] >= 'A' && s[i] <= 'Z'){
             s[i] -= ('A' - 'a');
         }
@@ -35,18 +34,6 @@ void remove_punctuation(char* word){
             word[i] = '\0';
         }
     }
-}
-
-// just a print function for the hash table to check if it's working
-void print_hash(Node** hashtable){
-    for(int i = 0; i < HASH_SIZE; i++){
-        Node* temp = hashtable[i];
-        while(temp != NULL){
-            printf("%d: %s %s %d\n", i, temp->word1, temp->word2, temp->count);
-            temp = temp->next;
-        }
-    }
-
 }
 
 // functions ============================================
@@ -71,8 +58,8 @@ void insert(Node** hashtable, char* first_w, char* second_w){
     //create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
 
-    new_node->word1 = (char*)malloc(sizeof(char) * strlen(first_w));
-    new_node->word2 = (char*)malloc(sizeof(char) * strlen(second_w));  
+    new_node->word1 = (char*)malloc(sizeof(char) * (strlen(first_w)+1));
+    new_node->word2 = (char*)malloc(sizeof(char) * (strlen(second_w)+1));  
     strcpy(new_node->word1, first_w);
     strcpy(new_node->word2, second_w);
 
@@ -132,7 +119,6 @@ void read_file_and_hash(Node** hashtable){
         remove_punctuation(first_w);
         remove_punctuation(second_w);
 
-        //printf("%s %s\n", first_w, second_w);
         insert(hashtable, first_w, second_w);
         
         strcpy(first_w, second_w); //change the first word to the second word
@@ -148,16 +134,16 @@ void hash_to_array(Node** hashtable, Node** sorted_bigrams, int* size){
 
         while(current_bigram != NULL){
             sorted_bigrams[sorted_index] = current_bigram;
-            //printf("%s %s %d\n", sorted_bigrams[sorted_index]->word1, sorted_bigrams[sorted_index]->word2, sorted_bigrams[sorted_index]->count);
             sorted_index++;
             current_bigram = current_bigram->next;
         }
     }
 
     *size = sorted_index;
+    printf("total bigrams: %d\n", *size);
 }
 
-// sort the bigrams in the hashtable
+// sort the bigrams in the hashtable in descending order
 void insertion_sort(Node** hashtable, Node** sorted_bigrams){
     int array_size = 0;
     hash_to_array(hashtable, sorted_bigrams, &array_size);
@@ -175,6 +161,7 @@ void insertion_sort(Node** hashtable, Node** sorted_bigrams){
         }
         sorted_bigrams[j + 1] = key;
     }
+
 }
 
 
@@ -185,22 +172,20 @@ int main(){
     for(int i = 0; i < HASH_SIZE; i++){
         hashtable[i] = NULL;
     }
-    
-    //read and hash the file contents into hastable
+
     read_file_and_hash(hashtable);
 
-    //create array to sort bigrams
     Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_BIGRAMS);
     for(int i = 0; i < MAX_BIGRAMS; i++){
         sorted_bigrams[i] = NULL;
     }
     insertion_sort(hashtable, sorted_bigrams);
 
-    //print top 10 bigrams
     printf("Top 10 bigrams: \n");
     for(int i = 0; i < 10; i++){
         printf("#%d: %s %s %d\n", i+1, sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
-    }
     
+    }
+
     return 0;
 }
