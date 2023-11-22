@@ -159,8 +159,8 @@ void read_file_and_hash(Node** hashtable){
     }
 }
 
-// sort the bigrams in the hashtable
-void sort(Node** hashtable, Node** sorted_bigrams){
+//unhashes all values into an array
+void hash_to_array(Node** hashtable, Node** sorted_bigrams, int* size){
     int sorted_index = 0;
     // add all hash elements to the array
     for(int i = 0; i < HASH_SIZE; i++){
@@ -168,28 +168,40 @@ void sort(Node** hashtable, Node** sorted_bigrams){
 
         while(current_bigram != NULL){
             sorted_bigrams[sorted_index] = current_bigram;
+            //printf("%s %s %d\n", sorted_bigrams[sorted_index]->word1, sorted_bigrams[sorted_index]->word2, sorted_bigrams[sorted_index]->count);
             sorted_index++;
             current_bigram = current_bigram->next;
         }
     }
-    //check
-    for(int i = 0;i < HASH_SIZE; i++){
-        printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
-    }
+
+    *size = sorted_index;
+}
+
+// sort the bigrams in the hashtable
+void insertion_sort(Node** hashtable, Node** sorted_bigrams){
+    int array_size = 0;
+    hash_to_array(hashtable, sorted_bigrams, &array_size);
+
+    // for(int i = 0; i < array_size; i++){
+    //     printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
+    // }
 
     // sort the array with insertion sort
-    // int key;
-    // int j;
+    Node* key;
 
-    // for(int i = 1; i < sorted_index+1; i++){
-    //     key = sorted_bigrams[i]->count;
-    //     j = i - 1;
+    for(int i = 1; i < array_size; i++){
+        key = sorted_bigrams[i];
+        int j = i - 1;
 
-    //     while(j >= 0 && sorted_bigrams[j]->count < key){
-    //         sorted_bigrams[j + 1] = sorted_bigrams[j];
-    //         j = j - 1;
-    //     }
-    //     sorted_bigrams[j + 1]->count = key;
+        while(j >= 0 && sorted_bigrams[j]->count < key->count){
+            sorted_bigrams[j + 1] = sorted_bigrams[j];
+            j = j - 1;
+        }
+        sorted_bigrams[j + 1] = key;
+    }
+
+    // for(int i = 0; i < array_size; i++){
+    //     printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
     // }
 }
 
@@ -203,18 +215,15 @@ int main(){
     }
 
     read_file_and_hash(hashtable);
-    //use num_bigrams later to malloc the array
-    Node* sorted_bigrams[MAX_BIGRAMS];
-
-    Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * HASH_SIZE);
-    for(int i = 0; i < HASH_SIZE; i++){
-        sorted_bigrams[i] = NULL;
-    }
-
     //print_hash(hashtable);
-    //sort(hashtable, sorted_bigrams);
+    Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_BIGRAMS);
+    insertion_sort(hashtable, sorted_bigrams);
 
-    //printf("Top bigram: %s %s", sorted_bigrams[0]->word1, sorted_bigrams[0]->word2);
+    printf("Top bigrams: \n");
+    for(int i = 0; i < 10; i++){
+        printf("#%d: %s %s %d\n", i+1, sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
+    
+    }
 
     free_table(hashtable);
     
