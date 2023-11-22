@@ -6,6 +6,7 @@
 #define MAX_WORD_SIZE 100
 #define BUCKETS 1021 //199999
 #define MAX_BIGRAMS 100000000
+#define FILE_NAME "shakespeare.txt"
 
 // structs ==============================================
 // change this to a single bigram word structure later
@@ -17,19 +18,10 @@ typedef struct Node{
 } Node;
 
 // helper functions ======================================
-/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
-which we know to have quadratic run time due to repeated calls to strlen.*/
+//Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
+//which we know to have quadratic run time due to repeated calls to strlen.
 void lower_case1(char* s){
     for(long i ; i < strlen(s); i++){
-        if(s[i] >= 'A' && s[i] <= 'Z'){
-            s[i] -= ('A' - 'a');
-        }
-    }
-}
-
-void lower_case2(char* s){
-    long len = strlen(s);
-    for(long i ; i < len; i++){
         if(s[i] >= 'A' && s[i] <= 'Z'){
             s[i] -= ('A' - 'a');
         }
@@ -45,19 +37,7 @@ void remove_punctuation(char* word){
     }
 }
 
-
-// free memory of hash table
-void free_table(Node** hashtable){
-    for(int i = 0; i < HASH_SIZE; i++){
-        Node* temp = hashtable[i];
-        while(temp != NULL){
-            Node* temp2 = temp;
-            temp = temp->next;
-            free(temp2);
-        }
-    }
-}
-
+// just a print function for the hash table to check if it's working
 void print_hash(Node** hashtable){
     for(int i = 0; i < HASH_SIZE; i++){
         Node* temp = hashtable[i];
@@ -71,8 +51,8 @@ void print_hash(Node** hashtable){
 
 // functions ============================================
 
-/*A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
-Our initial function simply summed the ASCII codes for the characters modulo s.*/
+//A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
+//Our initial function simply summed the ASCII codes for the characters modulo s.
 int hash_function(char* word1, char* word2){
     int ascii_sum = 0;
 
@@ -99,13 +79,13 @@ void insert(Node** hashtable, char* first_w, char* second_w){
     new_node->count = 1;
     new_node->next = NULL;
 
-    //int hash_value = hash_function(first_w, second_w); 
+    int hash_value = hash_function(first_w, second_w); 
 
-    if(hashtable[hash_function(first_w, second_w)] == NULL){
-        hashtable[hash_function(first_w, second_w)] = new_node;
+    if(hashtable[hash_value] == NULL){
+        hashtable[hash_value] = new_node;
     }
     else{
-        Node* temp = hashtable[hash_function(first_w, second_w)];
+        Node* temp = hashtable[hash_value];
 
         while(temp->next != NULL){
             // if the bigram already exists, increment the count
@@ -129,7 +109,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 
 // reads the input file and stores it into the hashtable
 void read_file_and_hash(Node** hashtable){
-    FILE *input_file = fopen("hamlet.txt", "r");
+    FILE *input_file = fopen(FILE_NAME, "r");
 
     if(input_file == NULL){
         printf("Error: File not found\n");
@@ -182,10 +162,6 @@ void insertion_sort(Node** hashtable, Node** sorted_bigrams){
     int array_size = 0;
     hash_to_array(hashtable, sorted_bigrams, &array_size);
 
-    // for(int i = 0; i < array_size; i++){
-    //     printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
-    // }
-
     // sort the array with insertion sort
     Node* key;
 
@@ -199,10 +175,6 @@ void insertion_sort(Node** hashtable, Node** sorted_bigrams){
         }
         sorted_bigrams[j + 1] = key;
     }
-
-    // for(int i = 0; i < array_size; i++){
-    //     printf("%s %s %d\n", sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
-    // }
 }
 
 
@@ -213,19 +185,22 @@ int main(){
     for(int i = 0; i < HASH_SIZE; i++){
         hashtable[i] = NULL;
     }
-
+    
+    //read and hash the file contents into hastable
     read_file_and_hash(hashtable);
-    //print_hash(hashtable);
+
+    //create array to sort bigrams
     Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_BIGRAMS);
+    for(int i = 0; i < MAX_BIGRAMS; i++){
+        sorted_bigrams[i] = NULL;
+    }
     insertion_sort(hashtable, sorted_bigrams);
 
-    printf("Top bigrams: \n");
+    //print top 10 bigrams
+    printf("Top 10 bigrams: \n");
     for(int i = 0; i < 10; i++){
         printf("#%d: %s %s %d\n", i+1, sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
-    
     }
-
-    free_table(hashtable);
     
     return 0;
 }
