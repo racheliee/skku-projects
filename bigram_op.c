@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 #define MAX_WORD_SIZE 100
-#define BUCKET_SIZE 1201
+#define BUCKET_SIZE 15331
 #define MAX_BIGRAMS 100000000
 #define FILE_NAME "shakespeare.txt"
 
@@ -65,19 +65,18 @@ void swap(Node** a, Node** b) {
 
 // functions ============================================
 
-//A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
-//Our initial function simply summed the ASCII codes for the characters modulo s.
-int hash_function(char* word1, char* word2){
-    int ascii_sum = 0;
+//A hash function is applied to the string to produce an integer value.
+unsigned int hash_function(char* word1, char* word2){
+    unsigned int hash = 5381;
 
-    for(int i = 0; i < strlen(word1); i++){
-        ascii_sum += word1[i];
+    while(*word1){
+        hash = (hash*33) ^ *word1++;
     }
-    for(int i = 0; i < strlen(word2); i++){
-        ascii_sum += word2[i];
+    while(*word2){
+        hash = (hash*33) ^ *word2++;
     }
 
-    return ascii_sum % BUCKET_SIZE;
+    return hash % BUCKET_SIZE;
 }
 
 //insert a new bigram into the hashtable
@@ -93,7 +92,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
     new_node->count = 1;
     new_node->next = NULL;
 
-    int hash_value = hash_function(first_w, second_w); 
+    unsigned int hash_value = hash_function(first_w, second_w); 
 
     if(hashtable[hash_value] == NULL){
         hashtable[hash_value] = new_node;
