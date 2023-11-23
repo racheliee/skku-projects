@@ -7,5 +7,6 @@
 .DS_Store
 .vscode
 bigram_og.dSYM
+bigram_op.dSYM
 bigram_og
 output.txt

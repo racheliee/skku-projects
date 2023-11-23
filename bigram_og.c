@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-#define HASH_SIZE 100000
 #define MAX_WORD_SIZE 100
-#define BUCKETS 1021
+#define BUCKET_SIZE 1021
 #define MAX_BIGRAMS 100000000
 #define FILE_NAME "shakespeare.txt"
 
@@ -29,11 +29,19 @@ void lower_case1(char* s){
 
 // remove punctuation from a word; apostrophes are not counted as punctuation
 void remove_punctuation(char* word){
-    for(int i = 0; i < strlen(word); i++){
-        if(word[i] == '.' || word[i] == ',' || word[i] == '?' || word[i] == '!' || word[i] == ';' || word[i] == ':'){
-            word[i] = '\0';
+    char no_punct[strlen(word)+1];
+    int index = 0;
+    int i = 0;
+
+    for(i = 0; i < strlen(word); i++){
+        if(!ispunct(word[i])){
+            no_punct[index] = word[i];
+            index++;
         }
     }
+
+    no_punct[index] = '\0';
+    strcpy(word, no_punct);
 }
 
 // functions ============================================
@@ -50,7 +58,7 @@ int hash_function(char* word1, char* word2){
         ascii_sum += word2[i];
     }
 
-    return ascii_sum % BUCKETS;
+    return ascii_sum % BUCKET_SIZE;
 }
 
 //insert a new bigram into the hashtable
@@ -129,7 +137,7 @@ void read_file_and_hash(Node** hashtable){
 void hash_to_array(Node** hashtable, Node** sorted_bigrams, int* size){
     int sorted_index = 0;
     // add all hash elements to the array
-    for(int i = 0; i < HASH_SIZE; i++){
+    for(int i = 0; i < BUCKET_SIZE; i++){
         Node* current_bigram = hashtable[i];
 
         while(current_bigram != NULL){
@@ -140,7 +148,7 @@ void hash_to_array(Node** hashtable, Node** sorted_bigrams, int* size){
     }
 
     *size = sorted_index;
-    printf("total bigrams: %d\n", *size);
+    printf("Total bigrams: %d\n", *size);
 }
 
 // sort the bigrams in the hashtable in descending order
@@ -168,19 +176,21 @@ void insertion_sort(Node** hashtable, Node** sorted_bigrams){
 // main function ========================================
 int main(){
     //initialize hash table, an array of pointers to nodes
-    Node** hashtable = (Node**)malloc(sizeof(Node*) * HASH_SIZE);
-    for(int i = 0; i < HASH_SIZE; i++){
+    Node** hashtable = (Node**)malloc(sizeof(Node*) * BUCKET_SIZE);
+    for(int i = 0; i < BUCKET_SIZE; i++){
         hashtable[i] = NULL;
     }
 
     read_file_and_hash(hashtable);
 
+    //create array to store sorted bigrams
     Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_BIGRAMS);
     for(int i = 0; i < MAX_BIGRAMS; i++){
         sorted_bigrams[i] = NULL;
     }
     insertion_sort(hashtable, sorted_bigrams);
 
+    //print results
     printf("Top 10 bigrams: \n");
     for(int i = 0; i < 10; i++){
         printf("#%d: %s %s %d\n", i+1, sorted_bigrams[i]->word1, sorted_bigrams[i]->word2, sorted_bigrams[i]->count);
