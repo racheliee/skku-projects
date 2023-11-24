@@ -28,7 +28,7 @@ void lower_case1(char* s){
 }
 
 // remove punctuation from a word; apostrophes are not counted as punctuation
-void remove_punctuation(char* word){
+void remove_punctuation2(char* word){
     char no_punct[strlen(word)+1];
     int index = 0;
     int i = 0;
@@ -124,8 +124,8 @@ void read_file_and_hash(Node** hashtable){
     while(fscanf(input_file, "%99s", second_w) == 1){
         lower_case1(first_w);
         lower_case1(second_w);
-        remove_punctuation(first_w);
-        remove_punctuation(second_w);
+        remove_punctuation2(first_w);
+        remove_punctuation2(second_w);
 
         insert(hashtable, first_w, second_w);
         
