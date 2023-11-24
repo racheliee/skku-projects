@@ -7,7 +7,6 @@
 #define MAX_WORD_SIZE 100
 #define BUCKET_SIZE 15331
 
-
 // structs ==============================================
 // change this to a single bigram word structure later
 typedef struct Node{
@@ -63,7 +62,7 @@ void swap(Node** a, Node** b) {
 //A hash function is applied to the string to produce an integer value.
 unsigned int hash_function(char* word1, char* word2){
     unsigned int hash = 5381;
-
+    
     while(*word1){
         hash = (hash*33) ^ *word1++;
     }
@@ -146,10 +145,10 @@ void read_file_and_hash(Node** hashtable, int* num_of_words){
         exit(1);
     }
     while(fscanf(input_file, "%99s", second_w) == 1){
-        lower_case3(first_w);
-        lower_case3(second_w);
         remove_punctuation4(first_w);
         remove_punctuation4(second_w);
+        lower_case3(first_w);
+        lower_case3(second_w);
 
         insert(hashtable, first_w, second_w);
         
@@ -179,10 +178,11 @@ void hash_to_array(Node** hashtable, Node** sorted_bigrams, int* size){
 
 // compare function for qsort
 int compare (const void * a, const void * b) {
-    Node* node_a = *(Node**)a;
-    Node* node_b = *(Node**)b;
+    // Node* node_a = *(Node**)a;
+    // Node* node_b = *(Node**)b;
 
-    return (node_b->count - node_a->count);
+    // return (node_b->count - node_a->count);
+    return (*(Node**)b)->count - (*(Node**)a)->count;
 }
 
 void quick_sort(Node** sorted_bigrams, int array_size, size_t size, int (*compare)(const void *, const void *)){
