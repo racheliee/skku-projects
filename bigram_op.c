@@ -17,8 +17,7 @@ typedef struct Node{
 } Node;
 
 // helper functions ======================================
-/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
-which we know to have quadratic run time due to repeated calls to strlen.*/
+//Each word is read from the file and converted to lowercase.xx
 void lower_case3(char* s){
    for(; *s != '\0'; s++){
         if(*s >= 'A' && *s <= 'Z'){
@@ -39,26 +38,7 @@ void remove_punctuation4(char* word){
     *no_punct = '\0';
 }
 
-// print hashtable
-void print_hash(Node** hashtable){
-    for(int i = 0; i < BUCKET_SIZE; i++){
-        Node* temp = hashtable[i];
-        while(temp != NULL){
-            printf("%d: %s %s %d\n", i, temp->word1, temp->word2, temp->count);
-            temp = temp->next;
-        }
-    }
-}
-
-// Function to swap two nodes 
-void swap(Node** a, Node** b) {
-    Node* temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
 // functions ============================================
-
 //A hash function is applied to the string to produce an integer value.
 unsigned int hash_function(char* word1, char* word2){
     unsigned int hash = 5381;
@@ -90,9 +70,6 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 
     //if it doesn't exist create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
-
-    // new_node->word1 = (char*)malloc(sizeof(char) * (strlen(first_w)+1));
-    // new_node->word2 = (char*)malloc(sizeof(char) * (strlen(second_w)+1));  
     strcpy(new_node->word1, first_w);
     strcpy(new_node->word2, second_w);
 
@@ -178,10 +155,6 @@ void hash_to_array(Node** hashtable, Node** sorted_bigrams, int* size){
 
 // compare function for qsort
 int compare (const void * a, const void * b) {
-    // Node* node_a = *(Node**)a;
-    // Node* node_b = *(Node**)b;
-
-    // return (node_b->count - node_a->count);
     return (*(Node**)b)->count - (*(Node**)a)->count;
 }
 
@@ -197,6 +170,7 @@ int main(){
     int num_words = 0;
     read_file_and_hash(hashtable, &num_words);
 
+    //initialize array to store sorted bigrams
     Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * num_words);
 
     int array_size = 0;
