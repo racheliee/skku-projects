@@ -25,21 +25,16 @@ void lower_case3(char* s){
         if(*s >= 'A' && *s <= 'Z'){
             *s -= ('A' - 'a');
         }
-        //*s = (*s >= 'A' && *s <= 'Z') ? *s - ('A' - 'a') : *s;
     }
 }
 
 // remove punctuation from a word; apostrophes are not counted as punctuation
-void remove_punctuation3(char* word){
+void remove_punctuation4(char* word){
     char* no_punct = word;
 
     for(; *word != '\0'; word++){
-        if(!ispunct(*word)){
-            *no_punct++ = *word;
-        }
-
-        // *no_punct = (!ispunct(*word)) ? *word : *no_punct;
-        // no_punct += (!ispunct(*word)) ? 1 : 0;
+        *no_punct = (!ispunct(*word)) ? *word : *no_punct;
+        no_punct += (!ispunct(*word)) ? 1 : 0;
     }
 
     *no_punct = '\0';
@@ -141,8 +136,8 @@ void read_file_and_hash(Node** hashtable){
     while(fscanf(input_file, "%99s", second_w) == 1){
         lower_case3(first_w);
         lower_case3(second_w);
-        remove_punctuation3(first_w);
-        remove_punctuation3(second_w);
+        remove_punctuation4(first_w);
+        remove_punctuation4(second_w);
 
         insert(hashtable, first_w, second_w);
         
@@ -183,16 +178,16 @@ void quick_sort(Node** sorted_bigrams, int array_size, size_t size, int (*compar
 int main(){
     //initialize hash table, an array of pointers to nodes
     Node** hashtable = (Node**)malloc(sizeof(Node*) * BUCKET_SIZE);
-    for(int i = 0; i < BUCKET_SIZE; i++){
-        hashtable[i] = NULL;
-    }
+    // for(int i = 0; i < BUCKET_SIZE; i++){
+    //     hashtable[i] = NULL;
+    // }
 
     read_file_and_hash(hashtable);
 
     Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_BIGRAMS);
-    for(int i = 0; i < MAX_BIGRAMS; i++){
-        sorted_bigrams[i] = NULL;
-    }
+    // for(int i = 0; i < MAX_BIGRAMS; i++){
+    //     sorted_bigrams[i] = NULL;
+    // }
 
     int array_size = 0;
     hash_to_array(hashtable, sorted_bigrams, &array_size);
