@@ -20,33 +20,29 @@ typedef struct Node{
 // helper functions ======================================
 /*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
 which we know to have quadratic run time due to repeated calls to strlen.*/
-void lower_case2(char* s){
-    int len = strlen(s);
-
-    for(long i = 0; i < len; i++){
-        if(s[i] >= 'A' && s[i] <= 'Z'){
-            s[i] -= ('A' - 'a');
+void lower_case3(char* s){
+   for(; *s != '\0'; s++){
+        if(*s >= 'A' && *s <= 'Z'){
+            *s -= ('A' - 'a');
         }
+        //*s = (*s >= 'A' && *s <= 'Z') ? *s - ('A' - 'a') : *s;
     }
-    
 }
 
 // remove punctuation from a word; apostrophes are not counted as punctuation
-void remove_punctuation2(char* word){
-    char no_punct[strlen(word)+1];
-    int index = 0;
-    int i = 0;
-    int len = strlen(word);
+void remove_punctuation3(char* word){
+    char* no_punct = word;
 
-    for(i = 0; i < len; i++){
-        if(!ispunct(word[i])){
-            no_punct[index] = word[i];
-            index++;
+    for(; *word != '\0'; word++){
+        if(!ispunct(*word)){
+            *no_punct++ = *word;
         }
+
+        // *no_punct = (!ispunct(*word)) ? *word : *no_punct;
+        // no_punct += (!ispunct(*word)) ? 1 : 0;
     }
 
-    no_punct[index] = '\0';
-    strcpy(word, no_punct);
+    *no_punct = '\0';
 }
 
 // print hashtable
@@ -143,10 +139,10 @@ void read_file_and_hash(Node** hashtable){
         exit(1);
     }
     while(fscanf(input_file, "%99s", second_w) == 1){
-        lower_case2(first_w);
-        lower_case2(second_w);
-        remove_punctuation2(first_w);
-        remove_punctuation2(second_w);
+        lower_case3(first_w);
+        lower_case3(second_w);
+        remove_punctuation3(first_w);
+        remove_punctuation3(second_w);
 
         insert(hashtable, first_w, second_w);
         
