@@ -10,8 +10,8 @@
 // structs ==============================================
 // change this to a single bigram word structure later
 typedef struct Node{
-    char* word1;
-    char* word2;
+    char word1[MAX_WORD_SIZE];
+    char word2[MAX_WORD_SIZE];
     int count;
     struct Node* next;
 } Node;
@@ -62,7 +62,7 @@ void swap(Node** a, Node** b) {
 //A hash function is applied to the string to produce an integer value.
 unsigned int hash_function(char* word1, char* word2){
     unsigned int hash = 5381;
-    
+
     while(*word1){
         hash = (hash*33) ^ *word1++;
     }
@@ -91,8 +91,8 @@ void insert(Node** hashtable, char* first_w, char* second_w){
     //if it doesn't exist create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
 
-    new_node->word1 = (char*)malloc(sizeof(char) * (strlen(first_w)+1));
-    new_node->word2 = (char*)malloc(sizeof(char) * (strlen(second_w)+1));  
+    // new_node->word1 = (char*)malloc(sizeof(char) * (strlen(first_w)+1));
+    // new_node->word2 = (char*)malloc(sizeof(char) * (strlen(second_w)+1));  
     strcpy(new_node->word1, first_w);
     strcpy(new_node->word2, second_w);
 
