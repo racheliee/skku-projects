@@ -3,10 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#define FILE_NAME "shakespeare.txt"
 #define MAX_WORD_SIZE 100
 #define BUCKET_SIZE 15331
-#define MAX_BIGRAMS 100000000
-#define FILE_NAME "shakespeare.txt"
+
 
 // structs ==============================================
 // change this to a single bigram word structure later
@@ -76,7 +76,20 @@ unsigned int hash_function(char* word1, char* word2){
 
 //insert a new bigram into the hashtable
 void insert(Node** hashtable, char* first_w, char* second_w){
-    //create a new node
+    unsigned int hash_value = hash_function(first_w, second_w); 
+    Node* temp = hashtable[hash_value];
+    
+    //check if the node exists
+    while(temp != NULL){
+        // if the bigram already exists, increment the count
+        if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
+            temp->count++;
+            return;
+        }
+        temp = temp->next;
+    }
+
+    //if it doesn't exist create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
 
     new_node->word1 = (char*)malloc(sizeof(char) * (strlen(first_w)+1));
@@ -86,8 +99,6 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 
     new_node->count = 1;
     new_node->next = NULL;
-
-    unsigned int hash_value = hash_function(first_w, second_w); 
 
     if(hashtable[hash_value] == NULL){
         hashtable[hash_value] = new_node;
@@ -116,7 +127,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 }
 
 // reads the input file and stores it into the hashtable
-void read_file_and_hash(Node** hashtable){
+void read_file_and_hash(Node** hashtable, int* num_of_words){
     FILE *input_file = fopen(FILE_NAME, "r");
 
     if(input_file == NULL){
@@ -127,7 +138,8 @@ void read_file_and_hash(Node** hashtable){
     // change this to static later
     char* first_w = malloc(sizeof(char) * MAX_WORD_SIZE);
     char* second_w = malloc(sizeof(char) * MAX_WORD_SIZE);
-
+    
+    int num_words = 1;
     //scan first word
     if(fscanf(input_file, "%99s", first_w) == 0){
         printf("Error: File is empty\n");
@@ -142,7 +154,10 @@ void read_file_and_hash(Node** hashtable){
         insert(hashtable, first_w, second_w);
         
         strcpy(first_w, second_w); //change the first word to the second word
+        num_words++;
     }
+
+    *num_of_words = num_words;
 }
 
 //unhashes all values into an array
@@ -178,16 +193,11 @@ void quick_sort(Node** sorted_bigrams, int array_size, size_t size, int (*compar
 int main(){
     //initialize hash table, an array of pointers to nodes
     Node** hashtable = (Node**)malloc(sizeof(Node*) * BUCKET_SIZE);
-    // for(int i = 0; i < BUCKET_SIZE; i++){
-    //     hashtable[i] = NULL;
-    // }
+    
+    int num_words = 0;
+    read_file_and_hash(hashtable, &num_words);
 
-    read_file_and_hash(hashtable);
-
-    Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * MAX_BIGRAMS);
-    // for(int i = 0; i < MAX_BIGRAMS; i++){
-    //     sorted_bigrams[i] = NULL;
-    // }
+    Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * num_words);
 
     int array_size = 0;
     hash_to_array(hashtable, sorted_bigrams, &array_size);
