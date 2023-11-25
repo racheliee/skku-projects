@@ -30,8 +30,8 @@ void string_copy(char* dest, char* src){
 }
 
 // helper functions ======================================
-/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
-which we know to have quadratic run time due to repeated calls to strlen.*/
+// Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
+// which we know to have quadratic run time due to repeated calls to strlen.
 void lower_case(char* s){
     for(long i = 0; i < string_length(s); i++){
         if(s[i] >= 'A' && s[i] <= 'Z'){
@@ -40,7 +40,7 @@ void lower_case(char* s){
     }
 }
 
-// remove punctuation from a word; apostrophes are not counted as punctuation
+// remove punctuation from a word
 void remove_punctuation(char* word){
     char no_punct[string_length(word)+1];
     int index = 0;
@@ -56,8 +56,8 @@ void remove_punctuation(char* word){
     no_punct[index] = '\0';
     string_copy(word, no_punct);
 }
-// functions ============================================
 
+// functions ============================================
 //A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
 //Our initial function simply summed the ASCII codes for the characters modulo s.
 int hash_function(char* word1, char* word2){
