@@ -3,12 +3,11 @@
 #include <string.h>
 #include <ctype.h>
 
-#define FILE_NAME "shakespeare.txt"
 #define MAX_WORD_SIZE 100
 #define BUCKET_SIZE 15331
+#define FILE_NAME "shakespeare.txt"
 
 // structs ==============================================
-// change this to a single bigram word structure later
 typedef struct Node{
     char word1[MAX_WORD_SIZE];
     char word2[MAX_WORD_SIZE];
@@ -16,30 +15,42 @@ typedef struct Node{
     struct Node* next;
 } Node;
 
+//wrapper functions ======================================
+int string_length(char* s){
+    return strlen(s);
+}
+
+int string_compare(char* s1, char* s2){
+    return strcmp(s1, s2);
+}
+
+void string_copy(char* dest, char* src){
+    strcpy(dest, src);
+}
+
 // helper functions ======================================
-//Each word is read from the file and converted to lowercase.xx
-void lower_case3(char* s){
+/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
+which we know to have quadratic run time due to repeated calls to strlen.*/
+void lower_case(char* s){
    for(; *s != '\0'; s++){
-        if(*s >= 'A' && *s <= 'Z'){
-            *s -= ('A' - 'a');
-        }
-    }
+        *s = (*s >= 'A' && *s <= 'Z') ? *s - ('A' - 'a') : *s;
+   }
 }
 
 // remove punctuation from a word; apostrophes are not counted as punctuation
 void remove_punctuation(char* word){
     char* no_punct = word;
 
-    for(; *word != '\0'; word++){
+   for(; *word != '\0'; word++){
         *no_punct = (!ispunct(*word)) ? *word : *no_punct;
         no_punct += (!ispunct(*word)) ? 1 : 0;
-    }
-
-    *no_punct = '\0';
+   }
+   *no_punct = '\0';
 }
-
 // functions ============================================
-//A hash function is applied to the string to produce an integer value.
+
+//A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
+//Our initial function simply summed the ASCII codes for the characters modulo s.
 unsigned int hash_function(char* word1, char* word2){
     unsigned int hash = 5381;
 
@@ -68,10 +79,11 @@ void insert(Node** hashtable, char* first_w, char* second_w){
         temp = temp->next;
     }
 
-    //if it doesn't exist create a new node
+    //If it doesn't exist create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
-    strcpy(new_node->word1, first_w);
-    strcpy(new_node->word2, second_w);
+
+    string_copy(new_node->word1, first_w);
+    string_copy(new_node->word2, second_w);
 
     new_node->count = 1;
     new_node->next = NULL;
@@ -84,7 +96,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 
         while(temp->next != NULL){
             // if the bigram already exists, increment the count
-            if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
+            if(string_compare(temp->word1, first_w) == 0 && string_compare(temp->word2, second_w) == 0){
                 temp->count++;
                 return;
             }
@@ -93,7 +105,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
             temp = temp->next;
         }
         // if the bigram already exists and is at the end of the linked list, increment the count
-        if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
+        if(string_compare(temp->word1, first_w) == 0 && string_compare(temp->word2, second_w) == 0){
             temp->count++;
             return;
         }
@@ -103,7 +115,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 }
 
 // reads the input file and stores it into the hashtable
-void read_file_and_hash(Node** hashtable, int* num_of_words){
+void read_file_and_hash(Node** hashtable, int* num_words){
     FILE *input_file = fopen(FILE_NAME, "r");
 
     if(input_file == NULL){
@@ -114,26 +126,26 @@ void read_file_and_hash(Node** hashtable, int* num_of_words){
     // change this to static later
     char* first_w = malloc(sizeof(char) * MAX_WORD_SIZE);
     char* second_w = malloc(sizeof(char) * MAX_WORD_SIZE);
-    
-    int num_words = 1;
+
+    int word_count = 0;
     //scan first word
     if(fscanf(input_file, "%99s", first_w) == 0){
         printf("Error: File is empty\n");
         exit(1);
     }
+     
     while(fscanf(input_file, "%99s", second_w) == 1){
         remove_punctuation(first_w);
         remove_punctuation(second_w);
-        lower_case3(first_w);
-        lower_case3(second_w);
+        lower_case(first_w);
+        lower_case(second_w);
 
         insert(hashtable, first_w, second_w);
         
-        strcpy(first_w, second_w); //change the first word to the second word
-        num_words++;
+        string_copy(first_w, second_w); //change the first word to the second word
+        word_count++;
     }
-
-    *num_of_words = num_words;
+    *num_words = word_count;
 }
 
 //unhashes all values into an array
@@ -166,18 +178,19 @@ void quick_sort(Node** sorted_bigrams, int array_size, size_t size, int (*compar
 int main(){
     //initialize hash table, an array of pointers to nodes
     Node** hashtable = (Node**)malloc(sizeof(Node*) * BUCKET_SIZE);
-    
+
     int num_words = 0;
     read_file_and_hash(hashtable, &num_words);
 
-    //initialize array to store sorted bigrams
+    //create array to store sorted bigrams
     Node** sorted_bigrams = (Node**)malloc(sizeof(Node*) * num_words);
-
+    
     int array_size = 0;
     hash_to_array(hashtable, sorted_bigrams, &array_size);
 
     quick_sort(sorted_bigrams, array_size, sizeof(Node*), compare);
 
+    //print results
     printf("Total bigrams: %d\n", array_size);
     printf("Top 10 bigrams: \n");
     for(int i = 0; i < 10; i++){
