@@ -15,6 +15,7 @@ public class HardCopy {
 		this.isBorrowed = false;
 	}
 
+	
 	public void borrowBookCopy(LocalDate date, String borrower) {
 		if (!isBorrowed) {
 			this.borrowDate = date;

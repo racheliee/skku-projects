@@ -62,19 +62,15 @@ public class BookListPanel extends JPanel {
 		gbc_resultScrollPane.gridx = 0;
 		gbc_resultScrollPane.gridy = 3;
 
-		// worker = new Worker(bookList, searchedBoosk, genre);
-		// worker.execute();
-
-		// String[] columnNames = { "Book Title", "Author", "Genre", "RentableCopies" };
-
-		// 100 rows of example data
-
+		//create table to contain the book list
 		resultBooktable = new JTable(
 				new DefaultTableModel(data, new Object[] { "Book Title", "Author", "Genre", "Rentable Copies" }));
 
+		// create thread worker
 		worker = new Worker(bookList, searchedBook, genre);
 		worker.execute();
 
+		
 		resultBooktable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -84,7 +80,17 @@ public class BookListPanel extends JPanel {
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
 				String currentUsername = "test";
 				bookRentDialog = new BookRentDialog(bookList, title, currentUsername);
+				
 				bookRentDialog.setVisible(true);
+				
+				if(bookRentDialog.isBookBorrowed()) {
+					DefaultTableModel model = (DefaultTableModel) resultBooktable.getModel();
+					model.setValueAt(bookRentDialog.getNumberofRemainingCopies(), 3, selectedRow);
+				}
+				
+				
+				
+//				bookRentDialog.dispose();
 			}
 		});
 		resultBooktable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -108,6 +114,7 @@ public class BookListPanel extends JPanel {
 		}
 
 		@Override
+		//look for matching books
 		protected Book doInBackground() throws Exception {
 			// TODO Auto-generated method stub
 			for (Book book : bookList) {
@@ -119,10 +126,11 @@ public class BookListPanel extends JPanel {
 
 			return null;
 		}
-
+		
+		
+		//update the booklist GUI
 		protected void process(List<Book> published) {
 			Book book = published.get(0);
-			System.out.println(book.getTitle());
 			DefaultTableModel model = (DefaultTableModel) resultBooktable.getModel();
 			model.addRow(new Object[] { book.getTitle(), book.getAuthor(), book.getGenre(),
 					String.valueOf(book.getAvailableCopies().size()) });

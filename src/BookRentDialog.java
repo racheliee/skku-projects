@@ -24,6 +24,7 @@ public class BookRentDialog extends JDialog {
 	private final JPanel bookInfoPanel = new JPanel();
 
 	public boolean isBorrowSuccessful = false;
+	public int numCopiesRemaining = 0;
 
 	/**
 	 * Launch the application.
@@ -64,13 +65,13 @@ public class BookRentDialog extends JDialog {
 			gbc_panel.gridx = 0;
 			gbc_panel.gridy = 0;
 			bookInfoPanel.add(panel, gbc_panel);
-			// {
-			// JLabel bookCover = new JLabel("");
-			// bookCover.setIcon(
-			// new
-			// ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
-			// panel.add(bookCover);
-			// }
+			 {
+			 JLabel bookCover = new JLabel("");
+			 bookCover.setIcon(
+			 new
+			 ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
+			 panel.add(bookCover);
+			 }
 		}
 		{
 			JLabel bookTitleLabel = new JLabel("Title: ");
@@ -151,18 +152,24 @@ public class BookRentDialog extends JDialog {
 				JButton borrowButton = new JButton("Borrow");
 				borrowButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						isBorrowSuccessful = true;
 						bookList.get(bookIndex).borrowBook(currentUsername);
 						System.out.println("Borrowed book: " + bookList.get(bookIndex).getTitle());
+						
+						
 						// print all hard copies info of the book
 						for (HardCopy copy : bookList.get(bookIndex).getCopies()) {
 							System.out.println("Copy: " + copy.getBook().getTitle() + " " + copy.isBorrowed());
 						}
-
+						
+						
+						numCopiesRemaining = bookList.get(bookIndex).getAvailableCopies().size();
+						System.out.println("Number of copies left: " + numCopiesRemaining);
+						
 						setVisible(false);
+						isBorrowSuccessful = true;
 					}
 				});
-				borrowButton.setActionCommand("OK");
+				borrowButton.setActionCommand("Borrow");
 				buttonPane.add(borrowButton);
 				getRootPane().setDefaultButton(borrowButton);
 			}
@@ -194,6 +201,10 @@ public class BookRentDialog extends JDialog {
 			index++;
 		}
 		return index;
+	}
+	
+	public int getNumberofRemainingCopies() {
+		return numCopiesRemaining;
 	}
 
 }

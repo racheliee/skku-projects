@@ -230,18 +230,11 @@ public class LibraryMainPageGUI extends JFrame {
 					JOptionPane.showMessageDialog(null, "Type a keyword or select a genre to search", "Search Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					searchButton.setEnabled(false);
-
 					bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
 							bookList);
 
 					changingPanel.add(bookListPanel, "BookListPanel");
 					cardLayout.show(changingPanel, "BookListPanel");
-
-					// enable search button after panel is done finding results
-					if (bookListPanel.worker.isDone()) {
-						searchButton.setEnabled(true);
-					}
 				}
 
 			}
@@ -332,8 +325,6 @@ public class LibraryMainPageGUI extends JFrame {
 
 		// read the file
 		try (Scanner scanner = new Scanner(bookFile)) {
-			int reader = 0;
-
 			while (scanner.hasNext()) {
 				bookList.add(new Book(scanner.nextLine(), scanner.nextLine(), Integer.parseInt(scanner.nextLine()),
 						scanner.nextLine(), scanner.nextLine()));

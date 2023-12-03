@@ -2,7 +2,7 @@ The Great Gatsby
 F. Scott Fitzgerald
 2
 Fiction
-/images/great_gatsby_cover.png
+/images/gatsby_cover.png
 
 1984
 George Orwell
