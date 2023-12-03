@@ -92,6 +92,7 @@ public class LibraryMainPageGUI extends JFrame {
 	private void initialize() {
 		// scan the user lists from file and save to list
 		readUserFile();
+		readBookFile();
 
 		// create GUI
 		frame = new JFrame();
@@ -320,6 +321,15 @@ public class LibraryMainPageGUI extends JFrame {
 						scanner.nextLine(), scanner.nextLine()));
 
 			}
+		}
+
+		// print the book list
+		for (Book book : bookList) {
+			System.out.println(book.getTitle());
+			System.out.println(book.getAuthor());
+			System.out.println(book.getAvailableCopies().size());
+			System.out.println(book.getGenre());
+			System.out.println(book.getImagePath());
 		}
 	}
 
