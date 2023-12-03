@@ -26,20 +26,20 @@ public class BookRentDialog extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			BookRentDialog dialog = new BookRentDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			BookRentDialog dialog = new BookRentDialog();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public BookRentDialog() {
+	public BookRentDialog(Book book) {
 		setBounds(100, 100, 498, 300);
 		getContentPane().setLayout(new BorderLayout());
 		bookInfoPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -110,7 +110,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(genreLabel, gbc_genreLabel);
 		}
 		{
-			JLabel genre = new JLabel("New label");
+			JLabel genre = new JLabel(book.getGenre());
 			genre.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_genre = new GridBagConstraints();
 			gbc_genre.insets = new Insets(0, 0, 5, 5);

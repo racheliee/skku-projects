@@ -66,6 +66,7 @@ public class LibraryMainPageGUI extends JFrame {
 
 	private List<User> userList;
 	boolean loggedIn = false;
+	private User currentUser = null;
 
 	/**
 	 * Launch the application.
@@ -152,7 +153,11 @@ public class LibraryMainPageGUI extends JFrame {
 					}
 
 					if (logInDialog.isLogInSuccessful()) {
+						//change the log in button to username
 						logInButton.setText(logInDialog.getUser().getUserName());
+						//get current user
+						currentUser = logInDialog.getUser();
+						//set logged in as true
 						loggedIn = true;
 					}
 					logInDialog.dispose();
