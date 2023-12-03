@@ -41,10 +41,7 @@ public class AdminPanel extends JPanel {
 		addAnnouncementButton = new JButton("Add Announcement");
 		addAnnouncementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				announcementDialog = new AnnouncementDialog(mainGUI.announcementList, mainGUI.announcementList.size(),
-						mainGUI.frame,
-						true,
-						true);
+				announcementDialog = new AnnouncementDialog(mainGUI.announcementList, mainGUI.announcementList.size(), mainGUI.frame, true,	true);
 				announcementDialog.setVisible(true);
 				mainGUI.addAnnouncement(mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getTitle(),
 						mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getContents(),

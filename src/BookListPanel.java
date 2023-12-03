@@ -40,7 +40,6 @@ public class BookListPanel extends JPanel {
 	 */
 	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
 			List<User> userList, LibraryMainPageGUI mainGUI) {
-		System.out.println(bookList.get(bookList.size() - 1).getTitle());
 		setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
@@ -122,7 +121,6 @@ public class BookListPanel extends JPanel {
 		@Override
 		// look for matching books
 		protected Book doInBackground() throws Exception {
-			// TODO Auto-generated method stub
 			for (Book book : bookList) {
 				if (isMatchingGenre(book) && isMatchingKeyword(book)) {
 					searchExists = true;
