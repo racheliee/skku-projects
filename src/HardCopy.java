@@ -20,8 +20,6 @@ public class HardCopy {
 			this.borrowDate = date;
 			this.isBorrowed = true;
 			this.borrower = borrower;
-		} else {
-			System.out.println("This copy is already borrowed.");
 		}
 	}
 

@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -74,7 +73,7 @@ public class ProfilePanel extends JPanel {
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_3.gridx = 2;
 		gbc_lblNewLabel_3.gridy = 4;
-		add(lblNewLabel_3, gbc_lblNewLabel_3); 
+		add(lblNewLabel_3, gbc_lblNewLabel_3);
 
 		table = new JTable();
 		GridBagConstraints gbc_table = new GridBagConstraints();
@@ -89,7 +88,7 @@ public class ProfilePanel extends JPanel {
 		logOutButton = new JButton("Log Out");
 		logOutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//let the mainGUI know that the log in button was pressed
+				// let the mainGUI know that the log in button was pressed
 				mainGUI.logOutPressed();
 			}
 		});
