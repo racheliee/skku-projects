@@ -19,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
@@ -48,8 +50,8 @@ public class LibraryMainPageGUI extends JFrame {
 	private JList<String> announceList;
 	private JList<Book> newArrivalsList;
 	public JButton logInButton;
-	private JPanel changingPanel;
-	private CardLayout cardLayout;
+	public JPanel changingPanel;
+	public CardLayout cardLayout;
 
 	MainPagePanel mainPanel;
 	ProfilePanel profilePanel;
@@ -129,6 +131,7 @@ public class LibraryMainPageGUI extends JFrame {
 		rightPanel.setLayout(gbl_rightPanel);
 
 		logInButton = new JButton("     Log In     ");
+		LibraryMainPageGUI mainPage = this;
 		logInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (loggedIn == false) {
@@ -151,13 +154,13 @@ public class LibraryMainPageGUI extends JFrame {
 
 						// set logged in as true
 						loggedIn = true;
-
-						profilePanel = new ProfilePanel(currentUser);
+						
+						profilePanel = new ProfilePanel(currentUser, mainPage);
 						changingPanel.add(profilePanel, "ProfilePanel");
 					}
 					logInDialog.dispose();
 				} else {
-					// doesn't work
+					// change panel to the profile panel if the user is already logged in
 					cardLayout.show(changingPanel, "ProfilePanel");
 				}
 			}
@@ -342,4 +345,11 @@ public class LibraryMainPageGUI extends JFrame {
 		return index;
 	}
 
+	// if the log out button was pressed in the profile panel, change the user to null
+	public void logOutPressed() {
+		currentUser = null;
+		loggedIn = false;
+		logInButton.setText("     Log In     ");
+		cardLayout.show(changingPanel, "MainPagePanel");
+	}
 }

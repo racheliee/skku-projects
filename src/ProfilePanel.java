@@ -7,6 +7,10 @@ import javax.swing.JLabel;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ProfilePanel extends JPanel {
 
@@ -22,7 +26,7 @@ public class ProfilePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ProfilePanel(User user) {
+	public ProfilePanel(User user, LibraryMainPageGUI mainGUI) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 47, 47, 47, 47, 47, 30, 47, 47, 47, 47 };
 		gridBagLayout.rowHeights = new int[] { 39, 39, 39, 39, 39, 39, 39, 39, 39, 39 };
@@ -70,11 +74,11 @@ public class ProfilePanel extends JPanel {
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_3.gridx = 2;
 		gbc_lblNewLabel_3.gridy = 4;
-		add(lblNewLabel_3, gbc_lblNewLabel_3);
+		add(lblNewLabel_3, gbc_lblNewLabel_3); 
 
 		table = new JTable();
 		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.gridheight = 2;
+		gbc_table.gridheight = 3;
 		gbc_table.gridwidth = 5;
 		gbc_table.insets = new Insets(0, 0, 5, 5);
 		gbc_table.fill = GridBagConstraints.BOTH;
@@ -83,6 +87,12 @@ public class ProfilePanel extends JPanel {
 		add(table, gbc_table);
 
 		logOutButton = new JButton("Log Out");
+		logOutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//let the mainGUI know that the log in button was pressed
+				mainGUI.logOutPressed();
+			}
+		});
 		GridBagConstraints gbc_logOutButton = new GridBagConstraints();
 		gbc_logOutButton.insets = new Insets(0, 0, 5, 5);
 		gbc_logOutButton.gridx = 3;
