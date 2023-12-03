@@ -1,23 +1,18 @@
-
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
-import java.util.List;
 
 public class BookListPanel extends JPanel {
 
@@ -27,10 +22,15 @@ public class BookListPanel extends JPanel {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JTable resultBooktable;
-
+	
+	// thread worker to update the panel list
 	public SwingWorker<Book, Book> worker;
+	// object data is used to fill in the table
 	Object data[][];
+	//dialog to rent books if user clicks on a book
 	BookRentDialog bookRentDialog;
+	//checks if there was a search result
+	boolean searchExists = false;
 
 	/**
 	 * Create the panel.
@@ -121,9 +121,15 @@ public class BookListPanel extends JPanel {
 			// TODO Auto-generated method stub
 			for (Book book : bookList) {
 				if (isMatchingGenre(book) && isMatchingKeyword(book)) {
+					searchExists = true;
 					Thread.sleep(100);
 					publish(book);
 				}
+			}
+			
+			// if no results were found, show users that none were found.
+			if(searchExists == false) {
+				JOptionPane.showMessageDialog(null, "Sorry, No books were found. :(");
 			}
 
 			return null;
