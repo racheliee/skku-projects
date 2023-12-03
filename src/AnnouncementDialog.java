@@ -31,7 +31,7 @@ public class AnnouncementDialog extends JDialog {
 	private JButton applyEditButton;
 
 	public AnnouncementDialog(List<Announcement> announcementList, int announcementIndex,
-			JFrame parentFrame, boolean isAdmin) {
+			JFrame parentFrame, boolean isAdmin, boolean isNewAnnouncement) {
 		super(parentFrame, true);
 		setBounds(100, 100, 645, 590);
 		getContentPane().setLayout(new BorderLayout());
@@ -54,8 +54,14 @@ public class AnnouncementDialog extends JDialog {
 			gbc_announcementTitleLabel.gridy = 0;
 			panel.add(announcementTitleLabel, gbc_announcementTitleLabel);
 
-			announcementTitle = new JTextField(announcementList.get(announcementIndex).getTitle());
-			announcementTitle.setEditable(false);
+			announcementTitle = new JTextField();
+			if (isNewAnnouncement) {
+				announcementTitle.setText("");
+				announcementTitle.setEditable(true);
+			} else {
+				announcementTitle.setText(announcementList.get(announcementIndex).getTitle());
+				announcementTitle.setEditable(false);
+			}
 			announcementTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 21));
 			GridBagConstraints gbc_announcementTitle = new GridBagConstraints();
 			gbc_announcementTitle.fill = GridBagConstraints.HORIZONTAL;
@@ -73,8 +79,14 @@ public class AnnouncementDialog extends JDialog {
 			scrollPane = new JScrollPane();
 			panel.add(scrollPane);
 
-			textArea = new JTextArea(announcementList.get(announcementIndex).getContents());
-			textArea.setEditable(false);
+			textArea = new JTextArea();
+			if (isNewAnnouncement) {
+				textArea.setText("");
+				textArea.setEditable(true);
+			} else {
+				textArea.setText(announcementList.get(announcementIndex).getContents());
+				textArea.setEditable(false);
+			}
 			textArea.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			scrollPane.setViewportView(textArea);
 		}
@@ -93,21 +105,25 @@ public class AnnouncementDialog extends JDialog {
 			}
 		});
 		panel_1.add(editButton);
-		editButton.setVisible(isAdmin);
+		editButton.setVisible(isAdmin && !isNewAnnouncement);
 
 		applyEditButton = new JButton("apply");
 		applyEditButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String newTitle = announcementTitle.getText();
-				String newContents = textArea.getText();
-				announcementList.get(announcementIndex).setTitle(newTitle);
-				announcementList.get(announcementIndex).setContents(newContents);
+				if (isNewAnnouncement) {
+					announcementList.add(new Announcement(announcementTitle.getText(), textArea.getText()));
+				} else {
+					String newTitle = announcementTitle.getText();
+					String newContents = textArea.getText();
+					announcementList.get(announcementIndex).setTitle(newTitle);
+					announcementList.get(announcementIndex).setContents(newContents);
+				}
 				setVisible(false);
 			}
 		});
 		panel_1.add(applyEditButton);
-		applyEditButton.setVisible(false);
+		applyEditButton.setVisible(false || isNewAnnouncement);
 	}
 
 }

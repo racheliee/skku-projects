@@ -22,6 +22,8 @@ public class AdminPanel extends JPanel {
 	private JScrollPane infoScrollPane;
 	private JTable bookInfotable;
 
+	AnnouncementDialog announcementDialog;
+
 	Object data[][];
 	private JButton logOutButton;
 
@@ -39,7 +41,16 @@ public class AdminPanel extends JPanel {
 		addAnnouncementButton = new JButton("Add Announcement");
 		addAnnouncementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// mainGUI.addAnnouncement();
+				announcementDialog = new AnnouncementDialog(mainGUI.announcementList, mainGUI.announcementList.size(),
+						mainGUI.frame,
+						true,
+						true);
+				announcementDialog.setVisible(true);
+				mainGUI.addAnnouncement(mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getTitle(),
+						mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getContents(),
+						mainGUI.announcementList.size() - 1);
+				announcementDialog.dispose();
+
 			}
 		});
 		GridBagConstraints gbc_addAnnouncementButton = new GridBagConstraints();

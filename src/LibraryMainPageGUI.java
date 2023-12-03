@@ -68,7 +68,7 @@ public class LibraryMainPageGUI extends JFrame {
 	boolean loggedIn = false;
 	public User currentUser = null;
 	private JTable announcementTable;
-	private DefaultTableModel announcementTableModel;
+	DefaultTableModel announcementTableModel;
 
 	/**
 	 * Launch the application.
@@ -197,7 +197,6 @@ public class LibraryMainPageGUI extends JFrame {
 		rightPanel.add(announceTitle, gbc_announceTitle);
 
 		announcementTableModel = new DefaultTableModel(data, new Object[] { "Number", "Announcement" });
-		addAnnouncement("test 1", "test 2");
 		announcementTable = new JTable(announcementTableModel);
 		announcementTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -211,7 +210,7 @@ public class LibraryMainPageGUI extends JFrame {
 					// get the class name of current user using instanceof
 					boolean isAdmin = currentUser instanceof AdminUser;
 					AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
-							LibraryMainPageGUI.this, isAdmin);
+							LibraryMainPageGUI.this, isAdmin, false);
 					announcementDialog.setVisible(true);
 					announcementTableModel.setValueAt(announcementList.get(selectedRow).getTitle(), selectedRow, 1);
 					announcementTableModel.fireTableDataChanged();
@@ -408,14 +407,8 @@ public class LibraryMainPageGUI extends JFrame {
 	}
 
 	// if the admin pressed announcements, they can change the announcements
-	public void addAnnouncement(String title, String contents) {
-		int announcementIndex = 0;
-		announcementList.add(new Announcement(title, contents));
-
-		for (Announcement announcement : announcementList) {
-			announcementTableModel.addRow(new Object[] { announcementIndex, announcement.getTitle() });
-			announcementIndex++;
-		}
+	public void addAnnouncement(String title, String contents, int announcementIndex) {
+		announcementTableModel.addRow(new Object[] { announcementIndex, title });
 		announcementTableModel.fireTableDataChanged();
 	}
 
