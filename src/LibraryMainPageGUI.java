@@ -165,7 +165,7 @@ public class LibraryMainPageGUI extends JFrame {
 					// if the current user is a regular user, show the profile panel
 					if(currentUser instanceof RegularUser) {
 						//create panel
-						profilePanel = new ProfilePanel(currentUser, mainPage);
+						profilePanel = new ProfilePanel((RegularUser)currentUser, mainPage);
 						changingPanel.add(profilePanel, "ProfilePanel");
 						
 						cardLayout.show(changingPanel, "ProfilePanel");
@@ -262,8 +262,14 @@ public class LibraryMainPageGUI extends JFrame {
 					JOptionPane.showMessageDialog(null, "Type a keyword or select a genre to search", "Search Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
-							bookList, LibraryMainPageGUI.this, currentUser);
+					if(loggedIn) {
+						bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
+								bookList, LibraryMainPageGUI.this, userList, findUserIndex(currentUser.getUserName()));
+					}else {
+						bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
+								bookList, LibraryMainPageGUI.this, userList, -1);
+					}
+					
 
 					changingPanel.add(bookListPanel, "BookListPanel");
 					cardLayout.show(changingPanel, "BookListPanel");
@@ -367,7 +373,20 @@ public class LibraryMainPageGUI extends JFrame {
 			}
 		}
 	}
-
+	
+	//returns the index of the user in the userlist
+	public int findUserIndex(String username) {
+		int index = 0;
+		for(User user: userList) {
+			if(user.getUserName().equals(username)) {
+				return index;
+			}
+			index++;
+		}
+		return index;
+	}
+	
+	// returns the index of the book in the booklist
 	public int findBookIndex(List<Book> bookList, String title) {
 		int index = 0;
 		for (Book book : bookList) {
@@ -379,8 +398,7 @@ public class LibraryMainPageGUI extends JFrame {
 		return index;
 	}
 
-	// if the log out button was pressed in the profile panel, change the user to
-	// null
+	// if the log out button was pressed in the profile panel, change the user to null
 	public void logOutPressed() {
 		currentUser = null;
 		loggedIn = false;

@@ -33,13 +33,15 @@ public class BookListPanel extends JPanel {
 	BookRentDialog bookRentDialog;
 	// checks if there was a search result
 	boolean searchExists = false;
+	// true is the user is logged in
+	
 
 	/**
 	 * Create the panel.
 	 */
 	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
-			User currentUser) {
-		currentUsername = currentUser.getUserName();
+			List<User> userList, int userIndex) {
+		
 		System.out.println(bookList.get(bookList.size()-1).getTitle());
 		setLayout(new BorderLayout(0, 0));
 
@@ -82,8 +84,9 @@ public class BookListPanel extends JPanel {
 				int selectedRow = resultBooktable.getSelectedRow();
 				// get the selected row values
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
-				String userName = currentUsername;
-				bookRentDialog = new BookRentDialog(bookList, title, userName,
+				
+				System.out.println(userIndex);
+				bookRentDialog = new BookRentDialog(bookList, title, userList, userIndex,
 						parentFrame);
 
 				bookRentDialog.setVisible(true);

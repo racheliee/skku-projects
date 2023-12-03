@@ -13,6 +13,7 @@ public class HardCopy {
 		this.borrowDate = null;
 		this.dueDate = null;
 		this.isBorrowed = false;
+		this.borrower = "";
 	}
 
 	public void borrowBookCopy(LocalDate date, String borrower) {

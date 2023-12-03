@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -42,7 +44,7 @@ public class BookRentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public BookRentDialog(List<Book> bookList, String title, String currentUsername, JFrame parentFrame) {
+	public BookRentDialog(List<Book> bookList, String title, List<User> userList, int userIndex, JFrame parentFrame) {
 		super(parentFrame, true);
 
 		int bookIndex = findBookIndex(bookList, title);
@@ -154,29 +156,67 @@ public class BookRentDialog extends JDialog {
 					borrowReturnButton.setEnabled(false);
 					borrowReturnButton.setText("Not Available");
 				}
-				if (bookList.get(bookIndex).isBorrowedByUser(currentUsername)) {
+				if (userIndex != -1 && bookList.get(bookIndex).isBorrowedByUser(userList.get(userIndex).getUserName())) {
 					borrowReturnButton.setEnabled(true);
 					borrowReturnButton.setText("Return");
 				}
 
 				borrowReturnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (borrowReturnButton.getText().equals("Borrow")) {
-							// borrowing book
-							bookList.get(bookIndex).borrowBook(currentUsername);
-							// set borrowing to success
-							isBorrowSuccessful = true;
-						} else if (borrowReturnButton.getText().equals("Return")) {
-							// returning book
-							bookList.get(bookIndex).returnBook(currentUsername);
-							// set return to success
-							isReturnSuccessful = true;
+						System.out.println(userIndex);
+						try {
+							if (userIndex == -1) {
+//								throw new Exception();
+							} else {
+								RegularUser currentUser = (RegularUser) userList.get(userIndex);
+
+								if (borrowReturnButton.getText().equals("Borrow")) {
+									// borrowing book
+									bookList.get(bookIndex).borrowBook(currentUser.getUserName());
+
+									// print book copies
+									for (HardCopy copy : bookList.get(bookIndex).getCopies()) {
+										if (copy.getBorrower().equals(currentUser.getUserName())) {
+											System.out.println(copy.getBorrower());
+											currentUser.addBorrowedBook(copy);
+										}
+									}
+
+									// add the updated user to the userList
+									userList.remove(userIndex);
+									userList.add(userIndex, currentUser);
+
+									// set borrowing to success
+									isBorrowSuccessful = true;
+								} else if (borrowReturnButton.getText().equals("Return")) {
+									
+									currentUser.returnBook(bookList.get(bookIndex).getTitle());
+									
+									// returning book
+									bookList.get(bookIndex).returnBook(currentUser.getUserName());
+									
+									
+
+									// add the updated user to the userList
+									userList.remove(userIndex);
+									userList.add(userIndex, currentUser);
+
+									// set return to success
+									isReturnSuccessful = true;
+								}
+
+								// set number of copies remaining
+								numCopiesRemaining = bookList.get(bookIndex).getAvailableCopies().size();
+
+								setVisible(false);
+
+							}
+
+						} catch (Exception error) {
+							System.out.println(error.getStackTrace());
+//							JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
+									//JOptionPane.ERROR_MESSAGE);
 						}
-
-						// set number of copies remaining
-						numCopiesRemaining = bookList.get(bookIndex).getAvailableCopies().size();
-
-						setVisible(false);
 
 					}
 				});

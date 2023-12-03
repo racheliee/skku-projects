@@ -7,9 +7,11 @@ import javax.swing.JLabel;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class ProfilePanel extends JPanel {
 
@@ -19,18 +21,20 @@ public class ProfilePanel extends JPanel {
 	private JLabel passwordLabel;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
-	private JTable table;
 	private JButton logOutButton;
-
+	private JScrollPane bookScrollPane;
+	private JTable borrowedBookTable;
+	
+	private Object data[][];
 	/**
 	 * Create the panel.
 	 */
-	public ProfilePanel(User user, LibraryMainPageGUI mainGUI) {
+	public ProfilePanel(RegularUser user, LibraryMainPageGUI mainGUI) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 47, 47, 47, 47, 47, 30, 47, 47, 47, 47 };
 		gridBagLayout.rowHeights = new int[] { 39, 39, 39, 39, 39, 39, 39, 39, 39, 39 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0 };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0 };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0 };
 		setLayout(gridBagLayout);
 
 		usernameLabel = new JLabel("Username: ");
@@ -75,15 +79,7 @@ public class ProfilePanel extends JPanel {
 		gbc_lblNewLabel_3.gridy = 4;
 		add(lblNewLabel_3, gbc_lblNewLabel_3);
 
-		table = new JTable();
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.gridheight = 3;
-		gbc_table.gridwidth = 5;
-		gbc_table.insets = new Insets(0, 0, 5, 5);
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 3;
-		gbc_table.gridy = 4;
-		add(table, gbc_table);
+
 
 		logOutButton = new JButton("Log Out");
 		logOutButton.addActionListener(new ActionListener() {
@@ -92,6 +88,25 @@ public class ProfilePanel extends JPanel {
 				mainGUI.logOutPressed();
 			}
 		});
+		
+		bookScrollPane = new JScrollPane();
+		GridBagConstraints gbc_bookScrollPane = new GridBagConstraints();
+		gbc_bookScrollPane.gridheight = 3;
+		gbc_bookScrollPane.gridwidth = 6;
+		gbc_bookScrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_bookScrollPane.fill = GridBagConstraints.BOTH;
+		gbc_bookScrollPane.gridx = 3;
+		gbc_bookScrollPane.gridy = 5;
+		add(bookScrollPane, gbc_bookScrollPane);
+		
+		DefaultTableModel borrowedBookTableModel = new DefaultTableModel(data, new Object[] {"Book Title", "Author", "Borrowed Date", "Due Date"});
+		borrowedBookTable = new JTable(borrowedBookTableModel);
+		for(HardCopy copy: user.borrowedBooks) {
+			borrowedBookTableModel.addRow(new Object[] {copy.getBook().getTitle(), copy.getBook().getAuthor(), copy.getBorrowDate(), copy.getDueDate()});
+		}
+		borrowedBookTableModel.fireTableDataChanged();
+		
+		bookScrollPane.setViewportView(borrowedBookTable);
 		GridBagConstraints gbc_logOutButton = new GridBagConstraints();
 		gbc_logOutButton.insets = new Insets(0, 0, 5, 5);
 		gbc_logOutButton.gridx = 3;
