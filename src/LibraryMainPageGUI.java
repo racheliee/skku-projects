@@ -1,5 +1,4 @@
 
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -66,7 +65,7 @@ public class LibraryMainPageGUI extends JFrame {
 
 	private List<User> userList;
 	boolean loggedIn = false;
-	private User currentUser = null;
+	public User currentUser = null;
 
 	/**
 	 * Launch the application.
@@ -153,11 +152,11 @@ public class LibraryMainPageGUI extends JFrame {
 					}
 
 					if (logInDialog.isLogInSuccessful()) {
-						//change the log in button to username
+						// change the log in button to username
 						logInButton.setText(logInDialog.getUser().getUserName());
-						//get current user
+						// get current user
 						currentUser = logInDialog.getUser();
-						//set logged in as true
+						// set logged in as true
 						loggedIn = true;
 					}
 					logInDialog.dispose();
