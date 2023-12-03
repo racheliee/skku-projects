@@ -15,7 +15,6 @@ public class HardCopy {
 		this.isBorrowed = false;
 	}
 
-	
 	public void borrowBookCopy(LocalDate date, String borrower) {
 		if (!isBorrowed) {
 			this.borrowDate = date;
@@ -29,6 +28,7 @@ public class HardCopy {
 	public void returnBookCopy() {
 		this.borrowDate = null;
 		this.isBorrowed = false;
+		this.borrower = null;
 	}
 
 	// get set methods

@@ -229,7 +229,7 @@ public class LibraryMainPageGUI extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
-							bookList, LibraryMainPageGUI.this);
+							bookList, LibraryMainPageGUI.this, currentUser.getUserName());
 
 					changingPanel.add(bookListPanel, "BookListPanel");
 					cardLayout.show(changingPanel, "BookListPanel");

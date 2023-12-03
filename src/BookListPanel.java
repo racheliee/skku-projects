@@ -22,20 +22,21 @@ public class BookListPanel extends JPanel {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JTable resultBooktable;
-	
+
 	// thread worker to update the panel list
 	public SwingWorker<Book, Book> worker;
 	// object data is used to fill in the table
 	Object data[][];
-	//dialog to rent books if user clicks on a book
+	// dialog to rent books if user clicks on a book
 	BookRentDialog bookRentDialog;
-	//checks if there was a search result
+	// checks if there was a search result
 	boolean searchExists = false;
 
 	/**
 	 * Create the panel.
 	 */
-	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame) {
+	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
+			String currentUsername) {
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -78,13 +79,14 @@ public class BookListPanel extends JPanel {
 				int selectedRow = resultBooktable.getSelectedRow();
 				// get the selected row values
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
-				String currentUsername = "test";
-				bookRentDialog = new BookRentDialog(bookList, title, currentUsername, parentFrame);
+				String userName = currentUsername;
+				bookRentDialog = new BookRentDialog(bookList, title, userName,
+						parentFrame);
 
 				bookRentDialog.setVisible(true);
 
 				// update the number of copies shown on the table
-				if (bookRentDialog.isBookBorrowed()) {
+				if (bookRentDialog.isBookNumChanged()) {
 					DefaultTableModel model = (DefaultTableModel) resultBooktable.getModel();
 					model.setValueAt(bookRentDialog.getNumberofRemainingCopies(), selectedRow, 3);
 					model.fireTableDataChanged();
@@ -124,9 +126,9 @@ public class BookListPanel extends JPanel {
 					publish(book);
 				}
 			}
-			
+
 			// if no results were found, show users that none were found.
-			if(searchExists == false) {
+			if (searchExists == false) {
 				JOptionPane.showMessageDialog(null, "Sorry, No books were found. :(");
 			}
 

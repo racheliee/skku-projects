@@ -23,6 +23,7 @@ public class BookRentDialog extends JDialog {
 	private final JPanel bookInfoPanel = new JPanel();
 
 	public boolean isBorrowSuccessful = false;
+	public boolean isReturnSuccessful = false;
 	public int numCopiesRemaining = 0;
 
 	/**
@@ -148,20 +149,28 @@ public class BookRentDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton borrowButton = new JButton("Borrow");
+				JButton borrowReturnButton = new JButton("Borrow");
 				if (bookList.get(bookIndex).getAvailableCopies().size() == 0) {
-					borrowButton.setEnabled(false);
-					borrowButton.setText("Not Available");
+					borrowReturnButton.setEnabled(false);
+					borrowReturnButton.setText("Not Available");
 				}
-				borrowButton.addActionListener(new ActionListener() {
+				if (bookList.get(bookIndex).isBorrowedByUser(currentUsername)) {
+					borrowReturnButton.setEnabled(true);
+					borrowReturnButton.setText("Return");
+				}
+
+				borrowReturnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-
-						if (bookList.get(bookIndex).getAvailableCopies().size() != 0) {
-							// set borrowing to success
-							isBorrowSuccessful = true;
-
+						if (borrowReturnButton.getText().equals("Borrow")) {
 							// borrowing book
 							bookList.get(bookIndex).borrowBook(currentUsername);
+							// set borrowing to success
+							isBorrowSuccessful = true;
+						} else if (borrowReturnButton.getText().equals("Return")) {
+							// returning book
+							bookList.get(bookIndex).returnBook(currentUsername);
+							// set return to success
+							isReturnSuccessful = true;
 						}
 
 						// set number of copies remaining
@@ -171,17 +180,19 @@ public class BookRentDialog extends JDialog {
 
 					}
 				});
-				borrowButton.setActionCommand("Borrow");
-				buttonPane.add(borrowButton);
-				getRootPane().setDefaultButton(borrowButton);
+				borrowReturnButton.setActionCommand("Borrow/Return");
+				buttonPane.add(borrowReturnButton);
+				getRootPane().setDefaultButton(borrowReturnButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
+
 					public void actionPerformed(ActionEvent arg0) {
 						// close dialog if cancel was pressed
 						dispose();
 					}
+
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
@@ -190,8 +201,12 @@ public class BookRentDialog extends JDialog {
 	}
 
 	// returns true is the book was borrowed
-	public boolean isBookBorrowed() {
-		return isBorrowSuccessful;
+	public boolean isBookNumChanged() {
+		if (isBorrowSuccessful || isReturnSuccessful) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public int findBookIndex(List<Book> bookList, String title) {

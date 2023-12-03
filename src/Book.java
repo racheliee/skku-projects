@@ -54,15 +54,15 @@ public class Book {
     }
 
     // returnBook() method
-    public void returnBook() {
+    public void returnBook(String username) {
         for (HardCopy copy : copies) {
-            if (copy.isBorrowed()) {
+            if (copy.isBorrowed() && copy.getBorrower().equals(username)) {
                 copy.returnBookCopy();
                 break;
             }
         }
     }
-   
+
     // get & set methods
     public String getTitle() {
         return title;
@@ -104,6 +104,13 @@ public class Book {
         this.imagePath = imagePath;
     }
 
-    // additional methods as needed
+    public boolean isBorrowedByUser(String username) {
+        for (HardCopy copy : copies) {
+            if (copy.isBorrowed() && copy.getBorrower().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
