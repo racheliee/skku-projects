@@ -14,7 +14,6 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
@@ -66,13 +65,12 @@ public class BookRentDialog extends JDialog {
 			gbc_panel.gridx = 0;
 			gbc_panel.gridy = 0;
 			bookInfoPanel.add(panel, gbc_panel);
-			 {
-			 JLabel bookCover = new JLabel("");
-			 bookCover.setIcon(
-			 new
-			 ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
-			 panel.add(bookCover);
-			 }
+			{
+				JLabel bookCover = new JLabel("");
+				bookCover.setIcon(
+						new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
+				panel.add(bookCover);
+			}
 		}
 		{
 			JLabel bookTitleLabel = new JLabel("Title: ");
@@ -151,26 +149,26 @@ public class BookRentDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton borrowButton = new JButton("Borrow");
-				if(bookList.get(bookIndex).getAvailableCopies().size() == 0) {
+				if (bookList.get(bookIndex).getAvailableCopies().size() == 0) {
 					borrowButton.setEnabled(false);
 					borrowButton.setText("Not Available");
 				}
 				borrowButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						if(bookList.get(bookIndex).getAvailableCopies().size() != 0) {
+
+						if (bookList.get(bookIndex).getAvailableCopies().size() != 0) {
 							// set borrowing to success
 							isBorrowSuccessful = true;
-							
-							//borrowing book
+
+							// borrowing book
 							bookList.get(bookIndex).borrowBook(currentUsername);
 						}
-						
-						//set number of copies remaining
+
+						// set number of copies remaining
 						numCopiesRemaining = bookList.get(bookIndex).getAvailableCopies().size();
-						
+
 						setVisible(false);
-						
+
 					}
 				});
 				borrowButton.setActionCommand("Borrow");
@@ -206,7 +204,7 @@ public class BookRentDialog extends JDialog {
 		}
 		return index;
 	}
-	
+
 	public int getNumberofRemainingCopies() {
 		return numCopiesRemaining;
 	}
