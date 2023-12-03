@@ -136,7 +136,7 @@ public class LibraryMainPageGUI extends JFrame {
 					logInDialog.setVisible(true);
 
 					// user decides to sign up
-					if (logInDialog.willSignUp) {
+					if (logInDialog.willSignUp()) {
 						SignUpDialog signUpDialog = new SignUpDialog(LibraryMainPageGUI.this, userList);
 						signUpDialog.setVisible(true);
 					}
@@ -231,7 +231,7 @@ public class LibraryMainPageGUI extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
-							bookList);
+							bookList, LibraryMainPageGUI.this);
 
 					changingPanel.add(bookListPanel, "BookListPanel");
 					cardLayout.show(changingPanel, "BookListPanel");

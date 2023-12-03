@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,7 +35,7 @@ public class BookListPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public BookListPanel(String searchedBook, String genre, List<Book> bookList) {
+	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame) {
 
 		setLayout(new BorderLayout(0, 0));
 
@@ -79,18 +80,19 @@ public class BookListPanel extends JPanel {
 				// get the selected row values
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
 				String currentUsername = "test";
-				bookRentDialog = new BookRentDialog(bookList, title, currentUsername);
+				bookRentDialog = new BookRentDialog(bookList, title, currentUsername, parentFrame);
 				
 				bookRentDialog.setVisible(true);
 				
+				// update the number of copies shown on the table
 				if(bookRentDialog.isBookBorrowed()) {
 					DefaultTableModel model = (DefaultTableModel) resultBooktable.getModel();
-					model.setValueAt(bookRentDialog.getNumberofRemainingCopies(), 3, selectedRow);
+					model.setValueAt(bookRentDialog.getNumberofRemainingCopies(), selectedRow, 3);
+					model.fireTableDataChanged();
 				}
 				
 				
-				
-//				bookRentDialog.dispose();
+				bookRentDialog.dispose();
 			}
 		});
 		resultBooktable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

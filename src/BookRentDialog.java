@@ -42,7 +42,8 @@ public class BookRentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public BookRentDialog(List<Book> bookList, String title, String currentUsername) {
+	public BookRentDialog(List<Book> bookList, String title, String currentUsername, JFrame parentFrame) {
+		super(parentFrame, true);
 
 		int bookIndex = findBookIndex(bookList, title);
 
@@ -150,23 +151,26 @@ public class BookRentDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton borrowButton = new JButton("Borrow");
+				if(bookList.get(bookIndex).getAvailableCopies().size() == 0) {
+					borrowButton.setEnabled(false);
+					borrowButton.setText("Not Available");
+				}
 				borrowButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						bookList.get(bookIndex).borrowBook(currentUsername);
-						System.out.println("Borrowed book: " + bookList.get(bookIndex).getTitle());
 						
-						
-						// print all hard copies info of the book
-						for (HardCopy copy : bookList.get(bookIndex).getCopies()) {
-							System.out.println("Copy: " + copy.getBook().getTitle() + " " + copy.isBorrowed());
+						if(bookList.get(bookIndex).getAvailableCopies().size() != 0) {
+							// set borrowing to success
+							isBorrowSuccessful = true;
+							
+							//borrowing book
+							bookList.get(bookIndex).borrowBook(currentUsername);
 						}
 						
-						
+						//set number of copies remaining
 						numCopiesRemaining = bookList.get(bookIndex).getAvailableCopies().size();
-						System.out.println("Number of copies left: " + numCopiesRemaining);
 						
 						setVisible(false);
-						isBorrowSuccessful = true;
+						
 					}
 				});
 				borrowButton.setActionCommand("Borrow");
