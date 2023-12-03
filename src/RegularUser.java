@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RegularUser extends User {
@@ -29,11 +30,14 @@ public class RegularUser extends User {
 	
 	//remove book from borrowedBooks if user returns book
 	public void returnBook(String title) {
-		for(HardCopy copies: borrowedBooks) {
-			if(copies.getBook().getTitle().equals(title)) {
-				borrowedBooks.remove(copies);
-			}
-		}
+		Iterator<HardCopy> iterator = borrowedBooks.iterator();
+		
+	    while (iterator.hasNext()) {
+	        HardCopy copy = iterator.next();
+	        if (copy.getBook().getTitle().equals(title)) {
+	            iterator.remove(); // Used an iterator to safely remove the element
+	        }
+	    }
 	}
 	
 

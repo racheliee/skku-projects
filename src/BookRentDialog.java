@@ -163,10 +163,9 @@ public class BookRentDialog extends JDialog {
 
 				borrowReturnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						System.out.println(userIndex);
 						try {
 							if (userIndex == -1) {
-//								throw new Exception();
+								throw new Exception();
 							} else {
 								RegularUser currentUser = (RegularUser) userList.get(userIndex);
 
@@ -177,7 +176,6 @@ public class BookRentDialog extends JDialog {
 									// print book copies
 									for (HardCopy copy : bookList.get(bookIndex).getCopies()) {
 										if (copy.getBorrower().equals(currentUser.getUserName())) {
-											System.out.println(copy.getBorrower());
 											currentUser.addBorrowedBook(copy);
 										}
 									}
@@ -189,13 +187,11 @@ public class BookRentDialog extends JDialog {
 									// set borrowing to success
 									isBorrowSuccessful = true;
 								} else if (borrowReturnButton.getText().equals("Return")) {
-									
+									// return book from current user's book list
 									currentUser.returnBook(bookList.get(bookIndex).getTitle());
 									
 									// returning book
 									bookList.get(bookIndex).returnBook(currentUser.getUserName());
-									
-									
 
 									// add the updated user to the userList
 									userList.remove(userIndex);
@@ -213,9 +209,8 @@ public class BookRentDialog extends JDialog {
 							}
 
 						} catch (Exception error) {
-							System.out.println(error.getStackTrace());
-//							JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
-									//JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
+									JOptionPane.ERROR_MESSAGE);
 						}
 
 					}

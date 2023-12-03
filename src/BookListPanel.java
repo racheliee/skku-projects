@@ -42,7 +42,6 @@ public class BookListPanel extends JPanel {
 	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
 			List<User> userList, int userIndex) {
 		
-		System.out.println(bookList.get(bookList.size()-1).getTitle());
 		setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
@@ -84,8 +83,7 @@ public class BookListPanel extends JPanel {
 				int selectedRow = resultBooktable.getSelectedRow();
 				// get the selected row values
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
-				
-				System.out.println(userIndex);
+			
 				bookRentDialog = new BookRentDialog(bookList, title, userList, userIndex,
 						parentFrame);
 
