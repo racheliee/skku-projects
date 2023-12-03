@@ -22,6 +22,8 @@ public class BookListPanel extends JPanel {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JTable resultBooktable;
+	
+	String currentUsername;
 
 	// thread worker to update the panel list
 	public SwingWorker<Book, Book> worker;
@@ -36,8 +38,9 @@ public class BookListPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
-			String currentUsername) {
-
+			User currentUser) {
+		currentUsername = currentUser.getUserName();
+		System.out.println(bookList.get(bookList.size()-1).getTitle());
 		setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();

@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
@@ -162,25 +164,43 @@ public class AddNewBookDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton addButton = new JButton("Add");
-				addButton.addActionListener(new ActionListener() {
-					String title = titleTextField.getText();
-					String author = authorTextField.getText();
-					String numCopies = numCopiesTextField.getText();
-					String genre = genreTextField.getText();
-					String imagePath = imagePathTextField.getText();
+				addButton.addActionListener(new ActionListener() {					
 
 					public void actionPerformed(ActionEvent e) {
+						String title = titleTextField.getText();
+						String author = authorTextField.getText();
+						String numCopies = numCopiesTextField.getText();
+						String genre = genreTextField.getText();
+						String imagePath = imagePathTextField.getText();
 						
 						try{
 							if(isValidTitle(title) && isValidAuthor(author) && isValidNumCopies(numCopies) && isValidGenre(genre) && isValidImagePath(imagePath)) {
+								System.out.println("book created");
 								Book newBook = new Book(title, author, Integer.parseInt(numCopies), genre, imagePath);
 								bookList.add(newBook);
-								setVisible(false);
+								dispose();
 							}else {
 								throw new Exception();
 							}
 						}catch(Exception error) {
-							
+							String errorMsg = "";
+
+							if(!isValidTitle(title)) {
+								errorMsg += "Invalid title.\n";
+							}
+							if(!isValidAuthor(author)) {
+								errorMsg += "Invalid author.\n";
+							}
+							if(!isValidNumCopies(numCopies)) {
+								errorMsg += "Invalid number of copies.\n";
+							}
+							if(!isValidGenre(genre)) {
+								errorMsg += "Invalid genre.\n";
+							}
+							if(!isValidImagePath(imagePath)) {
+								errorMsg += "Invalid image path.\n";
+							}
+							JOptionPane.showMessageDialog(null, errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
 						}
 						
 					}
@@ -203,14 +223,14 @@ public class AddNewBookDialog extends JDialog {
 	}
 	
 	public boolean isValidTitle(String title) {
-		if(Pattern.matches("[a-zA-Z0-9]+", title)) {
+		if(Pattern.matches("^[a-zA-Z0-9\\s]+$", title)) {
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean isValidAuthor(String author) {
-		if(Pattern.matches("", author)) {
+		if(Pattern.matches("^[a-zA-Z]+\\s[a-zA-Z]+$", author)) {
 			return true;
 		}
 		return false;
@@ -218,7 +238,7 @@ public class AddNewBookDialog extends JDialog {
 	}
 	
 	public boolean isValidNumCopies(String numCopies) {
-		if(Pattern.matches("[0-9]+", numCopies)) {
+		if(Pattern.matches("^\\d+$", numCopies)) {
 			return true;
 		}
 		return false;
@@ -232,7 +252,7 @@ public class AddNewBookDialog extends JDialog {
 	}
 	
 	public boolean isValidImagePath(String imagePath) {
-		if(Pattern.matches("^(.+)\\/([^\\/]+)$\n", imagePath)) {
+		if(Pattern.matches("^[a-zA-Z0-9\\/_.]+$", imagePath)) {
 			return true;
 		}
 		return false;
