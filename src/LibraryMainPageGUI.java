@@ -191,7 +191,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_newBooksLabel.gridy = 3;
 		rightPanel.add(newBooksLabel, gbc_newBooksLabel);
 
-		newArrivalsList = new JList();
+		newArrivalsList = new JList<Book>();
 		GridBagConstraints gbc_newArrivalsList = new GridBagConstraints();
 		gbc_newArrivalsList.fill = GridBagConstraints.BOTH;
 		gbc_newArrivalsList.gridx = 0;
@@ -222,7 +222,28 @@ public class LibraryMainPageGUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO : search by title
-				cardLayout.show(changingPanel, "BookListPanel");
+				String searchedBook = searchTextField.getText();
+				
+				//disable search button while panel is finding search results
+				
+				
+				if(searchedBook.equals("") && searchByGenreComboBox.getSelectedIndex() == 0) {
+					JOptionPane.showMessageDialog(null, "Type a keyword or select a genre to search", "Search Error", JOptionPane.ERROR_MESSAGE);
+				}else {
+					searchButton.setEnabled(false);
+					
+					bookListPanel = new BookListPanel(searchedBook, (String)searchByGenreComboBox.getSelectedItem(), bookList);
+					
+					changingPanel.add(bookListPanel, "BookListPanel");
+					cardLayout.show(changingPanel, "BookListPanel");
+					
+					//enable search button after panel is done finding results
+					if(bookListPanel.worker.isDone()) {
+						searchButton.setEnabled(true);
+					}
+				}
+				
+				
 			}
 		});
 		GridBagConstraints gbc_searchButton = new GridBagConstraints();
@@ -240,8 +261,8 @@ public class LibraryMainPageGUI extends JFrame {
 		midPanel.add(searchByGenreTitle, gbc_searchByGenreTitle);
 
 		searchByGenreComboBox = new JComboBox<String>();
-		searchByGenreComboBox.setModel(new DefaultComboBoxModel(
-				new String[] { "Genre", "Fiction", "Non-Fiction", "Mystery", "Romance", "Science Fiction" }));
+		searchByGenreComboBox.setModel(new DefaultComboBoxModel<String>(
+				new String[] { "---", "Fiction", "Non-Fiction", "Mystery", "Romance"}));
 		GridBagConstraints gbc_searchByGenreComboBox = new GridBagConstraints();
 		gbc_searchByGenreComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_searchByGenreComboBox.gridwidth = 6;
@@ -265,9 +286,6 @@ public class LibraryMainPageGUI extends JFrame {
 		// add panels to card layout
 		mainPanel = new MainPagePanel();
 		changingPanel.add(mainPanel, "MainPagePanel");
-
-		bookListPanel = new BookListPanel();
-		changingPanel.add(bookListPanel, "BookListPanel");
 
 	}
 

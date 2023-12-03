@@ -22,19 +22,6 @@ public class MainPagePanel extends JPanel {
 	private JLabel event1Label;
 	private JLabel event2Label;
 	private JLabel event3Label;
-//	private JPanel panel_1;
-//	private JLabel lblNewLabel;
-//	private JLabel weekDayHourLabel;
-//	private JLabel saturdayHoursLabel;
-//	private JLabel sundayHoursLabel;
-//	private JLabel libraryHoursLabel;
-//	private JLabel weekendLabel;
-//	private JLabel saturdayLabel;
-//	private JLabel sundayLabel;
-//	private JLabel specialEventsLabel;
-//	private JLabel event1Label;
-//	private JLabel event2Label;
-//	private JLabel event3Label;
 
 
 	/**
