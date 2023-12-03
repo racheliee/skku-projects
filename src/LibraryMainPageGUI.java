@@ -19,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -154,7 +153,7 @@ public class LibraryMainPageGUI extends JFrame {
 
 						// set logged in as true
 						loggedIn = true;
-						
+
 						profilePanel = new ProfilePanel(currentUser, mainPage);
 						changingPanel.add(profilePanel, "ProfilePanel");
 					}
@@ -348,7 +347,8 @@ public class LibraryMainPageGUI extends JFrame {
 		return index;
 	}
 
-	// if the log out button was pressed in the profile panel, change the user to null
+	// if the log out button was pressed in the profile panel, change the user to
+	// null
 	public void logOutPressed() {
 		currentUser = null;
 		loggedIn = false;
