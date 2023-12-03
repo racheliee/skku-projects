@@ -55,6 +55,10 @@ public class LibraryMainPageGUI extends JFrame {
 	MainPagePanel mainPanel;
 	ProfilePanel profilePanel;
 	BookListPanel bookListPanel;
+	AdminPanel adminPanel;
+	
+	//indicates this current class
+	LibraryMainPageGUI mainPage = this;
 
 	public List<User> userList;
 	public List<Book> bookList;
@@ -130,7 +134,6 @@ public class LibraryMainPageGUI extends JFrame {
 		rightPanel.setLayout(gbl_rightPanel);
 
 		logInButton = new JButton("     Log In     ");
-		LibraryMainPageGUI mainPage = this;
 		logInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (loggedIn == false) {
@@ -153,14 +156,26 @@ public class LibraryMainPageGUI extends JFrame {
 
 						// set logged in as true
 						loggedIn = true;
-
+						
+						//create panels that users can access
+						adminPanel = new AdminPanel(mainPage, bookList);
+						changingPanel.add(adminPanel, "AdminPanel");
+						
 						profilePanel = new ProfilePanel(currentUser, mainPage);
 						changingPanel.add(profilePanel, "ProfilePanel");
 					}
 					logInDialog.dispose();
 				} else {
-					// change panel to the profile panel if the user is already logged in
-					cardLayout.show(changingPanel, "ProfilePanel");
+					//change panel to the profile panel if the user is already logged in
+					// if the current user is a regular user, show the profile panel
+					if(currentUser instanceof RegularUser) {
+						cardLayout.show(changingPanel, "ProfilePanel");
+					}
+					// if current user is the admin, show the admin panel
+					else if (currentUser instanceof AdminUser) {
+						cardLayout.show(changingPanel, "AdminPanel");
+					}
+					
 				}
 			}
 		});
@@ -260,7 +275,7 @@ public class LibraryMainPageGUI extends JFrame {
 
 		searchByGenreComboBox = new JComboBox<String>();
 		searchByGenreComboBox.setModel(new DefaultComboBoxModel<String>(
-				new String[] { "---", "Fiction", "Non-Fiction", "Mystery", "Romance" }));
+				new String[] { "All", "Fiction", "Non-Fiction", "Mystery", "Romance" }));
 		GridBagConstraints gbc_searchByGenreComboBox = new GridBagConstraints();
 		gbc_searchByGenreComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_searchByGenreComboBox.gridwidth = 6;
@@ -359,5 +374,17 @@ public class LibraryMainPageGUI extends JFrame {
 		loggedIn = false;
 		logInButton.setText("     Log In     ");
 		cardLayout.show(changingPanel, "MainPagePanel");
+	}
+	
+	// if the admin presses new arrivals, they can change the contents
+	public void addNewArrival() {
+		AddNewBookDialog newBookDialog = new AddNewBookDialog(LibraryMainPageGUI.this, bookList);
+		newBookDialog.setVisible(true);
+		
+	}
+	
+	// if the admin pressed announcements, they can change the announcements
+	public void addAnnouncement() {
+		
 	}
 }

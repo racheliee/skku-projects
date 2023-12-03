@@ -145,7 +145,7 @@ public class BookListPanel extends JPanel {
 
 		// checks if the book's genre matches the genre the user searched
 		protected boolean isMatchingGenre(Book book) {
-			if (genre.equals("---")) {
+			if (genre.equals("All")) {
 				return true;
 			}
 

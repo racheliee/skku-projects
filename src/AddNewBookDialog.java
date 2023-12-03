@@ -1,0 +1,240 @@
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.GridBagLayout;
+import javax.swing.JLabel;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+
+public class AddNewBookDialog extends JDialog {
+
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
+	private JTextField genreTextField;
+	private JTextField authorTextField;
+	private JTextField numCopiesTextField;
+	private JTextField titleTextField;
+	private JTextField imagePathTextField;
+
+	/**
+	 * Launch the application.
+	 */
+//	public static void main(String[] args) {
+//		try {
+//			AddNewBookDialog dialog = new AddNewBookDialog();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	/**
+	 * Create the dialog.
+	 */
+	public AddNewBookDialog(JFrame parentFrame, List<Book> bookList) {
+		super(parentFrame, true);
+		
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		GridBagLayout gbl_contentPanel = new GridBagLayout();
+		gbl_contentPanel.columnWidths = new int[]{0, 264, 0};
+		gbl_contentPanel.rowHeights = new int[]{45, 43, 37, 37, 38, 42, 0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		contentPanel.setLayout(gbl_contentPanel);
+		{
+			JLabel titleLabel = new JLabel("  Title: ");
+			titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+			GridBagConstraints gbc_titleLabel = new GridBagConstraints();
+			gbc_titleLabel.fill = GridBagConstraints.BOTH;
+			gbc_titleLabel.anchor = GridBagConstraints.EAST;
+			gbc_titleLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_titleLabel.gridx = 0;
+			gbc_titleLabel.gridy = 1;
+			contentPanel.add(titleLabel, gbc_titleLabel);
+		}
+		{
+			titleTextField = new JTextField();
+			GridBagConstraints gbc_titleTextField = new GridBagConstraints();
+			gbc_titleTextField.insets = new Insets(0, 0, 5, 0);
+			gbc_titleTextField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_titleTextField.gridx = 1;
+			gbc_titleTextField.gridy = 1;
+			contentPanel.add(titleTextField, gbc_titleTextField);
+			titleTextField.setColumns(10);
+		}
+		{
+			JLabel lblAuthor = new JLabel("  Author: ");
+			GridBagConstraints gbc_lblAuthor = new GridBagConstraints();
+			gbc_lblAuthor.fill = GridBagConstraints.BOTH;
+			gbc_lblAuthor.anchor = GridBagConstraints.EAST;
+			gbc_lblAuthor.insets = new Insets(0, 0, 5, 5);
+			gbc_lblAuthor.gridx = 0;
+			gbc_lblAuthor.gridy = 2;
+			contentPanel.add(lblAuthor, gbc_lblAuthor);
+		}
+		{
+			authorTextField = new JTextField();
+			GridBagConstraints gbc_authorTextField = new GridBagConstraints();
+			gbc_authorTextField.insets = new Insets(0, 0, 5, 0);
+			gbc_authorTextField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_authorTextField.gridx = 1;
+			gbc_authorTextField.gridy = 2;
+			contentPanel.add(authorTextField, gbc_authorTextField);
+			authorTextField.setColumns(10);
+		}
+		{
+			JLabel numCopiesLabel = new JLabel("  Number of Copies: ");
+			GridBagConstraints gbc_numCopiesLabel = new GridBagConstraints();
+			gbc_numCopiesLabel.fill = GridBagConstraints.BOTH;
+			gbc_numCopiesLabel.anchor = GridBagConstraints.EAST;
+			gbc_numCopiesLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_numCopiesLabel.gridx = 0;
+			gbc_numCopiesLabel.gridy = 3;
+			contentPanel.add(numCopiesLabel, gbc_numCopiesLabel);
+		}
+		{
+			numCopiesTextField = new JTextField();
+			GridBagConstraints gbc_numCopiesTextField = new GridBagConstraints();
+			gbc_numCopiesTextField.insets = new Insets(0, 0, 5, 0);
+			gbc_numCopiesTextField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_numCopiesTextField.gridx = 1;
+			gbc_numCopiesTextField.gridy = 3;
+			contentPanel.add(numCopiesTextField, gbc_numCopiesTextField);
+			numCopiesTextField.setColumns(10);
+		}
+		{
+			JLabel genreLabel = new JLabel("  Genre: ");
+			GridBagConstraints gbc_genreLabel = new GridBagConstraints();
+			gbc_genreLabel.fill = GridBagConstraints.BOTH;
+			gbc_genreLabel.anchor = GridBagConstraints.EAST;
+			gbc_genreLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_genreLabel.gridx = 0;
+			gbc_genreLabel.gridy = 4;
+			contentPanel.add(genreLabel, gbc_genreLabel);
+		}
+		{
+			genreTextField = new JTextField();
+			GridBagConstraints gbc_genreTextField = new GridBagConstraints();
+			gbc_genreTextField.insets = new Insets(0, 0, 5, 0);
+			gbc_genreTextField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_genreTextField.gridx = 1;
+			gbc_genreTextField.gridy = 4;
+			contentPanel.add(genreTextField, gbc_genreTextField);
+			genreTextField.setColumns(10);
+		}
+		{
+			JLabel imagePathLabel = new JLabel("  Book Cover Image Path: ");
+			GridBagConstraints gbc_imagePathLabel = new GridBagConstraints();
+			gbc_imagePathLabel.fill = GridBagConstraints.BOTH;
+			gbc_imagePathLabel.anchor = GridBagConstraints.EAST;
+			gbc_imagePathLabel.insets = new Insets(0, 0, 0, 5);
+			gbc_imagePathLabel.gridx = 0;
+			gbc_imagePathLabel.gridy = 5;
+			contentPanel.add(imagePathLabel, gbc_imagePathLabel);
+		}
+		{
+			imagePathTextField = new JTextField();
+			GridBagConstraints gbc_imagePathTextField = new GridBagConstraints();
+			gbc_imagePathTextField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_imagePathTextField.gridx = 1;
+			gbc_imagePathTextField.gridy = 5;
+			contentPanel.add(imagePathTextField, gbc_imagePathTextField);
+			imagePathTextField.setColumns(10);
+		}
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton addButton = new JButton("Add");
+				addButton.addActionListener(new ActionListener() {
+					String title = titleTextField.getText();
+					String author = authorTextField.getText();
+					String numCopies = numCopiesTextField.getText();
+					String genre = genreTextField.getText();
+					String imagePath = imagePathTextField.getText();
+
+					public void actionPerformed(ActionEvent e) {
+						
+						try{
+							if(isValidTitle(title) && isValidAuthor(author) && isValidNumCopies(numCopies) && isValidGenre(genre) && isValidImagePath(imagePath)) {
+								Book newBook = new Book(title, author, Integer.parseInt(numCopies), genre, imagePath);
+								bookList.add(newBook);
+								setVisible(false);
+							}else {
+								throw new Exception();
+							}
+						}catch(Exception error) {
+							
+						}
+						
+					}
+				});
+				addButton.setActionCommand("Add");
+				buttonPane.add(addButton);
+				getRootPane().setDefaultButton(addButton);
+			}
+			{
+				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				cancelButton.setActionCommand("Cancel");
+				buttonPane.add(cancelButton);
+			}
+		}
+	}
+	
+	public boolean isValidTitle(String title) {
+		if(Pattern.matches("[a-zA-Z0-9]+", title)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isValidAuthor(String author) {
+		if(Pattern.matches("", author)) {
+			return true;
+		}
+		return false;
+		
+	}
+	
+	public boolean isValidNumCopies(String numCopies) {
+		if(Pattern.matches("[0-9]+", numCopies)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isValidGenre(String genre) {
+		if(genre.equals("Fiction") || genre.equals("Non-Fiction")|| genre.equals("Mystery") || genre.equals("Romance")) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isValidImagePath(String imagePath) {
+		if(Pattern.matches("^(.+)\\/([^\\/]+)$\n", imagePath)) {
+			return true;
+		}
+		return false;
+	}
+}
