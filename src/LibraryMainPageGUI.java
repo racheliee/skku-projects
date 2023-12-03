@@ -319,6 +319,7 @@ public class LibraryMainPageGUI extends JFrame {
 			while (scanner.hasNext()) {
 				bookList.add(new Book(scanner.nextLine(), scanner.nextLine(), Integer.parseInt(scanner.nextLine()),
 						scanner.nextLine(), scanner.nextLine()));
+				scanner.nextLine();
 
 			}
 		}
