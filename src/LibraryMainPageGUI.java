@@ -266,7 +266,7 @@ public class LibraryMainPageGUI extends JFrame {
 		mainPanel = new MainPagePanel();
 		changingPanel.add(mainPanel, "MainPagePanel");
 
-		bookListPanel = new BookListPanel();
+		bookListPanel = new BookListPanel(bookList);
 		changingPanel.add(bookListPanel, "BookListPanel");
 
 	}

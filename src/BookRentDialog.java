@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -23,38 +22,38 @@ public class BookRentDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel bookInfoPanel = new JPanel();
-	
+
 	public boolean isBorrowSuccessful = false;
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		try {
-//			BookRentDialog dialog = new BookRentDialog();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	// public static void main(String[] args) {
+	// try {
+	// BookRentDialog dialog = new BookRentDialog();
+	// dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	// dialog.setVisible(true);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	/**
 	 * Create the dialog.
 	 */
-	public BookRentDialog(JFrame parentFrame, List<Book> bookList, String title) {
-		super(parentFrame, true);
+	public BookRentDialog(List<Book> bookList, String title, String currentUsername) {
+
 		int bookIndex = findBookIndex(bookList, title);
-		
+
 		setBounds(100, 100, 498, 300);
 		getContentPane().setLayout(new BorderLayout());
 		bookInfoPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(bookInfoPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_bookInfoPanel = new GridBagLayout();
-		gbl_bookInfoPanel.columnWidths = new int[] {20, 20, 20, 20, 20, 20};
-		gbl_bookInfoPanel.rowHeights = new int[] {20, 20, 0, 20, 20, 0, 20, 20, 20};
-		gbl_bookInfoPanel.columnWeights = new double[]{0.3, 0.0, 0.0, 0.0};
-		gbl_bookInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_bookInfoPanel.columnWidths = new int[] { 20, 20, 20, 20, 20, 20 };
+		gbl_bookInfoPanel.rowHeights = new int[] { 20, 20, 0, 20, 20, 0, 20, 20, 20 };
+		gbl_bookInfoPanel.columnWeights = new double[] { 0.3, 0.0, 0.0, 0.0 };
+		gbl_bookInfoPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		bookInfoPanel.setLayout(gbl_bookInfoPanel);
 		{
 			JPanel panel = new JPanel();
@@ -65,11 +64,13 @@ public class BookRentDialog extends JDialog {
 			gbc_panel.gridx = 0;
 			gbc_panel.gridy = 0;
 			bookInfoPanel.add(panel, gbc_panel);
-			{
-				JLabel bookCover = new JLabel("");
-				bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
-				panel.add(bookCover);
-			}
+			// {
+			// JLabel bookCover = new JLabel("");
+			// bookCover.setIcon(
+			// new
+			// ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
+			// panel.add(bookCover);
+			// }
 		}
 		{
 			JLabel bookTitleLabel = new JLabel("Title: ");
@@ -135,7 +136,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(availabilityLabel, gbc_availabilityLabel);
 		}
 		{
-			JLabel avaliability = new JLabel(bookList.get(bookIndex).getAvailableCopies() + " copies");
+			JLabel avaliability = new JLabel(bookList.get(bookIndex).getAvailableCopies().size() + " copies");
 			GridBagConstraints gbc_avaliability = new GridBagConstraints();
 			gbc_avaliability.insets = new Insets(0, 0, 0, 5);
 			gbc_avaliability.gridx = 3;
@@ -150,7 +151,14 @@ public class BookRentDialog extends JDialog {
 				JButton borrowButton = new JButton("Borrow");
 				borrowButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						isBorrowSuccessful =true;
+						isBorrowSuccessful = true;
+						bookList.get(bookIndex).borrowBook(currentUsername);
+						System.out.println("Borrowed book: " + bookList.get(bookIndex).getTitle());
+						// print all hard copies info of the book
+						for (HardCopy copy : bookList.get(bookIndex).getCopies()) {
+							System.out.println("Copy: " + copy.getBook().getTitle() + " " + copy.isBorrowed());
+						}
+
 						setVisible(false);
 					}
 				});
@@ -162,7 +170,7 @@ public class BookRentDialog extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						//close dialog if cancel was pressed
+						// close dialog if cancel was pressed
 						dispose();
 					}
 				});
@@ -171,16 +179,16 @@ public class BookRentDialog extends JDialog {
 			}
 		}
 	}
-	
-	//returns true is the book was borrowed
+
+	// returns true is the book was borrowed
 	public boolean isBookBorrowed() {
 		return isBorrowSuccessful;
 	}
-	
+
 	public int findBookIndex(List<Book> bookList, String title) {
 		int index = 0;
-		for(Book book: bookList) {
-			if(book.getTitle().equals(title)) {
+		for (Book book : bookList) {
+			if (book.getTitle().equals(title)) {
 				return index;
 			}
 			index++;

@@ -2,35 +2,35 @@ import java.time.LocalDate;
 
 // the hard copy class only stores information on borrowed status and due date
 public class HardCopy {
-    private Book book;
-    private LocalDate borrowDate;
-    private LocalDate dueDate;
-    private boolean isBorrowed;
-    private String borrower;
- 
+	private Book book;
+	private LocalDate borrowDate;
+	private LocalDate dueDate;
+	private boolean isBorrowed;
+	private String borrower;
 
-    public HardCopy(Book book) {
-        this.book = book;
-        this.borrowDate = null;
-        this.dueDate = null;
-        this.isBorrowed = false;
-    }
+	public HardCopy(Book book) {
+		this.book = book;
+		this.borrowDate = null;
+		this.dueDate = null;
+		this.isBorrowed = false;
+	}
 
-    public void borrowBookCopy(LocalDate date) {
-        if (!isBorrowed) {
-            this.borrowDate = date;
-            this.isBorrowed = true;
-        } else {
-            System.out.println("This copy is already borrowed.");
-        }
-    }
+	public void borrowBookCopy(LocalDate date, String borrower) {
+		if (!isBorrowed) {
+			this.borrowDate = date;
+			this.isBorrowed = true;
+			this.borrower = borrower;
+		} else {
+			System.out.println("This copy is already borrowed.");
+		}
+	}
 
-    public void returnBookCopy() {
-        this.borrowDate = null;
-        this.isBorrowed = false;
-    }
+	public void returnBookCopy() {
+		this.borrowDate = null;
+		this.isBorrowed = false;
+	}
 
-    // get set methods
+	// get set methods
 	public Book getBook() {
 		return book;
 	}
@@ -46,7 +46,7 @@ public class HardCopy {
 	public void setBorrowDate(LocalDate borrowDate) {
 		this.borrowDate = borrowDate;
 	}
-	
+
 	public LocalDate getDueDate() {
 		return dueDate;
 	}
@@ -70,7 +70,6 @@ public class HardCopy {
 	public void setBorrower(String borrower) {
 		this.borrower = borrower;
 	}
-    
 
-    // Additional methods as needed
+	// Additional methods as needed
 }

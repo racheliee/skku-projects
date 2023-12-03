@@ -1,5 +1,4 @@
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +9,13 @@ public class Book {
     List<HardCopy> copies;
     private String genre;
     String imagePath;
-    
-    //default constructor
+
+    // default constructor
     public Book() {
-    	title = "";
-    	author = "";
-    	copies = null;
-    	genre = "";
+        title = "";
+        author = "";
+        copies = null;
+        genre = "";
     }
 
     public Book(String title, String author, int numberOfCopies, String genre, String imagePath) {
@@ -44,11 +43,11 @@ public class Book {
     }
 
     // borrowBook() method
-    public void borrowBook() {
+    public void borrowBook(String username) {
         List<HardCopy> availableCopies = getAvailableCopies();
 
         if (availableCopies.size() > 0) {
-            availableCopies.get(0).borrowBookCopy(LocalDate.now());
+            availableCopies.get(0).borrowBookCopy(LocalDate.now(), username);
         } else {
             System.out.println("No copies available.");
         }
@@ -64,53 +63,47 @@ public class Book {
         }
     }
 
-    //get & set methods
-	public String getTitle() {
-		return title;
-	}
+    // get & set methods
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public List<HardCopy> getCopies() {
-		return copies;
-	}
+    public List<HardCopy> getCopies() {
+        return copies;
+    }
 
-	public void setCopies(List<HardCopy> copies) {
-		this.copies = copies;
-	}
-	
-	public String getGenre() {
-		return genre;
-	}
+    public void setCopies(List<HardCopy> copies) {
+        this.copies = copies;
+    }
 
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
+    public String getGenre() {
+        return genre;
+    }
 
-	public String getImagePath() {
-		return imagePath;
-	}
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
+    public String getImagePath() {
+        return imagePath;
+    }
 
-	
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     // additional methods as needed
-    
-    
-  
-    
 
 }
