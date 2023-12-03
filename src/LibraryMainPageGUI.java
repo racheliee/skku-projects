@@ -286,6 +286,9 @@ public class LibraryMainPageGUI extends JFrame {
 	// reads the file to get users of the library
 	public void readUserFile() {
 		userList = new ArrayList<User>();
+		
+		//add admin user before adding the regular users
+		userList.add(new AdminUser("admin", "admin"));
 
 		FileInputStream userFile = null;
 		try {
@@ -300,7 +303,7 @@ public class LibraryMainPageGUI extends JFrame {
 			while (scanner.hasNext()) {
 				// current line is username
 				if (isUsername % 2 == 0) {
-					User newUser = new User();
+					RegularUser newUser = new RegularUser();
 					newUser.setUserName(scanner.nextLine());
 					userList.add(newUser);
 					isUsername++;
