@@ -158,23 +158,24 @@ public class LibraryMainPageGUI extends JFrame {
 
 						// set logged in as true
 						loggedIn = true;
-						
-						//create panels that users can access
-						adminPanel = new AdminPanel(mainPage, bookList);
-						changingPanel.add(adminPanel, "AdminPanel");
-						
-						profilePanel = new ProfilePanel(currentUser, mainPage);
-						changingPanel.add(profilePanel, "ProfilePanel");
 					}
 					logInDialog.dispose();
 				} else {
 					//change panel to the profile panel if the user is already logged in
 					// if the current user is a regular user, show the profile panel
 					if(currentUser instanceof RegularUser) {
+						//create panel
+						profilePanel = new ProfilePanel(currentUser, mainPage);
+						changingPanel.add(profilePanel, "ProfilePanel");
+						
 						cardLayout.show(changingPanel, "ProfilePanel");
 					}
 					// if current user is the admin, show the admin panel
 					else if (currentUser instanceof AdminUser) {
+						//create panel
+						adminPanel = new AdminPanel(mainPage, bookList);
+						changingPanel.add(adminPanel, "AdminPanel");
+						
 						cardLayout.show(changingPanel, "AdminPanel");
 					}
 					
@@ -262,7 +263,7 @@ public class LibraryMainPageGUI extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
-							bookList, LibraryMainPageGUI.this, currentUser.getUserName());
+							bookList, LibraryMainPageGUI.this, currentUser);
 
 					changingPanel.add(bookListPanel, "BookListPanel");
 					cardLayout.show(changingPanel, "BookListPanel");
@@ -391,7 +392,6 @@ public class LibraryMainPageGUI extends JFrame {
 	public void addNewArrival() {
 		AddNewBookDialog newBookDialog = new AddNewBookDialog(LibraryMainPageGUI.this, bookList);
 		newBookDialog.setVisible(true);
-		
 	}
 	
 	// if the admin pressed announcements, they can change the announcements

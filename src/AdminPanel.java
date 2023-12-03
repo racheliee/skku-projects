@@ -23,6 +23,7 @@ public class AdminPanel extends JPanel {
 	private JTable bookInfotable;
 	
 	Object data[][];
+	private JButton logOutButton;
 	
 
 	/**
@@ -85,6 +86,18 @@ public class AdminPanel extends JPanel {
 		}
 		bookInfoModel.fireTableDataChanged();
 		infoScrollPane.setViewportView(bookInfotable);
+		
+		logOutButton = new JButton("Log Out");
+		logOutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainGUI.logOutPressed();
+			}
+		});
+		GridBagConstraints gbc_logOutButton = new GridBagConstraints();
+		gbc_logOutButton.insets = new Insets(0, 0, 0, 5);
+		gbc_logOutButton.gridx = 1;
+		gbc_logOutButton.gridy = 6;
+		add(logOutButton, gbc_logOutButton);
 
 
 	}
