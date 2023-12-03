@@ -35,7 +35,6 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel topPanel;
 	private final JLabel appTitle = new JLabel("SKKU Library");
 	private JLabel appBookIcon;
-	private JPanel leftPanel;
 	private JPanel midPanel;
 
 	private List<String> announcement_list = new ArrayList<String>();

@@ -24,7 +24,7 @@ public class ProfilePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ProfilePanel(User user) {
+	public ProfilePanel(User user, List<Book> bookList) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {47, 47, 47, 47, 47, 30, 47, 47, 47, 47};
 		gridBagLayout.rowHeights = new int[] {39, 39, 39, 39, 39, 39, 39, 39, 39, 39};
