@@ -56,8 +56,8 @@ public class LibraryMainPageGUI extends JFrame {
 	ProfilePanel profilePanel;
 	BookListPanel bookListPanel;
 	AdminPanel adminPanel;
-	
-	//indicates this current class
+
+	// indicates this current class
 	LibraryMainPageGUI mainPage = this;
 
 	public List<User> userList;
@@ -158,26 +158,26 @@ public class LibraryMainPageGUI extends JFrame {
 
 						// set logged in as true
 						loggedIn = true;
-						
-						//create panels that users can access
+
+						// create panels that users can access
 						adminPanel = new AdminPanel(mainPage, bookList);
 						changingPanel.add(adminPanel, "AdminPanel");
-						
+
 						profilePanel = new ProfilePanel(currentUser, mainPage);
 						changingPanel.add(profilePanel, "ProfilePanel");
 					}
 					logInDialog.dispose();
 				} else {
-					//change panel to the profile panel if the user is already logged in
+					// change panel to the profile panel if the user is already logged in
 					// if the current user is a regular user, show the profile panel
-					if(currentUser instanceof RegularUser) {
+					if (currentUser instanceof RegularUser) {
 						cardLayout.show(changingPanel, "ProfilePanel");
 					}
 					// if current user is the admin, show the admin panel
 					else if (currentUser instanceof AdminUser) {
 						cardLayout.show(changingPanel, "AdminPanel");
 					}
-					
+
 				}
 			}
 		});
@@ -201,10 +201,23 @@ public class LibraryMainPageGUI extends JFrame {
 		announcementTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int selectedRow = announcementTable.getSelectedRow();
-				AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
-						LibraryMainPageGUI.this);
-				announcementDialog.setVisible(true);
+				try {
+					int selectedRow = announcementTable.getSelectedRow();
+					if (selectedRow == -1) {
+						throw new Exception();
+					}
+
+					// get the class name of current user using instanceof
+					boolean isAdmin = currentUser instanceof AdminUser;
+					AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
+							LibraryMainPageGUI.this, isAdmin);
+					announcementDialog.setVisible(true);
+					announcementTableModel.setValueAt(announcementList.get(selectedRow).getTitle(), selectedRow, 1);
+					announcementTableModel.fireTableDataChanged();
+					announcementDialog.dispose();
+				} catch (Exception e1) {
+					System.out.println("click blank space");
+				}
 
 			}
 		});
@@ -386,14 +399,14 @@ public class LibraryMainPageGUI extends JFrame {
 		logInButton.setText("     Log In     ");
 		cardLayout.show(changingPanel, "MainPagePanel");
 	}
-	
+
 	// if the admin presses new arrivals, they can change the contents
 	public void addNewArrival() {
 		AddNewBookDialog newBookDialog = new AddNewBookDialog(LibraryMainPageGUI.this, bookList);
 		newBookDialog.setVisible(true);
-		
+
 	}
-	
+
 	// if the admin pressed announcements, they can change the announcements
 	public void addAnnouncement(String title, String contents) {
 		int announcementIndex = 0;
