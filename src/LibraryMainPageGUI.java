@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
 
 public class LibraryMainPageGUI extends JFrame {
 
@@ -38,7 +40,6 @@ public class LibraryMainPageGUI extends JFrame {
 	private JLabel appBookIcon;
 	private JPanel midPanel;
 
-	private List<String> announcement_list = new ArrayList<String>();
 	private JButton searchButton;
 	private JTextField searchTextField;
 	private JComboBox<String> searchByGenreComboBox;
@@ -46,7 +47,6 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel rightPanel;
 	private JLabel announceTitle;
 	private JLabel newBooksLabel;
-	private JList<String> announceList;
 	private JList<Book> newArrivalsList;
 	public JButton logInButton;
 	public JPanel changingPanel;
@@ -62,9 +62,13 @@ public class LibraryMainPageGUI extends JFrame {
 
 	public List<User> userList;
 	public List<Book> bookList;
+	public List<Announcement> announcementList = new ArrayList<Announcement>();
+	public Object data[][];
 
 	boolean loggedIn = false;
 	public User currentUser = null;
+	private JTable announcementTable;
+	private DefaultTableModel announcementTableModel;
 
 	/**
 	 * Launch the application.
@@ -121,8 +125,6 @@ public class LibraryMainPageGUI extends JFrame {
 		appBookIcon = new JLabel("");
 		appBookIcon.setIcon(new ImageIcon(LibraryMainPageGUI.class.getResource("/images/book2_r.png")));
 		topPanel.add(appBookIcon);
-
-		announcement_list.add(null);
 
 		rightPanel = new JPanel();
 		frame.getContentPane().add(rightPanel, BorderLayout.EAST);
@@ -193,18 +195,27 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_announceTitle.gridy = 1;
 		rightPanel.add(announceTitle, gbc_announceTitle);
 
-		announceList = new JList();
-		announceList.addMouseListener(new MouseAdapter() {
+		announcementTableModel = new DefaultTableModel(data, new Object[] { "Number", "Announcement" });
+		addAnnouncement("test 1", "test 2");
+		announcementTable = new JTable(announcementTableModel);
+		announcementTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				int selectedRow = announcementTable.getSelectedRow();
+				AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
+						LibraryMainPageGUI.this);
+				announcementDialog.setVisible(true);
+
 			}
 		});
-		GridBagConstraints gbc_announceList = new GridBagConstraints();
-		gbc_announceList.insets = new Insets(0, 0, 5, 0);
-		gbc_announceList.fill = GridBagConstraints.BOTH;
-		gbc_announceList.gridx = 0;
-		gbc_announceList.gridy = 2;
-		rightPanel.add(announceList, gbc_announceList);
+
+		GridBagConstraints gbc_announcementTable = new GridBagConstraints();
+		gbc_announcementTable.insets = new Insets(0, 0, 5, 0);
+		gbc_announcementTable.fill = GridBagConstraints.BOTH;
+		gbc_announcementTable.gridx = 0;
+		gbc_announcementTable.gridy = 2;
+		announcementTable.setDefaultEditor(Object.class, null);
+		rightPanel.add(announcementTable, gbc_announcementTable);
 
 		newBooksLabel = new JLabel("New Arrivals");
 		GridBagConstraints gbc_newBooksLabel = new GridBagConstraints();
@@ -305,8 +316,8 @@ public class LibraryMainPageGUI extends JFrame {
 	// reads the file to get users of the library
 	public void readUserFile() {
 		userList = new ArrayList<User>();
-		
-		//add admin user before adding the regular users
+
+		// add admin user before adding the regular users
 		userList.add(new AdminUser("admin", "admin"));
 
 		FileInputStream userFile = null;
@@ -384,7 +395,15 @@ public class LibraryMainPageGUI extends JFrame {
 	}
 	
 	// if the admin pressed announcements, they can change the announcements
-	public void addAnnouncement() {
-		
+	public void addAnnouncement(String title, String contents) {
+		int announcementIndex = 0;
+		announcementList.add(new Announcement(title, contents));
+
+		for (Announcement announcement : announcementList) {
+			announcementTableModel.addRow(new Object[] { announcementIndex, announcement.getTitle() });
+			announcementIndex++;
+		}
+		announcementTableModel.fireTableDataChanged();
 	}
+
 }
