@@ -55,7 +55,9 @@ public class LibraryMainPageGUI extends JFrame {
 	ProfilePanel profilePanel;
 	BookListPanel bookListPanel;
 
-	private List<User> userList;
+	public List<User> userList;
+	public List<Book> bookList;
+
 	boolean loggedIn = false;
 	public User currentUser = null;
 
@@ -131,24 +133,24 @@ public class LibraryMainPageGUI extends JFrame {
 				if (loggedIn == false) {
 					LogInDialog logInDialog = new LogInDialog(LibraryMainPageGUI.this, userList);
 					logInDialog.setVisible(true);
-					
+
 					// user decides to sign up
 					if (logInDialog.willSignUp) {
 						SignUpDialog signUpDialog = new SignUpDialog(LibraryMainPageGUI.this, userList);
 						signUpDialog.setVisible(true);
 					}
-					
+
 					// if the log in was successful
 					if (logInDialog.isLogInSuccessful()) {
 						// change the log in button to username
 						logInButton.setText(logInDialog.getUser().getUserName());
-						
+
 						// get current user
 						currentUser = logInDialog.getUser();
-						
+
 						// set logged in as true
 						loggedIn = true;
-						
+
 						profilePanel = new ProfilePanel(currentUser);
 						changingPanel.add(profilePanel, "ProfilePanel");
 					}
@@ -263,8 +265,6 @@ public class LibraryMainPageGUI extends JFrame {
 		mainPanel = new MainPagePanel();
 		changingPanel.add(mainPanel, "MainPagePanel");
 
-		
-
 		bookListPanel = new BookListPanel();
 		changingPanel.add(bookListPanel, "BookListPanel");
 
@@ -300,12 +300,38 @@ public class LibraryMainPageGUI extends JFrame {
 			}
 		}
 	}
-	
+
 	// reads the file to get book information of the library
 	public void readBookFile() {
-		
+		bookList = new ArrayList<Book>();
+		FileInputStream bookFile = null;
+		try {
+			bookFile = new FileInputStream("books.txt");
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		// read the file
+		try (Scanner scanner = new Scanner(bookFile)) {
+			int reader = 0;
+
+			while (scanner.hasNext()) {
+				bookList.add(new Book(scanner.nextLine(), scanner.nextLine(), Integer.parseInt(scanner.nextLine()),
+						scanner.nextLine(), scanner.nextLine()));
+
+			}
+		}
 	}
-	
-	
+
+	public int findBookIndex(List<Book> bookList, String title) {
+		int index = 0;
+		for (Book book : bookList) {
+			if (book.getTitle().equals(title)) {
+				return index;
+			}
+			index++;
+		}
+		return index;
+	}
 
 }
