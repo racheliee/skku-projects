@@ -210,4 +210,6 @@ public class LogInDialog extends JDialog {
 	public User getUser() {
 		return currentUser;
 	}
+	
+
 }
