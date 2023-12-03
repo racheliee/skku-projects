@@ -9,6 +9,7 @@ public class Book {
     String author;
     List<HardCopy> copies;
     private String genre;
+    String imagePath;
     
     //default constructor
     public Book() {
@@ -18,11 +19,12 @@ public class Book {
     	genre = "";
     }
 
-    public Book(String title, String author, int numberOfCopies, String genre) {
+    public Book(String title, String author, int numberOfCopies, String genre, String imagePath) {
         this.title = title;
         this.author = author;
         this.copies = new ArrayList<>();
         this.genre = genre;
+        this.imagePath = imagePath;
 
         for (int i = 0; i < numberOfCopies; i++) {
             copies.add(new HardCopy(this));
@@ -93,6 +95,14 @@ public class Book {
 
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	

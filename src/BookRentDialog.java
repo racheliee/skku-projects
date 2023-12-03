@@ -15,6 +15,8 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class BookRentDialog extends JDialog {
@@ -40,8 +42,9 @@ public class BookRentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public BookRentDialog(JFrame parentFrame, Book book) {
+	public BookRentDialog(JFrame parentFrame, List<Book> bookList, String title) {
 		super(parentFrame, true);
+		int bookIndex = findBookIndex(bookList, title);
 		
 		setBounds(100, 100, 498, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -64,7 +67,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(panel, gbc_panel);
 			{
 				JLabel bookCover = new JLabel("");
-				bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource("/images/animal_farm_cover.jpeg")));
+				bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
 				panel.add(bookCover);
 			}
 		}
@@ -79,7 +82,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(bookTitleLabel, gbc_bookTitleLabel);
 		}
 		{
-			JLabel bookTitle = new JLabel("New label");
+			JLabel bookTitle = new JLabel(bookList.get(bookIndex).getTitle());
 			GridBagConstraints gbc_bookTitle = new GridBagConstraints();
 			gbc_bookTitle.insets = new Insets(0, 0, 5, 5);
 			gbc_bookTitle.gridx = 3;
@@ -96,7 +99,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(authorLabel, gbc_authorLabel);
 		}
 		{
-			JLabel author = new JLabel("New label");
+			JLabel author = new JLabel(bookList.get(bookIndex).getAuthor());
 			GridBagConstraints gbc_author = new GridBagConstraints();
 			gbc_author.insets = new Insets(0, 0, 5, 5);
 			gbc_author.gridx = 3;
@@ -113,7 +116,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(genreLabel, gbc_genreLabel);
 		}
 		{
-			JLabel genre = new JLabel(book.getGenre());
+			JLabel genre = new JLabel(bookList.get(bookIndex).getGenre());
 			genre.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_genre = new GridBagConstraints();
 			gbc_genre.insets = new Insets(0, 0, 5, 5);
@@ -132,7 +135,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(availabilityLabel, gbc_availabilityLabel);
 		}
 		{
-			JLabel avaliability = new JLabel("New label");
+			JLabel avaliability = new JLabel(bookList.get(bookIndex).getAvailableCopies() + " copies");
 			GridBagConstraints gbc_avaliability = new GridBagConstraints();
 			gbc_avaliability.insets = new Insets(0, 0, 0, 5);
 			gbc_avaliability.gridx = 3;
@@ -172,6 +175,17 @@ public class BookRentDialog extends JDialog {
 	//returns true is the book was borrowed
 	public boolean isBookBorrowed() {
 		return isBorrowSuccessful;
+	}
+	
+	public int findBookIndex(List<Book> bookList, String title) {
+		int index = 0;
+		for(Book book: bookList) {
+			if(book.getTitle().equals(title)) {
+				return index;
+			}
+			index++;
+		}
+		return index;
 	}
 
 }

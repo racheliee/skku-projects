@@ -149,6 +149,9 @@ public class LibraryMainPageGUI extends JFrame {
 						
 						// set logged in as true
 						loggedIn = true;
+						
+						profilePanel = new ProfilePanel(currentUser);
+						changingPanel.add(profilePanel, "ProfilePanel");
 					}
 					logInDialog.dispose();
 				} else {
@@ -261,8 +264,7 @@ public class LibraryMainPageGUI extends JFrame {
 		mainPanel = new MainPagePanel();
 		changingPanel.add(mainPanel, "MainPagePanel");
 
-		profilePanel = new ProfilePanel();
-		changingPanel.add(profilePanel, "ProfilePanel");
+		
 
 		bookListPanel = new BookListPanel();
 		changingPanel.add(bookListPanel, "BookListPanel");
@@ -298,6 +300,22 @@ public class LibraryMainPageGUI extends JFrame {
 				}
 			}
 		}
+	}
+	
+	// reads the file to get book information of the library
+	public void readBookFile() {
+		
+	}
+	
+	public int findBookIndex(List<Book> bookList, String title) {
+		int index = 0;
+		for(Book book: bookList) {
+			if(book.getTitle().equals(title)) {
+				return index;
+			}
+			index++;
+		}
+		return index;
 	}
 
 }

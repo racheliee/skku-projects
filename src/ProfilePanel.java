@@ -24,7 +24,7 @@ public class ProfilePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ProfilePanel() {
+	public ProfilePanel(User user) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {47, 47, 47, 47, 47, 30, 47, 47, 47, 47};
 		gridBagLayout.rowHeights = new int[] {39, 39, 39, 39, 39, 39, 39, 39, 39, 39};
@@ -41,7 +41,7 @@ public class ProfilePanel extends JPanel {
 		gbc_usernameLabel.gridy = 2;
 		add(usernameLabel, gbc_usernameLabel);
 		
-		usernameField = new JLabel("New label");
+		usernameField = new JLabel(user.getUserName());
 		GridBagConstraints gbc_usernameField = new GridBagConstraints();
 		gbc_usernameField.fill = GridBagConstraints.BOTH;
 		gbc_usernameField.gridwidth = 4;
@@ -58,7 +58,7 @@ public class ProfilePanel extends JPanel {
 		gbc_passwordLabel.gridy = 3;
 		add(passwordLabel, gbc_passwordLabel);
 		
-		lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2 = new JLabel(user.getPassword());
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
 		gbc_lblNewLabel_2.gridwidth = 4;
