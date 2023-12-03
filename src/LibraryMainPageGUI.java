@@ -179,6 +179,11 @@ public class LibraryMainPageGUI extends JFrame {
 		rightPanel.add(announceTitle, gbc_announceTitle);
 
 		announceList = new JList();
+		announceList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		GridBagConstraints gbc_announceList = new GridBagConstraints();
 		gbc_announceList.insets = new Insets(0, 0, 5, 0);
 		gbc_announceList.fill = GridBagConstraints.BOTH;
