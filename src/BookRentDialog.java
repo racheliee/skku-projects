@@ -156,7 +156,8 @@ public class BookRentDialog extends JDialog {
 					borrowReturnButton.setEnabled(false);
 					borrowReturnButton.setText("Not Available");
 				}
-				if (userIndex != -1 && bookList.get(bookIndex).isBorrowedByUser(userList.get(userIndex).getUserName())) {
+				if (userIndex != -1
+						&& bookList.get(bookIndex).isBorrowedByUser(userList.get(userIndex).getUserName())) {
 					borrowReturnButton.setEnabled(true);
 					borrowReturnButton.setText("Return");
 				}
@@ -166,7 +167,7 @@ public class BookRentDialog extends JDialog {
 						System.out.println(userIndex);
 						try {
 							if (userIndex == -1) {
-//								throw new Exception();
+								throw new Exception();
 							} else {
 								RegularUser currentUser = (RegularUser) userList.get(userIndex);
 
@@ -189,13 +190,11 @@ public class BookRentDialog extends JDialog {
 									// set borrowing to success
 									isBorrowSuccessful = true;
 								} else if (borrowReturnButton.getText().equals("Return")) {
-									
+
 									currentUser.returnBook(bookList.get(bookIndex).getTitle());
-									
+
 									// returning book
 									bookList.get(bookIndex).returnBook(currentUser.getUserName());
-									
-									
 
 									// add the updated user to the userList
 									userList.remove(userIndex);
@@ -213,9 +212,8 @@ public class BookRentDialog extends JDialog {
 							}
 
 						} catch (Exception error) {
-							System.out.println(error.getStackTrace());
-//							JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
-									//JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
+									JOptionPane.ERROR_MESSAGE);
 						}
 
 					}

@@ -13,28 +13,28 @@ public class RegularUser extends User {
 		super(username, password);
 		borrowedBooks = new ArrayList<HardCopy>();
 	}
-	
-	//returns the borrowedBook list
-	public List<HardCopy> getBorrowedBooks(){
+
+	// returns the borrowedBook list
+	public List<HardCopy> getBorrowedBooks() {
 		return borrowedBooks;
 	}
-	
-	//add book to borrowedBooks if user borrows a book
+
+	// add book to borrowedBooks if user borrows a book
 	public void addBorrowedBook(HardCopy book) {
 		borrowedBooks.add(book);
-		for(HardCopy book1: borrowedBooks) {
+		for (HardCopy book1 : borrowedBooks) {
 			System.out.println(book1.getBook().getTitle());
 		}
 	}
-	
-	//remove book from borrowedBooks if user returns book
+
+	// remove book from borrowedBooks if user returns book
 	public void returnBook(String title) {
-		for(HardCopy copies: borrowedBooks) {
-			if(copies.getBook().getTitle().equals(title)) {
+		for (HardCopy copies : borrowedBooks) {
+			if (copies.getBook().getTitle().equals(title)) {
 				borrowedBooks.remove(copies);
+				break;
 			}
 		}
 	}
-	
 
 }

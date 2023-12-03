@@ -22,7 +22,7 @@ public class BookListPanel extends JPanel {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JTable resultBooktable;
-	
+
 	String currentUsername;
 
 	// thread worker to update the panel list
@@ -34,15 +34,13 @@ public class BookListPanel extends JPanel {
 	// checks if there was a search result
 	boolean searchExists = false;
 	// true is the user is logged in
-	
 
 	/**
 	 * Create the panel.
 	 */
 	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
-			List<User> userList, int userIndex) {
-		
-		System.out.println(bookList.get(bookList.size()-1).getTitle());
+			List<User> userList, LibraryMainPageGUI mainGUI) {
+		System.out.println(bookList.get(bookList.size() - 1).getTitle());
 		setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
@@ -84,9 +82,9 @@ public class BookListPanel extends JPanel {
 				int selectedRow = resultBooktable.getSelectedRow();
 				// get the selected row values
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
-				
-				System.out.println(userIndex);
-				bookRentDialog = new BookRentDialog(bookList, title, userList, userIndex,
+
+				System.out.println(mainGUI.getUserIndex());
+				bookRentDialog = new BookRentDialog(bookList, title, userList, mainGUI.getUserIndex(),
 						parentFrame);
 
 				bookRentDialog.setVisible(true);
