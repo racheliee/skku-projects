@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
@@ -39,7 +40,9 @@ public class BookRentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public BookRentDialog(Book book) {
+	public BookRentDialog(JFrame parentFrame, Book book) {
+		super(parentFrame, true);
+		
 		setBounds(100, 100, 498, 300);
 		getContentPane().setLayout(new BorderLayout());
 		bookInfoPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

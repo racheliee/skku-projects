@@ -65,6 +65,7 @@ public class LogInDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public LogInDialog(JFrame parentFrame, List<User> userList) {
+		// main frame not accessible while dialog is not available
 		super(parentFrame, true);
 		
 		//create dialog
@@ -142,7 +143,7 @@ public class LogInDialog extends JDialog {
 						try {
 							//get the user name
 							if(isValidUser(username, password, userList)) {
-								//if log in was successful, close the dialog
+								//if log in was successful, set visible false
 								isLogInSuccessful = true;
 								JOptionPane.showMessageDialog(null, "Log in successful!", "Welcome to SKKU Library", JOptionPane.INFORMATION_MESSAGE, null);
 								setVisible(false);
@@ -185,6 +186,7 @@ public class LogInDialog extends JDialog {
 		
 	}
 	
+	//checks if the username and password entered are valid
 	private boolean isValidUser(String username, String password, List<User> userList) {
 		boolean userMatch = false;
 		

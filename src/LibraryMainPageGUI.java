@@ -1,6 +1,5 @@
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -11,7 +10,6 @@ import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
@@ -21,13 +19,10 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -44,8 +39,6 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel midPanel;
 
 	private List<String> announcement_list = new ArrayList<String>();
-	private JLabel libraryHourTitle;
-	private JList libraryHourList;
 	private JButton searchButton;
 	private JTextField searchTextField;
 	private JComboBox<String> searchByGenreComboBox;
@@ -53,8 +46,8 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel rightPanel;
 	private JLabel announceTitle;
 	private JLabel newBooksLabel;
-	private JList announceList;
-	private JList newArrivalsList;
+	private JList<String> announceList;
+	private JList<Book> newArrivalsList;
 	public JButton logInButton;
 	private JPanel changingPanel;
 	private CardLayout cardLayout;
@@ -111,8 +104,7 @@ public class LibraryMainPageGUI extends JFrame {
 		appTitle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				// doesn't work
-				cardLayout.first(mainPanel);
+				cardLayout.show(changingPanel, "MainPagePanel");
 			}
 		});
 		appTitle.setIcon(new ImageIcon(LibraryMainPageGUI.class.getResource("/images/book2_r.png")));
@@ -140,29 +132,28 @@ public class LibraryMainPageGUI extends JFrame {
 				if (loggedIn == false) {
 					LogInDialog logInDialog = new LogInDialog(LibraryMainPageGUI.this, userList);
 					logInDialog.setVisible(true);
-
+					
+					// user decides to sign up
 					if (logInDialog.willSignUp) {
 						SignUpDialog signUpDialog = new SignUpDialog(LibraryMainPageGUI.this, userList);
 						signUpDialog.setVisible(true);
-						if (signUpDialog.isSignUpSuccessful()) {
-							User newUser = new User(signUpDialog.getUserName(), signUpDialog.getPassword());
-							userList.add(newUser);
-							writeUserFile(newUser);
-						}
 					}
-
+					
+					// if the log in was successful
 					if (logInDialog.isLogInSuccessful()) {
 						// change the log in button to username
 						logInButton.setText(logInDialog.getUser().getUserName());
+						
 						// get current user
 						currentUser = logInDialog.getUser();
+						
 						// set logged in as true
 						loggedIn = true;
 					}
 					logInDialog.dispose();
 				} else {
 					// doesn't work
-					cardLayout.first(profilePanel);
+					cardLayout.show(changingPanel, "ProfilePanel");
 				}
 			}
 		});
@@ -278,6 +269,7 @@ public class LibraryMainPageGUI extends JFrame {
 
 	}
 
+	// reads the file to get users of the library
 	public void readUserFile() {
 		userList = new ArrayList<User>();
 
@@ -306,23 +298,6 @@ public class LibraryMainPageGUI extends JFrame {
 				}
 			}
 		}
-	}
-
-	public void writeUserFile(User newUser) {
-		FileOutputStream userFile = null;
-		try {
-			userFile = new FileOutputStream("users.txt");
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "User.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-
-		try (PrintWriter writer = new PrintWriter(userFile)) {
-			for (int i = 0; i < userList.size(); i++) {
-				writer.println(userList.get(i).getUserName());
-				writer.println(userList.get(i).getPassword());
-			}
-		}
-
 	}
 
 }

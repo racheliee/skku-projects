@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -162,10 +165,17 @@ public class SignUpDialog extends JDialog {
 						try {
 							// get the user name
 							if (isValidUserName(username, userList) && isValidPassword(password, confirmPassword)) {
-								signUpSuccess = true;
+								//add new user to userList
+								userList.add(new User(username, password));
+								
+								//write the new user to the file
+								writeUserFile(new User(username, password), userList);
+								
+								//show message that sign up was successful
 								JOptionPane.showMessageDialog(null, "Sign up successful!\nPlease log in to proceed.", "Welcome to SKKU Library", JOptionPane.INFORMATION_MESSAGE, null);
-								// make dialog invisible if it was successful
-								setVisible(false);
+								
+								// dispose dialog if it was successful
+								dispose();
 							} else {
 								throw new Exception();
 							}
@@ -234,17 +244,30 @@ public class SignUpDialog extends JDialog {
 		}
 	}
 	
-	// returns true if the sign up was successful
-	public boolean isSignUpSuccessful() {
-		return signUpSuccess;
-	}
-	
 	public String getUserName() {
 		return username;
 	}
 	
 	public String getPassword() {
 		return password;
+	}
+	
+	
+	public void writeUserFile(User newUser, List<User> userList) {
+		FileOutputStream userFile = null;
+		try {
+			userFile = new FileOutputStream("users.txt");
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "User.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		try (PrintWriter writer = new PrintWriter(userFile)) {
+			for (int i = 0; i < userList.size(); i++) {
+				writer.println(userList.get(i).getUserName());
+				writer.println(userList.get(i).getPassword());
+			}
+		}
+
 	}
 
 }
