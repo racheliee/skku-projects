@@ -14,11 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
@@ -27,39 +23,37 @@ public class LogInDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField userNameTextField;
-	
+
 	private JLabel passwordLabel;
 	private JLabel userNameLabel;
-	
+
 	public String username = "";
 	public String password = "";
 	private JButton signUpButton;
 	private JPasswordField passwordField;
 	private JLabel instructionLabel;
-	
+
 	// true if the log in was successful
 	boolean isLogInSuccessful = false;
-	
+
 	// true if the user decided to sign up
 	boolean willSignUp = false;
-	
+
 	// it is a current user that is logging in
 	public User currentUser = null;
-	
-	
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		try {
-//			LogInDialog dialog = new LogInDialog();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	// public static void main(String[] args) {
+	// try {
+	// LogInDialog dialog = new LogInDialog();
+	// dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	// dialog.setVisible(true);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	/**
 	 * Create the dialog.
@@ -67,17 +61,17 @@ public class LogInDialog extends JDialog {
 	public LogInDialog(JFrame parentFrame, List<User> userList) {
 		// main frame not accessible while dialog is not available
 		super(parentFrame, true);
-		
-		//create dialog
+
+		// create dialog
 		setBounds(100, 100, 377, 162);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] {120, 246, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 26, 26, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 120, 246, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 26, 26, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			instructionLabel = new JLabel("Enter your username and password:");
@@ -128,7 +122,7 @@ public class LogInDialog extends JDialog {
 			gbc_passwordField.gridy = 2;
 			contentPanel.add(passwordField, gbc_passwordField);
 		}
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -139,20 +133,22 @@ public class LogInDialog extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						username = userNameTextField.getText();
 						password = String.valueOf(passwordField.getPassword());
-						
+
 						try {
-							//get the user name
-							if(isValidUser(username, password, userList)) {
-								//if log in was successful, set visible false
+							// get the user name
+							if (isValidUser(username, password, userList)) {
+								// if log in was successful, set visible false
 								isLogInSuccessful = true;
-								JOptionPane.showMessageDialog(null, "Log in successful!", "Welcome to SKKU Library", JOptionPane.INFORMATION_MESSAGE, null);
+								JOptionPane.showMessageDialog(null, "Log in successful!", "Welcome to SKKU Library",
+										JOptionPane.INFORMATION_MESSAGE, null);
 								setVisible(false);
-							}else {
+							} else {
 								throw new Exception();
 							}
-						}catch(Exception e) {
-							//if the user does not exist, then show error message
-							JOptionPane.showMessageDialog(null, "Wrong username or password. Check Again", "Log In Error", JOptionPane.ERROR_MESSAGE);
+						} catch (Exception e) {
+							// if the user does not exist, then show error message
+							JOptionPane.showMessageDialog(null, "Wrong username or password. Check Again",
+									"Log In Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				});
@@ -174,7 +170,7 @@ public class LogInDialog extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						//close dialog window
+						// close dialog window
 						dispose();
 					}
 				});
@@ -182,38 +178,36 @@ public class LogInDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-		
-		
+
 	}
-	
-	//checks if the username and password entered are valid
+
+	// checks if the username and password entered are valid
 	private boolean isValidUser(String username, String password, List<User> userList) {
 		boolean userMatch = false;
-		
-		for(User user: userList) {
-			if(user.getUserName().equals(username) && user.getPassword().equals(password)) {
+
+		for (User user : userList) {
+			if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
 				currentUser = user;
 				userMatch = true;
 				break;
 			}
 		}
-		
+
 		return userMatch;
 	}
-	
+
 	// reuturns true if the log in was successful
 	public boolean isLogInSuccessful() {
 		return isLogInSuccessful;
 	}
-	
+
 	// returns true if the user will sign up instead of log in
 	public boolean willSignUp() {
 		return willSignUp;
 	}
-	
+
 	// return the User that logged in
 	public User getUser() {
 		return currentUser;
 	}
 }
-

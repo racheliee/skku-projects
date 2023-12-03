@@ -221,10 +221,8 @@ public class LibraryMainPageGUI extends JFrame {
 		searchButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO : search by title
+				// search by title keyword
 				String searchedBook = searchTextField.getText();
-
-				// disable search button while panel is finding search results
 
 				if (searchedBook.equals("") && searchByGenreComboBox.getSelectedIndex() == 0) {
 					JOptionPane.showMessageDialog(null, "Type a keyword or select a genre to search", "Search Error",
