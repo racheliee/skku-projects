@@ -16,19 +16,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AnnouncementDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel announcementTitleLabel;
 	private JPanel panel_1;
-	private JButton btnNewButton;
+	private JButton editButton;
 	private JScrollPane scrollPane;
 	private JTextArea textArea;
-	private JLabel announcementTitle;
+	private JTextField announcementTitle;
+	private JButton applyEditButton;
 
 	public AnnouncementDialog(List<Announcement> announcementList, int announcementIndex,
-			JFrame parentFrame) {
+			JFrame parentFrame, boolean isAdmin, boolean isNewAnnouncement) {
+		super(parentFrame, true);
 		setBounds(100, 100, 645, 590);
 		getContentPane().setLayout(new BorderLayout());
 		{
@@ -50,14 +54,21 @@ public class AnnouncementDialog extends JDialog {
 			gbc_announcementTitleLabel.gridy = 0;
 			panel.add(announcementTitleLabel, gbc_announcementTitleLabel);
 
-			announcementTitle = new JLabel(announcementList.get(announcementIndex).getTitle());
+			announcementTitle = new JTextField();
+			if (isNewAnnouncement) {
+				announcementTitle.setText("");
+				announcementTitle.setEditable(true);
+			} else {
+				announcementTitle.setText(announcementList.get(announcementIndex).getTitle());
+				announcementTitle.setEditable(false);
+			}
 			announcementTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 21));
-			announcementTitle.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_announcementTitle = new GridBagConstraints();
-			gbc_announcementTitle.fill = GridBagConstraints.BOTH;
+			gbc_announcementTitle.fill = GridBagConstraints.HORIZONTAL;
 			gbc_announcementTitle.gridx = 1;
 			gbc_announcementTitle.gridy = 0;
 			panel.add(announcementTitle, gbc_announcementTitle);
+			announcementTitle.setColumns(10);
 
 		}
 		{
@@ -68,8 +79,14 @@ public class AnnouncementDialog extends JDialog {
 			scrollPane = new JScrollPane();
 			panel.add(scrollPane);
 
-			textArea = new JTextArea(announcementList.get(announcementIndex).getContents());
-			textArea.setEditable(false);
+			textArea = new JTextArea();
+			if (isNewAnnouncement) {
+				textArea.setText("");
+				textArea.setEditable(true);
+			} else {
+				textArea.setText(announcementList.get(announcementIndex).getContents());
+				textArea.setEditable(false);
+			}
 			textArea.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			scrollPane.setViewportView(textArea);
 		}
@@ -77,8 +94,36 @@ public class AnnouncementDialog extends JDialog {
 		panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);
 
-		btnNewButton = new JButton("New button");
-		panel_1.add(btnNewButton);
+		editButton = new JButton("edit");
+		editButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				announcementTitle.setEditable(true);
+				textArea.setEditable(true);
+				applyEditButton.setVisible(true);
+				editButton.setVisible(false);
+			}
+		});
+		panel_1.add(editButton);
+		editButton.setVisible(isAdmin && !isNewAnnouncement);
+
+		applyEditButton = new JButton("apply");
+		applyEditButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (isNewAnnouncement) {
+					announcementList.add(new Announcement(announcementTitle.getText(), textArea.getText()));
+				} else {
+					String newTitle = announcementTitle.getText();
+					String newContents = textArea.getText();
+					announcementList.get(announcementIndex).setTitle(newTitle);
+					announcementList.get(announcementIndex).setContents(newContents);
+				}
+				setVisible(false);
+			}
+		});
+		panel_1.add(applyEditButton);
+		applyEditButton.setVisible(false || isNewAnnouncement);
 	}
 
 }
