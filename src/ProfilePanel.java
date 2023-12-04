@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import java.awt.event.MouseEvent;
 
 public class ProfilePanel extends JPanel {
 
@@ -25,8 +26,11 @@ public class ProfilePanel extends JPanel {
 	private JButton logOutButton;
 	private JScrollPane bookScrollPane;
 	private JTable borrowedBookTable;
-	
+
 	private Object data[][];
+
+	BookRentDialog bookRentDialog;
+
 	/**
 	 * Create the panel.
 	 */
@@ -80,8 +84,6 @@ public class ProfilePanel extends JPanel {
 		gbc_lblNewLabel_3.gridy = 4;
 		add(lblNewLabel_3, gbc_lblNewLabel_3);
 
-
-
 		logOutButton = new JButton("Log Out");
 		logOutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -89,7 +91,7 @@ public class ProfilePanel extends JPanel {
 				mainGUI.logOutPressed();
 			}
 		});
-		
+
 		bookScrollPane = new JScrollPane();
 		GridBagConstraints gbc_bookScrollPane = new GridBagConstraints();
 		gbc_bookScrollPane.gridheight = 3;
@@ -99,19 +101,42 @@ public class ProfilePanel extends JPanel {
 		gbc_bookScrollPane.gridx = 3;
 		gbc_bookScrollPane.gridy = 5;
 		add(bookScrollPane, gbc_bookScrollPane);
-		
-		DefaultTableModel borrowedBookTableModel = new DefaultTableModel(data, new Object[] {"Book Title", "Author", "Borrowed Date", "Due Date"});
+
+		DefaultTableModel borrowedBookTableModel = new DefaultTableModel(data,
+				new Object[] { "Book Title", "Author", "Borrowed Date", "Due Date" });
 		borrowedBookTable = new JTable(borrowedBookTableModel);
+		borrowedBookTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// get the selected row
+				int selectedRow = borrowedBookTable.getSelectedRow();
+				// get the book title
+				String title = borrowedBookTable.getValueAt(selectedRow, 0).toString();
+				bookRentDialog = new BookRentDialog(mainGUI.bookList, title, mainGUI.userList, mainGUI.getUserIndex(),
+						mainGUI.frame);
+
+				bookRentDialog.setVisible(true);
+
+				// update the number of copies shown on the table
+				if (bookRentDialog.isBookNumChanged()) {
+					DefaultTableModel model = (DefaultTableModel) borrowedBookTable.getModel();
+					model.removeRow(selectedRow);
+					model.fireTableDataChanged();
+				}
+
+				bookRentDialog.dispose();
+
+			}
+		});
 		borrowedBookTable.setDefaultEditor(Object.class, null);
-		
-		//add borrowed books to the table
-		for(HardCopy copy: user.borrowedBooks) {
-			borrowedBookTableModel.addRow(new Object[] {copy.getBook().getTitle(), copy.getBook().getAuthor(), copy.getBorrowDate(), copy.getDueDate()});
+
+		// add borrowed books to the table
+		for (HardCopy copy : user.borrowedBooks) {
+			borrowedBookTableModel.addRow(new Object[] { copy.getBook().getTitle(), copy.getBook().getAuthor(),
+					copy.getBorrowDate(), copy.getDueDate() });
 		}
 		borrowedBookTableModel.fireTableDataChanged();
-	
-		
-		
+
 		bookScrollPane.setViewportView(borrowedBookTable);
 		GridBagConstraints gbc_logOutButton = new GridBagConstraints();
 		gbc_logOutButton.insets = new Insets(0, 0, 5, 5);

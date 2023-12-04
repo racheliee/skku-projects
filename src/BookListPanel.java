@@ -82,7 +82,6 @@ public class BookListPanel extends JPanel {
 				// get the selected row values
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
 
-				System.out.println(mainGUI.getUserIndex());
 				bookRentDialog = new BookRentDialog(bookList, title, userList, mainGUI.getUserIndex(),
 						parentFrame);
 
