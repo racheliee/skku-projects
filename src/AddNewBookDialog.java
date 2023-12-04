@@ -30,33 +30,20 @@ public class AddNewBookDialog extends JDialog {
 	private JTextField imagePathTextField;
 
 	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			AddNewBookDialog dialog = new AddNewBookDialog();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public AddNewBookDialog(JFrame parentFrame, List<Book> bookList) {
 		super(parentFrame, true);
-		
+
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{0, 264, 0};
-		gbl_contentPanel.rowHeights = new int[]{45, 43, 37, 37, 38, 42, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_contentPanel.columnWidths = new int[] { 0, 264, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 45, 43, 37, 37, 38, 42, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel titleLabel = new JLabel("  Title: ");
@@ -164,7 +151,7 @@ public class AddNewBookDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton addButton = new JButton("Add");
-				addButton.addActionListener(new ActionListener() {					
+				addButton.addActionListener(new ActionListener() {
 
 					public void actionPerformed(ActionEvent e) {
 						String title = titleTextField.getText();
@@ -172,37 +159,38 @@ public class AddNewBookDialog extends JDialog {
 						String numCopies = numCopiesTextField.getText();
 						String genre = genreTextField.getText();
 						String imagePath = imagePathTextField.getText();
-						
-						try{
-							if(isValidTitle(title) && isValidAuthor(author) && isValidNumCopies(numCopies) && isValidGenre(genre) && isValidImagePath(imagePath)) {
+
+						try {
+							if (isValidTitle(title) && isValidAuthor(author) && isValidNumCopies(numCopies)
+									&& isValidGenre(genre) && isValidImagePath(imagePath)) {
 								System.out.println("book created");
 								Book newBook = new Book(title, author, Integer.parseInt(numCopies), genre, imagePath);
 								bookList.add(newBook);
 								dispose();
-							}else {
+							} else {
 								throw new Exception();
 							}
-						}catch(Exception error) {
+						} catch (Exception error) {
 							String errorMsg = "";
 
-							if(!isValidTitle(title)) {
+							if (!isValidTitle(title)) {
 								errorMsg += "Invalid title.\n";
 							}
-							if(!isValidAuthor(author)) {
+							if (!isValidAuthor(author)) {
 								errorMsg += "Invalid author.\n";
 							}
-							if(!isValidNumCopies(numCopies)) {
+							if (!isValidNumCopies(numCopies)) {
 								errorMsg += "Invalid number of copies.\n";
 							}
-							if(!isValidGenre(genre)) {
+							if (!isValidGenre(genre)) {
 								errorMsg += "Invalid genre.\n";
 							}
-							if(!isValidImagePath(imagePath)) {
+							if (!isValidImagePath(imagePath)) {
 								errorMsg += "Invalid image path.\n";
 							}
 							JOptionPane.showMessageDialog(null, errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
 						}
-						
+
 					}
 				});
 				addButton.setActionCommand("Add");
@@ -221,38 +209,39 @@ public class AddNewBookDialog extends JDialog {
 			}
 		}
 	}
-	
+
 	public boolean isValidTitle(String title) {
-		if(Pattern.matches("^[a-zA-Z0-9\\s]+$", title)) {
+		if (Pattern.matches("^[a-zA-Z0-9\\s]+$", title)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean isValidAuthor(String author) {
-		if(Pattern.matches("^[a-zA-Z]+\\s[a-zA-Z]+$", author)) {
+		if (Pattern.matches("^[a-zA-Z]+\\s[a-zA-Z]+$", author)) {
 			return true;
 		}
 		return false;
-		
+
 	}
-	
+
 	public boolean isValidNumCopies(String numCopies) {
-		if(Pattern.matches("^\\d+$", numCopies)) {
+		if (Pattern.matches("^\\d+$", numCopies)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean isValidGenre(String genre) {
-		if(genre.equals("Fiction") || genre.equals("Non-Fiction")|| genre.equals("Mystery") || genre.equals("Romance")) {
+		if (genre.equals("Fiction") || genre.equals("Non-Fiction") || genre.equals("Mystery")
+				|| genre.equals("Romance")) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean isValidImagePath(String imagePath) {
-		if(Pattern.matches("^[a-zA-Z0-9\\/_.]+$", imagePath)) {
+		if (Pattern.matches("^[a-zA-Z0-9\\/_.]+$", imagePath)) {
 			return true;
 		}
 		return false;

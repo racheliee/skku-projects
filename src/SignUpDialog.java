@@ -35,40 +35,26 @@ public class SignUpDialog extends JDialog {
 	private JLabel infoLabel;
 	private JLabel confirmPasswordLabel;
 	private JPasswordField confirmPasswordField;
-	
+
 	public String username = "";
 	public String password = "";
 	private String confirmPassword = "";
-	
+
 	public boolean signUpSuccess = false;
-
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			SignUpDialog dialog = new SignUpDialog();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public SignUpDialog(JFrame parentFrame, List<User> userList) {
 		super(parentFrame, true);
-		
+
 		setBounds(100, 100, 381, 219);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[] { 120, 246, 0 };
-		gbl_contentPanel.rowHeights = new int[] {0, 26, 26, 26, 26};
+		gbl_contentPanel.rowHeights = new int[] { 0, 26, 26, 26, 26 };
 		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		contentPanel.setLayout(gbl_contentPanel);
@@ -148,8 +134,7 @@ public class SignUpDialog extends JDialog {
 			gbc_confirmPasswordField.gridy = 4;
 			contentPanel.add(confirmPasswordField, gbc_confirmPasswordField);
 		}
-		
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -161,19 +146,20 @@ public class SignUpDialog extends JDialog {
 						username = userNameTextField.getText();
 						password = String.valueOf(passwordField.getPassword());
 						confirmPassword = String.valueOf(confirmPasswordField.getPassword());
-						
+
 						try {
 							// get the user name
 							if (isValidUserName(username, userList) && isValidPassword(password, confirmPassword)) {
-								//add new user to userList
+								// add new user to userList
 								userList.add(new User(username, password));
-								
-								//write the new user to the file
+
+								// write the new user to the file
 								writeUserFile(new User(username, password), userList);
-								
-								//show message that sign up was successful
-								JOptionPane.showMessageDialog(null, "Sign up successful!\nPlease log in to proceed.", "Welcome to SKKU Library", JOptionPane.INFORMATION_MESSAGE, null);
-								
+
+								// show message that sign up was successful
+								JOptionPane.showMessageDialog(null, "Sign up successful!\nPlease log in to proceed.",
+										"Welcome to SKKU Library", JOptionPane.INFORMATION_MESSAGE, null);
+
 								// dispose dialog if it was successful
 								dispose();
 							} else {
@@ -181,18 +167,18 @@ public class SignUpDialog extends JDialog {
 							}
 						} catch (Exception e) {
 							String errorMsg = "";
-							
-							if(!isValidUserName(username, userList)) {
-								if(username.equals(""))
+
+							if (!isValidUserName(username, userList)) {
+								if (username.equals(""))
 									errorMsg += "Enter a username.\n";
 								else
 									errorMsg += "Username already exists. Please choose a different one.\n";
 							}
-							
-							if(!isValidPassword(password, confirmPassword)){
+
+							if (!isValidPassword(password, confirmPassword)) {
 								errorMsg += "Enter a valid password.\n (A valid password is at least 8 characters long including digits, \nupper and lower case letters, and special characters)";
 							}
-							
+
 							JOptionPane.showMessageDialog(null, errorMsg, "Sign Up Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
@@ -215,44 +201,45 @@ public class SignUpDialog extends JDialog {
 		}
 
 	}
-	
+
 	// checks is the username is valid
 	private boolean isValidUserName(String username, List<User> userList) {
 
-		for(User user: userList) {
-			if(user.getUserName().equals(username) && user.getPassword().equals(password)) {
+		for (User user : userList) {
+			if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
 				// if the username already exists
 				return true;
 			}
 		}
-		
-		//if username is empty, return false
-		if(username.equals(""))
+
+		// if username is empty, return false
+		if (username.equals(""))
 			return false;
 		else
 			return true;
 	}
-	
+
 	// checks if the password is valid
 	private boolean isValidPassword(String password, String cPassword) {
-		// password must contain a digit, lowercase and uppercase letters, a special character,
+		// password must contain a digit, lowercase and uppercase letters, a special
+		// character,
 		// no whitespace, and be at least 8 characters long
-		if(Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$", password) && password.equals(cPassword)) {
+		if (Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$", password)
+				&& password.equals(cPassword)) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
+
 	public String getUserName() {
 		return username;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
-	
-	
+
 	public void writeUserFile(User newUser, List<User> userList) {
 		FileOutputStream userFile = null;
 		try {
