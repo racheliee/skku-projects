@@ -21,6 +21,7 @@ public class HardCopy {
 			this.borrowDate = date;
 			this.isBorrowed = true;
 			this.borrower = borrower;
+			this.dueDate = date.plusDays(7);
 		}
 	}
 
