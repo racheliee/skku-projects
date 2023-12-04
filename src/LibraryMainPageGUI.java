@@ -271,18 +271,13 @@ public class LibraryMainPageGUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				// search by title keyword
 				String searchedBook = searchTextField.getText();
+				
+				//create the booklist panel and show the panel
+				bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
+						bookList, LibraryMainPageGUI.this, userList, mainPage);
 
-				if (searchedBook.equals("") && searchByGenreComboBox.getSelectedIndex() == 0) {
-					JOptionPane.showMessageDialog(null, "Type a keyword or select a genre to search", "Search Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-
-					bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
-							bookList, LibraryMainPageGUI.this, userList, mainPage);
-
-					changingPanel.add(bookListPanel, "BookListPanel");
-					cardLayout.show(changingPanel, "BookListPanel");
-				}
+				changingPanel.add(bookListPanel, "BookListPanel");
+				cardLayout.show(changingPanel, "BookListPanel");
 
 			}
 		});
@@ -414,6 +409,7 @@ public class LibraryMainPageGUI extends JFrame {
 		loggedIn = false;
 		logInButton.setText("     Log In     ");
 		cardLayout.show(changingPanel, "MainPagePanel");
+		userIndex = -1;
 	}
 
 	// if the admin presses new arrivals, they can change the contents
@@ -427,7 +423,8 @@ public class LibraryMainPageGUI extends JFrame {
 		announcementTableModel.addRow(new Object[] { announcementIndex, title });
 		announcementTableModel.fireTableDataChanged();
 	}
-
+	
+	//returns the user index
 	public int getUserIndex() {
 		return userIndex;
 	}

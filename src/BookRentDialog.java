@@ -49,12 +49,12 @@ public class BookRentDialog extends JDialog {
 
 		int bookIndex = findBookIndex(bookList, title);
 
-		setBounds(100, 100, 498, 300);
+		setBounds(100, 100, 546, 300);
 		getContentPane().setLayout(new BorderLayout());
 		bookInfoPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(bookInfoPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_bookInfoPanel = new GridBagLayout();
-		gbl_bookInfoPanel.columnWidths = new int[] { 20, 20, 20, 20, 20, 20 };
+		gbl_bookInfoPanel.columnWidths = new int[] {20, 30, 20, 20, 20, 20, 20, 20};
 		gbl_bookInfoPanel.rowHeights = new int[] { 20, 20, 0, 20, 20, 0, 20, 20, 20 };
 		gbl_bookInfoPanel.columnWeights = new double[] { 0.3, 0.0, 0.0, 0.0 };
 		gbl_bookInfoPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -88,6 +88,7 @@ public class BookRentDialog extends JDialog {
 		{
 			JLabel bookTitle = new JLabel(bookList.get(bookIndex).getTitle());
 			GridBagConstraints gbc_bookTitle = new GridBagConstraints();
+			gbc_bookTitle.fill = GridBagConstraints.BOTH;
 			gbc_bookTitle.insets = new Insets(0, 0, 5, 5);
 			gbc_bookTitle.gridx = 3;
 			gbc_bookTitle.gridy = 2;
@@ -105,6 +106,7 @@ public class BookRentDialog extends JDialog {
 		{
 			JLabel author = new JLabel(bookList.get(bookIndex).getAuthor());
 			GridBagConstraints gbc_author = new GridBagConstraints();
+			gbc_author.fill = GridBagConstraints.BOTH;
 			gbc_author.insets = new Insets(0, 0, 5, 5);
 			gbc_author.gridx = 3;
 			gbc_author.gridy = 3;
@@ -123,6 +125,7 @@ public class BookRentDialog extends JDialog {
 			JLabel genre = new JLabel(bookList.get(bookIndex).getGenre());
 			genre.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_genre = new GridBagConstraints();
+			gbc_genre.fill = GridBagConstraints.BOTH;
 			gbc_genre.insets = new Insets(0, 0, 5, 5);
 			gbc_genre.gridx = 3;
 			gbc_genre.gridy = 4;
@@ -141,6 +144,7 @@ public class BookRentDialog extends JDialog {
 		{
 			JLabel avaliability = new JLabel(bookList.get(bookIndex).getAvailableCopies().size() + " copies");
 			GridBagConstraints gbc_avaliability = new GridBagConstraints();
+			gbc_avaliability.fill = GridBagConstraints.BOTH;
 			gbc_avaliability.insets = new Insets(0, 0, 0, 5);
 			gbc_avaliability.gridx = 3;
 			gbc_avaliability.gridy = 5;
@@ -165,7 +169,7 @@ public class BookRentDialog extends JDialog {
 				borrowReturnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
-							if (userIndex == -1) {
+							if (userIndex == -1 || userIndex == 0) {
 								throw new Exception();
 							} else {
 								RegularUser currentUser = (RegularUser) userList.get(userIndex);
@@ -210,8 +214,14 @@ public class BookRentDialog extends JDialog {
 							}
 
 						} catch (Exception error) {
-							JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
-									JOptionPane.ERROR_MESSAGE);
+							if(userIndex == -1) {
+								JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
+										JOptionPane.ERROR_MESSAGE);
+							}else {
+								JOptionPane.showMessageDialog(null, "Admin cannot borrow books.", "Error",
+										JOptionPane.ERROR_MESSAGE);
+							}
+							
 						}
 
 					}
