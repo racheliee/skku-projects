@@ -10,6 +10,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
@@ -101,10 +102,15 @@ public class ProfilePanel extends JPanel {
 		
 		DefaultTableModel borrowedBookTableModel = new DefaultTableModel(data, new Object[] {"Book Title", "Author", "Borrowed Date", "Due Date"});
 		borrowedBookTable = new JTable(borrowedBookTableModel);
+		borrowedBookTable.setDefaultEditor(Object.class, null);
+		
+		//add borrowed books to the table
 		for(HardCopy copy: user.borrowedBooks) {
 			borrowedBookTableModel.addRow(new Object[] {copy.getBook().getTitle(), copy.getBook().getAuthor(), copy.getBorrowDate(), copy.getDueDate()});
 		}
 		borrowedBookTableModel.fireTableDataChanged();
+	
+		
 		
 		bookScrollPane.setViewportView(borrowedBookTable);
 		GridBagConstraints gbc_logOutButton = new GridBagConstraints();

@@ -52,7 +52,7 @@ Harry Potter and the Order of the Pheonix
 JK Rowling
 2
 Fiction
-/images/harry_potter_5_cover.jpeg
+/images/harry_potter_5.cover.jpeg
 James and the Giant Peach
 Roald Dahl
 1

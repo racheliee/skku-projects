@@ -86,14 +86,16 @@ public class AdminPanel extends JPanel {
 		add(infoScrollPane, gbc_infoScrollPane);
 
 		DefaultTableModel bookInfoModel = new DefaultTableModel(data,
-				new Object[] { "Book Title", "Author", "Genre", "Total Copies", "Num Rented" });
+				new Object[] { "Book Title", "Author", "Genre", "Total Copies", "Num Available"});
 		bookInfotable = new JTable(bookInfoModel);
+		bookInfotable.setDefaultEditor(Object.class, null);
 
 		for (Book book : bookList) {
 			bookInfoModel.addRow(new Object[] { book.getTitle(), book.getAuthor(), book.getGenre(),
 					String.valueOf(book.getCopies().size()), String.valueOf(book.getAvailableCopies().size()) });
 		}
 		bookInfoModel.fireTableDataChanged();
+		
 		infoScrollPane.setViewportView(bookInfotable);
 
 		logOutButton = new JButton("Log Out");
