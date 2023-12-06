@@ -14,6 +14,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
@@ -166,6 +168,8 @@ public class AddNewBookDialog extends JDialog {
 								System.out.println("book created");
 								Book newBook = new Book(title, author, Integer.parseInt(numCopies), genre, imagePath);
 								bookList.add(newBook);
+								appendBookToFile(newBook);
+
 								dispose();
 							} else {
 								throw new Exception();
@@ -245,5 +249,24 @@ public class AddNewBookDialog extends JDialog {
 			return true;
 		}
 		return false;
+	}
+
+	// append new book to books.txt
+	public void appendBookToFile(Book book) {
+		FileOutputStream bookFile = null;
+		try {
+			bookFile = new FileOutputStream("books.txt", true);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "books.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+
+		PrintWriter writer = new PrintWriter(bookFile);
+		writer.println(book.getTitle());
+		writer.println(book.getAuthor());
+		writer.println(book.getAvailableCopies().size());
+		writer.println(book.getGenre());
+		writer.println(book.getImagePath());
+		writer.close();
 	}
 }
