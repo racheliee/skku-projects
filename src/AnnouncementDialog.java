@@ -26,13 +26,18 @@ public class AnnouncementDialog extends JDialog {
 	private JTextArea textArea;
 	private JTextField announcementTitle;
 	private JButton applyEditButton;
+	private JButton deleteButton;
 
+	boolean isDeleteButtonPressed = false; //checks if the delete button was pressed
 	boolean isApplyEditButtonPressed = false; // for checking if applyEditButton is pressed to determine whether to
 												// add new announcement table row
+	int currentIndex = -1;
 
 	public AnnouncementDialog(List<Announcement> announcementList, int announcementIndex,
 			JFrame parentFrame, boolean isAdmin, boolean isNewAnnouncement) {
 		super(parentFrame, true);
+		currentIndex = announcementIndex;
+		
 		setBounds(100, 100, 529, 391);
 		getContentPane().setLayout(new BorderLayout());
 		{
@@ -126,10 +131,31 @@ public class AnnouncementDialog extends JDialog {
 		});
 		panel_1.add(applyEditButton);
 		applyEditButton.setVisible(false || isNewAnnouncement);
+		
+		deleteButton = new JButton("delete");
+		deleteButton.addMouseListener(new MouseAdapter(){ 
+			public void mouseClicked(MouseEvent e) {
+				//System.out.println(announcementIndex);
+				announcementList.remove(announcementIndex);
+				isDeleteButtonPressed = true;
+				
+				setVisible(false);
+			}
+		});
+		panel_1.add(deleteButton);
+		deleteButton.setVisible(isAdmin && !isNewAnnouncement); //set the delete button visible only if the user is an admin
 
 	}
 
 	public boolean isApplyEditButtonPressed() {
 		return isApplyEditButtonPressed;
+	}
+	
+	public boolean isDeleteButtonPressed() {
+		return isDeleteButtonPressed;
+	}
+	
+	public int getAnnouncementIndex() {
+		return currentIndex;
 	}
 }

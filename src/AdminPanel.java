@@ -57,11 +57,12 @@ public class AdminPanel extends JPanel {
 				// only add new announcement table row if applyEditButton is pressed (if just
 				// dispose then no need to add new row)
 				if (announcementDialog.isApplyEditButtonPressed()) {
-					mainGUI.addAnnouncement(
+					addAnnouncement(mainGUI,
 							mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getTitle(),
 							mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getContents(),
 							mainGUI.announcementList.size() - 1);
 				}
+				
 				announcementDialog.dispose();
 
 			}
@@ -133,5 +134,12 @@ public class AdminPanel extends JPanel {
 	public void addNewArrival(LibraryMainPageGUI mainGUI, List<Book> bookList) {
 		AddNewBookDialog newBookDialog = new AddNewBookDialog(mainGUI.frame, bookList);
 		newBookDialog.setVisible(true);
+	}
+	
+	// if the admin pressed announcements, they can change the announcements
+	public void addAnnouncement(LibraryMainPageGUI mainGUI, String title, String contents, int announcementIndex) {
+		
+		mainGUI.announcementTableModel.addRow(new Object[] { announcementIndex, title });
+		mainGUI.announcementTableModel.fireTableDataChanged();
 	}
 }

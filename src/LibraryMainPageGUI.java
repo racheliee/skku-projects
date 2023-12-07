@@ -47,7 +47,7 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel rightPanel;
 	private JLabel announceTitle;
 	private JTable announcementTable;
-	private DefaultTableModel announcementTableModel;
+	public DefaultTableModel announcementTableModel;
 	private JLabel newBooksLabel;
 	private JList<Book> newArrivalsList;
 	public JButton logInButton;
@@ -233,9 +233,16 @@ public class LibraryMainPageGUI extends JFrame {
 
 					// get the class name of current user using instanceof
 					boolean isAdmin = currentUser instanceof AdminUser;
+					
 					AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
 							LibraryMainPageGUI.this, isAdmin, false);
 					announcementDialog.setVisible(true);
+					
+					// delete announcement
+					if(announcementDialog.isDeleteButtonPressed()){
+						announcementTableModel.removeRow(selectedRow);
+					}
+					
 					announcementTableModel.setValueAt(announcementList.get(selectedRow).getTitle(), selectedRow, 1);
 					announcementTableModel.fireTableDataChanged();
 					announcementDialog.dispose();
@@ -443,19 +450,6 @@ public class LibraryMainPageGUI extends JFrame {
 		logInButton.setText("     Log In     ");
 		cardLayout.show(changingPanel, "MainPagePanel");
 		userIndex = -1;
-	}
-
-	// // if the admin presses new arrivals, they can change the contents
-	// public void addNewArrival() {
-	// AddNewBookDialog newBookDialog = new
-	// AddNewBookDialog(LibraryMainPageGUI.this, bookList);
-	// newBookDialog.setVisible(true);
-	// }
-
-	// if the admin pressed announcements, they can change the announcements
-	public void addAnnouncement(String title, String contents, int announcementIndex) {
-		announcementTableModel.addRow(new Object[] { announcementIndex, title });
-		announcementTableModel.fireTableDataChanged();
 	}
 
 	// returns the user index
