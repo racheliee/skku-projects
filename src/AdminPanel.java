@@ -12,23 +12,32 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * This class represents the admin panel of the library management system.
+ * It extends the JPanel class and provides functionality for adding
+ * announcements,
+ * adding new books, displaying book information, and logging out.
+ */
 public class AdminPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private JButton addAnnouncementButton;
-	private JButton newArrivalButton;
-	private JLabel bookInfoLabel;
-	private JScrollPane infoScrollPane;
-	private JTable bookInfotable;
+	private JButton addAnnouncementButton; // Button for adding announcements
+	private JButton newArrivalButton; // Button for adding new books
+	private JLabel bookInfoLabel; // Label for displaying book information
+	private JScrollPane infoScrollPane; // Scroll pane for displaying book information table
+	private JTable bookInfotable; // Table for displaying book information
 
-	AnnouncementDialog announcementDialog;
+	AnnouncementDialog announcementDialog; // Dialog for adding/editing announcements
 
-	Object data[][];
-	private JButton logOutButton;
+	Object data[][]; // Data for book information table
+	private JButton logOutButton; // Button for logging out
 
 	/**
-	 * Create the panel.
+	 * Creates a new AdminPanel instance.
+	 * 
+	 * @param mainGUI  The main GUI instance
+	 * @param bookList The list of books
 	 */
 	public AdminPanel(LibraryMainPageGUI mainGUI, List<Book> bookList) {
 		GridBagLayout gridBagLayout_1 = new GridBagLayout();
@@ -44,6 +53,9 @@ public class AdminPanel extends JPanel {
 				announcementDialog = new AnnouncementDialog(mainGUI.announcementList, mainGUI.announcementList.size(),
 						mainGUI.frame, true, true);
 				announcementDialog.setVisible(true);
+
+				// only add new announcement table row if applyEditButton is pressed (if just
+				// dispose then no need to add new row)
 				if (announcementDialog.isApplyEditButtonPressed()) {
 					mainGUI.addAnnouncement(
 							mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getTitle(),
