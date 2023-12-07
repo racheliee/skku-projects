@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class LibraryMainPageGUI extends JFrame {
 
@@ -47,9 +48,9 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel rightPanel;
 	private JLabel announceTitle;
 	private JTable announcementTable;
-	public DefaultTableModel announcementTableModel;
+	private DefaultTableModel announcementTableModel;
+	public DefaultTableModel newArrivalTableModel;
 	private JLabel newBooksLabel;
-	private JList<Book> newArrivalsList;
 	public JButton logInButton;
 	public JPanel changingPanel;
 	public CardLayout cardLayout;
@@ -76,6 +77,9 @@ public class LibraryMainPageGUI extends JFrame {
 	// this double array is needed for the Jtable for the announcements
 	public Object announcementData[][];
 
+	// this double array is needed for the Jtable for the new arrivals
+	public Object newArrivalData[][];
+
 	// keeps track if a user has logged in or not
 	boolean loggedIn = false;
 
@@ -84,6 +88,7 @@ public class LibraryMainPageGUI extends JFrame {
 
 	// keeps track of the current user's index in the userList
 	public int userIndex = -1;
+	private JTable newArrivalTable;
 
 	/**
 	 * Launch the application.
@@ -247,7 +252,7 @@ public class LibraryMainPageGUI extends JFrame {
 					announcementTableModel.fireTableDataChanged();
 					announcementDialog.dispose();
 				} catch (Exception e1) {
-					//if clicked on a blank space in the announcemnet table, do nothing
+					// if clicked on a blank space in the announcemnet table, do nothing
 				}
 
 			}
@@ -268,12 +273,37 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_newBooksLabel.gridy = 3;
 		rightPanel.add(newBooksLabel, gbc_newBooksLabel);
 
-		newArrivalsList = new JList<Book>();
-		GridBagConstraints gbc_newArrivalsList = new GridBagConstraints();
-		gbc_newArrivalsList.fill = GridBagConstraints.BOTH;
-		gbc_newArrivalsList.gridx = 0;
-		gbc_newArrivalsList.gridy = 4;
-		rightPanel.add(newArrivalsList, gbc_newArrivalsList);
+		newArrivalTableModel = new DefaultTableModel(newArrivalData,
+				new Object[] { "Title", "Author", "Genre" });
+
+		newArrivalTable = new JTable(newArrivalTableModel);
+		newArrivalTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					int selectedRow = newArrivalTable.getSelectedRow();
+					if (selectedRow == -1) {
+						throw new Exception();
+					}
+
+					// get the class name of current user using instanceof
+					BookRentDialog bookDialog = new BookRentDialog(bookList,
+							newArrivalTableModel.getValueAt(selectedRow, 0).toString(),
+							userList, userIndex, LibraryMainPageGUI.this);
+					bookDialog.setVisible(true);
+					bookDialog.dispose();
+				} catch (Exception e1) {
+					System.out.println("click blank space");
+					e1.printStackTrace();
+				}
+			}
+		});
+		GridBagConstraints gbc_newArrivalTable = new GridBagConstraints();
+		gbc_newArrivalTable.fill = GridBagConstraints.BOTH;
+		gbc_newArrivalTable.gridx = 0;
+		gbc_newArrivalTable.gridy = 4;
+		newArrivalTable.setDefaultEditor(Object.class, null);
+		rightPanel.add(newArrivalTable, gbc_newArrivalTable);
 
 		midPanel = new JPanel();
 		frame.getContentPane().add(midPanel, BorderLayout.CENTER);
