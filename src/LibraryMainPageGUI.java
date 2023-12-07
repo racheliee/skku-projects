@@ -46,12 +46,15 @@ public class LibraryMainPageGUI extends JFrame {
 	private JLabel searchByGenreTitle;
 	private JPanel rightPanel;
 	private JLabel announceTitle;
+	private JTable announcementTable;
+	private DefaultTableModel announcementTableModel;
 	private JLabel newBooksLabel;
 	private JList<Book> newArrivalsList;
 	public JButton logInButton;
 	public JPanel changingPanel;
 	public CardLayout cardLayout;
 
+	// the panels of the library
 	MainPagePanel mainPanel;
 	ProfilePanel profilePanel;
 	BookListPanel bookListPanel;
@@ -59,18 +62,29 @@ public class LibraryMainPageGUI extends JFrame {
 
 	// indicates this current class
 	LibraryMainPageGUI mainPage = this;
-
+	
+	//keeps track of the users of the library. admin is always fixed as the first user
 	public List<User> userList;
-	public int userIndex = -1;
+	
+	//keeps track of the books of the library
 	public List<Book> bookList;
-	public List<Announcement> announcementList = new ArrayList<Announcement>();
-	public Object data[][];
-
+	
+	//keeps track of the announcments of the library
+	public List<Announcement> announcementList;
+	
+	//this double array is needed for the Jtable for the announcements
+	public Object announcementData[][];
+	
+	//keeps track if a user has logged in or not
 	boolean loggedIn = false;
+	
+	//keeps track of the current user
 	public User currentUser = null;
-	private JTable announcementTable;
-	DefaultTableModel announcementTableModel;
-
+	
+	//keeps track of the current user's index in the userList
+	public int userIndex = -1;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -100,9 +114,10 @@ public class LibraryMainPageGUI extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// scan the user lists from file and save to list
+		// scan the users, books, and announcements from file and save each to its respective list
 		readUserFile();
 		readBookFile();
+		readAnnouncementFile();
 
 		// create GUI
 		frame = new JFrame();
@@ -198,8 +213,13 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_announceTitle.gridy = 1;
 		rightPanel.add(announceTitle, gbc_announceTitle);
 
-		announcementTableModel = new DefaultTableModel(data, new Object[] { "Number", "Announcement" });
+		announcementTableModel = new DefaultTableModel(announcementData, new Object[] { "Number", "Announcement" });
 		announcementTable = new JTable(announcementTableModel);
+		for(Announcement announcement : announcementList) {
+			announcementTableModel.addRow(new Object[] {announcementList.indexOf(announcement), announcement.getTitle()});
+		}
+		announcementTableModel.fireTableDataChanged();
+
 		announcementTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -328,14 +348,11 @@ public class LibraryMainPageGUI extends JFrame {
 	public void readUserFile() {
 		userList = new ArrayList<User>();
 
-		// add admin user before adding the regular users
-		userList.add(new AdminUser("admin", "admin"));
-
 		FileInputStream userFile = null;
 		try {
 			userFile = new FileInputStream("users.txt");
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "users.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 		try (Scanner scanner = new Scanner(userFile)) {
@@ -365,7 +382,7 @@ public class LibraryMainPageGUI extends JFrame {
 		try {
 			bookFile = new FileInputStream("books.txt");
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "books.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 		// read the file
@@ -376,6 +393,29 @@ public class LibraryMainPageGUI extends JFrame {
 
 			}
 		}
+	}
+	
+	// reads the file to get announcement information of the library
+	public void readAnnouncementFile() {
+		announcementList = new ArrayList<Announcement>();
+		
+		FileInputStream announcementFile = null;
+		
+		try {
+			announcementFile = new FileInputStream("announcement.txt");
+		}catch(FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		//read the file
+		Scanner scanner = new Scanner(announcementFile);
+		while(scanner.hasNext()) {
+			String title = scanner.nextLine();
+			String content = scanner.nextLine();
+			announcementList.add(new Announcement(title, content));
+		}
+		
+		scanner.close();
 	}
 
 	// returns the index of the user in the userlist

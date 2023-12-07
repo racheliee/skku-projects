@@ -30,7 +30,7 @@ public class AnnouncementDialog extends JDialog {
 	public AnnouncementDialog(List<Announcement> announcementList, int announcementIndex,
 			JFrame parentFrame, boolean isAdmin, boolean isNewAnnouncement) {
 		super(parentFrame, true);
-		setBounds(100, 100, 645, 590);
+		setBounds(100, 100, 529, 391);
 		getContentPane().setLayout(new BorderLayout());
 		{
 			JPanel panel = new JPanel();
@@ -77,6 +77,7 @@ public class AnnouncementDialog extends JDialog {
 			panel.add(scrollPane);
 
 			textArea = new JTextArea();
+			textArea.setLineWrap(true);
 			if (isNewAnnouncement) {
 				textArea.setText("");
 				textArea.setEditable(true);
