@@ -114,10 +114,11 @@ public class LibraryMainPageGUI extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// scan the users, books, and announcements from file and save each to its respective list
+		// scan the users and books from file and save each to its respective list
 		readUserFile();
 		readBookFile();
-		readAnnouncementFile();
+		//adds the default announcements of the library
+		addDefaultAnnouncements();
 
 		// create GUI
 		frame = new JFrame();
@@ -395,27 +396,13 @@ public class LibraryMainPageGUI extends JFrame {
 		}
 	}
 	
-	// reads the file to get announcement information of the library
-	public void readAnnouncementFile() {
+	// adds default announcements of the library to the announcement list
+	public void addDefaultAnnouncements() {
 		announcementList = new ArrayList<Announcement>();
 		
-		FileInputStream announcementFile = null;
-		
-		try {
-			announcementFile = new FileInputStream("announcement.txt");
-		}catch(FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		//read the file
-		Scanner scanner = new Scanner(announcementFile);
-		while(scanner.hasNext()) {
-			String title = scanner.nextLine();
-			String content = scanner.nextLine();
-			announcementList.add(new Announcement(title, content));
-		}
-		
-		scanner.close();
+		announcementList.add(new Announcement("Tech Talk Workshop (Wednesday, 3PM - 5PM)", "Join us every Wednesday from 3 PM to 5 PM for our Tech Talk Workshop! Whether you're a tech enthusiast or a beginner, this interactive session is designed to explore the latest in technology trends, gadgets, and software. Dive into engaging discussions, share your insights, and stay updated on the ever-evolving world of technology. Don't miss out on this opportunity to expand your tech knowledge and connect with fellow enthusiasts. See you there!\n"));
+		announcementList.add(new Announcement("Book Club Discussion (Thursday, 6:30PM - 8PM)", "Calling all book lovers! Join our Book Club Discussion every Thursday from 6:30 PM to 8 PM. Immerse yourself in lively conversations about the latest literary gems, timeless classics, and everything in between. Whether you're a fiction fanatic or a non-fiction connoisseur, this is the perfect space to share your thoughts, discover new perspectives, and connect with fellow bookworms. Grab your current read and join us for an evening of literary delight. Your next favorite book might be just a discussion away!\n"));
+		announcementList.add(new Announcement("Children's Storytime (Saturday, 10:30AM-11:30AM)", "Make Saturday mornings magical with our Children's Storytime! From 10:30 AM to 11:30 AM, bring your little ones to the library for a delightful journey into the world of stories. Our engaging storytellers will captivate young imaginations with enchanting tales and interactive adventures. Designed for children of all ages, this is a wonderful opportunity to foster a love for reading and learning in a fun, supportive environment. Join us and watch as stories come to life every Saturday morning!"));
 	}
 
 	// returns the index of the user in the userlist
