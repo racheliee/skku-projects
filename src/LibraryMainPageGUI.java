@@ -235,16 +235,16 @@ public class LibraryMainPageGUI extends JFrame {
 
 					// get the class name of current user using instanceof
 					boolean isAdmin = currentUser instanceof AdminUser;
-					
+
 					AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
 							LibraryMainPageGUI.this, isAdmin, false);
 					announcementDialog.setVisible(true);
-					
+
 					// delete announcement
-					if(announcementDialog.isDeleteButtonPressed()){
+					if (announcementDialog.isDeleteButtonPressed()) {
 						announcementTableModel.removeRow(selectedRow);
 					}
-					
+
 					announcementTableModel.setValueAt(announcementList.get(selectedRow).getTitle(), selectedRow, 1);
 					announcementTableModel.fireTableDataChanged();
 					announcementDialog.dispose();
@@ -261,6 +261,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_announcementTable.gridx = 0;
 		gbc_announcementTable.gridy = 2;
 		announcementTable.setDefaultEditor(Object.class, null);
+		announcementTable.getColumnModel().getColumn(0).setPreferredWidth(1);
 		rightPanel.add(announcementTable, gbc_announcementTable);
 
 		newBooksLabel = new JLabel("New Arrivals");
