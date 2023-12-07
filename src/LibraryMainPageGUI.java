@@ -62,29 +62,29 @@ public class LibraryMainPageGUI extends JFrame {
 
 	// indicates this current class
 	LibraryMainPageGUI mainPage = this;
-	
-	//keeps track of the users of the library. admin is always fixed as the first user
+
+	// keeps track of the users of the library. admin is always fixed as the first
+	// user
 	public List<User> userList;
-	
-	//keeps track of the books of the library
+
+	// keeps track of the books of the library
 	public List<Book> bookList;
-	
-	//keeps track of the announcments of the library
+
+	// keeps track of the announcments of the library
 	public List<Announcement> announcementList;
-	
-	//this double array is needed for the Jtable for the announcements
+
+	// this double array is needed for the Jtable for the announcements
 	public Object announcementData[][];
-	
-	//keeps track if a user has logged in or not
+
+	// keeps track if a user has logged in or not
 	boolean loggedIn = false;
-	
-	//keeps track of the current user
+
+	// keeps track of the current user
 	public User currentUser = null;
-	
-	//keeps track of the current user's index in the userList
+
+	// keeps track of the current user's index in the userList
 	public int userIndex = -1;
-	
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -114,7 +114,8 @@ public class LibraryMainPageGUI extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// scan the users, books, and announcements from file and save each to its respective list
+		// scan the users, books, and announcements from file and save each to its
+		// respective list
 		readUserFile();
 		readBookFile();
 		readAnnouncementFile();
@@ -215,8 +216,9 @@ public class LibraryMainPageGUI extends JFrame {
 
 		announcementTableModel = new DefaultTableModel(announcementData, new Object[] { "Number", "Announcement" });
 		announcementTable = new JTable(announcementTableModel);
-		for(Announcement announcement : announcementList) {
-			announcementTableModel.addRow(new Object[] {announcementList.indexOf(announcement), announcement.getTitle()});
+		for (Announcement announcement : announcementList) {
+			announcementTableModel
+					.addRow(new Object[] { announcementList.indexOf(announcement), announcement.getTitle() });
 		}
 		announcementTableModel.fireTableDataChanged();
 
@@ -291,8 +293,8 @@ public class LibraryMainPageGUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				// search by title keyword
 				String searchedBook = searchTextField.getText();
-				
-				//create the booklist panel and show the panel
+
+				// create the booklist panel and show the panel
 				bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
 						bookList, LibraryMainPageGUI.this, userList, mainPage);
 
@@ -348,6 +350,8 @@ public class LibraryMainPageGUI extends JFrame {
 	public void readUserFile() {
 		userList = new ArrayList<User>();
 
+		userList.add(new AdminUser("admin", "admin"));
+
 		FileInputStream userFile = null;
 		try {
 			userFile = new FileInputStream("users.txt");
@@ -394,27 +398,27 @@ public class LibraryMainPageGUI extends JFrame {
 			}
 		}
 	}
-	
+
 	// reads the file to get announcement information of the library
 	public void readAnnouncementFile() {
 		announcementList = new ArrayList<Announcement>();
-		
+
 		FileInputStream announcementFile = null;
-		
+
 		try {
 			announcementFile = new FileInputStream("announcement.txt");
-		}catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		//read the file
+
+		// read the file
 		Scanner scanner = new Scanner(announcementFile);
-		while(scanner.hasNext()) {
+		while (scanner.hasNext()) {
 			String title = scanner.nextLine();
 			String content = scanner.nextLine();
 			announcementList.add(new Announcement(title, content));
 		}
-		
+
 		scanner.close();
 	}
 
@@ -452,19 +456,20 @@ public class LibraryMainPageGUI extends JFrame {
 		userIndex = -1;
 	}
 
-	// if the admin presses new arrivals, they can change the contents
-	public void addNewArrival() {
-		AddNewBookDialog newBookDialog = new AddNewBookDialog(LibraryMainPageGUI.this, bookList);
-		newBookDialog.setVisible(true);
-	}
+	// // if the admin presses new arrivals, they can change the contents
+	// public void addNewArrival() {
+	// AddNewBookDialog newBookDialog = new
+	// AddNewBookDialog(LibraryMainPageGUI.this, bookList);
+	// newBookDialog.setVisible(true);
+	// }
 
 	// if the admin pressed announcements, they can change the announcements
 	public void addAnnouncement(String title, String contents, int announcementIndex) {
 		announcementTableModel.addRow(new Object[] { announcementIndex, title });
 		announcementTableModel.fireTableDataChanged();
 	}
-	
-	//returns the user index
+
+	// returns the user index
 	public int getUserIndex() {
 		return userIndex;
 	}

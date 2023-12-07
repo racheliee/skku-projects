@@ -75,7 +75,8 @@ public class AdminPanel extends JPanel {
 		newArrivalButton = new JButton("Add New Book");
 		newArrivalButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mainGUI.addNewArrival();
+				addNewArrival(mainGUI, bookList);
+
 			}
 		});
 		GridBagConstraints gbc_newArrivalButton = new GridBagConstraints();
@@ -126,5 +127,11 @@ public class AdminPanel extends JPanel {
 		gbc_logOutButton.gridy = 6;
 		add(logOutButton, gbc_logOutButton);
 
+	}
+
+	// if the admin presses new arrivals, they can change the contents
+	public void addNewArrival(LibraryMainPageGUI mainGUI, List<Book> bookList) {
+		AddNewBookDialog newBookDialog = new AddNewBookDialog(mainGUI.frame, bookList);
+		newBookDialog.setVisible(true);
 	}
 }
