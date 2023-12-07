@@ -2,14 +2,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+// regular user is a child class of user. It has a list of borrowed books
 public class RegularUser extends User {
+	//stores the list of borrowed books
 	public List<HardCopy> borrowedBooks;
 
+	//constructor
 	public RegularUser() {
 		super();
 		borrowedBooks = new ArrayList<HardCopy>();
 	}
-
+	
+	//constructor
 	public RegularUser(String username, String password) {
 		super(username, password);
 		borrowedBooks = new ArrayList<HardCopy>();
