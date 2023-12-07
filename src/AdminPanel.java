@@ -75,8 +75,19 @@ public class AdminPanel extends JPanel {
 		newArrivalButton = new JButton("Add New Book");
 		newArrivalButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addNewArrival(mainGUI, bookList);
+				AddNewBookDialog newBookDialog = new AddNewBookDialog(mainGUI.frame, bookList);
+				newBookDialog.setVisible(true);
 
+				// only add new arrival table row if addNewBookButton is pressed (if just
+				// dispose
+				// then no need to add new row)
+				if (newBookDialog.isAddNewBookButtonPressed()) {
+					addNewArrivalTableEntry(
+							mainGUI.bookList.get(mainGUI.bookList.size() - 1).getTitle(),
+							mainGUI.bookList.get(mainGUI.bookList.size() - 1).getAuthor(),
+							mainGUI.bookList.get(mainGUI.bookList.size() - 1).getGenre(),
+							mainGUI);
+				}
 			}
 		});
 		GridBagConstraints gbc_newArrivalButton = new GridBagConstraints();
@@ -129,9 +140,8 @@ public class AdminPanel extends JPanel {
 
 	}
 
-	// if the admin presses new arrivals, they can change the contents
-	public void addNewArrival(LibraryMainPageGUI mainGUI, List<Book> bookList) {
-		AddNewBookDialog newBookDialog = new AddNewBookDialog(mainGUI.frame, bookList);
-		newBookDialog.setVisible(true);
+	public void addNewArrivalTableEntry(String title, String author, String genre, LibraryMainPageGUI MainGUI) {
+		MainGUI.newArrivalTableModel.addRow(new Object[] { title, author, genre });
+		MainGUI.newArrivalTableModel.fireTableDataChanged();
 	}
 }

@@ -31,6 +31,8 @@ public class AddNewBookDialog extends JDialog {
 	private JTextField titleTextField;
 	private JTextField imagePathTextField;
 
+	boolean isAddBookButtonPressed = false;
+
 	/**
 	 * Create the dialog for adding a new book
 	 * 
@@ -188,7 +190,7 @@ public class AddNewBookDialog extends JDialog {
 								Book newBook = new Book(title, author, Integer.parseInt(numCopies), genre, imagePath);
 								bookList.add(newBook);
 								appendBookToFile(newBook);
-
+								isAddBookButtonPressed = true;
 								dispose();
 							} else {
 								throw new Exception();
@@ -298,5 +300,9 @@ public class AddNewBookDialog extends JDialog {
 		writer.println(book.getGenre());
 		writer.println(book.getImagePath());
 		writer.close();
+	}
+
+	public boolean isAddNewBookButtonPressed() {
+		return isAddBookButtonPressed;
 	}
 }

@@ -83,3 +83,23 @@ Roald Dahl
 4
 Fiction
 /images/the_witches_cover.png
+test1
+test test
+3
+Fiction
+/images/1984_cover.jpeg
+test
+test test
+3
+Fiction
+/images/1984_cover.jpeg
+test
+test test
+3
+Fiction
+/images/1984_cover.jpeg
+test
+test test
+3
+Fiction
+/images/1984_cover.jpeg
