@@ -41,11 +41,15 @@ public class AdminPanel extends JPanel {
 		addAnnouncementButton = new JButton("Add Announcement");
 		addAnnouncementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				announcementDialog = new AnnouncementDialog(mainGUI.announcementList, mainGUI.announcementList.size(), mainGUI.frame, true,	true);
+				announcementDialog = new AnnouncementDialog(mainGUI.announcementList, mainGUI.announcementList.size(),
+						mainGUI.frame, true, true);
 				announcementDialog.setVisible(true);
-				mainGUI.addAnnouncement(mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getTitle(),
-						mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getContents(),
-						mainGUI.announcementList.size() - 1);
+				if (announcementDialog.isApplyEditButtonPressed()) {
+					mainGUI.addAnnouncement(
+							mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getTitle(),
+							mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getContents(),
+							mainGUI.announcementList.size() - 1);
+				}
 				announcementDialog.dispose();
 
 			}
@@ -86,7 +90,7 @@ public class AdminPanel extends JPanel {
 		add(infoScrollPane, gbc_infoScrollPane);
 
 		DefaultTableModel bookInfoModel = new DefaultTableModel(data,
-				new Object[] { "Book Title", "Author", "Genre", "Total Copies", "Num Available"});
+				new Object[] { "Book Title", "Author", "Genre", "Total Copies", "Num Available" });
 		bookInfotable = new JTable(bookInfoModel);
 		bookInfotable.setDefaultEditor(Object.class, null);
 
@@ -95,7 +99,7 @@ public class AdminPanel extends JPanel {
 					String.valueOf(book.getCopies().size()), String.valueOf(book.getAvailableCopies().size()) });
 		}
 		bookInfoModel.fireTableDataChanged();
-		
+
 		infoScrollPane.setViewportView(bookInfotable);
 
 		logOutButton = new JButton("Log Out");

@@ -27,6 +27,9 @@ public class AnnouncementDialog extends JDialog {
 	private JTextField announcementTitle;
 	private JButton applyEditButton;
 
+	boolean isApplyEditButtonPressed = false; // for checking if applyEditButton is pressed to determine whether to
+												// add new announcement table row
+
 	public AnnouncementDialog(List<Announcement> announcementList, int announcementIndex,
 			JFrame parentFrame, boolean isAdmin, boolean isNewAnnouncement) {
 		super(parentFrame, true);
@@ -110,6 +113,7 @@ public class AnnouncementDialog extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 				if (isNewAnnouncement) {
 					announcementList.add(new Announcement(announcementTitle.getText(), textArea.getText()));
+					isApplyEditButtonPressed = true;
 				} else {
 					String newTitle = announcementTitle.getText();
 					String newContents = textArea.getText();
@@ -121,6 +125,10 @@ public class AnnouncementDialog extends JDialog {
 		});
 		panel_1.add(applyEditButton);
 		applyEditButton.setVisible(false || isNewAnnouncement);
+
 	}
 
+	public boolean isApplyEditButtonPressed() {
+		return isApplyEditButtonPressed;
+	}
 }
