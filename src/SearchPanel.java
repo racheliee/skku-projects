@@ -162,8 +162,8 @@ public class SearchPanel extends JPanel {
 			if (searchedBook.equals("")) {
 				return true;
 			}
-
-			if (book.getTitle().contains(searchedBook) || book.getAuthor().contains(searchedBook)) {
+			//convert the title, author, and keyword to lowercase to make the search case insensitive
+			if (book.getTitle().toLowerCase().contains(searchedBook.toLowerCase()) || book.getAuthor().toLowerCase().contains(searchedBook.toLowerCase())) {
 				return true;
 			} else {
 				return false;
