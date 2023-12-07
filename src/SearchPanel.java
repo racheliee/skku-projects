@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
-public class BookListPanel extends JPanel {
+public class SearchPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane resultScrollPane;
@@ -38,7 +38,7 @@ public class BookListPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
+	public SearchPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
 			List<User> userList, LibraryMainPageGUI mainGUI) {
 		setLayout(new BorderLayout(0, 0));
 
@@ -162,8 +162,8 @@ public class BookListPanel extends JPanel {
 			if (searchedBook.equals("")) {
 				return true;
 			}
-
-			if (book.getTitle().contains(searchedBook) || book.getAuthor().contains(searchedBook)) {
+			//convert the title, author, and keyword to lowercase to make the search case insensitive
+			if (book.getTitle().toLowerCase().contains(searchedBook.toLowerCase()) || book.getAuthor().toLowerCase().contains(searchedBook.toLowerCase())) {
 				return true;
 			} else {
 				return false;
