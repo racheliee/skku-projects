@@ -32,7 +32,10 @@ public class AddNewBookDialog extends JDialog {
 	private JTextField imagePathTextField;
 
 	/**
-	 * Create the dialog.
+	 * Create the dialog for adding a new book
+	 * 
+	 * @param parentFrame the frame that the dialog is created from
+	 * @param bookList    the list of books that the new book will be added to
 	 */
 	public AddNewBookDialog(JFrame parentFrame, List<Book> bookList) {
 		super(parentFrame, true);
@@ -48,6 +51,8 @@ public class AddNewBookDialog extends JDialog {
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
+
+			// title label
 			JLabel titleLabel = new JLabel("  Title: ");
 			titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_titleLabel = new GridBagConstraints();
@@ -59,6 +64,7 @@ public class AddNewBookDialog extends JDialog {
 			contentPanel.add(titleLabel, gbc_titleLabel);
 		}
 		{
+			// title text field for user input
 			titleTextField = new JTextField();
 			GridBagConstraints gbc_titleTextField = new GridBagConstraints();
 			gbc_titleTextField.insets = new Insets(0, 0, 5, 0);
@@ -69,6 +75,8 @@ public class AddNewBookDialog extends JDialog {
 			titleTextField.setColumns(10);
 		}
 		{
+
+			// author label
 			JLabel lblAuthor = new JLabel("  Author: ");
 			GridBagConstraints gbc_lblAuthor = new GridBagConstraints();
 			gbc_lblAuthor.fill = GridBagConstraints.BOTH;
@@ -79,6 +87,8 @@ public class AddNewBookDialog extends JDialog {
 			contentPanel.add(lblAuthor, gbc_lblAuthor);
 		}
 		{
+
+			// author text field for user input
 			authorTextField = new JTextField();
 			GridBagConstraints gbc_authorTextField = new GridBagConstraints();
 			gbc_authorTextField.insets = new Insets(0, 0, 5, 0);
@@ -89,6 +99,7 @@ public class AddNewBookDialog extends JDialog {
 			authorTextField.setColumns(10);
 		}
 		{
+			// number of copies label
 			JLabel numCopiesLabel = new JLabel("  Number of Copies: ");
 			GridBagConstraints gbc_numCopiesLabel = new GridBagConstraints();
 			gbc_numCopiesLabel.fill = GridBagConstraints.BOTH;
@@ -99,6 +110,7 @@ public class AddNewBookDialog extends JDialog {
 			contentPanel.add(numCopiesLabel, gbc_numCopiesLabel);
 		}
 		{
+			// number of copies text field for user input
 			numCopiesTextField = new JTextField();
 			GridBagConstraints gbc_numCopiesTextField = new GridBagConstraints();
 			gbc_numCopiesTextField.insets = new Insets(0, 0, 5, 0);
@@ -109,6 +121,7 @@ public class AddNewBookDialog extends JDialog {
 			numCopiesTextField.setColumns(10);
 		}
 		{
+			// genre label
 			JLabel genreLabel = new JLabel("  Genre: ");
 			GridBagConstraints gbc_genreLabel = new GridBagConstraints();
 			gbc_genreLabel.fill = GridBagConstraints.BOTH;
@@ -119,6 +132,7 @@ public class AddNewBookDialog extends JDialog {
 			contentPanel.add(genreLabel, gbc_genreLabel);
 		}
 		{
+			// genre text field for user input
 			genreTextField = new JTextField();
 			GridBagConstraints gbc_genreTextField = new GridBagConstraints();
 			gbc_genreTextField.insets = new Insets(0, 0, 5, 0);
@@ -129,6 +143,7 @@ public class AddNewBookDialog extends JDialog {
 			genreTextField.setColumns(10);
 		}
 		{
+			// image path label
 			JLabel imagePathLabel = new JLabel("  Book Cover Image Path: ");
 			GridBagConstraints gbc_imagePathLabel = new GridBagConstraints();
 			gbc_imagePathLabel.fill = GridBagConstraints.BOTH;
@@ -139,6 +154,7 @@ public class AddNewBookDialog extends JDialog {
 			contentPanel.add(imagePathLabel, gbc_imagePathLabel);
 		}
 		{
+			// image path text field for user input
 			imagePathTextField = new JTextField();
 			GridBagConstraints gbc_imagePathTextField = new GridBagConstraints();
 			gbc_imagePathTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -152,16 +168,19 @@ public class AddNewBookDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
+				// add button to add new book to book list
 				JButton addButton = new JButton("Add");
 				addButton.addActionListener(new ActionListener() {
 
 					public void actionPerformed(ActionEvent e) {
+						// get user input from text fields about new book
 						String title = titleTextField.getText();
 						String author = authorTextField.getText();
 						String numCopies = numCopiesTextField.getText();
 						String genre = genreTextField.getText();
 						String imagePath = imagePathTextField.getText();
 
+						// check if user input is valid
 						try {
 							if (isValidTitle(title) && isValidAuthor(author) && isValidNumCopies(numCopies)
 									&& isValidGenre(genre) && isValidImagePath(imagePath)) {
@@ -174,6 +193,7 @@ public class AddNewBookDialog extends JDialog {
 							} else {
 								throw new Exception();
 							}
+							// if user input is invalid, display error message
 						} catch (Exception error) {
 							String errorMsg = "";
 
@@ -202,6 +222,7 @@ public class AddNewBookDialog extends JDialog {
 				getRootPane().setDefaultButton(addButton);
 			}
 			{
+				// cancel button to close dialog
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -214,6 +235,7 @@ public class AddNewBookDialog extends JDialog {
 		}
 	}
 
+	// check if the title is valid (only letters, numbers, and spaces)
 	public boolean isValidTitle(String title) {
 		if (Pattern.matches("^[a-zA-Z0-9\\s]+$", title)) {
 			return true;
@@ -221,6 +243,7 @@ public class AddNewBookDialog extends JDialog {
 		return false;
 	}
 
+	// check if the author is valid (only letters and spaces)
 	public boolean isValidAuthor(String author) {
 		if (Pattern.matches("^[a-zA-Z]+\\s[a-zA-Z]+$", author)) {
 			return true;
@@ -229,6 +252,7 @@ public class AddNewBookDialog extends JDialog {
 
 	}
 
+	// check if the number of copies is valid (only numbers)
 	public boolean isValidNumCopies(String numCopies) {
 		if (Pattern.matches("^\\d+$", numCopies)) {
 			return true;
@@ -236,6 +260,7 @@ public class AddNewBookDialog extends JDialog {
 		return false;
 	}
 
+	// check if the genre is valid (only Fiction, Non-Fiction, Mystery, or Romance)
 	public boolean isValidGenre(String genre) {
 		if (genre.equals("Fiction") || genre.equals("Non-Fiction") || genre.equals("Mystery")
 				|| genre.equals("Romance")) {
@@ -244,6 +269,8 @@ public class AddNewBookDialog extends JDialog {
 		return false;
 	}
 
+	// check if the image path is valid (only letters, numbers, underscores, and
+	// forward slashes)
 	public boolean isValidImagePath(String imagePath) {
 		if (Pattern.matches("^[a-zA-Z0-9\\/_.]+$", imagePath)) {
 			return true;
@@ -254,13 +281,16 @@ public class AddNewBookDialog extends JDialog {
 	// append new book to books.txt
 	public void appendBookToFile(Book book) {
 		FileOutputStream bookFile = null;
+		// try to open books.txt
 		try {
 			bookFile = new FileOutputStream("books.txt", true);
+			// if books.txt is not found, display error message
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "books.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 
+		// write new book to books.txt
 		PrintWriter writer = new PrintWriter(bookFile);
 		writer.println(book.getTitle());
 		writer.println(book.getAuthor());
