@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
-public class BookListPanel extends JPanel {
+public class SearchPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane resultScrollPane;
@@ -38,7 +38,7 @@ public class BookListPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public BookListPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
+	public SearchPanel(String searchedBook, String genre, List<Book> bookList, JFrame parentFrame,
 			List<User> userList, LibraryMainPageGUI mainGUI) {
 		setLayout(new BorderLayout(0, 0));
 

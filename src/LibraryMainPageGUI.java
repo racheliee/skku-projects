@@ -57,7 +57,7 @@ public class LibraryMainPageGUI extends JFrame {
 	// the panels of the library
 	MainPagePanel mainPanel;
 	ProfilePanel profilePanel;
-	BookListPanel bookListPanel;
+	SearchPanel searchPanel;
 	AdminPanel adminPanel;
 
 	// indicates this current class
@@ -240,7 +240,7 @@ public class LibraryMainPageGUI extends JFrame {
 					announcementTableModel.fireTableDataChanged();
 					announcementDialog.dispose();
 				} catch (Exception e1) {
-					System.out.println("click blank space");
+					//if clicked on a blank space in the announcemnet table, do nothing
 				}
 
 			}
@@ -295,11 +295,11 @@ public class LibraryMainPageGUI extends JFrame {
 				String searchedBook = searchTextField.getText();
 
 				// create the booklist panel and show the panel
-				bookListPanel = new BookListPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
+				searchPanel = new SearchPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
 						bookList, LibraryMainPageGUI.this, userList, mainPage);
 
-				changingPanel.add(bookListPanel, "BookListPanel");
-				cardLayout.show(changingPanel, "BookListPanel");
+				changingPanel.add(searchPanel, "SearchPanel");
+				cardLayout.show(changingPanel, "SearchPanel");
 
 			}
 		});
