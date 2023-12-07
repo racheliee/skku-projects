@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -20,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
@@ -30,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
-import javax.swing.JScrollPane;
 
 public class LibraryMainPageGUI extends JFrame {
 
@@ -48,7 +45,7 @@ public class LibraryMainPageGUI extends JFrame {
 	private JPanel rightPanel;
 	private JLabel announceTitle;
 	private JTable announcementTable;
-	private DefaultTableModel announcementTableModel;
+	public DefaultTableModel announcementTableModel;
 	public DefaultTableModel newArrivalTableModel;
 	private JLabel newBooksLabel;
 	public JButton logInButton;
