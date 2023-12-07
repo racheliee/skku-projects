@@ -26,12 +26,12 @@ public class LogInDialog extends JDialog {
 
 	private JLabel passwordLabel;
 	private JLabel userNameLabel;
-
-	public String username = "";
-	public String password = "";
 	private JButton signUpButton;
 	private JPasswordField passwordField;
 	private JLabel instructionLabel;
+
+	public String username = "";
+	public String password = "";
 
 	// true if the log in was successful
 	boolean isLogInSuccessful = false;
@@ -61,6 +61,7 @@ public class LogInDialog extends JDialog {
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
+			// instruction label
 			instructionLabel = new JLabel("Enter your username and password:");
 			GridBagConstraints gbc_instructionLabel = new GridBagConstraints();
 			gbc_instructionLabel.gridwidth = 2;
@@ -70,6 +71,7 @@ public class LogInDialog extends JDialog {
 			contentPanel.add(instructionLabel, gbc_instructionLabel);
 		}
 		{
+			// user name label
 			userNameLabel = new JLabel(" User Name: ");
 			userNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			GridBagConstraints gbc_userNameLabel = new GridBagConstraints();
@@ -81,6 +83,7 @@ public class LogInDialog extends JDialog {
 		}
 		userNameLabel.setLabelFor(userNameTextField);
 		{
+			// text field in which the user can write the user name
 			userNameTextField = new JTextField();
 			GridBagConstraints gbc_userNameTextField = new GridBagConstraints();
 			gbc_userNameTextField.fill = GridBagConstraints.BOTH;
@@ -91,6 +94,7 @@ public class LogInDialog extends JDialog {
 			userNameTextField.setColumns(10);
 		}
 		{
+			// password label
 			passwordLabel = new JLabel(" Password: ");
 			passwordLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			GridBagConstraints gbc_passwordLabel = new GridBagConstraints();
@@ -102,6 +106,7 @@ public class LogInDialog extends JDialog {
 			contentPanel.add(passwordLabel, gbc_passwordLabel);
 		}
 		{
+			// password field in which the user can write the password
 			passwordField = new JPasswordField();
 			GridBagConstraints gbc_passwordField = new GridBagConstraints();
 			gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
@@ -111,6 +116,7 @@ public class LogInDialog extends JDialog {
 		}
 
 		{
+			// button pane contains ok, cancel, and sign up buttons
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
