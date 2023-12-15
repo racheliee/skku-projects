@@ -191,7 +191,6 @@ public class AddNewBookDialog extends JDialog {
 						try {
 							if (isValidTitle(title) && isValidAuthor(author) && isValidNumCopies(numCopies)
 									&& isValidGenre(genre) && isValidImagePath(imagePath)) {
-								System.out.println("book created");
 								Book newBook = new Book(title, author, Integer.parseInt(numCopies), genre, imagePath);
 								bookList.add(newBook);
 								appendBookToFile(newBook);

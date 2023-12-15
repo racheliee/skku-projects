@@ -1,7 +1,6 @@
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,14 +18,18 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
+/*
+ * This class represents the dialog for borrowing/returning books.
+ * It extends the JDialog class and provides functionality for borrowing/returning books.
+ */
 public class BookRentDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel bookInfoPanel = new JPanel();
 
-	public boolean isBorrowSuccessful = false;
-	public boolean isReturnSuccessful = false;
-	public int numCopiesRemaining = 0;
+	public boolean isBorrowSuccessful = false; // checks if the borrow was successful
+	public boolean isReturnSuccessful = false; // checks if the return was successful
+	public int numCopiesRemaining = 0; // number of copies remaining
 
 	/**
 	 * Create the dialog.
@@ -34,19 +37,20 @@ public class BookRentDialog extends JDialog {
 	public BookRentDialog(List<Book> bookList, String title, List<User> userList, int userIndex, JFrame parentFrame) {
 		super(parentFrame, true);
 
-		int bookIndex = findBookIndex(bookList, title);
+		int bookIndex = findBookIndex(bookList, title); // index of the book in the bookList
 
 		setBounds(100, 100, 546, 300);
 		getContentPane().setLayout(new BorderLayout());
 		bookInfoPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(bookInfoPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_bookInfoPanel = new GridBagLayout();
-		gbl_bookInfoPanel.columnWidths = new int[] {20, 30, 20, 20, 20, 20, 20, 20};
+		gbl_bookInfoPanel.columnWidths = new int[] { 20, 30, 20, 20, 20, 20, 20, 20 };
 		gbl_bookInfoPanel.rowHeights = new int[] { 20, 20, 0, 20, 20, 0, 20, 20, 20 };
 		gbl_bookInfoPanel.columnWeights = new double[] { 0.3, 0.0, 0.0, 0.0 };
 		gbl_bookInfoPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		bookInfoPanel.setLayout(gbl_bookInfoPanel);
 		{
+			// book cover panel
 			JPanel panel = new JPanel();
 			GridBagConstraints gbc_panel = new GridBagConstraints();
 			gbc_panel.gridheight = 8;
@@ -57,18 +61,19 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(panel, gbc_panel);
 			{
 				JLabel bookCover = new JLabel("");
-				//check if the entered book image is inside the image folder, if not use a default image
-				try{
-					bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
-				}catch(NullPointerException e){
+				// check if the entered book image is inside the image folder, if not use a
+				// default image
+				try {
+					bookCover.setIcon(
+							new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
+				} catch (NullPointerException e) {
 					bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource("/images/book2_r.png")));
 				}
-				//bookCover.setIcon(
-				//		new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
 				panel.add(bookCover);
 			}
 		}
 		{
+			// book title label
 			JLabel bookTitleLabel = new JLabel("Title: ");
 			bookTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_bookTitleLabel = new GridBagConstraints();
@@ -79,6 +84,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(bookTitleLabel, gbc_bookTitleLabel);
 		}
 		{
+			// book title
 			JLabel bookTitle = new JLabel(bookList.get(bookIndex).getTitle());
 			GridBagConstraints gbc_bookTitle = new GridBagConstraints();
 			gbc_bookTitle.fill = GridBagConstraints.BOTH;
@@ -88,6 +94,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(bookTitle, gbc_bookTitle);
 		}
 		{
+			// book author label
 			JLabel authorLabel = new JLabel("Author: ");
 			GridBagConstraints gbc_authorLabel = new GridBagConstraints();
 			gbc_authorLabel.fill = GridBagConstraints.BOTH;
@@ -97,6 +104,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(authorLabel, gbc_authorLabel);
 		}
 		{
+			// book author
 			JLabel author = new JLabel(bookList.get(bookIndex).getAuthor());
 			GridBagConstraints gbc_author = new GridBagConstraints();
 			gbc_author.fill = GridBagConstraints.BOTH;
@@ -106,6 +114,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(author, gbc_author);
 		}
 		{
+			// book genre label
 			JLabel genreLabel = new JLabel("Genre: ");
 			GridBagConstraints gbc_genreLabel = new GridBagConstraints();
 			gbc_genreLabel.fill = GridBagConstraints.BOTH;
@@ -115,6 +124,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(genreLabel, gbc_genreLabel);
 		}
 		{
+			// book genre
 			JLabel genre = new JLabel(bookList.get(bookIndex).getGenre());
 			genre.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_genre = new GridBagConstraints();
@@ -125,6 +135,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(genre, gbc_genre);
 		}
 		{
+			// book availability label
 			JLabel availabilityLabel = new JLabel("Availability: ");
 			availabilityLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_availabilityLabel = new GridBagConstraints();
@@ -135,6 +146,7 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(availabilityLabel, gbc_availabilityLabel);
 		}
 		{
+			// book availability
 			JLabel avaliability = new JLabel(bookList.get(bookIndex).getAvailableCopies().size() + " copies");
 			GridBagConstraints gbc_avaliability = new GridBagConstraints();
 			gbc_avaliability.fill = GridBagConstraints.BOTH;
@@ -144,15 +156,19 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(avaliability, gbc_avaliability);
 		}
 		{
+			// panel for buttons
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
+				// borrow/return button
 				JButton borrowReturnButton = new JButton("Borrow");
+				// if there are no available copies, disable the button
 				if (bookList.get(bookIndex).getAvailableCopies().size() == 0) {
 					borrowReturnButton.setEnabled(false);
 					borrowReturnButton.setText("Not Available");
 				}
+				// if the book is borrowed by the user, change the button to return
 				if (userIndex != -1
 						&& bookList.get(bookIndex).isBorrowedByUser(userList.get(userIndex).getUserName())) {
 					borrowReturnButton.setEnabled(true);
@@ -161,30 +177,36 @@ public class BookRentDialog extends JDialog {
 
 				borrowReturnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						// if the user is not logged in, or the user is admin, show error message
 						try {
 							if (userIndex == -1 || userIndex == 0) {
 								throw new Exception();
 							} else {
+								// get the current user
 								RegularUser currentUser = (RegularUser) userList.get(userIndex);
 
+								// if the button is borrow
 								if (borrowReturnButton.getText().equals("Borrow")) {
 									// borrowing book
 									bookList.get(bookIndex).borrowBook(currentUser.getUserName());
 
-									// print book copies
+									// add the book to the user's borrowed book list
 									for (HardCopy copy : bookList.get(bookIndex).getCopies()) {
 										if (copy.getBorrower().equals(currentUser.getUserName())) {
 											currentUser.addBorrowedBook(copy);
 										}
 									}
 
-									// add the updated user to the userList
+									// update the user in the userList
 									userList.remove(userIndex);
 									userList.add(userIndex, currentUser);
 
 									// set borrowing to success
 									isBorrowSuccessful = true;
-								} else if (borrowReturnButton.getText().equals("Return")) {
+								}
+
+								// if the button is return
+								else if (borrowReturnButton.getText().equals("Return")) {
 									// return book from current user's book list
 									currentUser.returnBook(bookList.get(bookIndex).getTitle());
 
@@ -201,20 +223,20 @@ public class BookRentDialog extends JDialog {
 
 								// set number of copies remaining
 								numCopiesRemaining = bookList.get(bookIndex).getAvailableCopies().size();
-
 								setVisible(false);
-
 							}
 
-						} catch (Exception error) {
-							if(userIndex == -1) {
+						}
+						// if the user is not logged in, or the user is admin, show error message
+						catch (Exception error) {
+							if (userIndex == -1) {
 								JOptionPane.showMessageDialog(null, "You must be logged in to borrow a book.", "Error",
 										JOptionPane.ERROR_MESSAGE);
-							}else {
+							} else {
 								JOptionPane.showMessageDialog(null, "Admin cannot borrow books.", "Error",
 										JOptionPane.ERROR_MESSAGE);
 							}
-							
+
 						}
 
 					}
@@ -224,6 +246,7 @@ public class BookRentDialog extends JDialog {
 				getRootPane().setDefaultButton(borrowReturnButton);
 			}
 			{
+				// cancel button
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 
@@ -239,7 +262,7 @@ public class BookRentDialog extends JDialog {
 		}
 	}
 
-	// returns true is the book was borrowed
+	// returns true is the book was borrowed or returned successfully
 	public boolean isBookNumChanged() {
 		if (isBorrowSuccessful || isReturnSuccessful) {
 			return true;
@@ -248,6 +271,7 @@ public class BookRentDialog extends JDialog {
 		}
 	}
 
+	// returns the index of the book in the bookList
 	public int findBookIndex(List<Book> bookList, String title) {
 		int index = 0;
 		for (Book book : bookList) {
@@ -259,6 +283,7 @@ public class BookRentDialog extends JDialog {
 		return index;
 	}
 
+	// returns the number of remaining copies
 	public int getNumberofRemainingCopies() {
 		return numCopiesRemaining;
 	}

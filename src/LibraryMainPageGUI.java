@@ -29,6 +29,10 @@ import java.awt.CardLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 
+/**
+ * This class represents the main page of the library management system.
+ * panels are added to the card layout of the main page.
+ */
 public class LibraryMainPageGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -46,6 +50,7 @@ public class LibraryMainPageGUI extends JFrame {
 	private JLabel announceTitle;
 	private JTable announcementTable;
 	public DefaultTableModel announcementTableModel;
+	private JTable newArrivalTable;
 	public DefaultTableModel newArrivalTableModel;
 	private JLabel newBooksLabel;
 	public JButton logInButton;
@@ -85,7 +90,6 @@ public class LibraryMainPageGUI extends JFrame {
 
 	// keeps track of the current user's index in the userList
 	public int userIndex = -1;
-	private JTable newArrivalTable;
 
 	/**
 	 * Launch the application.
@@ -141,10 +145,13 @@ public class LibraryMainPageGUI extends JFrame {
 		appTitle.setFont(new Font("Monaco", Font.PLAIN, 18));
 		topPanel.add(appTitle);
 
+		// book icon at the top left corner of the main page
 		appBookIcon = new JLabel("");
 		appBookIcon.setIcon(new ImageIcon(LibraryMainPageGUI.class.getResource("/images/book2_r.png")));
 		topPanel.add(appBookIcon);
 
+		// panel for the right side of the main page (announcement, new arrivals,
+		// login/profile)
 		rightPanel = new JPanel();
 		frame.getContentPane().add(rightPanel, BorderLayout.EAST);
 		GridBagLayout gbl_rightPanel = new GridBagLayout();
@@ -154,9 +161,11 @@ public class LibraryMainPageGUI extends JFrame {
 		gbl_rightPanel.rowWeights = new double[] { 0.0, 1.0, 6.0, 1.0, 6.0, Double.MIN_VALUE };
 		rightPanel.setLayout(gbl_rightPanel);
 
+		// log in button (changes to profile button if the user is logged in)
 		logInButton = new JButton("     Log In     ");
 		logInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// if the user is not logged in, show the log in dialog
 				if (loggedIn == false) {
 					LogInDialog logInDialog = new LogInDialog(LibraryMainPageGUI.this, userList);
 					logInDialog.setVisible(true);
@@ -166,7 +175,6 @@ public class LibraryMainPageGUI extends JFrame {
 						SignUpDialog signUpDialog = new SignUpDialog(LibraryMainPageGUI.this, userList);
 						signUpDialog.setVisible(true);
 					}
-
 					// if the log in was successful
 					if (logInDialog.isLogInSuccessful()) {
 						// change the log in button to username
@@ -175,7 +183,7 @@ public class LibraryMainPageGUI extends JFrame {
 						// get current user
 						currentUser = logInDialog.getUser();
 
-						// set logged in as true
+						// set logged in as true and change button text to username (profile button)
 						loggedIn = true;
 						userIndex = findUserIndex(currentUser.getUserName());
 					}
@@ -184,18 +192,14 @@ public class LibraryMainPageGUI extends JFrame {
 					// change panel to the profile panel if the user is already logged in
 					// if the current user is a regular user, show the profile panel
 					if (currentUser instanceof RegularUser) {
-						// create panel
 						profilePanel = new ProfilePanel((RegularUser) currentUser, mainPage);
 						changingPanel.add(profilePanel, "ProfilePanel");
-
 						cardLayout.show(changingPanel, "ProfilePanel");
 					}
 					// if current user is the admin, show the admin panel
 					else if (currentUser instanceof AdminUser) {
-						// create panel
 						adminPanel = new AdminPanel(mainPage, bookList);
 						changingPanel.add(adminPanel, "AdminPanel");
-
 						cardLayout.show(changingPanel, "AdminPanel");
 					}
 
@@ -208,6 +212,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_logInButton.gridy = 0;
 		rightPanel.add(logInButton, gbc_logInButton);
 
+		// announcement section title label
 		announceTitle = new JLabel("Announcement");
 		announceTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_announceTitle = new GridBagConstraints();
@@ -216,6 +221,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_announceTitle.gridy = 1;
 		rightPanel.add(announceTitle, gbc_announceTitle);
 
+		// announcement table
 		announcementTableModel = new DefaultTableModel(announcementData, new Object[] { "Number", "Announcement" });
 		announcementTable = new JTable(announcementTableModel);
 		for (Announcement announcement : announcementList) {
@@ -229,22 +235,24 @@ public class LibraryMainPageGUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					int selectedRow = announcementTable.getSelectedRow();
+					// if the user clicked on a blank space in the announcement table, do nothing
 					if (selectedRow == -1) {
 						throw new Exception();
 					}
-
 					// get the class name of current user using instanceof
 					boolean isAdmin = currentUser instanceof AdminUser;
-
+					// show the announcement dialog with the selected announcement
 					AnnouncementDialog announcementDialog = new AnnouncementDialog(announcementList, selectedRow,
 							LibraryMainPageGUI.this, isAdmin, false);
 					announcementDialog.setVisible(true);
 
-					// delete announcement
+					// delete announcement if the delete button is pressed in the announcementDialog
+					// from admin
 					if (announcementDialog.isDeleteButtonPressed()) {
 						announcementTableModel.removeRow(selectedRow);
 					}
 
+					// if the applyEditButton is pressed in the announcementDialog, update the table
 					announcementTableModel.setValueAt(announcementList.get(selectedRow).getTitle(), selectedRow, 1);
 					announcementTableModel.fireTableDataChanged();
 					announcementDialog.dispose();
@@ -264,6 +272,7 @@ public class LibraryMainPageGUI extends JFrame {
 		announcementTable.getColumnModel().getColumn(0).setPreferredWidth(1);
 		rightPanel.add(announcementTable, gbc_announcementTable);
 
+		// new arrivals section title label
 		newBooksLabel = new JLabel("New Arrivals");
 		GridBagConstraints gbc_newBooksLabel = new GridBagConstraints();
 		gbc_newBooksLabel.insets = new Insets(0, 0, 5, 0);
@@ -271,6 +280,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_newBooksLabel.gridy = 3;
 		rightPanel.add(newBooksLabel, gbc_newBooksLabel);
 
+		// new arrivals table
 		newArrivalTableModel = new DefaultTableModel(newArrivalData,
 				new Object[] { "Title", "Author", "Genre" });
 
@@ -280,19 +290,19 @@ public class LibraryMainPageGUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					int selectedRow = newArrivalTable.getSelectedRow();
+					// if the user clicked on a blank space in the new arrival table, do nothing
 					if (selectedRow == -1) {
 						throw new Exception();
 					}
 
-					// get the class name of current user using instanceof
+					// show the book rent dialog with the selected book
 					BookRentDialog bookDialog = new BookRentDialog(bookList,
 							newArrivalTableModel.getValueAt(selectedRow, 0).toString(),
 							userList, userIndex, LibraryMainPageGUI.this);
 					bookDialog.setVisible(true);
 					bookDialog.dispose();
 				} catch (Exception e1) {
-					System.out.println("click blank space");
-					e1.printStackTrace();
+					// if clicked on a blank space in the new arrival table, do nothing
 				}
 			}
 		});
@@ -303,6 +313,7 @@ public class LibraryMainPageGUI extends JFrame {
 		newArrivalTable.setDefaultEditor(Object.class, null);
 		rightPanel.add(newArrivalTable, gbc_newArrivalTable);
 
+		// panel for the center of the main page (search bar)
 		midPanel = new JPanel();
 		frame.getContentPane().add(midPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_midPanel = new GridBagLayout();
@@ -312,6 +323,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbl_midPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		midPanel.setLayout(gbl_midPanel);
 
+		// search text field
 		searchTextField = new JTextField();
 		GridBagConstraints gbc_searchTextField = new GridBagConstraints();
 		gbc_searchTextField.insets = new Insets(0, 0, 5, 5);
@@ -322,6 +334,7 @@ public class LibraryMainPageGUI extends JFrame {
 		midPanel.add(searchTextField, gbc_searchTextField);
 		searchTextField.setColumns(10);
 
+		// search button
 		searchButton = new JButton("Search");
 		searchButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -332,7 +345,6 @@ public class LibraryMainPageGUI extends JFrame {
 				// create the booklist panel and show the panel
 				searchPanel = new SearchPanel(searchedBook, (String) searchByGenreComboBox.getSelectedItem(),
 						bookList, LibraryMainPageGUI.this, userList, mainPage);
-
 				changingPanel.add(searchPanel, "SearchPanel");
 				cardLayout.show(changingPanel, "SearchPanel");
 
@@ -344,6 +356,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_searchButton.gridy = 1;
 		midPanel.add(searchButton, gbc_searchButton);
 
+		// search by genre label
 		searchByGenreTitle = new JLabel("Search by Genre:");
 		GridBagConstraints gbc_searchByGenreTitle = new GridBagConstraints();
 		gbc_searchByGenreTitle.gridwidth = 2;
@@ -352,6 +365,7 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_searchByGenreTitle.gridy = 2;
 		midPanel.add(searchByGenreTitle, gbc_searchByGenreTitle);
 
+		// search by genre combo box for searching books by genre
 		searchByGenreComboBox = new JComboBox<String>();
 		searchByGenreComboBox.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "All", "Fiction", "Non-Fiction", "Mystery", "Romance" }));
@@ -363,6 +377,8 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_searchByGenreComboBox.gridy = 2;
 		midPanel.add(searchByGenreComboBox, gbc_searchByGenreComboBox);
 
+		// panel for the changing panels (main page, search page, profile page, admin
+		// page)
 		changingPanel = new JPanel();
 		GridBagConstraints gbc_changingPanel = new GridBagConstraints();
 		gbc_changingPanel.gridwidth = 10;
@@ -372,10 +388,9 @@ public class LibraryMainPageGUI extends JFrame {
 		gbc_changingPanel.gridy = 3;
 		midPanel.add(changingPanel, gbc_changingPanel);
 
+		// card layout for the changing panels
 		cardLayout = new CardLayout(0, 0);
 		changingPanel.setLayout(cardLayout);
-
-		// add panels to card layout
 		mainPanel = new MainPagePanel();
 		changingPanel.add(mainPanel, "MainPagePanel");
 
@@ -384,10 +399,10 @@ public class LibraryMainPageGUI extends JFrame {
 	// reads the file to get users of the library
 	public void readUserFile() {
 		userList = new ArrayList<User>();
-
+		// add admin user to the list
 		userList.add(new AdminUser("admin", "admin"));
-
 		FileInputStream userFile = null;
+		// read the file users.txt and add the users to the list
 		try {
 			userFile = new FileInputStream("users.txt");
 		} catch (FileNotFoundException e) {

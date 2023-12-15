@@ -1,12 +1,18 @@
 import java.time.LocalDate;
 
-// the hard copy class only stores information on borrowed status and due date
+/**
+ * This class represents a hard copy of a book in the library.
+ * It contains information about the book copy such as the book it belongs to,
+ * the borrow date, due date, whether it is borrowed or not, and the borrower.
+ * It also contains methods for borrowing and returning the book copy.
+ * Subclass of Book.
+ */
 public class HardCopy {
-	private Book book;
-	private LocalDate borrowDate;
-	private LocalDate dueDate;
-	private boolean isBorrowed;
-	private String borrower;
+	private Book book; // book that the hard copy belongs to
+	private LocalDate borrowDate; // date that the book is borrowed
+	private LocalDate dueDate; // date that the book is due
+	private boolean isBorrowed; // whether the book is borrowed or not
+	private String borrower; // username of the borrower of the book
 
 	public HardCopy(Book book) {
 		this.book = book;
@@ -16,6 +22,12 @@ public class HardCopy {
 		this.borrower = "";
 	}
 
+	/**
+	 * Borrow the book copy by setting the borrow date, due date, borrower
+	 * 
+	 * @param date     date that the book is borrowed
+	 * @param borrower username of the borrower of the book
+	 */
 	public void borrowBookCopy(LocalDate date, String borrower) {
 		if (!isBorrowed) {
 			this.borrowDate = date;
@@ -25,13 +37,16 @@ public class HardCopy {
 		}
 	}
 
+	/**
+	 * Return the book copy by setting the borrow date, due date, borrower to null
+	 */
 	public void returnBookCopy() {
 		this.borrowDate = null;
 		this.isBorrowed = false;
 		this.borrower = null;
 	}
 
-	// get set methods
+	// get & set methods
 	public Book getBook() {
 		return book;
 	}
@@ -71,6 +86,4 @@ public class HardCopy {
 	public void setBorrower(String borrower) {
 		this.borrower = borrower;
 	}
-
-	// Additional methods as needed
 }
