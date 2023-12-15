@@ -161,10 +161,10 @@ public class SignUpDialog extends JDialog {
 							// get the user name
 							if (isValidUserName(username, userList) && isValidPassword(password, confirmPassword)) {
 								// add new user to userList
-								userList.add(new User(username, password));
+								userList.add(new RegularUser(username, password));
 
 								// write the new user to the file
-								writeUserFile(new User(username, password), userList);
+								writeUserFile(new RegularUser(username, password), userList);
 
 								// show message that sign up was successful
 								JOptionPane.showMessageDialog(null, "Sign up successful!\nPlease log in to proceed.",
@@ -221,9 +221,9 @@ public class SignUpDialog extends JDialog {
 	private boolean isValidUserName(String username, List<User> userList) {
 
 		for (User user : userList) {
-			if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
+			if (user.getUserName().equals(username)) {
 				// if the username already exists
-				return true;
+				return false;
 			}
 		}
 
@@ -265,9 +265,10 @@ public class SignUpDialog extends JDialog {
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "user.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-
+		
+		//write without the admin in the users.txt
 		try (PrintWriter writer = new PrintWriter(userFile)) {
-			for (int i = 0; i < userList.size(); i++) {
+			for (int i = 1; i < userList.size(); i++) {
 				writer.println(userList.get(i).getUserName());
 				writer.println(userList.get(i).getPassword());
 			}
