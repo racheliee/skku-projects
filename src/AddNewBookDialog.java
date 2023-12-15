@@ -21,6 +21,11 @@ import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
+/**
+ * This class represents the dialog for adding a new book to the library
+ * management system. It extends the JDialog class and provides functionality
+ * for adding a new book to the book list.
+ */
 public class AddNewBookDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +36,7 @@ public class AddNewBookDialog extends JDialog {
 	private JTextField titleTextField;
 	private JTextField imagePathTextField;
 
-	boolean isAddBookButtonPressed = false;
+	boolean isAddBookButtonPressed = false; // to check if add book button is pressed
 
 	/**
 	 * Create the dialog for adding a new book
@@ -302,6 +307,7 @@ public class AddNewBookDialog extends JDialog {
 		writer.close();
 	}
 
+	// check if add book button is pressed
 	public boolean isAddNewBookButtonPressed() {
 		return isAddBookButtonPressed;
 	}

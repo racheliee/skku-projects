@@ -1,4 +1,8 @@
 
+/*
+ * Announcement class
+ * for storing announcement information
+ */
 public class Announcement {
 	String title;
 	String contents;

@@ -47,6 +47,7 @@ public class AdminPanel extends JPanel {
 		gridBagLayout_1.rowWeights = new double[] { 0.0, 0.1, 0.1, 0.0, 0.1, 1.0 };
 		setLayout(gridBagLayout_1);
 
+		// add announcement button to add new announcements to the announcement panel
 		addAnnouncementButton = new JButton("Add Announcement");
 		addAnnouncementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -62,7 +63,7 @@ public class AdminPanel extends JPanel {
 							mainGUI.announcementList.get(mainGUI.announcementList.size() - 1).getContents(),
 							mainGUI.announcementList.size() - 1);
 				}
-				
+
 				announcementDialog.dispose();
 
 			}
@@ -73,6 +74,7 @@ public class AdminPanel extends JPanel {
 		gbc_addAnnouncementButton.gridy = 1;
 		add(addAnnouncementButton, gbc_addAnnouncementButton);
 
+		// add new arrival button to add new books to the book list
 		newArrivalButton = new JButton("Add New Book");
 		newArrivalButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,6 +99,7 @@ public class AdminPanel extends JPanel {
 		gbc_newArrivalButton.gridy = 2;
 		add(newArrivalButton, gbc_newArrivalButton);
 
+		// book information label
 		bookInfoLabel = new JLabel("Book Information:");
 		bookInfoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_bookInfoLabel = new GridBagConstraints();
@@ -106,6 +109,7 @@ public class AdminPanel extends JPanel {
 		gbc_bookInfoLabel.gridy = 4;
 		add(bookInfoLabel, gbc_bookInfoLabel);
 
+		// book information table
 		infoScrollPane = new JScrollPane();
 		GridBagConstraints gbc_infoScrollPane = new GridBagConstraints();
 		gbc_infoScrollPane.insets = new Insets(0, 0, 5, 5);
@@ -114,19 +118,22 @@ public class AdminPanel extends JPanel {
 		gbc_infoScrollPane.gridy = 5;
 		add(infoScrollPane, gbc_infoScrollPane);
 
+		// populate book information table
 		DefaultTableModel bookInfoModel = new DefaultTableModel(data,
 				new Object[] { "Book Title", "Author", "Genre", "Total Copies", "Num Available" });
 		bookInfotable = new JTable(bookInfoModel);
 		bookInfotable.setDefaultEditor(Object.class, null);
 
+		// add book information to table
 		for (Book book : bookList) {
 			bookInfoModel.addRow(new Object[] { book.getTitle(), book.getAuthor(), book.getGenre(),
 					String.valueOf(book.getCopies().size()), String.valueOf(book.getAvailableCopies().size()) });
 		}
-		bookInfoModel.fireTableDataChanged();
+		bookInfoModel.fireTableDataChanged(); // update table when data is changed
 
 		infoScrollPane.setViewportView(bookInfotable);
 
+		// log out button to log out of the admin account
 		logOutButton = new JButton("Log Out");
 		logOutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,14 +148,15 @@ public class AdminPanel extends JPanel {
 
 	}
 
+	// add new arrival table entry to the new arrival table
 	public void addNewArrivalTableEntry(String title, String author, String genre, LibraryMainPageGUI MainGUI) {
 		MainGUI.newArrivalTableModel.addRow(new Object[] { title, author, genre });
 		MainGUI.newArrivalTableModel.fireTableDataChanged();
 	}
-	
+
 	// if the admin pressed announcements, they can change the announcements
 	public void addAnnouncement(LibraryMainPageGUI mainGUI, String title, String contents, int announcementIndex) {
-		
+
 		mainGUI.announcementTableModel.addRow(new Object[] { announcementIndex, title });
 		mainGUI.announcementTableModel.fireTableDataChanged();
 	}
