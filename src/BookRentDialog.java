@@ -57,8 +57,14 @@ public class BookRentDialog extends JDialog {
 			bookInfoPanel.add(panel, gbc_panel);
 			{
 				JLabel bookCover = new JLabel("");
-				bookCover.setIcon(
-						new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
+				//check if the entered book image is inside the image folder, if not use a default image
+				try{
+					bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
+				}catch(NullPointerException e){
+					bookCover.setIcon(new ImageIcon(BookRentDialog.class.getResource("/images/book2_r.png")));
+				}
+				//bookCover.setIcon(
+				//		new ImageIcon(BookRentDialog.class.getResource(bookList.get(bookIndex).getImagePath())));
 				panel.add(bookCover);
 			}
 		}
