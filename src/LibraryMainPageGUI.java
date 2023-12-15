@@ -23,8 +23,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -409,9 +407,12 @@ public class LibraryMainPageGUI extends JFrame {
 			File userFile = new File("users.txt");
 			userFile.createNewFile(); // if file already exists will do nothing
 			userFileInputStream = new FileInputStream(userFile);
+			// file is empty, show error message
+			if (userFileInputStream.available() == 0) {
+				JOptionPane.showMessageDialog(null, "No users found", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		} catch (Exception e) {
 			// do nothing
-			System.out.println("File not found");
 		}
 
 		// read the file and add the users to the user list
@@ -445,6 +446,11 @@ public class LibraryMainPageGUI extends JFrame {
 			File bookFile = new File("books.txt");
 			bookFile.createNewFile(); // if file already exists will do nothing
 			bookFileInputStream = new FileInputStream(bookFile);
+			// if file is empty, show error message
+			if (bookFileInputStream.available() == 0) {
+				JOptionPane.showMessageDialog(null, "No books found", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+
 		} catch (Exception e) {
 			// do nothing
 		}
