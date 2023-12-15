@@ -58,7 +58,7 @@ public class LibraryMainPageGUI extends JFrame {
 	public CardLayout cardLayout;
 
 	// the panels of the library
-	MainPagePanel mainPanel;
+	IntroPagePanel mainPanel;
 	ProfilePanel profilePanel;
 	SearchPanel searchPanel;
 	AdminPanel adminPanel;
@@ -391,7 +391,7 @@ public class LibraryMainPageGUI extends JFrame {
 		// card layout for the changing panels
 		cardLayout = new CardLayout(0, 0);
 		changingPanel.setLayout(cardLayout);
-		mainPanel = new MainPagePanel();
+		mainPanel = new IntroPagePanel();
 		changingPanel.add(mainPanel, "MainPagePanel");
 
 	}
@@ -402,13 +402,14 @@ public class LibraryMainPageGUI extends JFrame {
 		// add admin user to the list
 		userList.add(new AdminUser("admin", "admin"));
 		FileInputStream userFile = null;
-		// read the file users.txt and add the users to the list
+		// try to open the file and catch the exception if the file is not found
 		try {
 			userFile = new FileInputStream("users.txt");
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "users.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
+		// read the file and add the users to the user list
 		try (Scanner scanner = new Scanner(userFile)) {
 			int isUsername = 0;
 
@@ -433,13 +434,14 @@ public class LibraryMainPageGUI extends JFrame {
 	public void readBookFile() {
 		bookList = new ArrayList<Book>();
 		FileInputStream bookFile = null;
+		// try to open the file and catch the exception if the file is not found
 		try {
 			bookFile = new FileInputStream("books.txt");
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "books.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
-		// read the file
+		// read the file and add the books to the book list
 		try (Scanner scanner = new Scanner(bookFile)) {
 			while (scanner.hasNext()) {
 				bookList.add(new Book(scanner.nextLine(), scanner.nextLine(), Integer.parseInt(scanner.nextLine()),

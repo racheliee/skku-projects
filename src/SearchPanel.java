@@ -14,16 +14,20 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+/**
+ * This class represents the search panel of the library management system.
+ * It extends the JPanel class and provides functionality for searching books.
+ */
 public class SearchPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane resultScrollPane;
-	private JPanel panel;
-	private JPanel panel_1;
-	private JPanel panel_2;
+	private JPanel leftMarginPanel;
+	private JPanel bottomMarginPanel;
+	private JPanel rightMarginPanel;
 	private JTable resultBooktable;
 
-	String currentUsername;
+	String currentUsername; // username of the user
 
 	// thread worker to update the panel list
 	public SwingWorker<Book, Book> worker;
@@ -42,20 +46,23 @@ public class SearchPanel extends JPanel {
 			List<User> userList, LibraryMainPageGUI mainGUI) {
 		setLayout(new BorderLayout(0, 0));
 
-		panel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setHgap(40);
-		add(panel, BorderLayout.WEST);
+		// create the margins to the left of the search table
+		leftMarginPanel = new JPanel();
+		FlowLayout fl_leftMarginPanel = (FlowLayout) leftMarginPanel.getLayout();
+		fl_leftMarginPanel.setHgap(40);
+		add(leftMarginPanel, BorderLayout.WEST);
 
-		panel_1 = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel_1.getLayout();
-		flowLayout_1.setHgap(20);
-		add(panel_1, BorderLayout.EAST);
+		// create the margins to the bottom of the search table
+		bottomMarginPanel = new JPanel();
+		FlowLayout fl_bottomMarginPanel = (FlowLayout) bottomMarginPanel.getLayout();
+		fl_bottomMarginPanel.setHgap(20);
+		add(bottomMarginPanel, BorderLayout.EAST);
 
-		panel_2 = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel_2.getLayout();
-		flowLayout_2.setVgap(10);
-		add(panel_2, BorderLayout.SOUTH);
+		// create the margins to the right of the search table
+		rightMarginPanel = new JPanel();
+		FlowLayout fl_rightMarginPanel = (FlowLayout) rightMarginPanel.getLayout();
+		fl_rightMarginPanel.setVgap(10);
+		add(rightMarginPanel, BorderLayout.SOUTH);
 
 		resultScrollPane = new JScrollPane();
 		add(resultScrollPane);
@@ -70,7 +77,7 @@ public class SearchPanel extends JPanel {
 		resultBooktable = new JTable(
 				new DefaultTableModel(data, new Object[] { "Book Title", "Author", "Genre", "Rentable Copies" }));
 
-		// create thread worker
+		// create thread worker for searching books
 		worker = new Worker(bookList, searchedBook, genre);
 		worker.execute();
 
@@ -79,12 +86,11 @@ public class SearchPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				// get the selected row index
 				int selectedRow = resultBooktable.getSelectedRow();
-				// get the selected row values
+				// get the title of the clicked book from the table
 				String title = resultBooktable.getValueAt(selectedRow, 0).toString();
-
+				// open the book rent dialog
 				bookRentDialog = new BookRentDialog(bookList, title, userList, mainGUI.getUserIndex(),
 						parentFrame);
-
 				bookRentDialog.setVisible(true);
 
 				// update the number of copies shown on the table
@@ -100,10 +106,10 @@ public class SearchPanel extends JPanel {
 		resultBooktable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// dont allow user to edit table but can select rows
 		resultBooktable.setDefaultEditor(Object.class, null);
-
 		resultScrollPane.setViewportView(resultBooktable);
 	}
 
+	// thread worker to update the panel list
 	class Worker extends SwingWorker<Book, Book> {
 		List<Book> bookList;
 		String searchedBook;
@@ -111,6 +117,7 @@ public class SearchPanel extends JPanel {
 		String[][] bookData;
 		int index = 0;
 
+		// constructor for the worker
 		public Worker(List<Book> bookList, String searchedBook, String genre) {
 			this.bookList = bookList;
 			this.searchedBook = searchedBook;
@@ -162,8 +169,10 @@ public class SearchPanel extends JPanel {
 			if (searchedBook.equals("")) {
 				return true;
 			}
-			//convert the title, author, and keyword to lowercase to make the search case insensitive
-			if (book.getTitle().toLowerCase().contains(searchedBook.toLowerCase()) || book.getAuthor().toLowerCase().contains(searchedBook.toLowerCase())) {
+			// convert the title, author, and keyword to lowercase to make the search case
+			// insensitive
+			if (book.getTitle().toLowerCase().contains(searchedBook.toLowerCase())
+					|| book.getAuthor().toLowerCase().contains(searchedBook.toLowerCase())) {
 				return true;
 			} else {
 				return false;

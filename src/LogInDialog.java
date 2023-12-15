@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -18,6 +17,10 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
+/**
+ * This class represents the dialog for logging in.
+ * It extends the JDialog class and provides functionality for logging in.
+ */
 public class LogInDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -30,8 +33,8 @@ public class LogInDialog extends JDialog {
 	private JPasswordField passwordField;
 	private JLabel instructionLabel;
 
-	public String username = "";
-	public String password = "";
+	public String username = ""; // username of the user
+	public String password = ""; // password of the user
 
 	// true if the log in was successful
 	boolean isLogInSuccessful = false;
@@ -146,6 +149,7 @@ public class LogInDialog extends JDialog {
 					}
 				});
 				{
+					// sign up button
 					signUpButton = new JButton("Sign Up");
 					signUpButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -160,6 +164,7 @@ public class LogInDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
+				// cancel button
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {

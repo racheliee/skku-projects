@@ -2,18 +2,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-// regular user is a child class of user. It has a list of borrowed books
+/**
+ * This class represents a regular user of the library.
+ * It extends the User class and contains a list of borrowed books.
+ * It also contains methods for adding and removing books from the list of
+ * borrowed books.
+ * Subclass of User.
+ */
 public class RegularUser extends User {
-	//stores the list of borrowed books
-	public List<HardCopy> borrowedBooks;
+	// stores the list of borrowed books
+	public List<HardCopy> borrowedBooks; // list of borrowed books of the user
 
-	//constructor
+	// constructor
 	public RegularUser() {
 		super();
 		borrowedBooks = new ArrayList<HardCopy>();
 	}
-	
-	//constructor
+
+	// constructor
 	public RegularUser(String username, String password) {
 		super(username, password);
 		borrowedBooks = new ArrayList<HardCopy>();
@@ -24,12 +30,12 @@ public class RegularUser extends User {
 		return borrowedBooks;
 	}
 
-	// add book to borrowedBooks if user borrows a book
+	// add book to borrowedBooks list
 	public void addBorrowedBook(HardCopy book) {
 		borrowedBooks.add(book);
 	}
 
-	// remove book from borrowedBooks if user returns book
+	// remove book from borrowedBooks list
 	public void returnBook(String title) {
 		Iterator<HardCopy> iterator = borrowedBooks.iterator();
 

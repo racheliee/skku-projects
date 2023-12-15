@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -36,9 +35,9 @@ public class SignUpDialog extends JDialog {
 	private JLabel confirmPasswordLabel;
 	private JPasswordField confirmPasswordField;
 
-	public String username = "";
-	public String password = "";
-	private String confirmPassword = "";
+	public String username = ""; // username of the user
+	public String password = ""; // password of the user
+	private String confirmPassword = ""; // password of the user
 
 	public boolean signUpSuccess = false;
 
@@ -59,6 +58,7 @@ public class SignUpDialog extends JDialog {
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
+			// welcome label
 			welcomeLabel = new JLabel("Welcom to SKKU Library!");
 			GridBagConstraints gbc_welcomeLabel = new GridBagConstraints();
 			gbc_welcomeLabel.gridwidth = 2;
@@ -68,6 +68,7 @@ public class SignUpDialog extends JDialog {
 			contentPanel.add(welcomeLabel, gbc_welcomeLabel);
 		}
 		{
+			// info label
 			infoLabel = new JLabel("Enter your new username and password :)");
 			GridBagConstraints gbc_infoLabel = new GridBagConstraints();
 			gbc_infoLabel.gridwidth = 2;
@@ -77,6 +78,7 @@ public class SignUpDialog extends JDialog {
 			contentPanel.add(infoLabel, gbc_infoLabel);
 		}
 		{
+			// user name label
 			userNameLabel = new JLabel(" User Name: ");
 			userNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			GridBagConstraints gbc_userNameLabel = new GridBagConstraints();
@@ -88,6 +90,7 @@ public class SignUpDialog extends JDialog {
 		}
 		userNameLabel.setLabelFor(userNameTextField);
 		{
+			// user name text field for the sign up user name
 			userNameTextField = new JTextField();
 			GridBagConstraints gbc_userNameTextField = new GridBagConstraints();
 			gbc_userNameTextField.fill = GridBagConstraints.BOTH;
@@ -98,6 +101,7 @@ public class SignUpDialog extends JDialog {
 			userNameTextField.setColumns(10);
 		}
 		{
+			// password label
 			passwordLabel = new JLabel(" Password: ");
 			passwordLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			GridBagConstraints gbc_passwordLabel = new GridBagConstraints();
@@ -109,6 +113,7 @@ public class SignUpDialog extends JDialog {
 			contentPanel.add(passwordLabel, gbc_passwordLabel);
 		}
 		{
+			// password field for the sign up password
 			passwordField = new JPasswordField();
 			GridBagConstraints gbc_passwordField = new GridBagConstraints();
 			gbc_passwordField.insets = new Insets(0, 0, 5, 0);
@@ -118,6 +123,7 @@ public class SignUpDialog extends JDialog {
 			contentPanel.add(passwordField, gbc_passwordField);
 		}
 		{
+			// confirm password label
 			confirmPasswordLabel = new JLabel("Confirm Password:");
 			GridBagConstraints gbc_confirmPasswordLabel = new GridBagConstraints();
 			gbc_confirmPasswordLabel.anchor = GridBagConstraints.EAST;
@@ -127,6 +133,7 @@ public class SignUpDialog extends JDialog {
 			contentPanel.add(confirmPasswordLabel, gbc_confirmPasswordLabel);
 		}
 		{
+			// confirm password field for the sign up password
 			confirmPasswordField = new JPasswordField();
 			GridBagConstraints gbc_confirmPasswordField = new GridBagConstraints();
 			gbc_confirmPasswordField.fill = GridBagConstraints.HORIZONTAL;
@@ -136,6 +143,7 @@ public class SignUpDialog extends JDialog {
 		}
 
 		{
+			// button pane contains ok, cancel, and sign up buttons
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -143,10 +151,12 @@ public class SignUpDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						// get the user name and password
 						username = userNameTextField.getText();
 						password = String.valueOf(passwordField.getPassword());
 						confirmPassword = String.valueOf(confirmPasswordField.getPassword());
 
+						// try to sign up
 						try {
 							// get the user name
 							if (isValidUserName(username, userList) && isValidPassword(password, confirmPassword)) {
@@ -165,9 +175,12 @@ public class SignUpDialog extends JDialog {
 							} else {
 								throw new Exception();
 							}
-						} catch (Exception e) {
+						}
+						// if sign up was not successful, show error message for the reason
+						catch (Exception e) {
 							String errorMsg = "";
 
+							// if the username already exists or if the username is empty
 							if (!isValidUserName(username, userList)) {
 								if (username.equals(""))
 									errorMsg += "Enter a username.\n";
@@ -175,6 +188,7 @@ public class SignUpDialog extends JDialog {
 									errorMsg += "Username already exists. Please choose a different one.\n";
 							}
 
+							// if the password is empty or if the password is not valid
 							if (!isValidPassword(password, confirmPassword)) {
 								errorMsg += "Enter a valid password.\n (A valid password is at least 8 characters long including digits, \nupper and lower case letters, and special characters)";
 							}
@@ -189,6 +203,7 @@ public class SignUpDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
+				// cancel button
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -232,20 +247,23 @@ public class SignUpDialog extends JDialog {
 		}
 	}
 
+	// returns the username
 	public String getUserName() {
 		return username;
 	}
 
+	// returns the password
 	public String getPassword() {
 		return password;
 	}
 
+	// writes the new user to the file users.txt
 	public void writeUserFile(User newUser, List<User> userList) {
 		FileOutputStream userFile = null;
 		try {
 			userFile = new FileOutputStream("users.txt");
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "User.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "user.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 		try (PrintWriter writer = new PrintWriter(userFile)) {

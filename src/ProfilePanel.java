@@ -15,21 +15,25 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseEvent;
 
+/**
+ * This class represents the profile panel of the library management system. It
+ * extends the JPanel class and provides functionality for displaying the
+ * profile of the user.
+ */
 public class ProfilePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel usernameLabel;
 	private JLabel usernameField;
 	private JLabel passwordLabel;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
+	private JLabel passwordField;
+	private JLabel borrowedBooksLabel;
 	private JButton logOutButton;
 	private JScrollPane bookScrollPane;
 	private JTable borrowedBookTable;
 
-	private Object data[][];
-
-	BookRentDialog bookRentDialog;
+	private Object data[][]; // Data for book information table
+	BookRentDialog bookRentDialog; // Dialog for renting books
 
 	/**
 	 * Create the panel.
@@ -42,6 +46,7 @@ public class ProfilePanel extends JPanel {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0 };
 		setLayout(gridBagLayout);
 
+		// username label
 		usernameLabel = new JLabel("Username: ");
 		usernameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_usernameLabel = new GridBagConstraints();
@@ -51,6 +56,7 @@ public class ProfilePanel extends JPanel {
 		gbc_usernameLabel.gridy = 2;
 		add(usernameLabel, gbc_usernameLabel);
 
+		// username field based on the user's username
 		usernameField = new JLabel(user.getUserName());
 		GridBagConstraints gbc_usernameField = new GridBagConstraints();
 		gbc_usernameField.fill = GridBagConstraints.BOTH;
@@ -60,6 +66,7 @@ public class ProfilePanel extends JPanel {
 		gbc_usernameField.gridy = 2;
 		add(usernameField, gbc_usernameField);
 
+		// password label
 		passwordLabel = new JLabel("Password: ");
 		GridBagConstraints gbc_passwordLabel = new GridBagConstraints();
 		gbc_passwordLabel.fill = GridBagConstraints.BOTH;
@@ -68,22 +75,25 @@ public class ProfilePanel extends JPanel {
 		gbc_passwordLabel.gridy = 3;
 		add(passwordLabel, gbc_passwordLabel);
 
-		lblNewLabel_2 = new JLabel(user.getPassword());
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
-		gbc_lblNewLabel_2.gridwidth = 4;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 3;
-		gbc_lblNewLabel_2.gridy = 3;
-		add(lblNewLabel_2, gbc_lblNewLabel_2);
+		// password field based on the user's password
+		passwordField = new JLabel(user.getPassword());
+		GridBagConstraints gbc_passwordField = new GridBagConstraints();
+		gbc_passwordField.fill = GridBagConstraints.BOTH;
+		gbc_passwordField.gridwidth = 4;
+		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
+		gbc_passwordField.gridx = 3;
+		gbc_passwordField.gridy = 3;
+		add(passwordField, gbc_passwordField);
 
-		lblNewLabel_3 = new JLabel("Borrowed Books: ");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.gridx = 2;
-		gbc_lblNewLabel_3.gridy = 4;
-		add(lblNewLabel_3, gbc_lblNewLabel_3);
+		// borrowed books label
+		borrowedBooksLabel = new JLabel("Borrowed Books: ");
+		GridBagConstraints gbc_borrowedBooksLabel = new GridBagConstraints();
+		gbc_borrowedBooksLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_borrowedBooksLabel.gridx = 2;
+		gbc_borrowedBooksLabel.gridy = 4;
+		add(borrowedBooksLabel, gbc_borrowedBooksLabel);
 
+		// log out button
 		logOutButton = new JButton("Log Out");
 		logOutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,6 +112,7 @@ public class ProfilePanel extends JPanel {
 		gbc_bookScrollPane.gridy = 5;
 		add(bookScrollPane, gbc_bookScrollPane);
 
+		// populate borrowed books table
 		DefaultTableModel borrowedBookTableModel = new DefaultTableModel(data,
 				new Object[] { "Book Title", "Author", "Borrowed Date", "Due Date" });
 		borrowedBookTable = new JTable(borrowedBookTableModel);
@@ -112,9 +123,9 @@ public class ProfilePanel extends JPanel {
 				int selectedRow = borrowedBookTable.getSelectedRow();
 				// get the book title
 				String title = borrowedBookTable.getValueAt(selectedRow, 0).toString();
+				// open the book rent dialog
 				bookRentDialog = new BookRentDialog(mainGUI.bookList, title, mainGUI.userList, mainGUI.getUserIndex(),
 						mainGUI.frame);
-
 				bookRentDialog.setVisible(true);
 
 				// update the number of copies shown on the table
@@ -123,14 +134,13 @@ public class ProfilePanel extends JPanel {
 					model.removeRow(selectedRow);
 					model.fireTableDataChanged();
 				}
-
 				bookRentDialog.dispose();
 
 			}
 		});
 		borrowedBookTable.setDefaultEditor(Object.class, null);
 
-		// add borrowed books to the table
+		// add borrowed books to the table initially
 		for (HardCopy copy : user.borrowedBooks) {
 			borrowedBookTableModel.addRow(new Object[] { copy.getBook().getTitle(), copy.getBook().getAuthor(),
 					copy.getBorrowDate(), copy.getDueDate() });
