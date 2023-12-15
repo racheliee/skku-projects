@@ -21,8 +21,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -399,56 +401,61 @@ public class LibraryMainPageGUI extends JFrame {
 	// reads the file to get users of the library
 	public void readUserFile() {
 		userList = new ArrayList<User>();
+		FileInputStream userFileInputStream = null;
 		// add admin user to the list
 		userList.add(new AdminUser("admin", "admin"));
-		FileInputStream userFile = null;
-		// try to open the file and catch the exception if the file is not found
+		// try to open the file and if the file is not found, create a new file
 		try {
-			userFile = new FileInputStream("users.txt");
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "users.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
+			File userFile = new File("users.txt");
+			userFile.createNewFile(); // if file already exists will do nothing
+			userFileInputStream = new FileInputStream(userFile);
+		} catch (Exception e) {
+			// do nothing
+			System.out.println("File not found");
 		}
 
 		// read the file and add the users to the user list
-		try (Scanner scanner = new Scanner(userFile)) {
-			int isUsername = 0;
+		Scanner scanner = new Scanner(userFileInputStream);
+		int isUsername = 0;
 
-			while (scanner.hasNext()) {
-				// current line is username
-				if (isUsername % 2 == 0) {
-					RegularUser newUser = new RegularUser();
-					newUser.setUserName(scanner.nextLine());
-					userList.add(newUser);
-					isUsername++;
-				}
-				// current line is password
-				else {
-					userList.get(userList.size() - 1).setPassword(scanner.nextLine());
-					isUsername--;
-				}
+		while (scanner.hasNext()) {
+			// current line is username
+			if (isUsername % 2 == 0) {
+				RegularUser newUser = new RegularUser();
+				newUser.setUserName(scanner.nextLine());
+				userList.add(newUser);
+				isUsername++;
+			}
+			// current line is password
+			else {
+				userList.get(userList.size() - 1).setPassword(scanner.nextLine());
+				isUsername--;
 			}
 		}
+		scanner.close();
+
 	}
 
 	// reads the file to get book information of the library
 	public void readBookFile() {
 		bookList = new ArrayList<Book>();
-		FileInputStream bookFile = null;
+		FileInputStream bookFileInputStream = null;
 		// try to open the file and catch the exception if the file is not found
 		try {
-			bookFile = new FileInputStream("books.txt");
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "books.txt not found", "Error", JOptionPane.ERROR_MESSAGE);
+			File bookFile = new File("books.txt");
+			bookFile.createNewFile(); // if file already exists will do nothing
+			bookFileInputStream = new FileInputStream(bookFile);
+		} catch (Exception e) {
+			// do nothing
 		}
 
 		// read the file and add the books to the book list
-		try (Scanner scanner = new Scanner(bookFile)) {
-			while (scanner.hasNext()) {
-				bookList.add(new Book(scanner.nextLine(), scanner.nextLine(), Integer.parseInt(scanner.nextLine()),
-						scanner.nextLine(), scanner.nextLine()));
-
-			}
+		Scanner scanner = new Scanner(bookFileInputStream);
+		while (scanner.hasNext()) {
+			bookList.add(new Book(scanner.nextLine(), scanner.nextLine(), Integer.parseInt(scanner.nextLine()),
+					scanner.nextLine(), scanner.nextLine()));
 		}
+		scanner.close();
 	}
 
 	// adds default announcements of the library to the announcement list
