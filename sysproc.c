@@ -89,3 +89,50 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// getpname (pa1 example sys call)
+int
+sys_getpname(void)
+{
+  int pid;
+
+  if(argint(0, &pid) < 0)
+    return -1;
+  return getpname(pid);
+}
+
+// getnice 
+int 
+sys_getnice(void)
+{
+  int pid;
+
+  // check if pid value has been passed
+  if(argint(0, &pid) < 0)
+    return -1;
+  return getnice(pid);
+}
+
+// setnice 
+int 
+sys_setnice(void)
+{
+  int pid, value;
+
+  // check if both pid and value have been passed
+  if(argint(0, &pid) < 0 || argint(1, &value) < 0)
+    return -1;
+  return setnice(pid, value);
+}
+
+// ps
+void
+sys_ps(void)
+{
+  int pid;
+
+  // check if pid value has been passed
+  if(argint(0, &pid) < 0)
+    return;
+  return ps(pid);
+}

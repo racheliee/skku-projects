@@ -150,6 +150,9 @@ userinit(void)
 
   p->state = RUNNABLE;
 
+  //set nice value to 20
+  p->nice = 20;
+
   release(&ptable.lock);
 }
 
@@ -209,6 +212,8 @@ fork(void)
   np->cwd = idup(curproc->cwd);
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
+
+  np->nice = 20; //set default nice value as 20
 
   pid = np->pid;
 
@@ -531,4 +536,140 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+// getpname (pa1 example sys call)
+int
+getpname(int pid)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      cprintf("%s\n", p->name);
+      release(&ptable.lock);
+      return 0;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+// getnice 
+// function obtains the nice value of a process
+// return nice value of target process on success
+// return -1 if there is no process corresponding to the pid
+int
+getnice(int pid)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      release(&ptable.lock);
+      return p->nice;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+// setnice 
+// function sets the nice value of a process
+// return 0 on success
+// return -1 if there no process corresponding to the pid or the nice value is invalid
+int
+setnice(int pid, int value)
+{
+  struct proc *p;
+
+  //check new nice value's range
+  if(value < 0 || value > 39) return -1;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      // set new nice value
+      p->nice = value;
+      release(&ptable.lock);
+      return 0;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+
+
+// ps
+// prints out process' information (includes name, pid, state, and priority(nice value))
+// if pid is 0, print out all processes' information
+// if there is no process corresponding to the pid, print out nothing
+// no return value
+void 
+ps(int pid)
+{
+  struct proc *p;
+
+  //  procsate values in string format
+  char *procstate_str[] = {"UNUSED", "EMBRYO", "SLEEPING", "RUNNABLE", "RUNNING", "ZOMBIE"};
+
+  acquire(&ptable.lock);
+  if(pid > 0){ //pid is not 0, print out the process info
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->pid == pid){
+        cprintf("name            pid        state         priority\n"); //space: 16 11 16
+        
+        cprintf("%s", p->name);
+        int bound = 16-strlen(p->name);
+        for(int i = 0; i < bound; i++) cprintf(" ");
+        
+        cprintf("%d", p->pid);
+        int pid_length = 1;
+        int temp_pid = p->pid;
+        while (temp_pid >= 10){
+          temp_pid /= 10;
+          pid_length++;
+        }
+        bound = 11-pid_length;
+        for(int i = 0; i < bound; i++) cprintf(" ");
+
+        cprintf("%s", procstate_str[p->state]);
+        bound = 14-strlen(procstate_str[p->state]);
+        for(int i = 0;i < bound; i++) cprintf(" ");
+
+        cprintf("%d\n", p->nice);
+      }
+    }
+  }else{ //print out all process' information
+    cprintf("name            pid        state         priority\n"); // space: 16 11 16
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != UNUSED){
+        // cprintf("%s         %d        %s          %d\n", p->name, p->pid, procstate_str[p->state], p->nice);
+        cprintf("%s", p->name);
+        int bound = 16-strlen(p->name);
+        for(int i = 0; i < bound; i++) cprintf(" ");
+        
+        cprintf("%d", p->pid);
+        int pid_length = 1;
+        int temp_pid = p->pid;
+        while (temp_pid >= 10){
+          temp_pid /= 10;
+          pid_length++;
+        }
+        bound = 11-pid_length;
+        for(int i = 0; i < bound; i++) cprintf(" ");
+
+        cprintf("%s", procstate_str[p->state]);
+        bound = 14-strlen(procstate_str[p->state]);
+        for(int i = 0;i < bound; i++) cprintf(" ");
+
+        cprintf("%d\n", p->nice);
+      }
+    }
+  }
+  
+  release(&ptable.lock);
+  return;
 }
