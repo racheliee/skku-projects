@@ -1,4 +1,6 @@
+#include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
@@ -8,16 +10,16 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+// macros ===========================================================================
 #define MAX_ARGS 100
 #define MAX_TOKENS 200
+#define MAX_PATH 4096
 
 // structs ===========================================================================
 typedef enum {
-    READY,
     RUNNING,
     STOPPED,
     DONE,
-    ZOMBIE,
 } Status;
 
 typedef enum {
@@ -49,12 +51,13 @@ typedef struct PROCESS {
 } Process;
 
 typedef struct JOB {
-    int job_id;
+    int job_num;
     pid_t pgid;
     Status status;
     struct JOB *next;
     struct PROCESS *first_process;
     int is_background;
+    int is_ampersand;
     int is_piped;
     int is_redirected;
     int is_append;
@@ -62,9 +65,11 @@ typedef struct JOB {
 
 // global variables ===================================================================
 Job *first_job = NULL;
-int job_id = 0;
+int job_num = 1;
 int shell_terminal;
 pid_t shell_pgid;
+const char *shell_name = "pa2_shell";
+int recent_job_num[2] = {0, 0};
 
 // function prototypes ===============================================================
 int is_special_char(char c);
@@ -90,13 +95,13 @@ int is_ImplmentedCmd(char *cmd);
 void exec_cmd(int argc, char *arg[]);
 
 void remove_job_from_job_list(Job *job);
+void check_background_job_status();
 void wait_for_job(Job *job);
 void put_job_in_foreground(Job *job, int cont);
 void put_job_in_background(Job *job, int cont);
 void launch_job(Job *job);
 void evaluate_cmd(char *cmd);
 void init_shell();
-
 
 // lexing & its helpers ===============================================================
 int is_special_char(char c) {
@@ -178,7 +183,7 @@ void print_jobs() {
     Job *cur_job = first_job;
     while (cur_job != NULL) {
         Process *cur_proc = cur_job->first_process;
-        printf("job: %d\n", cur_job->job_id);
+        printf("job: %d\n", cur_job->job_num);
         while (cur_proc != NULL) {
             printf("command: %s\n", cur_proc->args[0]);
             for (int i = 1; i < cur_proc->argc; i++) {
@@ -197,21 +202,20 @@ void print_jobs() {
     }
 }
 
-
 Job *parse(Token *tokens) {
     if (tokens[0].type == TOKEN_END) {
         return NULL;
     }
 
     Job *job = (Job *)malloc(sizeof(Job));
-    job->job_id = 0;
+    job->job_num = 0;
     job->pgid = 0;
-    job->status = READY;
     job->first_process = NULL;
     job->is_background = 0;
     job->is_piped = 0;
     job->is_redirected = 0;
     job->is_append = 0;
+    job->is_ampersand = 0;
     job->next = NULL;
 
     Process *cur_proc = NULL;
@@ -227,12 +231,11 @@ Job *parse(Token *tokens) {
                 cur_proc = cur_proc->next;
             }
             // initialize the process
-            for(int j = 0; j < MAX_ARGS; j++){
+            for (int j = 0; j < MAX_ARGS; j++) {
                 cur_proc->args[j] = NULL;
             }
             cur_proc->args[0] = strdup(tokens[i].data);
             cur_proc->pid = 0;
-            cur_proc->status = READY;
             cur_proc->argc = 1; // since we have the command
             cur_proc->input_file = NULL;
             cur_proc->output_file = NULL;
@@ -263,8 +266,9 @@ Job *parse(Token *tokens) {
             break;
         case TOKEN_BACKGROUND:
             job->is_background = 1;
-            job->job_id = job_id;
-            job_id++;
+            job->is_ampersand = 1;
+            job->job_num = job_num;
+            job_num++;
             break;
         default:
             break;
@@ -273,7 +277,6 @@ Job *parse(Token *tokens) {
 
     return job;
 }
-
 
 // free functions =====================================================================
 void free_tokens(Token *tokens) {
@@ -294,7 +297,7 @@ void free_process(Process *proc) {
     if (proc->output_file != NULL) {
         free(proc->output_file);
     }
-    if (proc->next != NULL){
+    if (proc->next != NULL) {
         free_process(proc->next);
     }
     free(proc);
@@ -309,7 +312,7 @@ void free_job(Job *job) {
         free_process(cur_proc);
         cur_proc = next_proc;
     }
-    if(job->next != NULL){
+    if (job->next != NULL) {
         free_job(job->next);
     }
     free(job);
@@ -318,82 +321,230 @@ void free_job(Job *job) {
 // built-in command functions ==================================================================
 void builtin_bg(char *arg[]) {
     // job number format: %<job_number>
-
     // no job number, set most recent job to background
     if (arg[1] == NULL) {
         Job *job = first_job;
         while (job->next != NULL) {
-            if (job->status == STOPPED) {
+            // fixme: job->job_num == recent_job_num[0]
+            if (job->status == STOPPED && job->is_background) {
                 put_job_in_background(job, 1);
                 // comeback: this process should come to the first job?
-                return;
-            } else if (job->status == READY) { // [ ] 사실상 stopped만 존재하지 않나?
-                job->is_background = 1;
-                launch_job(job);
-                return;
-            } else if (job->status == RUNNING) {
-                put_job_in_background(job, 0); // no need to continue since it's already running
                 return;
             }
             job = job->next;
         }
 
-        fprintf(stderr, "pa2_shell: bg: current: no such job\n");
-    } else {
-        int job_number;
+        printf("%s: bg: current: no such job\n", shell_name);
+    }
+    // job number is given
+    else {
+        // atoi is safe to use because 0 is not a valid job number
+        int job_number = atoi(arg[1] + 1); // +1 to skip the % sign
+        Job *j = first_job;
 
-        if ((job_number = atoi(arg[1] + 1)) == 0) {
-            fprintf(stderr, "pa2_shell bg: %s: no such job\n", arg[1]);
+        // if the job number is invalid
+        if (job_number < 1) {
+            printf("%s: bg: %s: no such job\n", shell_name, arg[1]);
             return;
+        }
+
+        while (j != NULL) {
+            if (j->job_num == job_number && j->status == STOPPED && !j->is_background) {
+                put_job_in_background(j, 1);
+                return;
+            }
+            j = j->next;
+        }
+
+        printf("%s: bg: %d: no such job\n", shell_name, job_number);
+    }
+    return;
+}
+
+void builtin_fg(char *arg[]) {
+    // if no job number is provided
+    if (arg[1] == NULL) {
+        Job *job = first_job;
+        while (job != NULL) {
+            // fixme: job->job_num == recent_job_num[0]
+            if (job->status == STOPPED && !job->is_background) {
+                put_job_in_foreground(job, 1);
+                return;
+            }
+            job = job->next;
+        }
+        return;
+    }
+    // if job number is provided
+    else {
+        // atoi is safe to use because 0 is not a valid job number
+        int job_number = atoi(arg[1] + 1); // +1 to skip the % sign
+
+        // if the job number is invalid (string or less than 1)
+        if (job_number < 1) {
+            printf("%s: fg: %s: no such job\n", shell_name, arg[1]);
+            return;
+        }
+
+        // find job with the given job number and send to foreground
+        Job *j = first_job;
+        while (j != NULL) {
+            if (j->job_num == job_number && j->status == STOPPED && j->is_background) {
+                put_job_in_foreground(j, 1);
+                return;
+            }
+            j = j->next;
+        }
+        printf("%s: fg: %d: no such job\n", shell_name, job_number);
+    }
+    return;
+}
+
+// fixme: printing order is wrong
+void builtin_jobs(char *arg[]) {
+    Job *j = first_job;
+    char *status[2] = {"Running", "Stopped"};
+
+    while (j != NULL) {
+        if (j->status != DONE) {
+            // most recent job
+            if (j->job_num == recent_job_num[0]) {
+                printf("[%d]+ %s ", j->job_num, status[j->status]);
+                for (int i = 0; j->first_process->args[i] != NULL; i++)
+                    printf("%s ", j->first_process->args[i]);
+            }
+            // second most recent job
+            else if (j->job_num == recent_job_num[1]) {
+                printf("[%d]- %s ", j->job_num, status[j->status]);
+                for (int i = 0; j->first_process->args[i] != NULL; i++)
+                    printf("%s ", j->first_process->args[i]);
+            }
+            // other jobs
+            else {
+                printf("[%d] %s ", j->job_num, status[j->status]);
+                for (int i = 0; j->first_process->args[i] != NULL; i++)
+                    printf("%s ", j->first_process->args[i]);
+            }
+            // todo: come back and fix this bash prints out & irregularly
+            if (j->is_ampersand) {
+                printf("&");
+            }
+            printf("\n");
         }
     }
 }
 
-void builtin_fg(char *arg[]) {
-    // todo: implement this
-}
-
-void builtin_jobs(char *arg[]) {
-}
-
 void builtin_pwd(char *arg[]) {
+    // -P option (print physical directory)
+    if (strcmp(arg[1], "-P") == 0) {
+        char cwd[MAX_PATH];
+        if (getcwd(cwd, MAX_PATH) == NULL) {
+            fprintf(stderr, "%s: pwd: %s\n", shell_name, strerror(errno));
+            exit(1);
+        } else {
+            printf("%s\n", cwd);
+        }
+    }
+    // invalid option (begins with - but not -L)
+    else if (arg[1][0] == '-' && strcmp(arg[1], "-L")) {
+        fprintf(stderr, "%s: pwd: -%c: invalid option\n", shell_name, arg[1][0]);
+        fprintf(stderr, "pwd: usage: pwd [-LP]\n");
+    }
+    // -L options or other (print logical directory by default)
+    else {
+        char *cwd = getenv("PWD");
+        if (cwd == NULL) {
+            fprintf(stderr, "%s: pwd: %s\n", shell_name, strerror(errno));
+            exit(1);
+        } else {
+            printf("%s\n", cwd);
+        }
+    }
 
+    return;
 }
 
 void builtin_cd(char *arg[]) {
+    // if no argument is passed, change to home directory
+    if (arg[1] == NULL) {
+        if (chdir(getenv("HOME")) == -1)
+            fprintf(stderr, "%s: cd: %s: No such file or directory\n", shell_name, getenv("HOME"));
+        return;
+    }
+    // if argument is passed, change to the directory
+    if (chdir(arg[1]) == -1) {
+        switch (errno) {
+        case ENOENT:
+            fprintf(stderr, "%s: cd: %s: No such file or directory\n", shell_name, arg[1]);
+            break;
+        case ENOTDIR:
+            fprintf(stderr, "%s: cd: %s: Not a directory\n", shell_name, arg[1]);
+            break;
+        case EACCES:
+            fprintf(stderr, "%s: cd: %s: Permission denied\n", shell_name, arg[1]);
+            break;
+        default:
+            fprintf(stderr, "%s: cd: %s: %s\n", shell_name, arg[1], strerror(errno));
+        }
+        return;
+    }
 }
 
 void builtin_exit(char *arg[]) {
+    char *end;
+    long exit_code = strtol(arg[1], &end, 10);
+
+    // invalid argument, no digits parsed
+    if (end == arg[1] || exit_code < 0) {
+        fprintf(stderr, "%s: exit: %s: numeric argument required\n", shell_name, arg[1]);
+        exit(2);
+        return;
+    }
+
+    // if there are more than 1 argument
+    if (arg[2] != NULL) {
+        fprintf(stderr, "%s: exit: too many arguments\n", shell_name);
+        exit(2);
+        return;
+    }
+
+    if (exit_code > 255) {
+        exit(255);
+        return;
+    }
+
+    exit(exit_code);
+    return;
 }
 
 int is_BuiltInCmd(char *cmd) {
-    if (strcmp(cmd, "bg") == 0) 
+    if (strcmp(cmd, "bg") == 0)
         return 1;
     if (strcmp(cmd, "fg") == 0)
         return 2;
     if (strcmp(cmd, "jobs") == 0)
         return 3;
-    if (strcmp(cmd, "pwd") == 0) 
+    if (strcmp(cmd, "pwd") == 0)
         return 4;
-    if (strcmp(cmd, "cd") == 0) 
+    if (strcmp(cmd, "cd") == 0)
         return 5;
-    if (strcmp(cmd, "exit") == 0) 
-        return 6; 
+    if (strcmp(cmd, "exit") == 0)
+        return 6;
     return 0;
 }
 
 int is_ImplmentedCmd(char *cmd) {
-    if(strcmp(cmd, "head") == 0)
+    if (strcmp(cmd, "head") == 0)
         return 1;
-    if(strcmp(cmd, "tail") == 0)
+    if (strcmp(cmd, "tail") == 0)
         return 1;
-    if(strcmp(cmd, "cat") == 0)
+    if (strcmp(cmd, "cat") == 0)
         return 1;
-    if(strcmp(cmd, "mv") == 0)
+    if (strcmp(cmd, "mv") == 0)
         return 1;
-    if(strcmp(cmd, "cp") == 0)
+    if (strcmp(cmd, "cp") == 0)
         return 1;
-    if(strcmp(cmd, "rm") == 0)
+    if (strcmp(cmd, "rm") == 0)
         return 1;
     return 0;
 }
@@ -424,8 +575,9 @@ void exec_cmd(int argc, char *arg[]) {
             break;
         }
     } else if (is_ImplmentedCmd(arg[0])) {
-        char path[1024];
-        sprintf(path, "bin/pa2_%s", arg[0]);
+        // fixme: won't work if we move to different directories
+        char path[MAX_PATH];
+        snprintf(path, sizeof(path), "bin/pa2_%s", arg[0]);
         execv(path, arg);
         perror("execv error");
         exit(1);
@@ -457,28 +609,91 @@ void remove_job_from_job_list(Job *job) {
     return;
 }
 
+void check_background_job_status() {
+    Job *j = first_job;
+    while (j != NULL) {
+        Process *p = j->first_process;
+        while (p != NULL) {
+            int status;
+            pid_t wait_res = waitpid(p->pid, &status, WNOHANG);
 
+            if (wait_res == -1) {
+                perror("waitpid error");
+                exit(1);
+            } else if (wait_res == 0) {
+                // process still running
+            } else {
+                if (WIFEXITED(status) || WIFSIGNALED(status)) {
+                    p->status = DONE;
+                    j->status = DONE;
+                } else if (WIFSTOPPED(status)) {
+                    p->status = STOPPED;
+                    j->status = STOPPED;
+                    return; //[ ] check again
+                }
+            }
+
+            p = p->next;
+        }
+        Job *next = j->next;
+        if (j->status == DONE) {
+            remove_job_from_job_list(j);
+        }
+        j = next;
+    }
+
+    return;
+}
 
 void wait_for_job(Job *job) {
     int status;
+    int pid_ret;
 
-    while (waitpid(-job->pgid, &status, WUNTRACED) > 0) {
+    while ((pid_ret = waitpid(-job->pgid, &status, WUNTRACED)) > 0) {
+        if (pid_ret == -1) {
+            if (errno == ECHILD) { // no child processes
+                job->status = DONE;
+                break;
+            } else { // other errors
+                perror("waitpid error");
+                exit(1);
+            }
+        }
+
         if (WIFSTOPPED(status)) {
             job->status = STOPPED;
-        } else if (WIFEXITED(status)) {
+            job->is_background = 1;
+
+            // set the terminal back to the shell and print the message
+            tcsetpgrp(shell_terminal, shell_pgid);
+
+            // print the message (+ since it's the most recent job)
+            // add job number if it's not set
+            if (!job->job_num) {
+                job->job_num = job_num;
+                job_num++;
+            }
+            printf("\n[%d]+ Stopped %d\n", job->job_num, job->pgid);
+
+            // todo: move the job to the most recent job
+            recent_job_num[1] = recent_job_num[0];
+            recent_job_num[0] = job->job_num;
+
+            return;
+        } else if (WIFEXITED(status) || WIFSIGNALED(status)) {
             job->status = DONE;
-            // remove_job_from_job_list(job);
-        } else if (WIFSIGNALED(status)) { // comeback: this is weird lol
-            job->status = ZOMBIE;
-            // remove_job_from_job_list(job);
         }
     }
+
+    remove_job_from_job_list(job);
+
+    return;
 }
 
 void put_job_in_foreground(Job *job, int cont) {
     tcsetpgrp(shell_terminal, job->pgid);
     job->is_background = 0;
-    job->job_id = 0;
+    job->job_num = 0;
 
     if (cont) {
         if (kill(-job->pgid, SIGCONT) < 0) {
@@ -494,10 +709,10 @@ void put_job_in_foreground(Job *job, int cont) {
 void put_job_in_background(Job *job, int cont) {
     job->is_background = 1;
 
-    // assign job_id
-    if (job->job_id == 0) {
-        job->job_id = job_id;
-        job_id++;
+    // assign job_num
+    if (job->job_num == 0) {
+        job->job_num = job_num;
+        job_num++;
     }
 
     if (cont) {
@@ -649,6 +864,14 @@ int main() {
 
     while (1) {
         char *cmd;
+        char cwd[MAX_PATH];
+
+        if (getcwd(cwd, MAX_PATH) == NULL) {
+            perror("getcwd error");
+            exit(1);
+        } else {
+            printf("%s: %s ", shell_name, cwd);
+        }
 
         if ((cmd = readline("$ ")) == NULL) {
             break;
@@ -656,15 +879,16 @@ int main() {
 
         add_history(cmd);
         evaluate_cmd(cmd);
+        check_background_job_status();
         free(cmd);
     }
 
     // free all jobs
-    // Job *cur_job = first_job;
-    // Job *next_job;
-    // while (cur_job != NULL) {
-    //     remove_job_from_job_list(cur_job);
-    // }
+    Job *cur_job = first_job;
+    while (cur_job != NULL && cur_job->next != NULL) {
+        remove_job_from_job_list(cur_job);
+        cur_job = cur_job->next;
+    }
 
     return 0;
 }
