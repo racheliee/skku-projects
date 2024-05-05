@@ -45,6 +45,7 @@ void copy_file(const char *src, const char *dst) {
         default:
             fprintf(stderr, "pa2_cp: %s\n", strerror(errno));
         }
+        close(src_fd);
         exit(1);
     }
 
@@ -94,11 +95,9 @@ int main(int argc, char *argv[]) {
     case 1: // no arguments
         fprintf(stderr, "pa2_cp: missing file operand\n");
         exit(1);
-        return -1;
     case 2: // only one argument
         fprintf(stderr, "pa2_cp: missing destination file operand after '%s'\n", argv[1]);
         exit(1);
-        return -1;
     default:
         break;
     }
