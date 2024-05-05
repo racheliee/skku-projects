@@ -10,6 +10,34 @@
 
 #define MAX_PATH 4096
 
+void move_file(const char *src, const char *dst){
+    if(rename(src, dst) == -1){
+        switch(errno){
+            case EACCES:
+                fprintf(stderr, "pa2_mv: cannot move '%s' to '%s': Permission denied\n", src, dst);
+                break;
+            case ENOENT:
+                fprintf(stderr, "pa2_mv: cannot move '%s' to '%s': No such file or directory\n", src, dst);
+                break;
+            case EPERM:
+                fprintf(stderr, "pa2_mv: cannot move '%s' to '%s': Operation not permitted\n", src, dst);
+                break;
+            default:
+                fprintf(stderr, "pa2_mv: cannot move '%s' to '%s': %s\n", src, dst, strerror(errno));
+        }
+        return; // do not exit, continue with the next file
+    }
+}
+
+int is_dest_subdir(const char *src, const char *dst){
+    char src_path[MAX_PATH];
+    char dst_path[MAX_PATH];
+    realpath(src, src_path);
+    realpath(dst, dst_path);
+
+    return strstr(dst_path, src_path) != NULL;
+}
+
 int main(int argc, char *argv[]){
     int opt;
     while((opt = getopt(argc, argv, "h")) != -1){
@@ -21,8 +49,8 @@ int main(int argc, char *argv[]){
                 fprintf(stdout, "  -h, --help     display this help and exit\n");
                 return 0;
             default:
-                fprintf(stderr, "Try 'mv --help' for more information.\n");
-                return -1;
+                fprintf(stderr, "Try 'mv -h' for more information.\n");
+                exit(1);
         }
     }
 
@@ -30,67 +58,55 @@ int main(int argc, char *argv[]){
     switch(argc){
         case 1:
             fprintf(stderr, "pa2_mv: missing file operand\n");
-            return -1;
+            exit(1);
         case 2:
             fprintf(stderr, "pa2_mv: missing destination file operand after '%s'\n", argv[1]);
-            return -1;
+            exit(1);
         default:
             break;
     }
 
-    struct stat statbuf;
-    char path[MAX_PATH];
-    
-    // [ ] this was by copilot lmao
-    stat(argv[2], &statbuf);
-    if (S_ISDIR(statbuf.st_mode))
-    {
-        char *base_name = basename(argv[1]);
-        snprintf(path, sizeof(path), "%s/%s", argv[2], base_name);
-    } else {
-        strncpy(path, argv[2], sizeof(path) - 1);
-        path[sizeof(path) - 1] = '\0';
-    }
 
-    // check if source and destination are the same
-    if(strcmp(argv[1], path) == 0){
-        fprintf(stderr, "pa2_mv: '%s' and '%s' are the same file\n", argv[1], path);
-        return -1;
-    }
+    // stat the destination file (the last argument)
+    const char *dest = argv[argc - 1];
+    struct stat dst_st;
+    struct stat src_st;
+    int is_directory = (stat(dest, &dst_st) == 0 && S_ISDIR(dst_st.st_mode));
 
-    if (rename(argv[1], path) == -1) { // fixme: path에 대한 에러처리가 안되어잇음
-        switch (errno)
-        { // fixme: directory cannot be accessed도 추가해야함
-            case EACCES:
-                fprintf(stderr, "pa2_mv: Permission denied\n");
-                break;
-            case EISDIR:
-                fprintf(stderr, "pa2_mv: Is a directory\n");
-                break;
-            case ENOENT: // file does not exist
-                fprintf(stderr, "pa2_mv: cannot stat '%s': No such file or directory\n", argv[1]);
-                break;
-            case ENOTDIR:
-                fprintf(stderr, "pa2_mv: Not a directory\n");
-                break;
-            case EPERM:
-                fprintf(stderr, "pa2_mv: Operation not permitted\n");
-                break;
-            case EINVAL: // any invalid argument, when newpath is a subdirectory of oldpath
-                // fixme:  subdirectory error needs to be done but einval takes care of all invalid args
-                fprintf(stderr, "pa2_mv: Invalid argument\n");
-                break;
-            case ENOTEMPTY:
-                fprintf(stderr, "pa2_mv: Directory not empty\n");
-                break;
-            case EEXIST:
-                fprintf(stderr, "pa2_mv: File exists\n");
-                break;
-            default:
-                fprintf(stderr, "pa2_mv: %s\n", strerror(errno));
-                break;
+    for(int i = 1; i < argc -1; ++i){
+        // check if source and destination are the same
+        if(strcmp(argv[i], dest) == 0){
+            fprintf(stderr, "pa2_mv: '%s' and '%s' are the same file\n", argv[i], dest);
+            continue; // move to the next file without exit
         }
-        return -1;
+
+        // check if source file exists
+        if(stat(argv[i], &src_st) == -1){
+            switch(errno){
+                case ENOENT:
+                    fprintf(stderr, "pa2_mv: cannot stat '%s': No such file or directory\n", argv[i]);
+                    break;
+                default:
+                    fprintf(stderr, "pa2_mv: cannot stat '%s': %s\n", argv[i], strerror(errno));
+            }
+            continue; // move to the next file without exit
+        }
+
+        // check if destination is a subdirectory of the source
+        if(is_dest_subdir(argv[i], dest)){
+            fprintf(stderr, "pa2_mv: cannot move '%s' to a subdirectory of itself, '%s'\n", argv[i], dest);
+            continue; // move to the next file without exit
+        }
+
+        // move the file
+        if(is_directory){
+            char *filename = basename(argv[i]);
+            char dst_path[MAX_PATH];
+            snprintf(dst_path, MAX_PATH, "%s/%s", dest, filename);
+            move_file(argv[i], dst_path);
+        }else{
+            move_file(argv[i], dest);
+        }
     }
 
     return 0;
