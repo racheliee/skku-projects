@@ -64,6 +64,8 @@ typedef struct JOB {
     int is_redirected;
     int is_append;
     int recency; // the most recent job has the highest recency
+    char *input_file;
+    char *output_file;
 } Job;
 
 typedef struct RECENT_JOBS {
@@ -233,6 +235,8 @@ Job *parse(Token *tokens) {
     job->is_ampersand = 0;
     job->recency = 0;
     job->next = NULL;
+    job->input_file = NULL;
+    job->output_file = NULL;
 
     Process *cur_proc = NULL;
 
@@ -289,6 +293,9 @@ Job *parse(Token *tokens) {
             break;
         }
     }
+
+    job->input_file = job->first_process->input_file;
+    job->output_file = cur_proc->output_file;
 
     return job;
 }
@@ -798,12 +805,19 @@ void launch_job(Job *job) {
     int in_fd = 0, out_fd = 1;
     job->status = RUNNING;
 
+    // check if the input and output files are the same. if so, return
+    if (job->input_file != NULL && job->output_file != NULL && strcmp(job->input_file, job->output_file) == 0) {
+        fprintf(stderr, "%s: -: input and output file are the same\n", job->first_process->args[0]);
+        return;
+    }
+
     // set input file for first process
     if (job->first_process->input_file != NULL) {
         in_fd = open(job->first_process->input_file, O_RDONLY);
+        // return if the input file cannot be opened
         if (in_fd < 0) {
-            fprintf(stderr, "%s: %s: %s\n", shell_name, job->first_process->input_file, strerror(errno));
-            exit(1);
+            fprintf(stderr, "%s: -: %s: %s\n", job->first_process->args[0], job->first_process->input_file, strerror(errno));
+            return;
         }
     }
 
@@ -811,8 +825,6 @@ void launch_job(Job *job) {
     job->next = first_job;
     first_job = job;
 
-    // TODO: change this later
-    // check if the command is only 1 command
     // these commands have to be here bc process does not need to be forked and redirection/pipe is not supported
     if (strcmp(job->first_process->args[0], "fg") == 0) {
         job->status = DONE;
@@ -838,14 +850,17 @@ void launch_job(Job *job) {
         if (p->next != NULL && p->is_next_pipe) {
             if (pipe(pipe_fd) < 0) {
                 fprintf(stderr, "%s: pipe: %s\n", shell_name, strerror(errno));
-                exit(1);
+                return;
             }
             out_fd = pipe_fd[1];
-        } else { // set output file
+        } 
+        // set output file
+        else {
             out_fd = (p->output_file != NULL) ? open(p->output_file, O_WRONLY | O_CREAT | (p->is_append ? O_APPEND : O_TRUNC), 0644) : 1;
+            // return if the output file cannot be opened
             if (out_fd < 0) {
-                fprintf(stderr, "%s: %s: %s\n", shell_name, p->output_file, strerror(errno));
-                exit(1);
+                fprintf(stderr, "%s: -: %s: %s\n", job->first_process->args[0], job->first_process->input_file, strerror(errno));
+                return;
             }
         }
 
