@@ -1,43 +1,47 @@
+#include <errno.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <sys/stat.h>
-#include <libgen.h>
-#include <getopt.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-void print_file(const char *filename){
+void print_file(const char *filename) {
     FILE *fp;
 
-    if(strcmp(filename, "-") == 0){
+    // open file or stdin
+    if (strcmp(filename, "-") == 0) {
         fp = stdin;
-    }else{
+    } else {
         fp = fopen(filename, "r");
 
-        if(fp == NULL){
+        if (fp == NULL) {
             fprintf(stderr, "pa2_cat: %s: No such file or directory\n", filename);
             return;
         }
 
+        // check if file is a directory
         struct stat st;
-        if(stat(filename, &st) == 0 && S_ISDIR(st.st_mode)){
+        if (stat(filename, &st) == 0 && S_ISDIR(st.st_mode)) {
             fclose(fp);
             fprintf(stderr, "pa2_cat: %s: Is a directory\n", filename);
             return;
         }
     }
 
+    // print the file
     int c;
-    while((c = fgetc(fp)) != EOF){
+    while ((c = fgetc(fp)) != EOF) {
         putchar(c);
         fflush(stdout);
     }
 
-    if(fp != stdin){
+    // close file
+    if (fp != stdin) {
         fclose(fp);
     }
 }
@@ -46,7 +50,7 @@ int main(int argc, char *argv[]) {
     int opt;
     while ((opt = getopt(argc, argv, "h")) != -1) {
         switch (opt) {
-        case 'h':
+        case 'h': //help option
             printf("pa2_cat Usage: %s [file1] [file2] ...\n", argv[0]);
             printf("Concatenate FILE(s) to standard output.\n\n");
             printf("With no FILE, or when FILE is -, read standard input.\n\n");
@@ -60,10 +64,12 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if (argc == 1 || !strcmp(argv[1], "-")) { // read from stdin
+    // if file is not given, read from stdin
+    if (argc == 1 || !strcmp(argv[1], "-")) {
         print_file("-");
-    } else {
-        // read from file (multiple files possible)
+    } 
+    // print all files (multiple files if given)
+    else {
         for (int i = optind; i < argc; i++)
             print_file(argv[i]);
     }

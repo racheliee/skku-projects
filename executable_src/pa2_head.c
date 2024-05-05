@@ -12,13 +12,13 @@
 
 #define BUFFER_SIZE 1024
 
-// function prototypes
 void print_head(char *filename, int num_lines) {
     FILE *fp;
     char* line = NULL;
+    size_t len = 0;
     int lines_printed = 0;
-    int c;
 
+    // open file or stdin
     if (strcmp(filename, "-") == 0) {
         fp = stdin;
     } else {
@@ -37,11 +37,14 @@ void print_head(char *filename, int num_lines) {
         }
     }
 
-    while(lines_printed < num_lines && getline(&line, &c, fp) != -1){
+    // read and print the first num_lines lines
+    while(lines_printed < num_lines && getline(&line, &len, fp) != -1){
         printf("%s", line);
         lines_printed++;
     }
 
+
+    // free memory and close file
     if(line != NULL){
         free(line);
     }
@@ -50,14 +53,13 @@ void print_head(char *filename, int num_lines) {
     }
 }
 
-// function implementations
 int main(int argc, char *argv[]) {
     int opt;
     int num_lines = 10;
 
     while ((opt = getopt(argc, argv, "n:h")) != -1) {
         switch (opt) {
-        case 'n': // set the number of lines to print
+        case 'n': 
             // check if num_lines is a valid number
             char* end;
             num_lines = strtol(optarg, &end, 10);

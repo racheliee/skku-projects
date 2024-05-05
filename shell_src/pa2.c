@@ -324,7 +324,9 @@ void free_job(Job *job) {
     Process *next_proc;
     while (cur_proc != NULL) {
         next_proc = cur_proc->next;
-        free_process(cur_proc);
+        // fixme: causes double free error here
+        // free_process(cur_proc);
+        free(cur_proc);
         cur_proc = next_proc;
     }
 
@@ -336,12 +338,12 @@ void builtin_bg(char *arg[]) {
     // job number format: %<job_number>
     // no job number, set most recent job to background
     if (arg[1] == NULL) {
-         Job *job = first_job;
+        Job *job = first_job;
         while (job->next != NULL) {
             if (job->status == STOPPED && job->is_background) {
                 // print the message
                 printf("[%d] \t", job->job_num);
-                for(int i = 0; i < job->first_process->argc; i++){
+                for (int i = 0; i < job->first_process->argc; i++) {
                     printf("%s ", job->first_process->args[i]);
                 }
                 printf("&\n");
@@ -598,19 +600,23 @@ void builtin_cd(char *arg[]) {
 }
 
 void builtin_exit(char *arg[]) {
-    char *end;
-    long exit_code = strtol(arg[1], &end, 10);
-
-    // invalid argument, no digits parsed
-    if (end == arg[1] || exit_code < 0) {
-        fprintf(stderr, "%s: exit: %s: numeric argument required\n", shell_name, arg[1]);
-        exit(2);
+    if (arg[1] == NULL) {
+        exit(0);
         return;
     }
+
+    char *end;
+    long exit_code = strtol(arg[1], &end, 10);
 
     // if there are more than 1 argument
     if (arg[2] != NULL) {
         fprintf(stderr, "%s: exit: too many arguments\n", shell_name);
+        return;
+    }
+
+    // invalid argument, no digits parsed
+    if (end == arg[1] || exit_code < 0) {
+        fprintf(stderr, "%s: exit: %s: numeric argument required\n", shell_name, arg[1]);
         exit(2);
         return;
     }
@@ -1020,7 +1026,7 @@ void sig_handler(int signum) {
 // main ===============================================================================
 int main() {
     root = getcwd(NULL, 0); // get the root directory
-    init_shell(); // initialize the shell
+    init_shell();           // initialize the shell
 
     signal(SIGCHLD, sig_handler);
 
