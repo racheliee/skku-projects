@@ -26,14 +26,14 @@ void print_head(char *filename, int num_lines) {
 
         if(fp == NULL){
             fprintf(stderr, "pa2_head: cannot open '%s' for reading: %s\n", filename, strerror(errno));
-            return;
+            exit(1);
         }
 
         struct stat st;
         if(stat(filename, &st) == 0 && S_ISDIR(st.st_mode)){
             fclose(fp);
             fprintf(stderr, "pa2_head: cannot open '%s' for reading: Is a directory\n", filename);
-            return;
+            exit(1);
         }
     }
 

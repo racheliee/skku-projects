@@ -21,7 +21,7 @@ void print_file(const char *filename) {
 
         if (fp == NULL) {
             fprintf(stderr, "pa2_cat: %s: No such file or directory\n", filename);
-            return;
+            exit(1);
         }
 
         // check if file is a directory
@@ -29,7 +29,7 @@ void print_file(const char *filename) {
         if (stat(filename, &st) == 0 && S_ISDIR(st.st_mode)) {
             fclose(fp);
             fprintf(stderr, "pa2_cat: %s: Is a directory\n", filename);
-            return;
+            exit(1);
         }
     }
 

@@ -29,7 +29,7 @@ void print_tail(char *file_name, int num_lines) {
         // check for errors
         if (fp == NULL) {
             fprintf(stderr, "pa2_tail: cannot open '%s' for reading: %s\n", file_name, strerror(errno));
-            return;
+            exit(1);
         }
 
         // check if file is a directory
@@ -37,7 +37,7 @@ void print_tail(char *file_name, int num_lines) {
         if (stat(file_name, &st) == 0 && S_ISDIR(st.st_mode)) {
             fclose(fp);
             fprintf(stderr, "pa2_tail: cannot open '%s' for reading: Is a directory\n", file_name);
-            return;
+            exit(1);
         }
     }
 
