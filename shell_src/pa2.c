@@ -63,6 +63,7 @@ typedef struct JOB {
     int is_piped;
     int is_redirected;
     int is_append;
+    int recency; // the most recent job has the highest recency
 } Job;
 
 typedef struct RECENT_JOBS {
@@ -77,7 +78,7 @@ int job_num = 1;
 int shell_terminal;
 pid_t shell_pgid;
 const char *shell_name = "pa2_shell";
-int most_recent = 1;
+int recency = 1;
 char *status[4] = {"Ready", "Running", "Stopped", "Done"};
 
 // function prototypes ===============================================================
@@ -194,6 +195,7 @@ void print_jobs() {
         Process *cur_proc = cur_job->first_process;
         printf("job: %d\n", cur_job->job_num);
         printf("status: %s\n", status[cur_job->status]);
+        printf("recent: %d\n", cur_job->recency);
         while (cur_proc != NULL) {
             printf("command: %s\n", cur_proc->args[0]);
             for (int i = 1; i < cur_proc->argc; i++) {
@@ -227,6 +229,7 @@ Job *parse(Token *tokens) {
     job->is_redirected = 0;
     job->is_append = 0;
     job->is_ampersand = 0;
+    job->recency = 0;
     job->next = NULL;
 
     Process *cur_proc = NULL;
@@ -421,10 +424,16 @@ void builtin_jobs(char *arg[]) {
         j = j->next;
     }
 
-    printf("job count: %d\n", job_count);
     for(int i = job_count - 1; i >= 0; i--) {
         Job *job = job_list[i];
-        printf("[%d] %s \t", job->job_num, status[job->status]);
+        if(job->recency == recency-1){
+            printf("[%d]+\t%s \t", job->job_num, status[job->status]);    
+        }else if(job->recency == recency - 2){
+            printf("[%d]-\t%s \t", job->job_num, status[job->status]);
+        }else{
+            printf("[%d]\t%s \t", job->job_num, status[job->status]);
+        }
+
         Process *p = job->first_process;
         for(int j = 0; j < p->argc; j++) {
             printf("%s ", p->args[j]);
@@ -604,12 +613,14 @@ void wait_for_job(Job *job) {
             // add job number if it's not set
             if (!job->job_num) {
                 check_and_reset_job_num();
-                job->job_num = job_num;
-                job_num++;
+                job->job_num = job_num++;
             }
-            printf("\n[%d]+ Stopped %d\n", job->job_num, job->pgid);
+            // update the recency
+            job->recency = recency++;
 
-            // todo: move the job to recent jobs
+            // print the message
+            printf("\n[%d]+\tStopped %d\n", job->job_num, job->pgid);
+
             return;
         } else if (WIFEXITED(status) || WIFSIGNALED(status)) {
             job->status = DONE;
@@ -640,12 +651,15 @@ void put_job_in_foreground(Job *job, int cont) {
 void put_job_in_background(Job *job, int cont) {
     job->is_background = 1;
 
+    // set job number if it's not set
     if (!job->job_num) {
         check_and_reset_job_num();
-        job->job_num = job_num;
-        job_num++;
+        job->job_num = job_num++;
     }
-    printf("[%d]+ %s %d\n", job->job_num, status[job->status], job->pgid);
+    // update the recency
+    job->recency = recency++;
+
+    printf("[%d]+\t%s %d\n", job->job_num, status[job->status], job->pgid);
 
     if (cont) {
         if (kill(-job->pgid, SIGCONT) < 0) {
@@ -670,6 +684,7 @@ void check_and_reset_job_num() {
 
     if (background_job_count < 2) {
         job_num = 1;
+        recency = 1; // reset the recency if needed
     }
 
     return;
@@ -808,7 +823,7 @@ void launch_job(Job *job) {
         put_job_in_foreground(job, 0);
     } else {
         put_job_in_background(job, 0);
-        printf("[%d]+ %s %d\n", job->job_num, status[job->status], job->pgid);
+        printf("[%d]+\t%s %d\n", job->job_num, status[job->status], job->pgid);
     }
 }
 
@@ -879,12 +894,12 @@ void sig_handler(int signum) {
                 j->status = STOPPED;
                 j->is_background = 1;
                 tcsetpgrp(shell_terminal, shell_pgid);
-                printf("\n[%d]+ Stopped %d\n", j->job_num, j->pgid);
+                printf("\n[%d]+\tStopped %d\n", j->job_num, j->pgid);
             } else if (WIFEXITED(status) || WIFSIGNALED(status)) {
                 j->status = DONE;
                 if (j->is_background) {
                     // should be printed the next time we're in the shell
-                    printf("\n[%d]+ Done %d\n", j->job_num, j->pgid);
+                    printf("\n[%d]+\tDone %d\n", j->job_num, j->pgid);
                 }
             }
         }
