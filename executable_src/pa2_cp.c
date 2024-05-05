@@ -1,29 +1,78 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <libgen.h>
 
 #define BUFFER_SIZE 1024
 #define MAX_PATH 4096
 
-// function prototypes
-int is_directory(const char *path);
-void print_cp_file_open_error(const char *filename);
-void print_cp_dir_error(const char *filename);
+void copy_file(const char *src, const char *dst) {
+    int src_fd;
+    int dest_fd;
+
+    // open the source file
+    src_fd = open(src, O_RDONLY);
+    if (src_fd == -1) {
+        switch (errno) {
+        case EACCES:
+            fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Permission denied\n", src);
+            break;
+        case ENOENT:
+            fprintf(stderr, "pa2_cp: cannot stat '%s' for reading: No such file or directory\n", src);
+            break;
+        default:
+            fprintf(stderr, "pa2_cp: %s\n", strerror(errno));
+        }
+        return; // do not exit, continue with the next file
+    }
+
+    // open the destination file
+    dest_fd = open(dst, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (dest_fd == -1) {
+        switch (errno) {
+        case EACCES:
+            fprintf(stderr, "pa2_cp: cannot open '%s' for writing: Permission denied\n", dst);
+            break;
+        case ENOENT:
+            fprintf(stderr, "pa2_cp: cannot stat '%s': No such file or directory\n", dst);
+            break;
+        default:
+            fprintf(stderr, "pa2_cp: %s\n", strerror(errno));
+        }
+        exit(1);
+    }
+
+    // copy the file contents
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_read;
+    ssize_t bytes_written;
+
+    while ((bytes_read = read(src_fd, buffer, BUFFER_SIZE)) > 0) {
+        bytes_written = write(dest_fd, buffer, bytes_read);
+        if (bytes_written == -1) {
+            fprintf(stderr, "pa2_cp: error writing to '%s': %s\n", dst, strerror(errno));
+            close(src_fd);
+            close(dest_fd);
+            exit(1);
+        }
+    }
+
+    // close the files
+    close(src_fd);
+    close(dest_fd);
+
+    return;
+}
 
 // function implementations
 int main(int argc, char *argv[]) {
     int opt;
-    int src_fd; // guaranteed to be a file
-    int dst_fd; // can be a file or a directory
-    char buffer[BUFFER_SIZE];
-    int bytes_read = 0;
 
     while ((opt = getopt(argc, argv, "h")) != -1) {
         switch (opt) {
@@ -35,7 +84,7 @@ int main(int argc, char *argv[]) {
             printf("  -h, --help              display this help and exit\n");
             return 0;
         default:
-            fprintf(stderr, "Try 'cp --help' for more information.\n");
+            fprintf(stderr, "Try 'cp -help' for more information.\n");
             return -1;
         }
     }
@@ -44,138 +93,31 @@ int main(int argc, char *argv[]) {
     switch (argc) {
     case 1: // no arguments
         fprintf(stderr, "pa2_cp: missing file operand\n");
+        exit(1);
         return -1;
     case 2: // only one argument
         fprintf(stderr, "pa2_cp: missing destination file operand after '%s'\n", argv[1]);
+        exit(1);
         return -1;
     default:
         break;
     }
 
+    // stat the destination file (the last argument)
     struct stat dst_st;
-    char path[MAX_PATH];
-    stat(argv[2], &dst_st);
+    int is_directory = (stat(argv[argc - 1], &dst_st) == 0 && S_ISDIR(dst_st.st_mode));
 
-    if(argc == 3 && S_ISREG(dst_st.st_mode)){
-        // open the source file
-        src_fd = open(argv[1], O_RDONLY);
-        if (src_fd == -1) {
-            print_cp_file_open_error(argv[1]);
-        }
-
-        // open the destination file
-        dst_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (dst_fd == -1) {
-            print_cp_file_open_error(argv[2]);
-        }
-
-        // copy the file contents
-        while((bytes_read = read(src_fd, buffer, BUFFER_SIZE)) > 0){
-            if(write(dst_fd, buffer, bytes_read) == -1){
-                fprintf(stderr, "pa2_cp: error writing to '%s': %s\n", argv[2], strerror(errno));
-                return -1;
-            }
-        }
-
-        // close the files
-        if(src_fd != 0) close(src_fd);
-        if(dst_fd != 0) close(dst_fd);
-
-    } else { // when destination is a directory
-        // check if the last argument is a directory
-        if (stat(argv[argc - 1], &dst_st) == -1) {
-            //[ ] check error message
-            fprintf(stderr, "pa2_cp: cannot stat '%s': %s\n", argv[argc - 1], strerror(errno));
-            return -1;
-        }
-
-        if (!S_ISDIR(dst_st.st_mode)) {
-            fprintf(stderr, "pa2_cp: target '%s' is not a directory\n", argv[argc - 1]);
-            return -1;
-        }
-
-        // copy each file to the directory
-        for(int i = 1; i < argc-1; i++){
-            // open the source file
-            src_fd = open(argv[i], O_RDONLY);  
-            if(src_fd == -1){
-                print_cp_file_open_error(argv[i]);
-                return -1;
-            }
-
-            // create a new path for the file
-            char* filename = basename(argv[i]); //gets filename without the path
-
+    // loop through the source files and copy them to the destination
+    for (int i = 1; i < argc - 1; ++i) {
+        if (is_directory) {
+            char *filename = basename(argv[i]);
             char dst_path[MAX_PATH];
-            // concatenate the directory path and the filename
-            snprintf(dst_path, MAX_PATH, "%s/%s", argv[argc-1], filename); 
-
-            // open the destination file
-            dst_fd = open(dst_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            if(dst_fd == -1){
-                print_cp_file_open_error(dst_path);
-                return -1;
-            }
-
-            // copy the file contents
-            while((bytes_read = read(src_fd, buffer, BUFFER_SIZE)) > 0){
-                if(write(dst_fd, buffer, bytes_read) == -1){
-                    fprintf(stderr, "pa2_cp: error writing to '%s': %s\n", dst_path, strerror(errno));
-                    return -1;
-                }
-            }
-
-            // close the files
-            if(src_fd != 0) close(src_fd);
-            if(dst_fd != 0) close(dst_fd);
+            snprintf(dst_path, MAX_PATH, "%s/%s", argv[argc - 1], filename);
+            copy_file(argv[i], dst_path);
+        } else {
+            copy_file(argv[i], argv[argc - 1]);
         }
     }
 
     return 0;
-}
-
-void print_cp_file_open_error(const char *filename) {
-    switch (errno) {
-    case EACCES: // permission denied
-        fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Permission denied\n", filename);
-        break;
-    case EISDIR: // file is a directory
-        fprintf(stderr, "pa2_cp: cannnot open '%s' for reading: Is a directory\n", filename);
-        break;
-    case ENOENT: // file does not exist
-        fprintf(stderr, "pa2_cp: cannot stat '%s': No such file or directory\n", filename);
-        break;
-    case ENOTDIR: // not a directory
-        // comeback: this error is not needed probably
-        fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Not a directory\n", filename);
-        break;
-    case EPERM: // operation not permitted
-        fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Operation not permitted\n", filename);
-        break;
-    default:
-        fprintf(stderr, "pa2_cp: %s\n", strerror(errno));
-    }
-}
-
-// fixme: check error messages
-void print_cp_dir_error(const char *filename){
-    switch(errno){
-        case EACCES:
-            fprintf(stderr, "pa2_cp: cannot stat '%s': Permission denied\n", filename);
-            break;
-        case EISDIR:
-            fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Is a directory\n", filename);
-            break;
-        case ENOENT:
-            fprintf(stderr, "pa2_cp: cannot open '%s' for reading: No such file or directory\n", filename);
-            break;
-        case ENOTDIR:
-            fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Not a directory\n", filename);
-            break;
-        case EPERM:
-            fprintf(stderr, "pa2_cp: cannot open '%s' for reading: Operation not permitted\n", filename);
-            break;
-        default:
-            fprintf(stderr, "pa2_cp: %s\n", strerror(errno));
-    }
 }
