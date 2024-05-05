@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
             return 0;
         default:
             fprintf(stderr, "pa2_cat: invalid option -- '%c'\n", opt);
-            fprintf(stderr, "Try 'cat --help' for more information.\n");
+            fprintf(stderr, "Try 'cat -help' for more information.\n");
             return -1;
         }
     }
