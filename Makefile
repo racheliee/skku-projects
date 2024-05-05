@@ -1,6 +1,6 @@
 # Compiler
 CC=gcc
-CFLAGS=-Wall -std=gnu99
+CFLAGS=-Wall -std=gnu99 -D_GNU_SOURCE
 LDFLAGS=-lreadline -lhistory
 
 # Directories

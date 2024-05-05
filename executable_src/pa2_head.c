@@ -7,7 +7,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <libgen.h>
 #include <getopt.h>
 
 #define BUFFER_SIZE 1024
