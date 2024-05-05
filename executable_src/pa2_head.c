@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
             printf("  -h, --help              display this help and exit\n");
             return 0;
         default:
-            fprintf(stderr, "Try 'head -help' for more information.\n");
+            fprintf(stderr, "Try 'head -h' for more information.\n");
             return -1;
         }
     }

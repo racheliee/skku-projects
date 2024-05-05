@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
             printf("  -h, --help              display this help and exit\n");
             return 0;
         default:
-            fprintf(stderr, "Try 'tail -help' for more information.\n");
+            fprintf(stderr, "Try 'tail -h' for more information.\n");
             return -1;
         }
     }
