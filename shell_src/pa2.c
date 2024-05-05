@@ -80,6 +80,7 @@ pid_t shell_pgid;
 const char *shell_name = "pa2_shell";
 int recency = 1;
 char *status[4] = {"Ready", "Running", "Stopped", "Done"};
+char done_buffer[MAX_PATH];
 
 // function prototypes ===============================================================
 int is_special_char(char c);
@@ -337,9 +338,16 @@ void builtin_bg(char *arg[]) {
         Job *job = first_job;
         while (job->next != NULL) {
             // fixme: job->job_num == recent_job_num[0]
-            if (job->status == STOPPED && job->is_background) {
+            if (job->status == STOPPED || job->is_background) {
+                // print the message
+                printf("[%d] \t", job->job_num);
+                for(int i = 0; i < job->first_process->argc; i++){
+                    printf("%s ", job->first_process->args[i]);
+                }
+                printf("&\n");
+                // set the job to background
+                job->is_ampersand = 1;
                 put_job_in_background(job, 1);
-                // comeback: this process should come to the first job?
                 return;
             }
             job = job->next;
@@ -360,7 +368,15 @@ void builtin_bg(char *arg[]) {
         }
 
         while (j != NULL) {
-            if (j->job_num == job_number && j->status == STOPPED && !j->is_background) {
+            if (j->job_num == job_number) {
+                // print the message
+                printf("[%d] \t", j->job_num);
+                for(int i = 0; i < j->first_process->argc; i++){
+                    printf("%s ", j->first_process->args[i]);
+                }
+                printf("&\n");
+                // set the job to background
+                j->is_ampersand = 1;
                 put_job_in_background(j, 1);
                 return;
             }
@@ -379,6 +395,11 @@ void builtin_fg(char *arg[]) {
         while (job != NULL) {
             // fixme: job->job_num == recent_job_num[0]
             if (job->is_background) {
+                for(int i = 0; i < job->first_process->argc; i++){
+                    printf("%s ", job->first_process->args[i]);
+                }
+                printf("\n");
+                job->is_ampersand = 0;
                 put_job_in_foreground(job, 1);
                 return;
             }
@@ -400,7 +421,12 @@ void builtin_fg(char *arg[]) {
         // find job with the given job number and send to foreground
         Job *j = first_job;
         while (j != NULL) {
-            if (j->job_num == job_number && j->status == STOPPED && j->is_background) {
+            if (j->job_num == job_number) {
+                j->is_ampersand = 0;
+                for(int i = 0; i < j->first_process->argc; i++){
+                    printf("%s ", j->first_process->args[i]);
+                }
+                printf("\n");
                 put_job_in_foreground(j, 1);
                 return;
             }
@@ -659,8 +685,6 @@ void put_job_in_background(Job *job, int cont) {
     // update the recency
     job->recency = recency++;
 
-    printf("[%d]+\t%s %d\n", job->job_num, status[job->status], job->pgid);
-
     if (cont) {
         if (kill(-job->pgid, SIGCONT) < 0) {
             perror("kill (SIGCONT)");
@@ -731,7 +755,7 @@ void launch_job(Job *job) {
         return;
     }
 
-    print_jobs();
+    // print_jobs();
 
     for (p = job->first_process; p; p = p->next) {
         if (p->next != NULL && p->is_next_pipe) {
@@ -758,6 +782,7 @@ void launch_job(Job *job) {
                 }
                 setpgid(child_pid, job->pgid);
 
+                // if the job is not background, set the terminal to the job's process group
                 if (!job->is_background) {
                     tcsetpgrp(shell_terminal, job->pgid);
                 }
@@ -823,7 +848,7 @@ void launch_job(Job *job) {
         put_job_in_foreground(job, 0);
     } else {
         put_job_in_background(job, 0);
-        printf("[%d]+\t%s %d\n", job->job_num, status[job->status], job->pgid);
+        printf("[%d]+\t %d\n", job->job_num, job->pgid);
     }
 }
 
@@ -897,9 +922,24 @@ void sig_handler(int signum) {
                 printf("\n[%d]+\tStopped %d\n", j->job_num, j->pgid);
             } else if (WIFEXITED(status) || WIFSIGNALED(status)) {
                 j->status = DONE;
+
                 if (j->is_background) {
-                    // should be printed the next time we're in the shell
-                    printf("\n[%d]+\tDone %d\n", j->job_num, j->pgid);
+                    // if a background process ends it should be printed the next time we're in the shell
+                    int curr_len = strlen(done_buffer);
+                    char arg_buffer[MAX_PATH];
+                    int arg_index = 0;
+                    for(int i = 0; i < j->first_process->argc; i++){
+                        for(int k = 0; k < strlen(j->first_process->args[i]); k++){
+                            arg_buffer[arg_index++] = j->first_process->args[i][k];
+                        }
+                        arg_buffer[arg_index++] = ' ';
+                    }
+
+                    int len = snprintf(done_buffer + curr_len, MAX_PATH - curr_len, "[%d]\tDone \t%s", j->job_num, arg_buffer);
+                    if(len < 0 || len >= MAX_PATH - curr_len){
+                        fprintf(stderr, "%s: sig_handler: done_buffer: buffer overflow - too many done jobs to report.\n", shell_name);
+                        exit(1);
+                    }   
                 }
             }
         }
@@ -919,16 +959,26 @@ int main() {
         if (getcwd(cwd, MAX_PATH) == NULL) {
             perror("getcwd error");
             exit(1);
-        } else {
-            printf("%s: %s ", shell_name, cwd);
         }
 
-        if ((cmd = readline("$ ")) == NULL) {
+        // create prompt
+        char prompt[MAX_PATH];
+        strcpy(prompt, "pa2_shell: ");
+        strcat(prompt, cwd);
+        strcat(prompt, "$ ");
+
+        if ((cmd = readline(prompt)) == NULL) {
             break;
         }
 
         add_history(cmd);
         evaluate_cmd(cmd);
+        // print the message if there is a done background job
+        if(strcmp(done_buffer, "") != 0){
+            printf("%s\n", done_buffer);
+            strcpy(done_buffer, ""); // reset the buffer
+        }
+
         free(cmd);
     }
 
