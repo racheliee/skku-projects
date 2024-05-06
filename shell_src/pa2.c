@@ -329,8 +329,6 @@ void free_job(Job *job) {
     Process *next_proc;
     while (cur_proc != NULL) {
         next_proc = cur_proc->next;
-        // fixme: causes double free error here
-        // free_process(cur_proc);
         free(cur_proc);
         cur_proc = next_proc;
     }
@@ -893,7 +891,6 @@ void launch_job(Job *job) {
         }
         // set the input file descriptor to the read end of the pipe
         // and close the write end of the pipe in the parent
-        // comeback: is this needed?
         if(p->is_next_pipe) {
             close(pipe_fd[1]);
             in_fd = pipe_fd[0];
