@@ -311,16 +311,14 @@ void free_tokens(Token *tokens) {
 
 void free_process(Process *proc) {
     for (int i = 0; i < proc->argc; i++) {
-        free(proc->args[i]);
+        if(proc->args[i] != NULL)
+            free(proc->args[i]);
     }
     if (proc->input_file != NULL) {
         free(proc->input_file);
     }
     if (proc->output_file != NULL) {
         free(proc->output_file);
-    }
-    if (proc->next != NULL) {
-        free_process(proc->next);
     }
     free(proc);
     return;
@@ -335,6 +333,13 @@ void free_job(Job *job) {
         // free_process(cur_proc);
         free(cur_proc);
         cur_proc = next_proc;
+    }
+
+    if (job->input_file != NULL) {
+        free(job->input_file);
+    }
+    if (job->output_file != NULL) {
+        free(job->output_file);
     }
 
     free(job);
@@ -853,6 +858,16 @@ void launch_job(Job *job) {
                 return;
             }
             out_fd = pipe_fd[1];
+
+            // if output file is set, open the file
+            if(p->output_file != NULL) {
+                out_fd = open(p->output_file, O_WRONLY | O_CREAT | (p->is_append ? O_APPEND : O_TRUNC), 0644);
+                // return if the output file cannot be opened
+                if (out_fd < 0) {
+                    fprintf(stderr, "%s: -: %s: %s\n", job->first_process->args[0], job->first_process->input_file, strerror(errno));
+                    return;
+                }
+            }
         } 
         // set output file
         else {
@@ -929,6 +944,14 @@ void launch_job(Job *job) {
         }
         if (out_fd != 1) {
             close(out_fd);
+        }
+        // set the input file descriptor to the read end of the pipe
+        // and close the write end of the pipe in the parent
+        if(p->next != NULL && p->is_next_pipe) {
+            close(pipe_fd[1]);
+            in_fd = pipe_fd[0];
+        } else {
+            in_fd = 0;
         }
         in_fd = pipe_fd[0];
     }
