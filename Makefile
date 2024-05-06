@@ -38,7 +38,7 @@ $(BINDIR):
 	mkdir -p $(BINDIR)
 
 clean:
-	rm -rf $(BINDIR)/*
+	rm -rf $(BINDIR)
 
 pa2: all
 
