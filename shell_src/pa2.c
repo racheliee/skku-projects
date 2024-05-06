@@ -11,10 +11,10 @@
 #include <unistd.h>
 
 // macros ===========================================================================
-#define MAX_ARGS 100
-#define MAX_TOKENS 200
-#define MAX_PATH 4096
-#define MAX_JOBS 8192
+#define MAX_ARGS 100   // maximum number of arguments
+#define MAX_TOKENS 200 // maximum number of tokens
+#define MAX_PATH 4096  // maximum path length
+#define MAX_JOBS 8192  // maximum number of jobs
 
 // structs ===========================================================================
 typedef enum {
@@ -58,32 +58,26 @@ typedef struct JOB {
     Status status;
     struct JOB *next;
     struct PROCESS *first_process;
-    int is_background;
-    int is_ampersand;
-    int is_piped;
-    int is_redirected;
-    int is_append;
-    int recency; // the most recent job has the highest recency
+    int is_background; // if the job is backgrounded
+    int is_ampersand;  // if the job is backgrounded with &
+    int is_piped;      // for pipe
+    int is_redirected; // for input and output redirection
+    int is_append;     // for output redirection
+    int recency;       // the most recent job has the highest recency
     char *input_file;
     char *output_file;
 } Job;
 
-typedef struct RECENT_JOBS {
-    int job_num;
-    struct RECENT_JOBS *next;
-    Job *job;
-} RecentJob;
-
 // global variables ===================================================================
 Job *first_job = NULL;
-int job_num = 1;
+int job_num = 1; // job number for the next job
 int shell_terminal;
 pid_t shell_pgid;
 const char *shell_name = "pa2_shell";
-int recency = 1;
+int recency = 1; // the most recent job has the highest recency
 char *status[4] = {"Ready", "Running", "Stopped", "Done"};
-char done_buffer[MAX_PATH];
-char *root;
+char done_buffer[MAX_PATH]; // buffer for done job messages
+char *root;                 // root directory
 
 // function prototypes ===============================================================
 int is_special_char(char c);
@@ -311,7 +305,7 @@ void free_tokens(Token *tokens) {
 
 void free_process(Process *proc) {
     for (int i = 0; i < proc->argc; i++) {
-        if(proc->args[i] != NULL)
+        if (proc->args[i] != NULL)
             free(proc->args[i]);
     }
     if (proc->input_file != NULL) {
@@ -347,21 +341,19 @@ void free_job(Job *job) {
 void builtin_fg(char *arg[]) {
     // if no job number is provided
     if (arg[1] == NULL) {
-        if (arg[1] == NULL) {
-            Job *job = first_job;
-            while (job != NULL) {
-                if (job->is_background) {
-                    for (int i = 0; i < job->first_process->argc; i++) {
-                        printf("%s ", job->first_process->args[i]);
-                    }
-                    printf("\n");
-                    put_job_in_foreground(job, 1);
-                    return;
+        Job *job = first_job;
+        while (job != NULL) {
+            if (job->is_background) {
+                for (int i = 0; i < job->first_process->argc; i++) {
+                    printf("%s ", job->first_process->args[i]);
                 }
-                job = job->next;
+                printf("\n");
+                put_job_in_foreground(job, 1);
+                return;
             }
-            printf("%s: fg: current: no such job\n", shell_name);
+            job = job->next;
         }
+        printf("%s: fg: current: no such job\n", shell_name);
     }
     // if job number is provided
     else {
@@ -425,7 +417,7 @@ void builtin_bg(char *arg[]) {
 
         while (j != NULL) {
             if (j->job_num == job_number && j->status == STOPPED) {
-                if(j->is_ampersand) {
+                if (j->is_ampersand) {
                     printf("%s: bg: %d: job already in background\n", shell_name, job_number);
                     return;
                 }
@@ -804,7 +796,7 @@ void launch_job(Job *job) {
             out_fd = pipe_fd[1];
 
             // if output file is set, open the file
-            if(p->output_file != NULL) {
+            if (p->output_file != NULL) {
                 out_fd = open(p->output_file, O_WRONLY | O_CREAT | (p->is_append ? O_APPEND : O_TRUNC), 0644);
                 // return if the output file cannot be opened
                 if (out_fd < 0) {
@@ -812,7 +804,7 @@ void launch_job(Job *job) {
                     return;
                 }
             }
-        } 
+        }
         // set output file
         else {
             out_fd = (p->output_file != NULL) ? open(p->output_file, O_WRONLY | O_CREAT | (p->is_append ? O_APPEND : O_TRUNC), 0644) : 1;
@@ -891,7 +883,7 @@ void launch_job(Job *job) {
         }
         // set the input file descriptor to the read end of the pipe
         // and close the write end of the pipe in the parent
-        if(p->is_next_pipe) {
+        if (p->is_next_pipe) {
             close(pipe_fd[1]);
             in_fd = pipe_fd[0];
         } else {
