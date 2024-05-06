@@ -347,7 +347,7 @@ void builtin_fg(char *arg[]) {
 
         // loop through the job list to find the most recent job
         while (job != NULL) {
-            if (job->is_background && job->recency > job_recency) {
+            if (job->is_background && job->recency > job_recency && job->status != DONE) {
                 most_recent_job = job;
                 job_recency = job->recency;
             }
@@ -382,7 +382,7 @@ void builtin_fg(char *arg[]) {
         // find job with the given job number and send to foreground
         Job *j = first_job;
         while (j != NULL) {
-            if (j->job_num == job_number && j->is_background) {
+            if (j->job_num == job_number && j->is_background && j->status != DONE) {
                 for (int i = 0; i < j->first_process->argc; i++) {
                     printf("%s ", j->first_process->args[i]);
                 }
