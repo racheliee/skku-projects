@@ -341,18 +341,32 @@ void free_job(Job *job) {
 void builtin_fg(char *arg[]) {
     // if no job number is provided
     if (arg[1] == NULL) {
+        Job *most_recent_job = NULL;
+        int job_recency = 0;
         Job *job = first_job;
+
+        // loop through the job list to find the most recent job
         while (job != NULL) {
-            if (job->is_background) {
-                for (int i = 0; i < job->first_process->argc; i++) {
-                    printf("%s ", job->first_process->args[i]);
-                }
-                printf("\n");
-                put_job_in_foreground(job, 1);
-                return;
+            if (job->is_background && job->recency > job_recency) {
+                most_recent_job = job;
+                job_recency = job->recency;
             }
             job = job->next;
         }
+
+        // send the most recent job to foreground
+        if(most_recent_job != NULL) {
+            // print the message
+            for (int i = 0; i < most_recent_job->first_process->argc; i++) {
+                printf("%s ", most_recent_job->first_process->args[i]);
+            }
+            printf("\n");
+            // set the job to foreground
+            put_job_in_foreground(most_recent_job, 1);
+            return;
+        }
+
+        // if no job is found
         printf("%s: fg: current: no such job\n", shell_name);
     }
     // if job number is provided
@@ -386,22 +400,32 @@ void builtin_fg(char *arg[]) {
 void builtin_bg(char *arg[]) {
     // no job number, set most recent job to background
     if (arg[1] == NULL) {
+        Job *most_recent_job = NULL;
+        int job_recency = 0;
         Job *job = first_job;
+
         while (job != NULL) {
-            if (job->status == STOPPED && job->is_background) {
-                // print the message
-                printf("[%d] \t", job->job_num);
-                for (int i = 0; i < job->first_process->argc; i++) {
-                    printf("%s ", job->first_process->args[i]);
-                }
-                printf("&\n");
-                // set the job to background
-                put_job_in_background(job, 1);
-                return;
+            if (job->status == STOPPED && job->is_background && job->recency > job_recency) {
+                most_recent_job = job;
+                job_recency = job->recency;
             }
             job = job->next;
         }
 
+        // send the most recent job to background
+        if(most_recent_job != NULL) {
+            // print the message
+            printf("[%d] \t", most_recent_job->job_num);
+            for (int i = 0; i < most_recent_job->first_process->argc; i++) {
+                printf("%s ", most_recent_job->first_process->args[i]);
+            }
+            printf("&\n");
+            // set the job to background
+            put_job_in_background(most_recent_job, 1);
+            return;
+        }
+
+        // if no job is found
         printf("%s: bg: current: no such job\n", shell_name);
     }
     // job number is given
