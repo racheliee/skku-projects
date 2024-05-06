@@ -415,7 +415,7 @@ void builtin_bg(char *arg[]) {
         // send the most recent job to background
         if(most_recent_job != NULL) {
             // print the message
-            printf("[%d] \t", most_recent_job->job_num);
+            printf("[%d]+ \t", most_recent_job->job_num);
             for (int i = 0; i < most_recent_job->first_process->argc; i++) {
                 printf("%s ", most_recent_job->first_process->args[i]);
             }
@@ -447,7 +447,7 @@ void builtin_bg(char *arg[]) {
                 }
 
                 // print the message
-                printf("[%d] \t", j->job_num);
+                printf("[%d]+ \t", j->job_num);
                 for (int i = 0; i < j->first_process->argc; i++) {
                     printf("%s ", j->first_process->args[i]);
                 }
@@ -469,18 +469,28 @@ void builtin_jobs(char *arg[]) {
     int job_count = 0;
     Job *j = first_job->next; // skip the first job (jobs)
 
+    int highest_recency = 0;
+    int second_highest_recency = 0;
+
     while (j != NULL) {
         if (j->status != DONE) {
             job_list[job_count++] = j;
+
+            if(j->recency > highest_recency) {
+                second_highest_recency = highest_recency;
+                highest_recency = j->recency;
+            } else if(j->recency > second_highest_recency && j->recency != highest_recency) {
+                second_highest_recency = j->recency;
+            }
         }
         j = j->next;
     }
 
     for (int i = job_count - 1; i >= 0; i--) {
         Job *job = job_list[i];
-        if (job->recency == recency - 1) {
+        if (job->recency == highest_recency) {
             printf("[%d]+\t%s \t", job->job_num, status[job->status]);
-        } else if (job->recency == recency - 2) {
+        } else if (job->recency == second_highest_recency) {
             printf("[%d]-\t%s \t", job->job_num, status[job->status]);
         } else {
             printf("[%d]\t%s \t", job->job_num, status[job->status]);
