@@ -346,101 +346,17 @@ void free_job(Job *job) {
 }
 
 // built-in command functions ==================================================================
-void builtin_bg(char *arg[]) {
-    // job number format: %<job_number>
-    // no job number, set most recent job to background
-    if (arg[1] == NULL) {
-        Job *job = first_job;
-        while (job->next != NULL) {
-            if (job->status == STOPPED && job->is_background) {
-                // print the message
-                printf("[%d] \t", job->job_num);
-                for (int i = 0; i < job->first_process->argc; i++) {
-                    printf("%s ", job->first_process->args[i]);
-                }
-                printf("&\n");
-                // set the job to background
-                job->is_ampersand = 1;
-                put_job_in_background(job, 1);
-                return;
-            }
-            job = job->next;
-        }
-
-        printf("%s: bg: current: no such job\n", shell_name);
-
-        // Job *job = first_job;
-        // int max_recency = 0;
-        // Job *recent_job = NULL;
-
-        // while (job != NULL) {
-        //     if (job->is_background == 1 && job->status == STOPPED && job->recency > max_recency) {
-        //         max_recency = job->recency;
-        //         recent_job = job;
-        //     }
-        //     job = job->next;
-        // }
-
-        // // print the message
-        // printf("[%d] \t", recent_job->job_num);
-        // for (int i = 0; i < recent_job->first_process->argc; i++) {
-        //     printf("%s ", recent_job->first_process->args[i]);
-        // }
-        // printf("&\n");
-
-        // // set the job to background
-        // recent_job->is_ampersand = 1;
-        // put_job_in_background(recent_job, 1);
-        // return;
-
-        // // if there is no job to put in background
-        // printf("%s: bg: current: no such job\n", shell_name);
-    }
-    // job number is given
-    else {
-        // atoi is safe to use because 0 is not a valid job number
-        int job_number = atoi(arg[1] + 1); // +1 to skip the % sign
-        Job *j = first_job;
-
-        // if the job number is invalid
-        if (job_number < 1) {
-            printf("%s: bg: %s: no such job\n", shell_name, arg[1]);
-            return;
-        }
-
-        while (j != NULL) {
-            if (j->job_num == job_number && j->status == STOPPED) {
-                // print the message
-                printf("[%d] \t", j->job_num);
-                for (int i = 0; i < j->first_process->argc; i++) {
-                    printf("%s ", j->first_process->args[i]);
-                }
-                printf("&\n");
-                // set the job to background
-                j->is_ampersand = 1;
-                put_job_in_background(j, 1);
-                return;
-            }
-            j = j->next;
-        }
-
-        printf("%s: bg: %d: no such job\n", shell_name, job_number);
-    }
-    return;
-}
-
 void builtin_fg(char *arg[]) {
     // if no job number is provided
     if (arg[1] == NULL) {
         if (arg[1] == NULL) {
             Job *job = first_job;
             while (job != NULL) {
-                if (job->is_background && job->status == STOPPED) {
+                if (job->is_background) {
                     for (int i = 0; i < job->first_process->argc; i++) {
                         printf("%s ", job->first_process->args[i]);
                     }
                     printf("\n");
-                    job->is_ampersand = 0;
                     put_job_in_foreground(job, 1);
                     return;
                 }
@@ -448,37 +364,9 @@ void builtin_fg(char *arg[]) {
             }
             printf("%s: fg: current: no such job\n", shell_name);
         }
-
-        // Job *job = first_job;
-        // int max_recency = 0;
-        // Job *recent_job = NULL;
-
-        // while (job != NULL) {
-        //     if (job->is_background && job->recency > max_recency) {
-        //         max_recency = job->recency;
-        //         recent_job = job;
-        //     }
-        //     job = job->next;
-        // }
-
-        // // print the message
-        // printf("[%d] \t", recent_job->job_num);
-        // for (int i = 0; i < recent_job->first_process->argc; i++) {
-        //     printf("%s ", recent_job->first_process->args[i]);
-        // }
-        // printf("\n");
-
-        // // set the job to foreground
-        // recent_job->is_ampersand = 0;
-        // put_job_in_foreground(recent_job, 1);
-        // return;
-
-        // if there is no job to put in foreground
-        // printf("%s: fg: current: no such job\n", shell_name);
     }
     // if job number is provided
     else {
-        // atoi is safe to use because 0 is not a valid job number
         int job_number = atoi(arg[1] + 1); // +1 to skip the % sign
 
         // if the job number is invalid (string or less than 1)
@@ -490,8 +378,7 @@ void builtin_fg(char *arg[]) {
         // find job with the given job number and send to foreground
         Job *j = first_job;
         while (j != NULL) {
-            if (j->job_num == job_number && j->status != DONE && !j->is_background) {
-                j->is_ampersand = 0;
+            if (j->job_num == job_number && j->is_background) {
                 for (int i = 0; i < j->first_process->argc; i++) {
                     printf("%s ", j->first_process->args[i]);
                 }
@@ -502,6 +389,63 @@ void builtin_fg(char *arg[]) {
             j = j->next;
         }
         printf("%s: fg: %d: no such job\n", shell_name, job_number);
+    }
+    return;
+}
+
+void builtin_bg(char *arg[]) {
+    // no job number, set most recent job to background
+    if (arg[1] == NULL) {
+        Job *job = first_job;
+        while (job != NULL) {
+            if (job->status == STOPPED && job->is_background) {
+                // print the message
+                printf("[%d] \t", job->job_num);
+                for (int i = 0; i < job->first_process->argc; i++) {
+                    printf("%s ", job->first_process->args[i]);
+                }
+                printf("&\n");
+                // set the job to background
+                put_job_in_background(job, 1);
+                return;
+            }
+            job = job->next;
+        }
+
+        printf("%s: bg: current: no such job\n", shell_name);
+    }
+    // job number is given
+    else {
+        int job_number = atoi(arg[1] + 1); // +1 to skip the % sign
+        Job *j = first_job;
+
+        // if the job number is invalid
+        if (job_number < 1) {
+            printf("%s: bg: %s: no such job\n", shell_name, arg[1]);
+            return;
+        }
+
+        while (j != NULL) {
+            if (j->job_num == job_number && j->status == STOPPED) {
+                if(j->is_ampersand) {
+                    printf("%s: bg: %d: job already in background\n", shell_name, job_number);
+                    return;
+                }
+
+                // print the message
+                printf("[%d] \t", j->job_num);
+                for (int i = 0; i < j->first_process->argc; i++) {
+                    printf("%s ", j->first_process->args[i]);
+                }
+                printf("&\n");
+                // set the job to background
+                put_job_in_background(j, 1);
+                return;
+            }
+            j = j->next;
+        }
+
+        printf("%s: bg: %d: no such job\n", shell_name, job_number);
     }
     return;
 }
@@ -748,10 +692,11 @@ void put_job_in_foreground(Job *job, int cont) {
     tcsetpgrp(shell_terminal, job->pgid);
     job->is_background = 0;
 
-    if (cont && job->status != DONE) {
+    if (cont) {
         if (kill(-job->pgid, SIGCONT) < 0) {
             perror("kill (SIGCONT)");
-            exit(1);
+            tcsetpgrp(shell_terminal, shell_pgid);
+            return;
         }
         job->status = RUNNING;
     }
@@ -763,6 +708,7 @@ void put_job_in_foreground(Job *job, int cont) {
 
 void put_job_in_background(Job *job, int cont) {
     job->is_background = 1;
+    job->status = RUNNING;
 
     // set job number if it's not set
     if (!job->job_num) {
@@ -776,7 +722,6 @@ void put_job_in_background(Job *job, int cont) {
         if (kill(-job->pgid, SIGCONT) < 0) {
             perror("kill (SIGCONT)");
         }
-        job->status = RUNNING;
     }
 }
 
@@ -807,7 +752,8 @@ void launch_job(Job *job) {
     Process *p;
     pid_t pid;
     int pipe_fd[2];
-    int in_fd = 0, out_fd = 1;
+    int in_fd = STDIN_FILENO;
+    int out_fd;
     job->status = RUNNING;
 
     // check if the input and output files are the same. if so, return
@@ -851,8 +797,8 @@ void launch_job(Job *job) {
 
     // print_jobs();
 
-    for (p = job->first_process; p; p = p->next) {
-        if (p->next != NULL && p->is_next_pipe) {
+    for (p = job->first_process; p != NULL; p = p->next) {
+        if (p->is_next_pipe) {
             if (pipe(pipe_fd) < 0) {
                 fprintf(stderr, "%s: pipe: %s\n", shell_name, strerror(errno));
                 return;
@@ -902,12 +848,12 @@ void launch_job(Job *job) {
             }
 
             // set input and output file descriptors
-            if (in_fd != 0) {
-                dup2(in_fd, 0);
+            if (in_fd != STDIN_FILENO) {
+                dup2(in_fd, STDIN_FILENO);
                 close(in_fd);
             }
-            if (out_fd != 1) {
-                dup2(out_fd, 1);
+            if (out_fd != STDOUT_FILENO) {
+                dup2(out_fd, STDOUT_FILENO);
                 close(out_fd);
             }
 
@@ -939,15 +885,16 @@ void launch_job(Job *job) {
         }
 
         // close the pipes
-        if (in_fd != 0) {
+        if (in_fd != STDIN_FILENO) {
             close(in_fd);
         }
-        if (out_fd != 1) {
+        if (out_fd != STDOUT_FILENO) {
             close(out_fd);
         }
         // set the input file descriptor to the read end of the pipe
         // and close the write end of the pipe in the parent
-        if(p->next != NULL && p->is_next_pipe) {
+        // comeback: is this needed?
+        if(p->is_next_pipe) {
             close(pipe_fd[1]);
             in_fd = pipe_fd[0];
         } else {
@@ -1033,8 +980,6 @@ void sig_handler(int signum) {
             if (WIFSTOPPED(status)) {
                 j->status = STOPPED;
                 j->is_background = 1;
-                tcsetpgrp(shell_terminal, shell_pgid);
-                printf("\n[%d]+\tStopped %d\n", j->job_num, j->pgid);
             } else if (WIFEXITED(status) || WIFSIGNALED(status)) {
                 j->status = DONE;
 
