@@ -12,6 +12,8 @@ struct cpu {
 
 extern struct cpu cpus[NCPU];
 extern int ncpu;
+extern uint total_ticks;
+extern uint weight[]; // nice to weight pre-defined array
 
 //PAGEBREAK: 17
 // Saved registers for kernel context switches.
@@ -49,7 +51,10 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
-  int nice;                     // priority of process (nice value)
+  int nice;                    // priority of process (nice value)
+  uint runtime;                // total runtime
+  uint vruntime;               // how long a process has run proportional to is weight
+  int timeslice;               // min time to be executed before it is preempted
 };
 
 // Process memory is laid out contiguously, low addresses first:
