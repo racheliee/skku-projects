@@ -103,6 +103,10 @@ struct segdesc {
 #ifndef __ASSEMBLER__
 typedef uint pte_t;
 
+// function declarations in vm.c
+int             mappages(pde_t *, void *, uint, uint, int);
+pte_t*          walkpgdir(pde_t *, const void *, int);
+
 // Task state segment format
 struct taskstate {
   uint link;         // Old ts selector

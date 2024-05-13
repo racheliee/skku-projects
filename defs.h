@@ -68,6 +68,8 @@ char*           kalloc(void);
 void            kfree(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
+extern int      num_of_free_pages;
+int             get_num_of_free_pages(void);
 
 // kbd.c
 void            kbdintr(void);
@@ -154,6 +156,7 @@ char*           strncpy(char*, const char*, int);
 
 // syscall.c
 int             argint(int, int*);
+int             arguint(int, uint*);
 int             argptr(int, char**, int);
 int             argstr(int, char**);
 int             fetchint(uint, int*);
