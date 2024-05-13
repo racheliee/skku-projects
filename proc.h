@@ -57,6 +57,28 @@ struct proc {
   int timeslice;               // min time to be executed before it is preempted
 };
 
+// mmap_area struct
+struct mmap_area{
+  struct file *f;
+  uint addr;
+  int length;
+  int offset;
+  int prot;
+  int flags;
+  struct proc *p; // the process with this mmap_area
+  int in_use; // 1 if in use, 0 if not
+  int uses_page_table; // 1 if uses page table, 0 if not
+};
+
+extern struct mmap_area mmap_area[64]; // mmap_area array
+#define MMAPBASE 0x40000000 // mmap base address
+#define MMAP_NUM 64 // number of mmap_area
+
+uint            mmap(uint, int, int, int, int, int);
+int             munmap(uint);
+int             freemem(void);
+int             pagefault_handler(uint);
+
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss
