@@ -52,6 +52,13 @@ argint(int n, int *ip)
   return fetchint((myproc()->tf->esp) + 4 + 4*n, ip);
 }
 
+// Feth the nth 32-bit system call argument (uint ver)
+int
+arguint(int n, uint *ip)
+{
+  return fetchint((myproc()->tf->esp) + 4 + 4*n, (int *)ip);
+}
+
 // Fetch the nth word-sized system call argument as a pointer
 // to a block of memory of size bytes.  Check that the pointer
 // lies within the process address space.
@@ -107,6 +114,9 @@ extern int sys_getpname(void);
 extern int sys_getnice(void);
 extern int sys_setnice(void);
 extern int sys_ps(void);
+extern int sys_mmap(void);
+extern int sys_munmap(void);
+extern int sys_freemem(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,6 +144,9 @@ static int (*syscalls[])(void) = {
 [SYS_getnice] sys_getnice,
 [SYS_setnice] sys_setnice,
 [SYS_ps] sys_ps,
+[SYS_mmap] sys_mmap,
+[SYS_munmap] sys_munmap,
+[SYS_freemem] sys_freemem,
 };
 
 void
