@@ -6,6 +6,9 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
 
 struct {
   struct spinlock lock;
@@ -29,6 +32,8 @@ uint weight[40] = {/*   0*/ 88761,   71755,    56483,    46273,    36291,
                   /*  25*/ 335,     272,      215,      172,      137,
                   /*  30*/ 110,     87,       70,       56,       45,
                   /*  35*/ 36,      29,       23,       18,       15};
+
+struct mmap_area mmap_area[64] = {0}; // mmap_area array
 
 void
 pinit(void)
@@ -139,6 +144,19 @@ userinit(void)
   extern char _binary_initcode_start[], _binary_initcode_size[];
 
   p = allocproc();
+
+    // initialize mmap_area array
+  for(int i = 0; i < MMAP_NUM; i++){
+    mmap_area[i].f = 0;
+    mmap_area[i].addr = 0;
+    mmap_area[i].length = 0;
+    mmap_area[i].offset = 0;
+    mmap_area[i].prot = 0;
+    mmap_area[i].flags = 0;
+    mmap_area[i].p = 0;
+    mmap_area[i].in_use = 0;
+    mmap_area[i].uses_page_table = 0;
+  }
   
   initproc = p;
   if((p->pgdir = setupkvm()) == 0)
@@ -237,6 +255,71 @@ fork(void)
   np->vruntime = curproc->vruntime; // inherit vruntime from parent
 
   pid = np->pid;
+
+  // copy mmap_area array ========================================
+  // find parent process's mmap_area
+  struct mmap_area *parent_mmap_area = 0;
+  for(int i = 0; i < MMAP_NUM; i++){
+    if(mmap_area[i].in_use == 1 && mmap_area[i].p == curproc){
+      parent_mmap_area = &mmap_area[i];
+      break;
+    }
+  }
+
+  // if parent is using mmap, copy the parent process's mmap_area to child process
+  if(parent_mmap_area != 0){
+    // find empty mmap_area for the child process
+    struct mmap_area *new_mmap_area = 0;
+    for(int i = 0; i < MMAP_NUM; i++){
+      if(mmap_area[i].in_use == 0){
+        new_mmap_area = &mmap_area[i];
+        break;
+      }
+    }
+
+    if(new_mmap_area == 0){
+      cprintf("no empty mmap_area for child process\n");
+      return -1;
+    }
+
+    // copy parent process's mmap_area to child process
+    if(parent_mmap_area->f != 0) {
+      new_mmap_area->f = filedup(parent_mmap_area->f);
+      new_mmap_area->f->off = parent_mmap_area->offset;
+    }
+    else new_mmap_area->f = 0;
+    new_mmap_area->addr = parent_mmap_area->addr;
+    new_mmap_area->length = parent_mmap_area->length;
+    new_mmap_area->offset = parent_mmap_area->offset;
+    new_mmap_area->prot = parent_mmap_area->prot;
+    new_mmap_area->flags = parent_mmap_area->flags;
+    new_mmap_area->p = np;
+    new_mmap_area->in_use = 1;
+    new_mmap_area->uses_page_table = parent_mmap_area->uses_page_table;
+
+    // copy page table if needed (based on copyuvm from vm.c)
+    // if the parent process has mmap areas the child process will also have mmap areas at the same address
+    if(parent_mmap_area->uses_page_table == 1){
+      for(uint i = 0; i < new_mmap_area->length; i+= PGSIZE){
+        pte_t *pte = walkpgdir(np->pgdir, (void *)(new_mmap_area->addr + i), 0);
+        if(pte == 0) continue; // pte does not exist
+        if((*pte & PTE_P) == 0) continue; // pte is not present
+
+        char* mem = kalloc();
+        if(mem == 0) return -1; // memory allocation failed
+
+        memset(mem, 0, PGSIZE);
+
+        // copy the contents of the parent process's page table to the child process's page table
+        memmove(mem, (char *)P2V(PTE_ADDR(*pte)), PGSIZE);
+
+        // map the child process's page table to the child process's page table
+        mappages(np->pgdir, (void *)(new_mmap_area->addr + i), PGSIZE, V2P(mem), PTE_U | new_mmap_area->prot);
+      } // end of for loop
+      new_mmap_area->uses_page_table = 1;
+    } // end of if statement (parent_mmap_area->uses_page_table == 1)
+  } // end of if statement (parent_mmap_area != 0)
+  // ============================================================
 
   acquire(&ptable.lock);
 
@@ -809,4 +892,281 @@ ps(int pid)
   
   release(&ptable.lock);
   return;
+}
+
+// mmap
+// 1. addr is always page-aligned (MMAPBASE + addr is the start addr)
+// 2. length is always multiple of page size (MMAPBASE + addr + length is the end addr)
+// 3. prot is either PROT_READ or PROT_WRITE or both (prot should path with file's open flag)
+// 4. flags
+//  - MAP_ANONYMOUS: anonymous mapping
+//  - MAP_ANONYMOUS not given: file mapping
+//  - MAP_POPULATE: allocate physical page & make page table for whole mapping area
+//  - MAP_POPULATE not given: just record its mapping area
+// 5. fd is given for file mappings, if not, it should be -1
+// 6. offset is given for file mappings, if not, it should be 0
+// fail: returns 0
+//  1. not anonymous but fd = -1
+//  2. protection of the file & prot of the parameter are different
+//  3. address args must be page aligned, if not return 0
+//  - mapping area is overlapped is not considered
+//  - if additional errors occur, we will let you know by writing notification
+uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
+  // 1. if not anonymous but fd = -1
+  // (flags & MAP_ANONYMOUS) == 0: file mapping, (flags & MAP_ANONYMOUS) != 0: anonymous mapping
+  if(fd == -1 && (flags & MAP_ANONYMOUS) == 0){
+    // cprintf("not anonymous but fd = -1\n");
+    return 0;
+  }
+
+  // 3. address args must be page aligned, if not return 0
+  if(addr % PGSIZE != 0 || length % PGSIZE != 0){
+    // cprintf("address args must be page aligned\n");
+    return 0;
+  }
+
+  struct proc *curproc = myproc();
+  struct file *file = 0;
+  
+  // get file with given fd (no invalid fd's are given)
+  if(fd != -1) file = curproc->ofile[fd]; 
+
+  // 2. if file mapping, check protection of the file & prot of the parameter are different
+  // (prot & PROT_READ) == 0: no read permission, (prot & PROT_WRITE) == 0: no write permission
+  if((flags & MAP_ANONYMOUS) == 0){
+    // if read and write protection doesn't match
+    // shift file->writable to the left by 1 to match the prot_write value
+    if(((prot & PROT_READ) != file->readable) || ((prot & PROT_WRITE) != (file->writable << 1))){
+      // cprintf("protection of the file & prot of the parameter are different\n");
+      return 0;
+    }
+  }
+
+  // find empty mmap_area from the mmap_area array
+  struct mmap_area *new_mmap_area = 0;
+  for(int i = 0; i < MMAP_NUM; i++){
+    if(mmap_area[i].in_use == 0){
+      new_mmap_area = &mmap_area[i];
+      break;
+    }
+  }
+
+  // no empty mmap_area found
+  if(new_mmap_area == 0){
+    cprintf("no empty mmap_area\n");
+    return 0;
+  }
+
+  // initialize new mmap_area with given values and current process
+  if(file != 0) new_mmap_area->f = filedup(file); // comeback: rec count needs update?
+  new_mmap_area->addr = addr + MMAPBASE;
+  new_mmap_area->length = length;
+  new_mmap_area->offset = offset;
+  new_mmap_area->prot = prot;
+  new_mmap_area->flags = flags;
+  new_mmap_area->p = curproc;
+  new_mmap_area->in_use = 1;
+
+  // 1. private file / anonymous mapping with MAP_POPULATE
+  if((flags & MAP_POPULATE)){
+    // cprintf("private file mapping with MAP_POPULATE\n");
+    uint end_addr = MMAPBASE + addr + length; // end address of the mapping area
+
+    for(uint i = MMAPBASE + addr; i < end_addr; i += PGSIZE){
+      // allocate physical page
+      char* new_page = kalloc();
+
+      // memory allocation failed
+      if(new_page == 0) {
+        cprintf("memory allocation failed\n");
+        new_mmap_area->in_use = 0;
+        return 0;
+      }
+      
+      // initialize the allocated memory
+      memset(new_page, 0, PGSIZE);
+      
+      // read file content to the allocated memory
+      if((flags & MAP_ANONYMOUS) == 0){
+        file->off = offset; // set the offset of the file
+        fileread(file, new_page, PGSIZE);
+      }
+
+      // make page table
+      if(mappages(curproc->pgdir, (void*)i, PGSIZE, V2P(new_page), PTE_U | prot) < 0){
+        cprintf("mappages failed\n");
+        new_mmap_area->in_use = 0;
+        kfree(new_page);
+        return 0;
+      }
+    }
+
+    new_mmap_area-> uses_page_table = 1;
+    return addr + MMAPBASE;
+  }
+  // 2. private file / anonymous mapping without MAP_POPULATE
+  else if(!(flags & MAP_POPULATE)){
+    new_mmap_area->uses_page_table = 0;
+
+    return addr + MMAPBASE;
+  }
+
+  return 0;
+}
+
+// munmap
+// return 1 on success, -1 on failure
+// 1. addr will be alwys given with the start of the memory region which is page aligned
+// 2. munmap() should remove corresponding mmap_structure (if none, -1)
+// 3. if physical page is allocated & page table is constructed, should free physical page & page table
+// 4. if physical page is not allocated (page fault has not been occured), just remove mmap_area structure
+// 5. In one mmap_area, situation of some pages are allocated and some are not can happen
+// [ ]: parameter addr has MMABASE added to it i think
+int munmap(uint addr){
+  // find mmap_area with given addr
+  struct mmap_area *target_mmap_area = 0;
+  struct proc *curproc = myproc();
+
+  for(int i = 0; i < MMAP_NUM; i++){
+    if(mmap_area[i].addr == addr && mmap_area[i].p == curproc){
+      target_mmap_area = &mmap_area[i];
+      break;
+    }
+  }
+
+  // if target is not found, return -1
+  if(target_mmap_area == 0){
+    // cprintf("target mmap_area not found\n");
+    return -1;
+  }
+
+  // if physical page is allocated & page table is constructed, should free physical page & page table
+  if(target_mmap_area->uses_page_table){
+    // have to free length/PGSIZE pages
+    for(uint i = 0; i < target_mmap_area->length; i += PGSIZE){
+      pte_t* pte = walkpgdir(curproc->pgdir, (void*)(addr + i), 0); // 0 since we don't want to allocate a new page
+
+      // if pte is not allocated, continue
+      if(pte == 0) continue;
+      // if pte is not present, continue
+      if((*pte & PTE_P) == 0) continue;
+
+      // free physical page (based on deallocuvm in vm.c)
+      // fixme: check if this is the correct pa
+      uint pa = PTE_ADDR(*pte);
+      if(pa == 0) panic("kfree");
+      char* v = P2V(pa);
+      memset(v, 1, PGSIZE);
+      kfree(v);
+
+      // clear page table entry
+      *pte = 0;
+    }
+  }
+
+  // decrease the reference count of the file
+  if(target_mmap_area->f != 0 && target_mmap_area->f->ref > 0){
+    target_mmap_area->f->ref--;
+  } 
+
+  // remove mmap_area structure
+  target_mmap_area->f = 0;
+  target_mmap_area->addr = 0;
+  target_mmap_area->length = 0;
+  target_mmap_area->offset = 0;
+  target_mmap_area->prot = 0;
+  target_mmap_area->flags = 0;
+  target_mmap_area->p = 0;
+  target_mmap_area->in_use = 0;
+  target_mmap_area->uses_page_table = 0;
+
+  return 1;
+}
+
+// freemem
+// syscall to return current number of free memory pages
+// 1. when kernel frees (put page into free list), freemem should increase
+// 2. when kernel allocates (take page from free list and give to process), free mem shoudl decrease
+int freemem(void){
+  return get_num_of_free_pages(); // in kalloc.c & defs.h
+}
+
+// pagefault handler
+// catches pagefault (interrupt I4, T_PGFLT)
+// determine fault addr by reading CR2 reg (using rcr2()) & access was read or write
+//  - read: tf->err & 2 == 0, write: tf->err & 2 == 1
+// find according mapping region in mmap_area
+//  - if not found, return -1
+// if fault was write and the region is read-only, return -1
+// else, allocate physical page, fill with 0
+//  - if file mapping, read file into physical page w offset
+//  - if anonymous, leave the page as 0s
+// make page table entry
+int pagefault_handler(uint err){
+  uint fault_addr = rcr2();
+  // cprintf("pagefault handler: err: %x\n", err);
+  // if(err != 2){
+  //   return 1;
+  // }
+  // err = 5 : segmentation fault
+
+  struct proc *curproc = myproc();
+  struct mmap_area *cur_mmap_area = 0;
+
+  // cprintf("pagefault handler: fault_addr: %x\n", fault_addr);
+
+  // find the mmap_area with the fault address
+  for(int i = 0; i < MMAP_NUM; i++){
+    if(mmap_area[i].in_use == 1 && mmap_area[i].p == curproc && mmap_area[i].addr <= fault_addr && fault_addr < mmap_area[i].addr + mmap_area[i].length){
+      cur_mmap_area = &mmap_area[i];
+      break;
+    }
+  }
+
+  // mmap_area with fault address not found
+  if(cur_mmap_area == 0){
+    // cprintf("pagefault handler: mmap_area with fault address not found\n");
+    curproc->killed = 1;
+    return -1;
+  }
+
+  // write error and region is read-only (writing flag not given)
+  if((err & 2) && (cur_mmap_area->prot & PROT_WRITE) == 0){
+    cprintf("pagefault handler: write error and region is read-only\n");
+    curproc->killed = 1;
+    return -1;
+  }
+
+  // allocate physical page
+  char* new_mem = kalloc();
+  if(new_mem == 0) {
+    curproc->killed = 1;
+    return -1;
+  }
+
+  // initialize the allocated memory
+  memset(new_mem, 0, PGSIZE);
+
+
+  // read file content to the allocated memory if its a file mapping
+  if((cur_mmap_area->flags & MAP_ANONYMOUS) == 0){
+    // set file offset
+    cur_mmap_area->f->off = cur_mmap_area->offset + (fault_addr - cur_mmap_area->addr);
+    // read file
+    fileread(cur_mmap_area->f, new_mem, PGSIZE);
+  }
+
+  // make page table
+  uint align_addr = fault_addr - (fault_addr % PGSIZE);
+  if(mappages(curproc->pgdir, (void*)align_addr, PGSIZE, V2P(new_mem), PTE_U | cur_mmap_area->prot) < 0){
+    // cprintf("pagefault handler: mappages failed\n");
+    curproc->killed = 1;
+    kfree(new_mem);
+    return -1;
+  }
+
+  // update page table status
+  cur_mmap_area->uses_page_table = 1;
+
+  return 1;
 }
