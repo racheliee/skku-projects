@@ -13,10 +13,8 @@
 #include "proc.h"
 #include "syscall.h"
 
-// fixme: shell doesn't comeback
-// fixme: pid 3 mytest: trap 14 err 5 on cpu 0 eip 0xffffffff addr 0xffffffff--kill proc
 int main(void) {
-    // int fd;
+    int fd;
     int size = 4096; // comeback: if not aligned, error should occur
 
     // uint mmap(uint addr, int length, int prot, int flags, int fd, int offset)
@@ -72,24 +70,24 @@ int main(void) {
 
     // file mapping  ========================================================================================================
     // case 1: with MAP_POPULATE
-    // fd = open("README", O_RDONLY);
+    fd = open("README", O_RDWR);
 
-    // char *t3 = (char *) mmap(size*2, size, PROT_READ, MAP_POPULATE, fd, 0);
+    char *t3 = (char *) mmap(size*2, size, PROT_READ, MAP_POPULATE, fd, 0);
 
-    // if (t3 == (char *)0 || t3 == (char *)-1) {
-    //     printf(1, "t3 mmap failed\n");
-    //     exit();
-    // }
+    if (t3 == (char *)0 || t3 == (char *)-1) {
+        printf(1, "t3 mmap failed\n");
+        exit();
+    }
 
-    // printf(1, "t3 mmap success\n");
-    // printf(1, "\nfree memory after t3 mmap: %d\n", freemem());
+    printf(1, "t3 mmap success\n");
+    printf(1, "\nfree memory after t3 mmap: %d\n", freemem());
 
-    // printf(1, "\nread from file:\n");
-    // for(int i = 0; i < size; i++){
-    //     printf(1, "%c", t3[i]);
-    // }
+    printf(1, "\nread from file:\n");
+    for(int i = 0; i < size; i++){
+        printf(1, "%c", t3[i]);
+    }
 
-    // printf(1, "\n\n");
+    printf(1, "\n\n");
 
     // // case 2: without MAP_POPULATE; page fault occurs
     // char *t4 = (char *) mmap(size*3, size, PROT_READ, 0, fd, 0);
@@ -118,14 +116,14 @@ int main(void) {
     // printf(1, "free memory after t2 munmap: %d\n\n", freemem());
 
     // unmap t3
-    // printf(1, "munmap t3: %d\n", munmap(MMAPBASE + size*2));
-    // printf(1, "free memory after t3 munmap: %d\n\n", freemem());
+    printf(1, "munmap t3: %d\n", munmap(MMAPBASE + size*2));
+    printf(1, "free memory after t3 munmap: %d\n\n", freemem());
 
     // unmap t4
     // printf(1, "munmap t4: %d\n", munmap(MMAPBASE + size*3));
     // printf(1, "free memory after t4 munmap: %d\n\n", freemem());
 
-    // close(fd);
+    close(fd);
 
     // fork test ========================================================================================================
     int pid = fork();

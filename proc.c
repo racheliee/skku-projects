@@ -918,6 +918,17 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
     return 0;
   }
 
+  // if no flags are given, treat it as MAP_ANONYMOUS
+  if(flags == 0){
+    flags = MAP_ANONYMOUS;
+  }
+
+  // MAP_ANONYMOUS이면서 fd와 offset이 -1과 0이 아닌 경우에 mmap은 0을 반환
+  if((flags & MAP_ANONYMOUS) && (fd != -1 || offset != 0)){
+    // cprintf("anonymous mapping but fd != -1 or offset != 0\n");
+    return 0;
+  }
+
   // 3. address args must be page aligned, if not return 0
   if(addr % PGSIZE != 0 || length % PGSIZE != 0){
     // cprintf("address args must be page aligned\n");
@@ -935,7 +946,7 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
   if((flags & MAP_ANONYMOUS) == 0){
     // if read and write protection doesn't match
     // shift file->writable to the left by 1 to match the prot_write value
-    if(((prot & PROT_READ) != file->readable) || ((prot & PROT_WRITE) != (file->writable << 1))){
+    if(((prot & PROT_READ) != file->readable) || ((prot & PROT_WRITE) && file->writable == 0)){
       // cprintf("protection of the file & prot of the parameter are different\n");
       return 0;
     }
@@ -957,7 +968,7 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
   }
 
   // initialize new mmap_area with given values and current process
-  if(file != 0) new_mmap_area->f = filedup(file); // comeback: rec count needs update?
+  if(file != 0) new_mmap_area->f = filedup(file);
   new_mmap_area->addr = addr + MMAPBASE;
   new_mmap_area->length = length;
   new_mmap_area->offset = offset;
@@ -1020,8 +1031,14 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
 // 3. if physical page is allocated & page table is constructed, should free physical page & page table
 // 4. if physical page is not allocated (page fault has not been occured), just remove mmap_area structure
 // 5. In one mmap_area, situation of some pages are allocated and some are not can happen
-// [ ]: parameter addr has MMABASE added to it i think
 int munmap(uint addr){
+  // if addr is not page aligned, return 0
+  // comeback: check
+  if(addr % PGSIZE != 0){
+    // cprintf("addr is not page aligned\n");
+    return 0;
+  }
+
   // find mmap_area with given addr
   struct mmap_area *target_mmap_area = 0;
   struct proc *curproc = myproc();
