@@ -1079,11 +1079,6 @@ int munmap(uint addr){
     }
   }
 
-  // decrease the reference count of the file
-  if(target_mmap_area->f != 0 && target_mmap_area->f->ref > 0){
-    target_mmap_area->f->ref--;
-  } 
-
   // remove mmap_area structure
   target_mmap_area->f = 0;
   target_mmap_area->addr = 0;
