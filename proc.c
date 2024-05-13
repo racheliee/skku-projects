@@ -258,67 +258,66 @@ fork(void)
 
   // copy mmap_area array ========================================
   // find parent process's mmap_area
-  struct mmap_area *parent_mmap_area = 0;
+  // parent mmap: mmap_area[i]
+  // child mmap: mmap_area[j]
   for(int i = 0; i < MMAP_NUM; i++){
     if(mmap_area[i].in_use == 1 && mmap_area[i].p == curproc){
-      parent_mmap_area = &mmap_area[i];
-      break;
-    }
-  }
+      // look for child process's mmap_area
+      int j;
+      for(j = 0; j < MMAP_NUM; j++){
+        // if the area is in use, continue
+        if(mmap_area[j].in_use == 1) continue;
 
-  // if parent is using mmap, copy the parent process's mmap_area to child process
-  if(parent_mmap_area != 0){
-    // find empty mmap_area for the child process
-    struct mmap_area *new_mmap_area = 0;
-    for(int i = 0; i < MMAP_NUM; i++){
-      if(mmap_area[i].in_use == 0){
-        new_mmap_area = &mmap_area[i];
+        // copy parent process's mmap_area to child process
+        if(mmap_area[i].f != 0) {
+          mmap_area[j].f = filedup(mmap_area[i].f);
+          mmap_area[j].f->off = mmap_area[i].offset;
+        }
+        else mmap_area[j].f = 0;
+        mmap_area[j].addr = mmap_area[i].addr;
+        mmap_area[j].length = mmap_area[i].length;
+        mmap_area[j].offset = mmap_area[i].offset;
+        mmap_area[j].prot = mmap_area[i].prot;
+        mmap_area[j].flags = mmap_area[i].flags;
+        mmap_area[j].p = np;
+        mmap_area[j].in_use = 1;
+        mmap_area[j].uses_page_table = mmap_area[i].uses_page_table;
+
+        // copy page table if needed (based on copyuvm from vm.c)
+        if(mmap_area[j].uses_page_table == 1){
+          for(uint k = 0; k < mmap_area[j].length; k+= PGSIZE){
+            // find the pte of the parent process's page table
+            pte_t *pte = walkpgdir(np->pgdir, (void *)(mmap_area[j].addr + k), 0);
+
+            if(pte == 0) continue; // pte does not exist
+            if((*pte & PTE_P) == 0) continue; // pte is not present
+
+            char* mem = kalloc();
+            if(mem == 0) return -1; // memory allocation failed
+
+            // reset memory
+            memset(mem, 0, PGSIZE);
+
+            // copy the contents of the parent process's page table to the child process's page table
+            memmove(mem, (char *)P2V(PTE_ADDR(*pte)), PGSIZE);
+
+            // map the child process's page table to the child process's page table
+            mappages(np->pgdir, (void *)(mmap_area[j].addr + k), PGSIZE, V2P(mem), PTE_U | mmap_area[j].prot);
+          } // end of for loop
+        }
+
+        // if a mmap_area is found for the child process, break
         break;
+      } // end of for loop looking for child process's mmap_area
+
+      // if no free mmap areas for child were found
+      if(j == MMAP_NUM){
+        // cprintf("no empty mmap_area for child process\n");
+        return -1;
       }
-    }
 
-    if(new_mmap_area == 0){
-      cprintf("no empty mmap_area for child process\n");
-      return -1;
-    }
-
-    // copy parent process's mmap_area to child process
-    if(parent_mmap_area->f != 0) {
-      new_mmap_area->f = filedup(parent_mmap_area->f);
-      new_mmap_area->f->off = parent_mmap_area->offset;
-    }
-    else new_mmap_area->f = 0;
-    new_mmap_area->addr = parent_mmap_area->addr;
-    new_mmap_area->length = parent_mmap_area->length;
-    new_mmap_area->offset = parent_mmap_area->offset;
-    new_mmap_area->prot = parent_mmap_area->prot;
-    new_mmap_area->flags = parent_mmap_area->flags;
-    new_mmap_area->p = np;
-    new_mmap_area->in_use = 1;
-    new_mmap_area->uses_page_table = parent_mmap_area->uses_page_table;
-
-    // copy page table if needed (based on copyuvm from vm.c)
-    // if the parent process has mmap areas the child process will also have mmap areas at the same address
-    if(parent_mmap_area->uses_page_table == 1){
-      for(uint i = 0; i < new_mmap_area->length; i+= PGSIZE){
-        pte_t *pte = walkpgdir(np->pgdir, (void *)(new_mmap_area->addr + i), 0);
-        if(pte == 0) continue; // pte does not exist
-        if((*pte & PTE_P) == 0) continue; // pte is not present
-
-        char* mem = kalloc();
-        if(mem == 0) return -1; // memory allocation failed
-
-        memset(mem, 0, PGSIZE);
-
-        // copy the contents of the parent process's page table to the child process's page table
-        memmove(mem, (char *)P2V(PTE_ADDR(*pte)), PGSIZE);
-
-        // map the child process's page table to the child process's page table
-        mappages(np->pgdir, (void *)(new_mmap_area->addr + i), PGSIZE, V2P(mem), PTE_U | new_mmap_area->prot);
-      } // end of for loop
-      new_mmap_area->uses_page_table = 1;
-    } // end of if statement (parent_mmap_area->uses_page_table == 1)
-  } // end of if statement (parent_mmap_area != 0)
+    } // end of if statement that matches parent process's mmap_area
+  } // end of for loop looking for parent process's mmap_area
   // ============================================================
 
   acquire(&ptable.lock);
@@ -953,7 +952,7 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
 
   // no empty mmap_area found
   if(new_mmap_area == 0){
-    cprintf("no empty mmap_area\n");
+    // cprintf("no empty mmap_area\n");
     return 0;
   }
 
@@ -978,7 +977,7 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
 
       // memory allocation failed
       if(new_page == 0) {
-        cprintf("memory allocation failed\n");
+        // cprintf("memory allocation failed\n");
         new_mmap_area->in_use = 0;
         return 0;
       }
@@ -994,7 +993,7 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
 
       // make page table
       if(mappages(curproc->pgdir, (void*)i, PGSIZE, V2P(new_page), PTE_U | prot) < 0){
-        cprintf("mappages failed\n");
+        // cprintf("mappages failed\n");
         new_mmap_area->in_use = 0;
         kfree(new_page);
         return 0;
@@ -1052,7 +1051,6 @@ int munmap(uint addr){
       if((*pte & PTE_P) == 0) continue;
 
       // free physical page (based on deallocuvm in vm.c)
-      // fixme: check if this is the correct pa
       uint pa = PTE_ADDR(*pte);
       if(pa == 0) panic("kfree");
       char* v = P2V(pa);
@@ -1132,7 +1130,7 @@ int pagefault_handler(uint err){
 
   // write error and region is read-only (writing flag not given)
   if((err & 2) && (cur_mmap_area->prot & PROT_WRITE) == 0){
-    cprintf("pagefault handler: write error and region is read-only\n");
+    // cprintf("pagefault handler: write error and region is read-only\n");
     curproc->killed = 1;
     return -1;
   }
