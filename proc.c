@@ -1158,14 +1158,17 @@ int pagefault_handler(uint err){
   // read file content to the allocated memory if its a file mapping
   if((cur_mmap_area->flags & MAP_ANONYMOUS) == 0){
     // set file offset
+    int old_off = cur_mmap_area->f->off;
     cur_mmap_area->f->off = cur_mmap_area->offset + (fault_addr - cur_mmap_area->addr);
     // read file
     fileread(cur_mmap_area->f, new_mem, PGSIZE);
+    cur_mmap_area->f->off = old_off;
   }
 
   // make page table
   uint align_addr = fault_addr - (fault_addr % PGSIZE);
-  cprintf("pagefault handler: align_addr: %x\n", align_addr);
+
+  // cprintf("pagefault handler: align_addr: %x\n", align_addr);
   if(mappages(curproc->pgdir, (void*)align_addr, PGSIZE, V2P(new_mem), PTE_U | cur_mmap_area->prot) < 0){
     // cprintf("pagefault handler: mappages failed\n");
     curproc->killed = 1;

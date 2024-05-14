@@ -15,7 +15,7 @@
 
 int main(void) {
     int fd;
-    int size = 8192; // comeback: if not aligned, error should occur
+    int size = 4096; // comeback: if not aligned, error should occur
 
     // uint mmap(uint addr, int length, int prot, int flags, int fd, int offset)
     // int munmap(uint addr)
@@ -46,42 +46,42 @@ int main(void) {
     // printf(1, "\n\n");
 
     // case 2: without MAP_POPULATE; page fault occurs
-    char *t2 = (char *) mmap(size, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS, -1, 0);
+    // char *t2 = (char *) mmap(size, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS, -1, 0);
 
-    if(t2 == (char *)0 || t2 == (char *)-1) {
-        printf(1, "t2 mmap failed\n");
-        exit();
-    }
+    // if(t2 == (char *)0 || t2 == (char *)-1) {
+    //     printf(1, "t2 mmap failed\n");
+    //     exit();
+    // }
 
-    printf(1, "t2 mmap success\n");
-    printf(1, "free memory after t2 mmap: %d\n", freemem());
+    // printf(1, "t2 mmap success\n");
+    // printf(1, "free memory after t2 mmap: %d\n", freemem());
 
     // should call page fault handler
     // t2[0] = 'a';
     // t2[1] = 'b';
     // t2[2] = 'c';    
-    t2[4097] = 'a';
+    // t2[4097] = 'a';
 
-    printf(1, "\nread from t2:\n");
-    for(int i = 0; i < size; i++){
-        printf(1, "%c", t2[i]);
-    }
-    printf(1, "\n\n");
+    // printf(1, "\nread from t2:\n");
+    // for(int i = 0; i < size; i++){
+    //     printf(1, "%c", t2[i]);
+    // }
+    // printf(1, "\n\n");
 
-    printf(1, "free memory after t2 page fault: %d\n", freemem());
+    // printf(1, "free memory after t2 page fault: %d\n", freemem());
 
-    // 8192 testing
-    printf(1, "unmap first page t2: %d\n", munmap(MMAPBASE + size));
-    printf(1, "free memory after t2 munmap: %d\n\n", freemem());
-    printf(1, "unmap second page t2: %d\n", munmap(MMAPBASE + size));
-    printf(1, "free memory after t2 munmap: %d\n\n", freemem());
+    // // 8192 testing
+    // printf(1, "unmap first page t2: %d\n", munmap(MMAPBASE + size));
+    // printf(1, "free memory after t2 munmap: %d\n\n", freemem());
+    // printf(1, "unmap second page t2: %d\n", munmap(MMAPBASE + size));
+    // printf(1, "free memory after t2 munmap: %d\n\n", freemem());
 
 
     // file mapping  ========================================================================================================
     // case 1: with MAP_POPULATE
     fd = open("README", O_RDWR);
 
-    char *t3 = (char *) mmap(size*2, size, PROT_READ, MAP_POPULATE, fd, 0);
+    char *t3 = (char *) mmap(size*2, size, PROT_READ, MAP_POPULATE, fd, 3);
 
     if (t3 == (char *)0 || t3 == (char *)-1) {
         printf(1, "t3 mmap failed\n");
@@ -99,21 +99,21 @@ int main(void) {
     printf(1, "\n\n");
 
     // // case 2: without MAP_POPULATE; page fault occurs
-    // char *t4 = (char *) mmap(size*3, size, PROT_READ, 0, fd, 0);
+    char *t4 = (char *) mmap(size*3, size, PROT_READ, 0, fd, 3);
 
-    // if (t4 == (char *)0 || t4 == (char *)-1) {
-    //     printf(1, "t4 mmap failed\n");
-    //     exit();
-    // }
+    if (t4 == (char *)0 || t4 == (char *)-1) {
+        printf(1, "t4 mmap failed\n");
+        exit();
+    }
 
-    // printf(1, "t4 mmap success\n");
-    // printf(1, "free memory after t4 mmap: %d\n", freemem());
+    printf(1, "t4 mmap success\n");
+    printf(1, "free memory after t4 mmap: %d\n", freemem());
 
-    // printf(1, "\nread from file:\n");
-    // for(int i = 0; i < size; i++){
-    //     printf(1, "%c", t4[i]);
-    // }
-    // printf(1, "\n\n");
+    printf(1, "\nread from file:\n");
+    for(int i = 0; i < size; i++){
+        printf(1, "%c", t4[i]);
+    }
+    printf(1, "\n\n");
 
     // munmap test ========================================================================================================
     // unmap t1
@@ -129,41 +129,41 @@ int main(void) {
     printf(1, "free memory after t3 munmap: %d\n\n", freemem());
 
     // unmap t4
-    // printf(1, "munmap t4: %d\n", munmap(MMAPBASE + size*3));
-    // printf(1, "free memory after t4 munmap: %d\n\n", freemem());
+    printf(1, "munmap t4: %d\n", munmap(MMAPBASE + size*3));
+    printf(1, "free memory after t4 munmap: %d\n\n", freemem());
 
     close(fd);
 
     // fork test ========================================================================================================
-    int pid = fork();
+    // int pid = fork();
 
-    if(pid < 0){
-        printf(1, "fork failed\n");
-        exit();
-    }else if(pid == 0){ // child process
-        printf(1, "child process\n");
+    // if(pid < 0){
+    //     printf(1, "fork failed\n");
+    //     exit();
+    // }else if(pid == 0){ // child process
+    //     printf(1, "child process\n");
         
-        printf(1, "free memory in child process: %d\n", freemem());
-        printf(1, "munmap t1 in child process: %d\n", munmap(MMAPBASE));
+    //     printf(1, "free memory in child process: %d\n", freemem());
+    //     printf(1, "munmap t1 in child process: %d\n", munmap(MMAPBASE));
 
-        t2[3] = 'd';
-        printf(1, "\nread from t2 in child process:\n");
-        for(int i = 0; i < size; i++){
-            printf(1, "%c", t2[i]);
-        }
+    //     t2[3] = 'd';
+    //     printf(1, "\nread from t2 in child process:\n");
+    //     for(int i = 0; i < size; i++){
+    //         printf(1, "%c", t2[i]);
+    //     }
 
-        printf(1, "\nfree memory after t1 munmap in child process: %d\n", freemem());
-        printf(1, "munmap t2 in child process: %d\n", munmap(MMAPBASE + size));
-    }else{
-        wait();
-        printf(1, "\nparent process\n");
+    //     printf(1, "\nfree memory after t1 munmap in child process: %d\n", freemem());
+    //     printf(1, "munmap t2 in child process: %d\n", munmap(MMAPBASE + size));
+    // }else{
+    //     wait();
+    //     printf(1, "\nparent process\n");
 
-        printf(1, "free memory in parent process: %d\n", freemem());
-        printf(1, "munmap t1 in parent process: %d\n", munmap(MMAPBASE));
+    //     printf(1, "free memory in parent process: %d\n", freemem());
+    //     printf(1, "munmap t1 in parent process: %d\n", munmap(MMAPBASE));
 
-        printf(1, "free memory after t1 munmap in parent process: %d\n", freemem());
-        printf(1, "munmap t2 in parent process: %d\n", munmap(MMAPBASE + size));
-    }
+    //     printf(1, "free memory after t1 munmap in parent process: %d\n", freemem());
+    //     printf(1, "munmap t2 in parent process: %d\n", munmap(MMAPBASE + size));
+    // }
 
     return 0;
 }
