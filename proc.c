@@ -945,7 +945,7 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
   if((flags & MAP_ANONYMOUS) == 0){
     // write permission doesn't match
     if((prot & PROT_WRITE) != 0 && file->writable == 0){
-      cprintf("write protection of the file & prot of the parameter are different\n");
+      // cprintf("write protection of the file & prot of the parameter are different\n");
       return 0;
     }
     // read permission doesn't match
@@ -1036,7 +1036,6 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
 // 5. In one mmap_area, situation of some pages are allocated and some are not can happen
 int munmap(uint addr){
   // if addr is not page aligned, return 0
-  // comeback: check
   if(addr % PGSIZE != 0){
     // cprintf("addr is not page aligned\n");
     return 0;
