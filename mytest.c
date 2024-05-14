@@ -15,7 +15,7 @@
 
 int main(void) {
     int fd;
-    int size = 4096; // comeback: if not aligned, error should occur
+    int size = 8192; // comeback: if not aligned, error should occur
 
     // uint mmap(uint addr, int length, int prot, int flags, int fd, int offset)
     // int munmap(uint addr)
@@ -25,25 +25,25 @@ int main(void) {
     
     // anonymous mapping ========================================================================================================
     // case 1: with MAP_POPULATE
-    char *t1 = (char *) mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
+    // char *t1 = (char *) mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
 
-    if(t1 == (char *)0 || t1 == (char *)-1){
-        printf(1, "t1 mmap failed\n");
-        exit();
-    }
+    // if(t1 == (char *)0 || t1 == (char *)-1){
+    //     printf(1, "t1 mmap failed\n");
+    //     exit();
+    // }
 
-    printf(1, "t1 mmap success\n");
-    printf(1, "free memory after t1 mmap: %d\n", freemem());
+    // printf(1, "t1 mmap success\n");
+    // printf(1, "free memory after t1 mmap: %d\n", freemem());
 
-    t1[0] = 'a'; // comeback: try without PROT_WRITE
-    t1[1] = 'b';
-    t1[2] = 'c';
+    // t1[0] = 'a'; // comeback: try without PROT_WRITE
+    // t1[1] = 'b';
+    // t1[2] = 'c';
 
-    printf(1, "\nread from t1:\n");
-    for(int i = 0; i < size; i++){
-        printf(1, "%c", t1[i]);
-    }
-    printf(1, "\n\n");
+    // printf(1, "\nread from t1:\n");
+    // for(int i = 0; i < size; i++){
+    //     printf(1, "%c", t1[i]);
+    // }
+    // printf(1, "\n\n");
 
     // case 2: without MAP_POPULATE; page fault occurs
     char *t2 = (char *) mmap(size, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS, -1, 0);
@@ -57,15 +57,24 @@ int main(void) {
     printf(1, "free memory after t2 mmap: %d\n", freemem());
 
     // should call page fault handler
-    t2[0] = 'a';
-    t2[1] = 'b';
-    t2[2] = 'c';    
+    // t2[0] = 'a';
+    // t2[1] = 'b';
+    // t2[2] = 'c';    
+    t2[4097] = 'a';
 
     printf(1, "\nread from t2:\n");
     for(int i = 0; i < size; i++){
         printf(1, "%c", t2[i]);
     }
     printf(1, "\n\n");
+
+    printf(1, "free memory after t2 page fault: %d\n", freemem());
+
+    // 8192 testing
+    printf(1, "unmap first page t2: %d\n", munmap(MMAPBASE + size));
+    printf(1, "free memory after t2 munmap: %d\n\n", freemem());
+    printf(1, "unmap second page t2: %d\n", munmap(MMAPBASE + size));
+    printf(1, "free memory after t2 munmap: %d\n\n", freemem());
 
 
     // file mapping  ========================================================================================================
@@ -108,8 +117,8 @@ int main(void) {
 
     // munmap test ========================================================================================================
     // unmap t1
-    printf(1, "munmap t1: %d\n", munmap(MMAPBASE));
-    printf(1, "free memory after t1 munmap: %d\n\n", freemem());
+    // printf(1, "munmap t1: %d\n", munmap(MMAPBASE));
+    // printf(1, "free memory after t1 munmap: %d\n\n", freemem());
 
     // unmap t2
     // printf(1, "munmap t2: %d\n", munmap(MMAPBASE + size));

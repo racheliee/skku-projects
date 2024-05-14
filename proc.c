@@ -922,11 +922,6 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
     return 0;
   }
 
-  // if no flags are given, treat it as MAP_ANONYMOUS
-  if(flags == 0){
-    flags = MAP_ANONYMOUS;
-  }
-
   // MAP_ANONYMOUS이면서 fd와 offset이 -1과 0이 아닌 경우에 mmap은 0을 반환
   if((flags & MAP_ANONYMOUS) && (fd != -1 || offset != 0)){
     // cprintf("anonymous mapping but fd != -1 or offset != 0\n");
@@ -948,10 +943,14 @@ uint mmap(uint addr, int length, int prot, int flags, int fd, int offset){
   // 2. if file mapping, check protection of the file & prot of the parameter are different
   // (prot & PROT_READ) == 0: no read permission, (prot & PROT_WRITE) == 0: no write permission
   if((flags & MAP_ANONYMOUS) == 0){
-    // if read and write protection doesn't match
-    // shift file->writable to the left by 1 to match the prot_write value
-    if(((prot & PROT_READ) != file->readable) || ((prot & PROT_WRITE) && file->writable == 0)){
-      // cprintf("protection of the file & prot of the parameter are different\n");
+    // write permission doesn't match
+    if((prot & PROT_WRITE) != 0 && file->writable == 0){
+      cprintf("write protection of the file & prot of the parameter are different\n");
+      return 0;
+    }
+    // read permission doesn't match
+    if(((prot & PROT_READ) != file->readable)){
+      // cprintf("read protection of the file & prot of the parameter are different\n");
       return 0;
     }
   }
@@ -1166,6 +1165,7 @@ int pagefault_handler(uint err){
 
   // make page table
   uint align_addr = fault_addr - (fault_addr % PGSIZE);
+  cprintf("pagefault handler: align_addr: %x\n", align_addr);
   if(mappages(curproc->pgdir, (void*)align_addr, PGSIZE, V2P(new_mem), PTE_U | cur_mmap_area->prot) < 0){
     // cprintf("pagefault handler: mappages failed\n");
     curproc->killed = 1;
