@@ -302,7 +302,11 @@ fork(void)
             memmove(mem, (char *)P2V(PTE_ADDR(*pte)), PGSIZE);
 
             // map the child process's page table to the child process's page table
-            mappages(np->pgdir, (void *)(mmap_area[j].addr + k), PGSIZE, V2P(mem), PTE_U | mmap_area[j].prot);
+            if(mappages(np->pgdir, (void *)(mmap_area[j].addr + k), PGSIZE, V2P(mem), PTE_U | mmap_area[j].prot) < 0){
+              mmap_area[j].in_use = 0;
+              kfree(mem);
+              return -1;
+            }
           } // end of for loop
         }
 
@@ -1069,7 +1073,7 @@ int munmap(uint addr){
 
       // free physical page (based on deallocuvm in vm.c)
       uint pa = PTE_ADDR(*pte);
-      if(pa == 0) panic("kfree");
+      if(pa == 0) continue;
       char* v = P2V(pa);
       memset(v, 1, PGSIZE);
       kfree(v);
@@ -1114,12 +1118,6 @@ int freemem(void){
 // make page table entry
 int pagefault_handler(uint err){
   uint fault_addr = rcr2();
-  // cprintf("pagefault handler: err: %x\n", err);
-  // if(err != 2){
-  //   return 1;
-  // }
-  // err = 5 : segmentation fault
-
   struct proc *curproc = myproc();
   struct mmap_area *cur_mmap_area = 0;
 
