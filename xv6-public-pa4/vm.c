@@ -76,6 +76,11 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
     a += PGSIZE;
     pa += PGSIZE;
   }
+
+  // add the page to the LRU list
+  if(perm & PTE_U)
+    add_page_to_lru(pgdir, (char*)P2V(pa), va);
+  
   return 0;
 }
 
@@ -266,11 +271,18 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     pte = walkpgdir(pgdir, (char*)a, 0);
     if(!pte)
       a = PGADDR(PDX(a) + 1, 0, 0) - PGSIZE;
+
+    // if the page is present, free the page
     else if((*pte & PTE_P) != 0){
       pa = PTE_ADDR(*pte);
       if(pa == 0)
         panic("kfree");
       char *v = P2V(pa);
+
+      // if the page is a user page, delete it from the LRU list
+      if(*pte & PTE_U)
+        delete_page_from_lru(v);
+      
       kfree(v);
       *pte = 0;
     } 
@@ -343,12 +355,10 @@ copyuvm(pde_t *pgdir, uint sz)
       if((swap_mem = kalloc()) == 0)
         goto bad;
 
-      // get block number of the page
+      // get swapped out page's block number and read the page
       int page_block_num = (*pte & 0xFFFFF000) >> 12; //fixme
       if(page_block_num < 0 || page_block_num >= SWAPMAX)
         continue;
-      
-      // write the page to the swap space
       swapread((char*)swap_mem, page_block_num);
       
       // get a new block number
@@ -362,6 +372,7 @@ copyuvm(pde_t *pgdir, uint sz)
       // update the PTE
       pte_t *new_pte = walkpgdir(d, (void*)i, 0);
       *new_pte = (new_block_num << 12) | PTE_FLAGS(*pte);
+      continue;
     }
 
     pa = PTE_ADDR(*pte);
