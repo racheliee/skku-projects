@@ -32,7 +32,7 @@ struct {
 struct {
   struct spinlock lock;
   char* bitmap; // char* since kalloc returns char*, index is the block number (blkno)
-  int num_free_blocks;
+  int num_free_blocks; // number of free blocks in the swap space
 } swap_space;
 
 struct page pages[PHYSTOP/PGSIZE];
@@ -84,12 +84,13 @@ kinit2(void *vstart, void *vend)
   acquire(&swap_space.lock);
   swap_space.num_free_blocks = MAX_BITMAP_SIZE;
 
-  memset((void*)swap_space.bitmap, 0xFF, PGSIZE); //0
+  memset((void*)swap_space.bitmap, 0, PGSIZE); // should the first 8 bits be 0 or 1???
   
   // set the rest of the swap_space bitmap to 0's
   // memset((void*)(swap_space.bitmap + PGSIZE), 0, LAST_BITMAP_INDEX + 1 - PGSIZE);
-  memset((void*)(swap_space.bitmap), 0, LAST_BITMAP_INDEX + 1);
-  // fixme: terminate the bitmap
+  // memset((void*)(swap_space.bitmap), 0, LAST_BITMAP_INDEX + 1);
+  
+  // terminate the bitmap
   swap_space.bitmap[LAST_BITMAP_INDEX] |= 1 << (SWAPMAX % 8);
   release(&swap_space.lock);
 }
@@ -142,20 +143,22 @@ try_again:
   if(kmem.use_lock)
     acquire(&kmem.lock);
   r = kmem.freelist;
- if(!r){
-  // if kalloc is not successful, try to reclaim a page
-  if(reclaim())
-    goto try_again;
-  // ir reclaim fails, OOM (out of memory)
-  else
-    cprintf("kalloc: out of memory\n");
- }
+  if(!r){
+    // if kalloc is not successful, try to reclaim a page
+    if(reclaim())
+      goto try_again;
+    // if reclaim fails, OOM (out of memory); return 0;
+    else{
+      cprintf("kalloc: out of memory\n");
+      return 0; // kmem.lock is already released in reclaim()
+    }
+  }
   if(r)
     kmem.freelist = r->next;
   if(kmem.use_lock)
     release(&kmem.lock);
   
-  // Decrement the number of free pages if kaloc is successful
+  // Decrement the number of free pages if kalloc is successful
   num_free_pages--;
   return (char*)r;
 }
@@ -166,17 +169,22 @@ int
 reclaim(void)
 { 
   // if there are no pages in the LRU list, return 0
-  if(num_lru_pages == 0)
+  if(page_lru_head == 0 || num_lru_pages == 0){ //num_lru_pages == 0
+    // cprintf("reclaim: no pages in the LRU list\n");
     return 0;
+  }
   
-  // release the lock to avoid deadlock 
+  // release the lock to avoid deadlock
+  // also, if released in kalloc, panic "release" occurs loll idk why lmao
   release(&kmem.lock); 
 
-  // find the victim page
+  // finding the victim page
   acquire(&page_lock); // acquire the page lock
 
   struct page *victim = page_lru_head;
   pte_t *pte = 0;
+
+  // iterate through the LRU list until a pge with PTE_A == 0 is found
   while(1){
     pte = walkpgdir(victim->pgdir, (void*)victim->vaddr, 0);
 
@@ -185,47 +193,39 @@ reclaim(void)
       // reset the victim page's PTE_A bit
       *pte &= ~PTE_A;
 
-      // move victim to tail
-      if(victim->next != victim){
-        // detach the victim page from the LRU list
-        victim->prev->next = victim->next;
-        victim->next->prev = victim->prev;
-
-        // add the victim page to the tail of the LRU list
-        victim->next = page_lru_head;
-        victim->prev = page_lru_head->prev;
-        page_lru_head->prev->next = victim;
-        page_lru_head->prev = victim;
-        page_lru_head = victim;
-      }
+      // move victim to tail by moving the head to the next page
+      page_lru_head = victim->next;
 
       // move to the next page
       victim = victim->next;
+    } 
+    // if PTE_A == 0 and PTE_U == 0, evict the page (not a user page)
+    else if ((*pte & PTE_U) == 0){
+      delete_page_from_lru(P2V(PTE_ADDR(*pte)));
     }
     // if PTE_A == 0, evict the page
     else{
       break;
     }
   }
-
   release(&page_lock); // get_block_number acquires swap_space.lock
 
   // get block number of the victim page
   int blkno = get_block_number();
   if(blkno == -1){
-    // panic("reclaim: get_block_number failed");
+    // cprintf ("reclaim: get_block_number failed\n");
     return 0;
   }
 
   // write the victim page to the swap space
-  swapwrite(P2V(PTE_ADDR(*pte)), blkno);
+  swapwrite(P2V(PTE_ADDR(*pte)), blkno); //P2V(PTE_ADDR(*pte)) = victim->vaddr
 
   // remove the victim page from the LRU list
-  delete_page_from_lru(victim->vaddr);
+  delete_page_from_lru(P2V(PTE_ADDR(*pte)));
 
   // clear the PTE
   kfree(P2V(PTE_ADDR(*pte)));
-  *pte = (*pte & 0xFFF) & (~PTE_P) | (blkno << 12);
+  *pte = ((*pte & 0xFFF) & (~PTE_P)) | (blkno << 12);
 
   // set the bitmap
   // clear_bitmap(blkno);
@@ -240,21 +240,23 @@ get_block_number(void)
     return -1;
   
   acquire(&swap_space.lock);
-  // find the first byte that is not 0xFF  
+  // find the first byte that is not all full (0xFF)  
   int i;
   for(i = 0; i < LAST_BITMAP_INDEX; i++){
-    if(swap_space.bitmap[i] != 0xFF){
+    if(swap_space.bitmap[i] != (char)0xFF){
+      // cprintf("found\n");
       break;
     }
   }
   // if all bytes are 0xFF, return -1
   if(i == LAST_BITMAP_INDEX){
+    // cprintf("get_block_number: all bytes are 0xFF\n");
     release(&swap_space.lock);
     return -1;
   }
   // find the first bit that is not 1
-  for(int j = 0; j < 8; j++){
-    if((swap_space.bitmap[i] & (1 << j)) == 0){
+  for(uint j = 0; j < 8; j++){
+    if(!(swap_space.bitmap[i] & (1 << j))){
       swap_space.bitmap[i] |= (1 << j);
       release(&swap_space.lock);
       return i * 8 + j;
@@ -270,7 +272,7 @@ set_bitmap(int blkno)
 {
   acquire(&swap_space.lock);
   swap_space.num_free_blocks--;
-  swap_space.bitmap[blkno / 8] != (1 << (blkno % 8));
+  swap_space.bitmap[blkno / 8] |= (1 << (blkno % 8));
   release(&swap_space.lock);
 }
 
@@ -284,7 +286,7 @@ clear_bitmap(int blkno)
 }
 
 void 
-add_page_to_lru(pde_t *pgdir, char *pa, uint va)
+add_page_to_lru(pde_t *pgdir, char *pa, char *va)
 {
   uint pages_idx = V2P(pa) >> 12;
 

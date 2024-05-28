@@ -344,10 +344,11 @@ copyuvm(pde_t *pgdir, uint sz)
   if((d = setupkvm()) == 0)
     return 0;
   
+  // pa4: when uvm is copied, present pages & swapped out pages should be both copied
   for(i = 0; i < sz; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
       panic("copyuvm: pte should exist");
-    // if the page is not present, swap
+    // if the page is not present, swap them in and copy
     if(!(*pte & PTE_P)){
       // panic("copyuvm: page not present");
 
@@ -356,7 +357,7 @@ copyuvm(pde_t *pgdir, uint sz)
         goto bad;
 
       // get swapped out page's block number and read the page
-      int page_block_num = (*pte & 0xFFFFF000) >> 12; //fixme
+      int page_block_num = (*pte & 0xFFFFF000) >> 12;
       if(page_block_num < 0 || page_block_num >= SWAPMAX)
         continue;
       swapread((char*)swap_mem, page_block_num);
@@ -385,11 +386,13 @@ copyuvm(pde_t *pgdir, uint sz)
       goto bad;
     }
   }
+  // free the swap memory
   if(swap_mem)
     kfree(swap_mem);
   return d;
 
 bad:
+  // free the swap memory
   if(swap_mem)
     kfree(swap_mem);
   freevm(d);
