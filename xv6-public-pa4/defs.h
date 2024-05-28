@@ -74,7 +74,7 @@ int             get_block_number(void);
 int             reclaim(void);
 void            set_bitmap(int);   
 void            clear_bitmap(int);
-void            add_page_to_lru(pde_t*, char*, uint);
+void            add_page_to_lru(pde_t*, char*, char*);
 void            delete_page_from_lru(char*);
 
 // kbd.c
