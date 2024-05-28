@@ -10,62 +10,6 @@
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 
-// PA4 start
-extern struct spinlock lru_lock;
-extern struct page pages[PHYSTOP/PGSIZE];
-extern struct page *page_lru_head;
-extern int num_free_pages;
-extern int num_lru_pages;
-
-
-
-int pagefault_handler(uint err){
-  uint fault_addr = rcr2();
-  uint align_addr = PGROUNDDOWN(fault_addr);
-  struct proc *curproc = myproc();
-  pde_t *pgdir = curproc->pgdir;
-
-  // check the page table entry's flags
-  pte_t *pte = walkpgdir(pgdir, (void *)align_addr, 0);
-  if(pte == 0){
-    // cprintf("pagefault_handler: pte is 0\n");
-    curproc->killed = 1;
-    return -1;
-  }
-  // if page is already present
-  if(*pte & PTE_P){
-    // cprintf("pagefault_handler: page is present\n");
-    curproc->killed = 1;
-    return -1;
-  }
-  // if the kernel page is to be swapped out
-  if((*pte & PTE_U) == 0){
-    // cprintf("pagefault_handler: kernel page is to be swapped out\n");
-    curproc->killed = 1;
-    return -1;
-  }
-
-
-
-  // allocate a new page
-  char *new_mem = kalloc();
-  if(new_mem == 0){
-    // cprintf("pagefault_handler: out of memory\n");
-    curproc->killed = 1;
-    return -1;
-  }
-
-  memset(new_mem, 0, PGSIZE);
-
-
-
-
-
-
-
-}
-// PA4 end
-
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
 void
@@ -88,7 +32,7 @@ seginit(void)
 // Return the address of the PTE in page table pgdir
 // that corresponds to virtual address va.  If alloc!=0,
 // create any required page table pages.
-static pte_t *
+pte_t *
 walkpgdir(pde_t *pgdir, const void *va, int alloc)
 {
   pde_t *pde;
@@ -329,6 +273,11 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       char *v = P2V(pa);
       kfree(v);
       *pte = 0;
+    } 
+    // if the page is a user page, clear the bitmap
+    else if(*pte & PTE_U){
+      clear_bitmap((*pte & 0xFFFFF000) >> 12);
+      *pte = 0;
     }
   }
   return newsz;
@@ -364,6 +313,9 @@ clearpteu(pde_t *pgdir, char *uva)
   if(pte == 0)
     panic("clearpteu");
   *pte &= ~PTE_U;
+
+  // remove the page from the LRU list
+  delete_page_from_lru((char*) P2V(PTE_ADDR(*pte)));
 }
 
 // Given a parent process's page table, create a copy
@@ -375,14 +327,43 @@ copyuvm(pde_t *pgdir, uint sz)
   pte_t *pte;
   uint pa, i, flags;
   char *mem;
+  char *swap_mem = 0;
 
   if((d = setupkvm()) == 0)
     return 0;
+  
   for(i = 0; i < sz; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
       panic("copyuvm: pte should exist");
-    if(!(*pte & PTE_P))
-      panic("copyuvm: page not present");
+    // if the page is not present, swap
+    if(!(*pte & PTE_P)){
+      // panic("copyuvm: page not present");
+
+      // allocate a new page for swap
+      if((swap_mem = kalloc()) == 0)
+        goto bad;
+
+      // get block number of the page
+      int page_block_num = (*pte & 0xFFFFF000) >> 12; //fixme
+      if(page_block_num < 0 || page_block_num >= SWAPMAX)
+        continue;
+      
+      // write the page to the swap space
+      swapread((char*)swap_mem, page_block_num);
+      
+      // get a new block number
+      int new_block_num = get_block_number();
+      if(new_block_num == -1)
+        goto bad;
+      
+      // write the page to the swap space
+      swapwrite((char*)swap_mem, new_block_num);
+
+      // update the PTE
+      pte_t *new_pte = walkpgdir(d, (void*)i, 0);
+      *new_pte = (new_block_num << 12) | PTE_FLAGS(*pte);
+    }
+
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
     if((mem = kalloc()) == 0)
@@ -393,9 +374,13 @@ copyuvm(pde_t *pgdir, uint sz)
       goto bad;
     }
   }
+  if(swap_mem)
+    kfree(swap_mem);
   return d;
 
 bad:
+  if(swap_mem)
+    kfree(swap_mem);
   freevm(d);
   return 0;
 }
@@ -448,3 +433,57 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 //PAGEBREAK!
 // Blank page.
 
+// PA4 start
+extern struct spinlock page_lock;
+extern struct page pages[PHYSTOP/PGSIZE];
+extern struct page *page_lru_head;
+
+int pagefault_handler(uint err){
+  uint fault_addr = rcr2();
+  uint align_addr = PGROUNDDOWN(fault_addr);
+  struct proc *curproc = myproc();
+  pde_t *pgdir = curproc->pgdir;
+
+  // check the page table entry's flags
+  pte_t *pte = walkpgdir(pgdir, (void *)align_addr, 0);
+  if(pte == 0){
+    // cprintf("pagefault_handler: pte is 0\n");
+    curproc->killed = 1;
+    return -1;
+  }
+  // if page is already present
+  if(*pte & PTE_P){
+    // cprintf("pagefault_handler: page is present\n");
+    curproc->killed = 1;
+    return -1;
+  }
+  // if the kernel page is to be swapped out
+  if((*pte & PTE_U) == 0){
+    // cprintf("pagefault_handler: kernel page is to be swapped out\n");
+    curproc->killed = 1;
+    return -1;
+  }
+
+  // allocate a new page
+  char *new_mem = kalloc();
+  if(new_mem == 0){
+    // cprintf("pagefault_handler: out of memory\n");
+    curproc->killed = 1;
+    return -1;
+  }
+
+  // get the block number of the page
+  int page_block_num = (*pte & 0xFFFFF000) >> 12;
+  swapread((char*) new_mem, page_block_num);
+  clear_bitmap(page_block_num);
+
+  // update the PTE
+  *pte = (*pte & 0xFFF) | V2P(new_mem); // clear out the old address
+  *pte |= PTE_FLAGS(*pte) | PTE_P; // set the bits again
+
+  // add the page to the LRU list
+  add_page_to_lru(pgdir, new_mem, (char*)align_addr);
+
+  return 1;
+}
+// PA4 end

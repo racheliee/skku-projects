@@ -70,7 +70,12 @@ char*           kalloc(void);
 void            kfree(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
-void            reclaim(void);
+int             get_block_number(void);
+int             reclaim(void);
+void            set_bitmap(int);   
+void            clear_bitmap(int);
+void            add_page_to_lru(pde_t*, char*, uint);
+void            delete_page_from_lru(char*);
 
 // kbd.c
 void            kbdintr(void);
@@ -188,6 +193,7 @@ void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
+
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
