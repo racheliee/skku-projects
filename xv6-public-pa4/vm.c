@@ -79,7 +79,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 
   // add the page to the LRU list
   if(perm & PTE_U)
-    add_page_to_lru(pgdir, (char*)P2V(pa), va);
+    add_page_to_lru(pgdir, (char*)P2V(pa), (char*)va);
   
   return 0;
 }
@@ -493,7 +493,7 @@ int pagefault_handler(uint err){
   *pte |= PTE_FLAGS(*pte) | PTE_P; // set the bits again
 
   // add the page to the LRU list
-  add_page_to_lru(pgdir, new_mem, (char*)align_addr);
+  add_page_to_lru(pgdir, new_mem, (char *)align_addr);
 
   return 1;
 }
