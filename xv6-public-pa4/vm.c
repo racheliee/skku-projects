@@ -71,15 +71,16 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
     if(*pte & PTE_P)
       panic("remap");
     *pte = pa | perm | PTE_P;
+
+    // add the page to the LRU list
+    if(perm & PTE_U)
+      add_page_to_lru(pgdir, (char*)P2V(pa), (char*)va);
+
     if(a == last)
       break;
     a += PGSIZE;
     pa += PGSIZE;
   }
-
-  // add the page to the LRU list
-  if(perm & PTE_U)
-    add_page_to_lru(pgdir, (char*)P2V(pa), (char*)va);
   
   return 0;
 }
@@ -452,6 +453,7 @@ extern struct spinlock page_lock;
 extern struct page pages[PHYSTOP/PGSIZE];
 extern struct page *page_lru_head;
 
+// basically, swap in
 int pagefault_handler(uint err){
   uint fault_addr = rcr2();
   uint align_addr = PGROUNDDOWN(fault_addr);
@@ -460,20 +462,9 @@ int pagefault_handler(uint err){
 
   // check the page table entry's flags
   pte_t *pte = walkpgdir(pgdir, (void *)align_addr, 0);
-  if(pte == 0){
+  // if the PTE is not found or is not present or the page is not a user page, kill the process
+  if(pte == 0 || *pte & PTE_P || (*pte & PTE_U) == 0){
     // cprintf("pagefault_handler: pte is 0\n");
-    curproc->killed = 1;
-    return -1;
-  }
-  // if page is already present
-  if(*pte & PTE_P){
-    // cprintf("pagefault_handler: page is present\n");
-    curproc->killed = 1;
-    return -1;
-  }
-  // if the kernel page is to be swapped out
-  if((*pte & PTE_U) == 0){
-    // cprintf("pagefault_handler: kernel page is to be swapped out\n");
     curproc->killed = 1;
     return -1;
   }
