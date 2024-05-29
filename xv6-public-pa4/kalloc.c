@@ -334,7 +334,7 @@ delete_page_from_lru(char* pa)
   num_free_pages++;
 
   // if the page is the only element in the LRU list
-  if(pages[pages_idx].next == &pages[pages_idx] || num_lru_pages == 0){
+  if(pages[pages_idx].next == &pages[pages_idx] || num_lru_pages == 1){
     page_lru_head->prev = 0;
     page_lru_head->next = 0;
     page_lru_head = 0;
