@@ -227,7 +227,7 @@ reclaim(void)
   kfree(P2V(PTE_ADDR(*pte)));
   *pte = ((*pte & 0xFFF) & (~PTE_P)) | (blkno << 12);
 
-  // set the bitmap
+  // set the bitmap --> this causes some error idk lol
   // clear_bitmap(blkno);
 
   return 1;
