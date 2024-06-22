@@ -59,6 +59,28 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // set up links
+        val signUpLink = findViewById<TextView>(R.id.sign_up_link)
+        val forgotPasswordLink = findViewById<TextView>(R.id.forgot_password)
+        val privacyPolicyLink = findViewById<TextView>(R.id.privacy_policy)
+        val termsOfServiceLink = findViewById<TextView>(R.id.terms_of_service)
+
+        // Set up link click listeners
+        signUpLink.setOnClickListener(openWebPage("https://www.themoviedb.org/signup"))
+        forgotPasswordLink.setOnClickListener(openWebPage("https://www.themoviedb.org/reset-password"))
+        privacyPolicyLink.setOnClickListener(openWebPage("https://www.themoviedb.org/privacy-policy"))
+        termsOfServiceLink.setOnClickListener(openWebPage("https://www.themoviedb.org/terms-of-use"))
+    }
+
+    private fun openWebPage(url: String): View.OnClickListener {
+        return View.OnClickListener {
+            val webpage: Uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }
     }
 
     // Create a request token for user authentication
@@ -164,7 +186,7 @@ class LoginActivity : AppCompatActivity() {
                     if (accountResponse.id != -1) {
                         accountDetail = accountResponse
                         Log.d("LoginActivity", "Account ID: $accountDetail")
-                        Toast.makeText(this@LoginActivity, "Account ID: $accountDetail", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@LoginActivity, "Account ID: $accountDetail", Toast.LENGTH_SHORT).show()
 
                         // go to the next page
                         val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
@@ -182,6 +204,20 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Network error: ${e.message}")
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideStatusBar()
+    }
+
+    private fun hideStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
     }
 
