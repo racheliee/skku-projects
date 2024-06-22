@@ -3,9 +3,9 @@ package edu.skku.map.pa3.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class PopularMovies(
+data class WatchlistMovie(
     val adult: Boolean,
-    val backdrop_path: String?,
+    val backdrop_path: String,
     val genre_ids: List<Int>,
     val id: Int,
     val original_language: String,
@@ -17,22 +17,22 @@ data class PopularMovies(
     val title: String,
     val video: Boolean,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
 ) : Serializable
 
-data class MovieResponses(
+data class MovieWatchlistResponse(
     val page: Int,
-    val results: List<PopularMovies>,
+    val results: List<WatchlistMovie>,
     val total_pages: Int,
     val total_results: Int
 ) : Serializable
 
-
-data class PopularTVShows(
+data class WatchlistTVShow(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
     val id: Int,
+    val origin_country: List<String>,
     val original_language: String,
     val original_name: String,
     val overview: String,
@@ -42,11 +42,11 @@ data class PopularTVShows(
     val name: String,
     val vote_average: Double,
     val vote_count: Int,
-): Serializable
+) : Serializable
 
-data class TVShowResponses(
+data class TVShowWatchlistResponse(
     val page: Int,
-    val results: List<PopularTVShows>,
+    val results: List<WatchlistTVShow>,
     val total_pages: Int,
     val total_results: Int
-): Serializable
+) : Serializable

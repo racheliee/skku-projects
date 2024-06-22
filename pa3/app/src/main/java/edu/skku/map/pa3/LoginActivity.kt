@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private val tmdbApiKey = "5e9e0af68c59eafeb71723f56a3862bc"
     private lateinit var requestToken: String
     private lateinit var sessionID: String
-    private lateinit var currentUser: UserInfo
+    private lateinit var accountDetail: AccountDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,51 +60,10 @@ class LoginActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     createRequestToken(username, password, errorMessageTextView)
                 }
-
-//                val isLoginSuccessful = login(username, password, errorMessageTextView)
-//                Toast.makeText(this, if(isLoginSuccessful) "Login Success" else "Login Failed", Toast.LENGTH_SHORT).show()
-//                if(isLoginSuccessful) {
-//                    val intent = Intent(this, MainPageActivity::class.java).apply {
-//                        putExtra(MainPageActivity.USER_INFO, currentUser)
-//                    }
-//                    startActivity(intent)
-//                }else{
-//                    // if the login is failed, clear the id and password
-//                    usernameEditText.setText("")
-//                    passwordEditText.setText("")
-//                }
             }
         }
     }
 
-    private fun login(username: String, password: String, errorMessageTextView: TextView): Boolean {
-        // read the user_info.txt
-        val reader: BufferedReader = assets.open("user_info.txt").bufferedReader()
-        val user_read = reader.use { it.readText() }
-
-        // parse the user_info.txt
-        val gson = Gson()
-        val user_info_type = object : TypeToken<List<UserInfo>>() {}.type
-        val user_info = gson.fromJson<List<UserInfo>>(user_read, user_info_type)
-
-        // check if the user exists
-        for(user in user_info) {
-            // if the user exists, go to the next page
-            if(user.username == username && user.password == password) {
-                currentUser = user
-                return true
-            }
-        }
-
-        errorMessageTextView.text = "Invalid username or password. If you don't have an account, please sign up."
-        errorMessageTextView.visibility = View.VISIBLE
-
-        return false
-    }
-
-
-    // Create a request token for user authentication
-    // these functions are not used in the final version (they connected to the tmdb user authentication)
     // Create a request token for user authentication
     private suspend fun createRequestToken(username: String, password: String, errorMessageTextView: TextView) {
         val url = "https://api.themoviedb.org/3/authentication/token/new?api_key=$tmdbApiKey"
@@ -179,11 +138,7 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("LoginActivity", "Session ID: $sessionID")
                         Toast.makeText(this@LoginActivity, "Session ID: $sessionID", Toast.LENGTH_SHORT).show()
 
-                        // go to the next page
-                        val intent = Intent(this@LoginActivity, HomePageActivity::class.java).apply {
-                            putExtra(HomePageActivity.SESSION_ID, sessionID)
-                        }
-                        startActivity(intent)
+                        fetchAccountDetails() // get the account ID
                     } else {
                         errorMessageTextView.text = "Failed to create session. Please try again."
                         errorMessageTextView.visibility = View.VISIBLE
@@ -196,7 +151,38 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun fetchAccountDetails() {
+        val url = "https://api.themoviedb.org/3/account?api_key=$tmdbApiKey&session_id=$sessionID"
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = LoginNetworkUtils.getAccountDetails(url)
+                val accountResponse: AccountDetail = response
+
+                withContext(Dispatchers.Main) {
+                    if (accountResponse.id != -1) {
+                        accountDetail = accountResponse
+                        Log.d("LoginActivity", "Account ID: $accountDetail")
+                        Toast.makeText(this@LoginActivity, "Account ID: $accountDetail", Toast.LENGTH_SHORT).show()
+
+                        // go to the next page
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+                            putExtra(MainActivity.SESSION_ID, sessionID)
+                            putExtra(MainActivity.ACCOUNT_DETAILS, accountDetail)
+                        }
+                        startActivity(intent)
+                    } else {
+                        Log.d("LoginActivity", "Failed to get account ID")
+                    }
+                }
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    Log.d("LoginActivity", "Network error: ${e.message}")
+                }
+            }
+        }
     }
 
     // previously used to create session via web

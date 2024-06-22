@@ -83,4 +83,19 @@ object LoginNetworkUtils {
             return gson.fromJson(response.body!!.string(), SessionResponse::class.java)
         }
     }
+
+    // get account details
+    @Throws(IOException::class)
+    fun getAccountDetails(url: String): AccountDetail{
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", "Bearer $tmdbAcessToken")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            return gson.fromJson(response.body!!.string(), AccountDetail::class.java)
+        }
+    }
 }

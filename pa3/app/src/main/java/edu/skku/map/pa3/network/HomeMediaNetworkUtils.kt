@@ -3,16 +3,13 @@ package edu.skku.map.pa3.network
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import edu.skku.map.pa3.models.MovieResponses
-import edu.skku.map.pa3.models.PopularMovies
-import edu.skku.map.pa3.models.PopularTVShows
-import edu.skku.map.pa3.models.TVShowResponses
+import edu.skku.map.pa3.models.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
-object MediaNetworkUtils {
+object HomeMediaNetworkUtils {
     private val client: OkHttpClient
     private val gson: Gson = Gson()
     private val tmdbAcessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTllMGFmNjhjNTllYWZlYjcxNzIzZjU2YTM4NjJiYyIsInN1YiI6IjY2NzVkYTkyZGU3MmZkMzI3N2IwNTIyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QLYG3b_OYmMs6zYxSj_KaahIUM8jcCkssz1AUxWaZmA"
@@ -63,6 +60,48 @@ object MediaNetworkUtils {
             val type = object : TypeToken<TVShowResponses>() {}.type
             val tmdbResponse: TVShowResponses = gson.fromJson(json, type)
             Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular TV shows")
+
+            return tmdbResponse.results
+        }
+    }
+
+    // This function is used to get upcoming movies from the TMDB API
+    @Throws(IOException::class)
+    fun getUpcomingMovies(url: String): List<UpcomingMovie> {
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", "Bearer $tmdbAcessToken")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val json = response.body!!.string()
+
+            val type = object : TypeToken<UpcomingMoviesResponse>() {}.type
+            val tmdbResponse: UpcomingMoviesResponse = gson.fromJson(json, type)
+            Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} upcoming movies")
+
+            return tmdbResponse.results
+        }
+    }
+
+    // This function is used to get shows airing today from the TMDB API
+    @Throws(IOException::class)
+    fun getAiringTodayShows(url: String): List<AiringTodayShow> {
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", "Bearer $tmdbAcessToken")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val json = response.body!!.string()
+
+            val type = object : TypeToken<AiringTodayShowResponse>() {}.type
+            val tmdbResponse: AiringTodayShowResponse = gson.fromJson(json, type)
+            Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} shows airing today")
 
             return tmdbResponse.results
         }
