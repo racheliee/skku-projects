@@ -4,8 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import edu.skku.map.pa3.models.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
@@ -23,87 +22,123 @@ object HomeMediaNetworkUtils {
             .build()
     }
 
-    // This function is used to get popular movies from the TMDB API
-    @Throws(IOException::class)
-    fun getPopularMovies(url: String): List<PopularMovies> {
+    fun getPopularMovies(url: String, callback: (List<PopularMovies>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
             .addHeader("Authorization", "Bearer $tmdbAcessToken")
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val json = response.body!!.string()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("HomeMediaNetworkUtils", "Error fetching popular movies", e)
+                callback(null, e)
+            }
 
-            val type = object : TypeToken<MovieResponses>() {}.type
-            val tmdbResponse: MovieResponses = gson.fromJson(json, type)
-            Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular movies")
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!it.isSuccessful) {
+                        callback(null, IOException("Unexpected code $response"))
+                        return
+                    }
 
-            return tmdbResponse.results
-        }
+                    val json = it.body!!.string()
+                    val type = object : TypeToken<MovieResponses>() {}.type
+                    val tmdbResponse: MovieResponses = gson.fromJson(json, type)
+                    Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular movies")
+                    callback(tmdbResponse.results, null)
+                }
+            }
+        })
     }
 
-    // This function is used to get popular TV shows from the TMDB API
-    @Throws(IOException::class)
-    fun getPopularTVShows(url: String): List<PopularTVShows> {
+    fun getPopularTVShows(url: String, callback: (List<PopularTVShows>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
             .addHeader("Authorization", "Bearer $tmdbAcessToken")
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val json = response.body!!.string()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("HomeMediaNetworkUtils", "Error fetching popular TV shows", e)
+                callback(null, e)
+            }
 
-            val type = object : TypeToken<TVShowResponses>() {}.type
-            val tmdbResponse: TVShowResponses = gson.fromJson(json, type)
-            Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular TV shows")
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!it.isSuccessful) {
+                        callback(null, IOException("Unexpected code $response"))
+                        return
+                    }
 
-            return tmdbResponse.results
-        }
+                    val json = it.body!!.string()
+                    val type = object : TypeToken<TVShowResponses>() {}.type
+                    val tmdbResponse: TVShowResponses = gson.fromJson(json, type)
+                    Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular TV shows")
+                    callback(tmdbResponse.results, null)
+                }
+            }
+        })
     }
 
-    // This function is used to get upcoming movies from the TMDB API
-    @Throws(IOException::class)
-    fun getUpcomingMovies(url: String): List<UpcomingMovie> {
+    fun getUpcomingMovies(url: String, callback: (List<UpcomingMovie>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
             .addHeader("Authorization", "Bearer $tmdbAcessToken")
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val json = response.body!!.string()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("HomeMediaNetworkUtils", "Error fetching upcoming movies", e)
+                callback(null, e)
+            }
 
-            val type = object : TypeToken<UpcomingMoviesResponse>() {}.type
-            val tmdbResponse: UpcomingMoviesResponse = gson.fromJson(json, type)
-            Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} upcoming movies")
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!it.isSuccessful) {
+                        callback(null, IOException("Unexpected code $response"))
+                        return
+                    }
 
-            return tmdbResponse.results
-        }
+                    val json = it.body!!.string()
+                    val type = object : TypeToken<UpcomingMoviesResponse>() {}.type
+                    val tmdbResponse: UpcomingMoviesResponse = gson.fromJson(json, type)
+                    Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} upcoming movies")
+                    callback(tmdbResponse.results, null)
+                }
+            }
+        })
     }
 
-    // This function is used to get shows airing today from the TMDB API
-    @Throws(IOException::class)
-    fun getAiringTodayShows(url: String): List<AiringTodayShow> {
+    fun getAiringTodayShows(url: String, callback: (List<AiringTodayShow>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
             .addHeader("Authorization", "Bearer $tmdbAcessToken")
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val json = response.body!!.string()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("HomeMediaNetworkUtils", "Error fetching shows airing today", e)
+                callback(null, e)
+            }
 
-            val type = object : TypeToken<AiringTodayShowResponse>() {}.type
-            val tmdbResponse: AiringTodayShowResponse = gson.fromJson(json, type)
-            Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} shows airing today")
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!it.isSuccessful) {
+                        callback(null, IOException("Unexpected code $response"))
+                        return
+                    }
 
-            return tmdbResponse.results
-        }
+                    val json = it.body!!.string()
+                    val type = object : TypeToken<AiringTodayShowResponse>() {}.type
+                    val tmdbResponse: AiringTodayShowResponse = gson.fromJson(json, type)
+                    Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} shows airing today")
+                    callback(tmdbResponse.results, null)
+                }
+            }
+        })
     }
 }

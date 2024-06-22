@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.skku.map.pa3.MediaAdapter
+import edu.skku.map.pa3.OnItemClickListener
 import edu.skku.map.pa3.R
 import edu.skku.map.pa3.network.*
 import edu.skku.map.pa3.models.*
@@ -17,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class FavouriteFragment: Fragment() {
+class FavouriteFragment: Fragment() { //OnItemClickListener
 
     private lateinit var sessionID: String
     private var accountID: Int = 21341108
@@ -54,7 +55,7 @@ class FavouriteFragment: Fragment() {
         val view = inflater.inflate(R.layout.favourite_layout, container, false)
 
         // Initialize adapters
-        favoriteMoviesAdapter = MediaAdapter()
+        favoriteMoviesAdapter = MediaAdapter() //listOf(), this
         favoriteTVShowsAdapter = MediaAdapter()
         tvWatchlistAdapter = MediaAdapter()
         movieWatchlistAdapter = MediaAdapter()
@@ -143,4 +144,14 @@ class FavouriteFragment: Fragment() {
             }
         }
     }
+
+//    override fun onItemClick(item: Any) {
+//        when (item) {
+//            is PopularMovies -> {
+//                val fragment = MovieInfoFragment.newInstance(item)
+//                fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
+//            }
+//            // Handle other item types if needed
+//        }
+//    }
 }

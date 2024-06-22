@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.skku.map.pa3.network.*
 import edu.skku.map.pa3.models.*
-import edu.skku.map.pa3.ui.MovieInfoFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 import kotlin.random.Random
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment() { // OnItemClickListener {
 
     private lateinit var popularMoviesAdapter: MediaAdapter<PopularMovies>
     private lateinit var popularTVShowsAdapter: MediaAdapter<PopularTVShows>
@@ -31,7 +30,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.homepage_layout, container, false)
 
         // Initialize adapters
-        popularMoviesAdapter = MediaAdapter()
+        popularMoviesAdapter = MediaAdapter() //listOf(), this
         popularTVShowsAdapter = MediaAdapter()
         upcomingMoviesAdapter = MediaAdapter()
         upcomingTVShowsAdapter = MediaAdapter()
@@ -68,78 +67,82 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchPopularMovies() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val popularMovies = HomeMediaNetworkUtils.getPopularMovies("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1")
-                CoroutineScope(Dispatchers.Main).launch {
-                    popularMoviesAdapter.updateData(popularMovies)
+        HomeMediaNetworkUtils.getPopularMovies("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1") { popularMovies, e ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (e != null) {
+                    e.printStackTrace()
+                } else {
+                    popularMoviesAdapter.updateData(popularMovies!!)
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
         }
     }
 
     private fun fetchPopularTVShows() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val popularTVShows = HomeMediaNetworkUtils.getPopularTVShows("https://api.themoviedb.org/3/tv/popular?language=en-US&page=1")
-                CoroutineScope(Dispatchers.Main).launch {
-                    popularTVShowsAdapter.updateData(popularTVShows)
+        HomeMediaNetworkUtils.getPopularTVShows("https://api.themoviedb.org/3/tv/popular?language=en-US&page=1") { popularTVShows, e ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (e != null) {
+                    e.printStackTrace()
+                } else {
+                    popularTVShowsAdapter.updateData(popularTVShows!!)
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
         }
     }
 
     private fun fetchUpcomingMovies() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val upcomingMovies = HomeMediaNetworkUtils.getUpcomingMovies("https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1")
-                CoroutineScope(Dispatchers.Main).launch {
-                    upcomingMoviesAdapter.updateData(upcomingMovies)
+        HomeMediaNetworkUtils.getUpcomingMovies("https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1") { upcomingMovies, e ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (e != null) {
+                    e.printStackTrace()
+                } else {
+                    upcomingMoviesAdapter.updateData(upcomingMovies!!)
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
         }
     }
 
     private fun fetchUpcomingTVShows() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val upcomingTVShows = HomeMediaNetworkUtils.getAiringTodayShows("https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=1")
-                CoroutineScope(Dispatchers.Main).launch {
-                    upcomingTVShowsAdapter.updateData(upcomingTVShows)
+        HomeMediaNetworkUtils.getAiringTodayShows("https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=1") { airingTodayShows, e ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (e != null) {
+                    e.printStackTrace()
+                } else {
+                    upcomingTVShowsAdapter.updateData(airingTodayShows!!)
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
         }
     }
 
     private fun fetchRandomMovie() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // Generate a random page number (1 to 500)
-                val randomPage = Random.nextInt(1, 501)
-                val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$randomPage"
+        // Generate a random page number (1 to 500)
+        val randomPage = Random.nextInt(1, 501)
+        val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$randomPage"
 
-                // Fetch popular movies from the random page
-                val popularMovies = HomeMediaNetworkUtils.getPopularMovies(url)
+        HomeMediaNetworkUtils.getPopularMovies(url) { popularMovies, e ->
+            CoroutineScope(Dispatchers.Main).launch {
+                if (e != null) {
+                    e.printStackTrace()
+                } else {
+                    // Select a random movie from the list
+                    val randomMovie = popularMovies!![Random.nextInt(popularMovies.size)]
 
-                // Select a random movie from the list
-                val randomMovie = popularMovies[Random.nextInt(popularMovies.size)]
-
-                // Navigate to the MovieInfoFragment
-                CoroutineScope(Dispatchers.Main).launch {
+                    // Navigate to the MovieInfoFragment
                     val fragment = MovieInfoFragment.newInstance(randomMovie)
                     fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
         }
     }
+
+
+//    override fun onItemClick(item: Any) {
+//        when (item) {
+//            is PopularMovies -> {
+//                val fragment = MovieInfoFragment.newInstance(item)
+//                fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
+//            }
+//            // Handle other item types if needed
+//        }
+//    }
 }

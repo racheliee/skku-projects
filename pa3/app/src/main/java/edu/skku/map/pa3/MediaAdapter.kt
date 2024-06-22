@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.skku.map.pa3.models.*
 
+interface OnItemClickListener {
+    fun onItemClick(item: Any)
+}
+
 class MediaAdapter<T>(
     private var items: List<T> = listOf(),
 //    private val itemClickListener: (PopularMovies) -> Unit
+//    private val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -93,10 +98,10 @@ class MediaAdapter<T>(
             VIEW_TYPE_MOVIE_POPULAR -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
                 MovieViewHolder(view)
-//                    .apply{
+//                    .apply {
 //                    itemView.setOnClickListener {
 //                        val movie = items[adapterPosition] as PopularMovies
-//                        itemClickListener(movie)
+//                        itemClickListener.onItemClick(movie)
 //                    }
 //                }
             }
@@ -142,6 +147,7 @@ class MediaAdapter<T>(
                     Glide.with(itemView.context)
                         .load("https://image.tmdb.org/t/p/w500${movie.poster_path}")
                         .into(moviePoster)
+//                    itemView.setOnClickListener() { itemClickListener(movie) }
                 }
             }
             is TVShowViewHolder -> {

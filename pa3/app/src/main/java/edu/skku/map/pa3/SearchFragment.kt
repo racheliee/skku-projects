@@ -66,6 +66,7 @@ class SearchFragment : Fragment() {
         return view
     }
 
+
     private fun performSearch() {
         val query = searchEditText.text.toString()
         val selectedGenre = genres[genreSpinner.selectedItem.toString()]
@@ -74,19 +75,19 @@ class SearchFragment : Fragment() {
             val genreFilter = selectedGenre?.let { "&with_genres=$it" } ?: ""
             val url = "https://api.themoviedb.org/3/search/movie?api_key=<YOUR_API_KEY>&query=$query$genreFilter"
 
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val searchResults = HomeMediaNetworkUtils.getPopularMovies(url)
-                    CoroutineScope(Dispatchers.Main).launch {
-                        searchResultsAdapter.updateData(searchResults)
+            HomeMediaNetworkUtils.getPopularMovies(url) { searchResults, e ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (e != null) {
+                        e.printStackTrace()
+                    } else {
+                        searchResultsAdapter.updateData(searchResults ?: listOf())
                     }
-                } catch (e: IOException) {
-                    e.printStackTrace()
                 }
             }
         } else {
             Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 }
