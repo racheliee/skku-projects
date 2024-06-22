@@ -1,0 +1,18 @@
+[
+    {
+      "username": "rachel",
+      "password": "1234",
+      "personal_info":
+      {
+        "name": "Rachel",
+        "age": 22,
+        "gender": "female"
+      },
+      "favourite_movies": [
+        {   
+
+        }
+      ]
+    },
+
+]
