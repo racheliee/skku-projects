@@ -152,7 +152,8 @@ class LoginActivity : AppCompatActivity() {
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    errorMessageTextView.text = "Network error: ${e.message}"
+//                    errorMessageTextView.text = "Network error: ${e.message}"
+                    errorMessageTextView.text = "Network error: Wrong username or password. Please try again."
                     errorMessageTextView.visibility = View.VISIBLE
                 }
             }
@@ -179,8 +180,8 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity, "Session ID: $sessionID", Toast.LENGTH_SHORT).show()
 
                         // go to the next page
-                        val intent = Intent(this@LoginActivity, MainPageActivity::class.java).apply {
-                            putExtra(MainPageActivity.SESSION_ID, sessionID)
+                        val intent = Intent(this@LoginActivity, HomePageActivity::class.java).apply {
+                            putExtra(HomePageActivity.SESSION_ID, sessionID)
                         }
                         startActivity(intent)
                     } else {

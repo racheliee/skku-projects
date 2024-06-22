@@ -3,21 +3,39 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:gravity="center">
 
     <ImageView
-        android:id="@+id/movie_image"
+        android:id="@+id/movie_poster"
         android:layout_width="150dp"
-        android:layout_height="225dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
         android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/movie_title"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Movie Title"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="8dp"
         android:gravity="center"
-        android:layout_marginTop="8dp" />
+        android:text="Movie Title"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/movie_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="Rating: 8.5/10"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

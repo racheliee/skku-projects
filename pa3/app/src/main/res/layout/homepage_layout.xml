@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/mainpage_background"
     android:paddingBottom="16dp"
-    tools:context=".MainPageActivity">
+    tools:context=".HomePageActivity">
 
     <!-- Logo at the top -->
     <ImageView
