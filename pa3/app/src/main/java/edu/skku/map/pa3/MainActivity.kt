@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<ImageButton>(R.id.profile_button).setOnClickListener {
-            loadFragment(FavouriteFragment.newInstance(sessionId, accountDetails.id))
+            loadFragment(ProfileFragment.newInstance(accountDetails))
         }
 
         findViewById<ImageButton>(R.id.search_button).setOnClickListener {

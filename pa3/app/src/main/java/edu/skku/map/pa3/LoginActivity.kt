@@ -12,15 +12,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import edu.skku.map.pa3.models.*
 import edu.skku.map.pa3.network.LoginNetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
@@ -74,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
             Log.d("LoginActivity", "Request Token: $requestToken")
 
             withContext(Dispatchers.Main) {
-                Toast.makeText(applicationContext, "Request Token: $requestToken", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(applicationContext, "Request Token: $requestToken", Toast.LENGTH_SHORT).show()
                 createSessionWithLogin(username, password, errorMessageTextView)
             }
         } catch (e: IOException) {
@@ -85,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Create a session with the request token and user credentials
     private fun createSessionWithLogin(username: String, password: String, errorMessageTextView: TextView) {
         val url = "https://api.themoviedb.org/3/authentication/token/validate_with_login"
 
@@ -102,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (sessionResponse.success) { // successfully authenticated
-                        Toast.makeText(this@LoginActivity, "Login verified!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@LoginActivity, "Login verified!", Toast.LENGTH_SHORT).show()
                         createSession(errorMessageTextView)
                     } else {
                         errorMessageTextView.text = "Wrong username or password. Please try again."
@@ -119,9 +117,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Create a session with the request token that has been authenticated
     private fun createSession(errorMessageTextView: TextView) {
         val url = "https://api.themoviedb.org/3/authentication/session/new?api_key=$tmdbApiKey"
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val jsonBody = """
@@ -136,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
                     if (sessionResponse.success) {
                         sessionID = sessionResponse.session_id
                         Log.d("LoginActivity", "Session ID: $sessionID")
-                        Toast.makeText(this@LoginActivity, "Session ID: $sessionID", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@LoginActivity, "Session ID: $sessionID", Toast.LENGTH_SHORT).show()
 
                         fetchAccountDetails() // get the account ID
                     } else {
@@ -153,6 +151,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Fetch the account details after creating the session
     private fun fetchAccountDetails() {
         val url = "https://api.themoviedb.org/3/account?api_key=$tmdbApiKey&session_id=$sessionID"
 
@@ -173,6 +172,7 @@ class LoginActivity : AppCompatActivity() {
                             putExtra(MainActivity.ACCOUNT_DETAILS, accountDetail)
                         }
                         startActivity(intent)
+                        finish()
                     } else {
                         Log.d("LoginActivity", "Failed to get account ID")
                     }
