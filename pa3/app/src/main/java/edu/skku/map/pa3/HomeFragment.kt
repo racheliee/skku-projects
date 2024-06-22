@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,16 +68,22 @@ class HomeFragment : Fragment() { // OnItemClickListener {
     }
 
     private fun fetchPopularMovies() {
-        HomeMediaNetworkUtils.getPopularMovies("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1") { popularMovies, e ->
-            CoroutineScope(Dispatchers.Main).launch {
-                if (e != null) {
-                    e.printStackTrace()
-                } else {
-                    popularMoviesAdapter.updateData(popularMovies!!)
+        HomeMediaNetworkUtils.getPopularMovies("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1", object : HomeMediaNetworkUtils.MovieCallback {
+            override fun onSuccess(movies: List<PopularMovies>) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    popularMoviesAdapter.updateData(movies)
                 }
             }
-        }
+
+            override fun onFailure(e: IOException) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    e.printStackTrace()
+                    Toast.makeText(context, "Failed to fetch popular movies", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
+
 
     private fun fetchPopularTVShows() {
         HomeMediaNetworkUtils.getPopularTVShows("https://api.themoviedb.org/3/tv/popular?language=en-US&page=1") { popularTVShows, e ->
@@ -119,21 +126,26 @@ class HomeFragment : Fragment() { // OnItemClickListener {
         val randomPage = Random.nextInt(1, 501)
         val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$randomPage"
 
-        HomeMediaNetworkUtils.getPopularMovies(url) { popularMovies, e ->
-            CoroutineScope(Dispatchers.Main).launch {
-                if (e != null) {
-                    e.printStackTrace()
-                } else {
+        HomeMediaNetworkUtils.getPopularMovies(url, object : HomeMediaNetworkUtils.MovieCallback {
+            override fun onSuccess(movies: List<PopularMovies>) {
+                CoroutineScope(Dispatchers.Main).launch {
                     // Select a random movie from the list
-                    val randomMovie = popularMovies!![Random.nextInt(popularMovies.size)]
+                    val randomMovie = movies.random()
 
                     // Navigate to the MovieInfoFragment
-                    val fragment = MovieInfoFragment.newInstance(randomMovie)
+                    val fragment = RandMovieInfoFragment.newInstance(randomMovie)
                     fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
                 }
             }
-        }
+
+            override fun onFailure(e: IOException) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    e.printStackTrace()
+                }
+            }
+        })
     }
+
 
 
 //    override fun onItemClick(item: Any) {

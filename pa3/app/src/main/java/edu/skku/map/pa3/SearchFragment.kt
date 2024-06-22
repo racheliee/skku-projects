@@ -75,15 +75,20 @@ class SearchFragment : Fragment() {
             val genreFilter = selectedGenre?.let { "&with_genres=$it" } ?: ""
             val url = "https://api.themoviedb.org/3/search/movie?api_key=<YOUR_API_KEY>&query=$query$genreFilter"
 
-            HomeMediaNetworkUtils.getPopularMovies(url) { searchResults, e ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    if (e != null) {
-                        e.printStackTrace()
-                    } else {
-                        searchResultsAdapter.updateData(searchResults ?: listOf())
+            HomeMediaNetworkUtils.getPopularMovies(url, object : HomeMediaNetworkUtils.MovieCallback {
+                override fun onSuccess(movies: List<PopularMovies>) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        searchResultsAdapter.updateData(movies)
                     }
                 }
-            }
+
+                override fun onFailure(e: IOException) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        e.printStackTrace()
+                        Toast.makeText(context, "Failed to fetch search results", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
         } else {
             Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT).show()
         }

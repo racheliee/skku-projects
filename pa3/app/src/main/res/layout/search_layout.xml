@@ -17,7 +17,7 @@
         android:hint="Search for a movie..."
         android:inputType="text"
         android:padding="12dp"
-        android:textColor="@color/main_text_color"
+        android:textColor="@color/button_text_color"
         android:textColorHint="@color/hint_text_color"
         app:layout_constraintEnd_toStartOf="@+id/search_button"
         app:layout_constraintStart_toStartOf="parent"

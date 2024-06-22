@@ -22,7 +22,12 @@ object HomeMediaNetworkUtils {
             .build()
     }
 
-    fun getPopularMovies(url: String, callback: (List<PopularMovies>?, IOException?) -> Unit) {
+    interface MovieCallback {
+        fun onSuccess(movies: List<PopularMovies>)
+        fun onFailure(e: IOException)
+    }
+
+    fun getPopularMovies(url: String, callback: MovieCallback) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -31,23 +36,21 @@ object HomeMediaNetworkUtils {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("HomeMediaNetworkUtils", "Error fetching popular movies", e)
-                callback(null, e)
+                callback.onFailure(e)
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!it.isSuccessful) {
-                        callback(null, IOException("Unexpected code $response"))
-                        return
-                    }
-
-                    val json = it.body!!.string()
-                    val type = object : TypeToken<MovieResponses>() {}.type
-                    val tmdbResponse: MovieResponses = gson.fromJson(json, type)
-                    Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular movies")
-                    callback(tmdbResponse.results, null)
+                if (!response.isSuccessful) {
+                    callback.onFailure(IOException("Unexpected code $response"))
+                    return
                 }
+
+                val json = response.body!!.string()
+                val type = object : TypeToken<MovieResponses>() {}.type
+                val tmdbResponse: MovieResponses = gson.fromJson(json, type)
+                Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular movies")
+
+                callback.onSuccess(tmdbResponse.results)
             }
         })
     }
