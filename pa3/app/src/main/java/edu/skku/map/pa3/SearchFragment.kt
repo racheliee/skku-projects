@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.skku.map.pa3.MediaAdapter
+import edu.skku.map.pa3.MovieSearchAdapter
 import edu.skku.map.pa3.R
 import edu.skku.map.pa3.models.PopularMovies
 import edu.skku.map.pa3.network.HomeMediaNetworkUtils
@@ -22,7 +23,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchEditText: EditText
     private lateinit var searchButton: Button
     private lateinit var genreSpinner: Spinner
-    private lateinit var searchResultsAdapter: MediaAdapter<PopularMovies>
+    private lateinit var searchResultsAdapter: MovieSearchAdapter
 
     private val genres = mapOf(
         "All" to "",
@@ -46,7 +47,7 @@ class SearchFragment : Fragment() {
         genreSpinner = view.findViewById(R.id.genre_spinner)
         val searchResultsList = view.findViewById<RecyclerView>(R.id.search_results_list)
 
-        searchResultsAdapter = MediaAdapter()
+        searchResultsAdapter = MovieSearchAdapter()
         searchResultsList.layoutManager = LinearLayoutManager(context)
         searchResultsList.adapter = searchResultsAdapter
 
@@ -70,7 +71,7 @@ class SearchFragment : Fragment() {
         val selectedGenre = genres[genreSpinner.selectedItem.toString()]
 
         if (query.isNotEmpty()) {
-            val genreFilter = if (selectedGenre.isNullOrEmpty()) "" else "&with_genres=$selectedGenre"
+            val genreFilter = selectedGenre?.let { "&with_genres=$it" } ?: ""
             val url = "https://api.themoviedb.org/3/search/movie?api_key=<YOUR_API_KEY>&query=$query$genreFilter"
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -87,4 +88,5 @@ class SearchFragment : Fragment() {
             Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT).show()
         }
     }
+
 }
