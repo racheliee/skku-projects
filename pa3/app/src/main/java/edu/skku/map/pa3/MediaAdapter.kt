@@ -10,14 +10,19 @@ import com.bumptech.glide.Glide
 import edu.skku.map.pa3.models.*
 
 class MediaAdapter<T>(
-    private var items: List<T> = listOf()
+    private var items: List<T> = listOf(),
+//    private val itemClickListener: (PopularMovies) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private const val VIEW_TYPE_MOVIE = 0
-        private const val VIEW_TYPE_TV_SHOW = 1
+        private const val VIEW_TYPE_MOVIE_POPULAR = 0
+        private const val VIEW_TYPE_TV_SHOW_POPULAR = 1
         private const val VIEW_TYPE_MOVIE_UPCOMING = 2
         private const val VIEW_TYPE_TV_SHOW_AIRING = 3
+        private const val VIEW_TYPE_MOVIE_WATCHLIST = 4
+        private const val VIEW_TYPE_TV_SHOW_WATCHLIST = 5
+        private const val VIEW_TYPE_MOVIE_FAVORITE = 6
+        private const val VIEW_TYPE_TV_SHOW_FAVORITE = 7
     }
 
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -44,27 +49,58 @@ class MediaAdapter<T>(
         val tvShowRating: TextView = view.findViewById(R.id.movie_rating)
     }
 
+    class WatchlistMovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val moviePoster: ImageView = view.findViewById(R.id.movie_poster)
+        val movieTitle: TextView = view.findViewById(R.id.movie_title)
+        val movieRating: TextView = view.findViewById(R.id.movie_rating)
+    }
+
+    class WatchlistTVShowViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvShowPoster: ImageView = view.findViewById(R.id.movie_poster)
+        val tvShowTitle: TextView = view.findViewById(R.id.movie_title)
+        val tvShowRating: TextView = view.findViewById(R.id.movie_rating)
+    }
+
+    class FavoriteMovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val moviePoster: ImageView = view.findViewById(R.id.movie_poster)
+        val movieTitle: TextView = view.findViewById(R.id.movie_title)
+        val movieRating: TextView = view.findViewById(R.id.movie_rating)
+    }
+
+    class FavoriteTVShowViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvShowPoster: ImageView = view.findViewById(R.id.movie_poster)
+        val tvShowTitle: TextView = view.findViewById(R.id.movie_title)
+        val tvShowRating: TextView = view.findViewById(R.id.movie_rating)
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is PopularMovies -> VIEW_TYPE_MOVIE
-            is WatchlistMovie -> VIEW_TYPE_MOVIE
-            is FavoriteMovie -> VIEW_TYPE_MOVIE
-            is PopularTVShows -> VIEW_TYPE_TV_SHOW
-            is WatchlistTVShow -> VIEW_TYPE_TV_SHOW
-            is FavoriteTVShow -> VIEW_TYPE_TV_SHOW
+            is PopularMovies -> VIEW_TYPE_MOVIE_POPULAR
+            is PopularTVShows -> VIEW_TYPE_TV_SHOW_POPULAR
             is UpcomingMovie -> VIEW_TYPE_MOVIE_UPCOMING
             is AiringTodayShow -> VIEW_TYPE_TV_SHOW_AIRING
+            is WatchlistMovie -> VIEW_TYPE_MOVIE_WATCHLIST
+            is WatchlistTVShow -> VIEW_TYPE_TV_SHOW_WATCHLIST
+            is FavoriteMovie -> VIEW_TYPE_MOVIE_FAVORITE
+            is FavoriteTVShow -> VIEW_TYPE_TV_SHOW_FAVORITE
+
             else -> throw IllegalArgumentException("Invalid item type")
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_MOVIE -> {
+            VIEW_TYPE_MOVIE_POPULAR -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
                 MovieViewHolder(view)
+//                    .apply{
+//                    itemView.setOnClickListener {
+//                        val movie = items[adapterPosition] as PopularMovies
+//                        itemClickListener(movie)
+//                    }
+//                }
             }
-            VIEW_TYPE_TV_SHOW -> {
+            VIEW_TYPE_TV_SHOW_POPULAR -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
                 TVShowViewHolder(view)
             }
@@ -75,6 +111,22 @@ class MediaAdapter<T>(
             VIEW_TYPE_TV_SHOW_AIRING -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
                 AiringTodayShowViewHolder(view)
+            }
+            VIEW_TYPE_MOVIE_WATCHLIST -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+                WatchlistMovieViewHolder(view)
+            }
+            VIEW_TYPE_TV_SHOW_WATCHLIST -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+                WatchlistTVShowViewHolder(view)
+            }
+            VIEW_TYPE_MOVIE_FAVORITE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+                FavoriteMovieViewHolder(view)
+            }
+            VIEW_TYPE_TV_SHOW_FAVORITE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+                FavoriteTVShowViewHolder(view)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -122,6 +174,47 @@ class MediaAdapter<T>(
                         .into(tvShowPoster)
                 }
             }
+            is WatchlistMovieViewHolder -> {
+                val watchlistMovie = items[position] as WatchlistMovie
+                holder.apply {
+                    movieTitle.text = watchlistMovie.title
+                    movieRating.text = String.format("★ Rating: %.1f/10", watchlistMovie.vote_average)
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500${watchlistMovie.poster_path}")
+                        .into(moviePoster)
+                }
+            }
+            is WatchlistTVShowViewHolder -> {
+                val watchlistTVShow = items[position] as WatchlistTVShow
+                holder.apply {
+                    tvShowTitle.text = watchlistTVShow.name
+                    tvShowRating.text = String.format("★ Rating: %.1f/10", watchlistTVShow.vote_average)
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500${watchlistTVShow.poster_path}")
+                        .into(tvShowPoster)
+                }
+            }
+            is FavoriteMovieViewHolder -> {
+                val favoriteMovie = items[position] as FavoriteMovie
+                holder.apply {
+                    movieTitle.text = favoriteMovie.title
+                    movieRating.text = String.format("★ Rating: %.1f/10", favoriteMovie.vote_average)
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500${favoriteMovie.poster_path}")
+                        .into(moviePoster)
+                }
+            }
+            is FavoriteTVShowViewHolder -> {
+                val favoriteTVShow = items[position] as FavoriteTVShow
+                holder.apply {
+                    tvShowTitle.text = favoriteTVShow.name
+                    tvShowRating.text = String.format("★ Rating: %.1f/10", favoriteTVShow.vote_average)
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500${favoriteTVShow.poster_path}")
+                        .into(tvShowPoster)
+                }
+            }
+
         }
     }
 

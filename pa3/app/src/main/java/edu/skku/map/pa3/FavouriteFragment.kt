@@ -1,6 +1,7 @@
 package edu.skku.map.pa3.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import java.io.IOException
 class FavouriteFragment: Fragment() {
 
     private lateinit var sessionID: String
-    private var accountID: Int = 0
+    private var accountID: Int = 21341108
 
     private lateinit var favoriteMoviesAdapter: MediaAdapter<FavoriteMovie>
     private lateinit var favoriteTVShowsAdapter: MediaAdapter<FavoriteTVShow>
@@ -86,6 +87,8 @@ class FavouriteFragment: Fragment() {
 
     private fun fetchFavoriteMovies() {
         val url = "https://api.themoviedb.org/3/account/$accountID/favorite/movies?language=en-US&page=1&session_id=$sessionID&sort_by=created_at.asc"
+        Log.d("FavouriteFragment", "URL: $url")
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val favoriteMovies = FavouriteMediaNetworkUtils.getFavoriteMovies(url)

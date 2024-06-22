@@ -60,7 +60,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/duru_sans"
-            android:text="Upcoming Movies"
+            android:text="Recently Released Movies"
             android:textColor="@color/mainpage_font_color"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -80,7 +80,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/duru_sans"
-            android:text="Upcoming TV Shows"
+            android:text="TV Shows Airing Today"
             android:textColor="@color/mainpage_font_color"
             android:textSize="18sp"
             android:textStyle="bold" />

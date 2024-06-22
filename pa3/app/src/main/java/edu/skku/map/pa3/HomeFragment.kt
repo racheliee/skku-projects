@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.skku.map.pa3.network.*
 import edu.skku.map.pa3.models.*
+import edu.skku.map.pa3.ui.MovieInfoFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
+import kotlin.random.Random
 
 class HomeFragment : Fragment() {
 
@@ -55,6 +58,11 @@ class HomeFragment : Fragment() {
         fetchPopularTVShows()
         fetchUpcomingMovies()
         fetchUpcomingTVShows()
+
+        val randomMovieButton = view.findViewById<Button>(R.id.random_movie_button)
+        randomMovieButton.setOnClickListener{
+            fetchRandomMovie()
+        }
 
         return view
     }
@@ -104,6 +112,30 @@ class HomeFragment : Fragment() {
                 val upcomingTVShows = HomeMediaNetworkUtils.getAiringTodayShows("https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=1")
                 CoroutineScope(Dispatchers.Main).launch {
                     upcomingTVShowsAdapter.updateData(upcomingTVShows)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun fetchRandomMovie() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Generate a random page number (1 to 500)
+                val randomPage = Random.nextInt(1, 501)
+                val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$randomPage"
+
+                // Fetch popular movies from the random page
+                val popularMovies = HomeMediaNetworkUtils.getPopularMovies(url)
+
+                // Select a random movie from the list
+                val randomMovie = popularMovies[Random.nextInt(popularMovies.size)]
+
+                // Navigate to the MovieInfoFragment
+                CoroutineScope(Dispatchers.Main).launch {
+                    val fragment = MovieInfoFragment.newInstance(randomMovie)
+                    fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
