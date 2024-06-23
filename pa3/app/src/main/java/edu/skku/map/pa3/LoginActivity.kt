@@ -10,7 +10,6 @@ import android.view.WindowInsets
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import edu.skku.map.pa3.models.*
 import edu.skku.map.pa3.network.LoginNetworkUtils
@@ -28,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_layout)
+        setContentView(R.layout.activity_login)
 
         // Hide the status bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

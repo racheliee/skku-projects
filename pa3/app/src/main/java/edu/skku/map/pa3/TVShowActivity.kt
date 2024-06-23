@@ -7,36 +7,38 @@ import android.view.WindowInsets
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import edu.skku.map.pa3.models.Movie
+import edu.skku.map.pa3.models.*
+import edu.skku.map.pa3.network.AccountMediaNetworkUtils
 
-class MovieActivity : AppCompatActivity() {
+class TVShowActivity : AppCompatActivity() {
 
-    private lateinit var movie: Movie
+    private lateinit var tvShow: TVShow
     private lateinit var watchlistButton: Button
     private lateinit var favoriteButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie)
+        setContentView(R.layout.activity_tvshow)
 
         // Initialize views
-        val movieTitle = findViewById<TextView>(R.id.activity_movie_title)
-        val movieOverview = findViewById<TextView>(R.id.activity_movie_overview)
-        val moviePoster = findViewById<ImageView>(R.id.activity_movie_poster)
-        watchlistButton = findViewById(R.id.movie_watchlist_button)
-        favoriteButton = findViewById(R.id.movie_favorite_button)
+        val tvShowTitle = findViewById<TextView>(R.id.activity_tvshow_title)
+        val tvShowOverview = findViewById<TextView>(R.id.activity_tvshow_overview)
+        val tvShowPoster = findViewById<ImageView>(R.id.activity_tvshow_poster)
+        watchlistButton = findViewById(R.id.tvshow_watchlist_button)
+        favoriteButton = findViewById(R.id.tvshow_favorite_button)
 
-        // Get movie data from intent
-        movie = intent.getSerializableExtra("movie") as Movie
+        // Get TV show data from intent
+        tvShow = intent.getSerializableExtra("tvShow") as TVShow
 
-        // Set movie data to views
-        movieTitle.text = movie.title
-        movieOverview.text = movie.overview
+        // Set TV show data to views
+        tvShowTitle.text = tvShow.name
+        tvShowOverview.text = tvShow.overview
         Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w500${movie.poster_path}")
-            .into(moviePoster)
+            .load("https://image.tmdb.org/t/p/w500${tvShow.poster_path}")
+            .into(tvShowPoster)
 
         // Set up button click listeners
 //        watchlistButton.setOnClickListener {
@@ -47,28 +49,28 @@ class MovieActivity : AppCompatActivity() {
 //            addToFavorite()
 //        }
     }
-
+//
 //    private fun addToWatchlist() {
-//        AccountMediaNetworkUtils.addToWatchlist(movie.id) { success, e ->
+//        AccountMediaNetworkUtils.addToWatchlist(tvShow.id, "tv") { success, e ->
 //            runOnUiThread {
 //                if (success) {
-//                    Toast.makeText(this, "${movie.title} added to Watchlist", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "${tvShow.name} added to Watchlist", Toast.LENGTH_SHORT).show()
 //                } else {
 //                    e?.printStackTrace()
-//                    Toast.makeText(this, "Failed to add ${movie.title} to Watchlist", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Failed to add ${tvShow.name} to Watchlist", Toast.LENGTH_SHORT).show()
 //                }
 //            }
 //        }
 //    }
 //
 //    private fun addToFavorite() {
-//        AccountMediaNetworkUtils.addToFavorites(movie.id) { success, e ->
+//        AccountMediaNetworkUtils.addToFavorites(tvShow.id, "tv") { success, e ->
 //            runOnUiThread {
 //                if (success) {
-//                    Toast.makeText(this, "${movie.title} added to Favorites", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "${tvShow.name} added to Favorites", Toast.LENGTH_SHORT).show()
 //                } else {
 //                    e?.printStackTrace()
-//                    Toast.makeText(this, "Failed to add ${movie.title} to Favorites", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Failed to add ${tvShow.name} to Favorites", Toast.LENGTH_SHORT).show()
 //                }
 //            }
 //        }
