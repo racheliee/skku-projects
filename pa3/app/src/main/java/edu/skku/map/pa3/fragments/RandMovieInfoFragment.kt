@@ -1,3 +1,5 @@
+package edu.skku.map.pa3.fragments
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import edu.skku.map.pa3.R
-import edu.skku.map.pa3.models.PopularMovies
+import edu.skku.map.pa3.models.Movie
 import edu.skku.map.pa3.network.HomeMediaNetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,19 +22,19 @@ class RandMovieInfoFragment : Fragment() {
     companion object {
         private const val ARG_MOVIE = "movie"
 
-        fun newInstance(movie: PopularMovies) = RandMovieInfoFragment().apply {
+        fun newInstance(movie: Movie) = RandMovieInfoFragment().apply {
             arguments = Bundle().apply {
                 putSerializable(ARG_MOVIE, movie)
             }
         }
     }
 
-    private lateinit var movie: PopularMovies
+    private lateinit var movie: Movie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            movie = it.getSerializable(ARG_MOVIE) as PopularMovies
+            movie = it.getSerializable(ARG_MOVIE) as Movie
         }
     }
 
@@ -67,7 +69,7 @@ class RandMovieInfoFragment : Fragment() {
         val url = "https://api.themoviedb.org/3/movie/popular?api_key=<YOUR_API_KEY>&language=en-US&page=$randomPage"
 
         HomeMediaNetworkUtils.getPopularMovies(url, object : HomeMediaNetworkUtils.MovieCallback {
-            override fun onSuccess(movies: List<PopularMovies>) {
+            override fun onSuccess(movies: List<Movie>) {
                 if (movies.isNotEmpty()) {
                     val randomMovie = movies.random() // Randomly select a movie from the list
                     CoroutineScope(Dispatchers.Main).launch {
@@ -83,7 +85,7 @@ class RandMovieInfoFragment : Fragment() {
     }
 
 
-    private fun updateMovieInfo(movie: PopularMovies) {
+    private fun updateMovieInfo(movie: Movie) {
         view?.findViewById<TextView>(R.id.movie_title)?.text = movie.title
         view?.findViewById<TextView>(R.id.movie_overview)?.text = movie.overview
         view?.findViewById<ImageView>(R.id.movie_poster)?.let {

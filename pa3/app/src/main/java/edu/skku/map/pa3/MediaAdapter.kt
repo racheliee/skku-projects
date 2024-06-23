@@ -1,5 +1,6 @@
 package edu.skku.map.pa3
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.skku.map.pa3.models.*
-
-interface OnItemClickListener {
-    fun onItemClick(item: Any)
-}
 
 class MediaAdapter<T>(
     private var items: List<T> = listOf(),
@@ -80,14 +77,14 @@ class MediaAdapter<T>(
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is PopularMovies -> VIEW_TYPE_MOVIE_POPULAR
-            is PopularTVShows -> VIEW_TYPE_TV_SHOW_POPULAR
-            is UpcomingMovie -> VIEW_TYPE_MOVIE_UPCOMING
-            is AiringTodayShow -> VIEW_TYPE_TV_SHOW_AIRING
-            is WatchlistMovie -> VIEW_TYPE_MOVIE_WATCHLIST
-            is WatchlistTVShow -> VIEW_TYPE_TV_SHOW_WATCHLIST
-            is FavoriteMovie -> VIEW_TYPE_MOVIE_FAVORITE
-            is FavoriteTVShow -> VIEW_TYPE_TV_SHOW_FAVORITE
+            is Movie -> VIEW_TYPE_MOVIE_POPULAR
+            is TVShow -> VIEW_TYPE_TV_SHOW_POPULAR
+            is Movie -> VIEW_TYPE_MOVIE_UPCOMING
+            is TVShow -> VIEW_TYPE_TV_SHOW_AIRING
+            is Movie -> VIEW_TYPE_MOVIE_WATCHLIST
+            is TVShow -> VIEW_TYPE_TV_SHOW_WATCHLIST
+            is Movie -> VIEW_TYPE_MOVIE_FAVORITE
+            is TVShow -> VIEW_TYPE_TV_SHOW_FAVORITE
 
             else -> throw IllegalArgumentException("Invalid item type")
         }
@@ -97,17 +94,26 @@ class MediaAdapter<T>(
         return when (viewType) {
             VIEW_TYPE_MOVIE_POPULAR -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                MovieViewHolder(view)
-//                    .apply {
-//                    itemView.setOnClickListener {
-//                        val movie = items[adapterPosition] as PopularMovies
-//                        itemClickListener.onItemClick(movie)
-//                    }
-//                }
+                MovieViewHolder(view).apply {
+                    itemView.setOnClickListener {
+                        val movie = items[adapterPosition] as Movie
+                        val intent = Intent(parent.context, MovieActivity::class.java)
+                        intent.putExtra("movie", movie)
+                        parent.context.startActivity(intent)
+                    }
+                }
             }
             VIEW_TYPE_TV_SHOW_POPULAR -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
                 TVShowViewHolder(view)
+                TVShowViewHolder(view).apply {
+                    itemView.setOnClickListener {
+                        val tvShow = items[adapterPosition] as TVShow
+                        val intent = Intent(parent.context, MovieActivity::class.java)
+                        intent.putExtra("tvShow", tvShow)
+                        parent.context.startActivity(intent)
+                    }
+                }
             }
             VIEW_TYPE_MOVIE_UPCOMING -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
@@ -140,7 +146,7 @@ class MediaAdapter<T>(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MovieViewHolder -> {
-                val movie = items[position] as PopularMovies
+                val movie = items[position] as Movie
                 holder.apply {
                     movieTitle.text = movie.title
                     movieRating.text = String.format("★ Rating: %.1f/10", movie.vote_average)
@@ -151,7 +157,7 @@ class MediaAdapter<T>(
                 }
             }
             is TVShowViewHolder -> {
-                val tvShow = items[position] as PopularTVShows
+                val tvShow = items[position] as TVShow
                 holder.apply {
                     tvShowTitle.text = tvShow.name
                     tvShowRating.text = String.format("★ Rating: %.1f/10", tvShow.vote_average)
@@ -161,7 +167,7 @@ class MediaAdapter<T>(
                 }
             }
             is UpcomingMovieViewHolder -> {
-                val upcomingMovie = items[position] as UpcomingMovie
+                val upcomingMovie = items[position] as Movie
                 holder.apply {
                     movieTitle.text = upcomingMovie.title
                     movieReleaseDate.text = "Release Date: ${upcomingMovie.release_date}"
@@ -171,7 +177,7 @@ class MediaAdapter<T>(
                 }
             }
             is AiringTodayShowViewHolder -> {
-                val airingTodayShow = items[position] as AiringTodayShow
+                val airingTodayShow = items[position] as TVShow
                 holder.apply {
                     tvShowTitle.text = airingTodayShow.name
                     tvShowRating.text = String.format("★ Rating: %.1f/10", airingTodayShow.vote_average)
@@ -181,7 +187,7 @@ class MediaAdapter<T>(
                 }
             }
             is WatchlistMovieViewHolder -> {
-                val watchlistMovie = items[position] as WatchlistMovie
+                val watchlistMovie = items[position] as Movie
                 holder.apply {
                     movieTitle.text = watchlistMovie.title
                     movieRating.text = String.format("★ Rating: %.1f/10", watchlistMovie.vote_average)
@@ -191,7 +197,7 @@ class MediaAdapter<T>(
                 }
             }
             is WatchlistTVShowViewHolder -> {
-                val watchlistTVShow = items[position] as WatchlistTVShow
+                val watchlistTVShow = items[position] as TVShow
                 holder.apply {
                     tvShowTitle.text = watchlistTVShow.name
                     tvShowRating.text = String.format("★ Rating: %.1f/10", watchlistTVShow.vote_average)
@@ -201,7 +207,7 @@ class MediaAdapter<T>(
                 }
             }
             is FavoriteMovieViewHolder -> {
-                val favoriteMovie = items[position] as FavoriteMovie
+                val favoriteMovie = items[position] as Movie
                 holder.apply {
                     movieTitle.text = favoriteMovie.title
                     movieRating.text = String.format("★ Rating: %.1f/10", favoriteMovie.vote_average)
@@ -211,7 +217,7 @@ class MediaAdapter<T>(
                 }
             }
             is FavoriteTVShowViewHolder -> {
-                val favoriteTVShow = items[position] as FavoriteTVShow
+                val favoriteTVShow = items[position] as TVShow
                 holder.apply {
                     tvShowTitle.text = favoriteTVShow.name
                     tvShowRating.text = String.format("★ Rating: %.1f/10", favoriteTVShow.vote_average)

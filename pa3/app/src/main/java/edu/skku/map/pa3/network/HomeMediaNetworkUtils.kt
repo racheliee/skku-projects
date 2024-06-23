@@ -23,7 +23,7 @@ object HomeMediaNetworkUtils {
     }
 
     interface MovieCallback {
-        fun onSuccess(movies: List<PopularMovies>)
+        fun onSuccess(movies: List<Movie>)
         fun onFailure(e: IOException)
     }
 
@@ -46,8 +46,8 @@ object HomeMediaNetworkUtils {
                 }
 
                 val json = response.body!!.string()
-                val type = object : TypeToken<MovieResponses>() {}.type
-                val tmdbResponse: MovieResponses = gson.fromJson(json, type)
+                val type = object : TypeToken<PopularMovieResponses>() {}.type
+                val tmdbResponse: PopularMovieResponses = gson.fromJson(json, type)
                 Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular movies")
 
                 callback.onSuccess(tmdbResponse.results)
@@ -55,7 +55,7 @@ object HomeMediaNetworkUtils {
         })
     }
 
-    fun getPopularTVShows(url: String, callback: (List<PopularTVShows>?, IOException?) -> Unit) {
+    fun getPopularTVShows(url: String, callback: (List<TVShow>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -76,8 +76,8 @@ object HomeMediaNetworkUtils {
                     }
 
                     val json = it.body!!.string()
-                    val type = object : TypeToken<TVShowResponses>() {}.type
-                    val tmdbResponse: TVShowResponses = gson.fromJson(json, type)
+                    val type = object : TypeToken<PopularTVShowResponse>() {}.type
+                    val tmdbResponse: PopularTVShowResponse = gson.fromJson(json, type)
                     Log.d("HomeMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} popular TV shows")
                     callback(tmdbResponse.results, null)
                 }
@@ -85,7 +85,7 @@ object HomeMediaNetworkUtils {
         })
     }
 
-    fun getUpcomingMovies(url: String, callback: (List<UpcomingMovie>?, IOException?) -> Unit) {
+    fun getUpcomingMovies(url: String, callback: (List<Movie>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -115,7 +115,7 @@ object HomeMediaNetworkUtils {
         })
     }
 
-    fun getAiringTodayShows(url: String, callback: (List<AiringTodayShow>?, IOException?) -> Unit) {
+    fun getAiringTodayShows(url: String, callback: (List<TVShow>?, IOException?) -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")

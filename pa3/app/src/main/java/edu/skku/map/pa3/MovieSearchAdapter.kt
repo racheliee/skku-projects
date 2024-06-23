@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import edu.skku.map.pa3.models.PopularMovies
+import edu.skku.map.pa3.models.Movie
 
 class MovieSearchAdapter (
-    private var movies: List<PopularMovies> = listOf()
+    private var movies: List<Movie> = listOf()
 ) : RecyclerView.Adapter<MovieSearchAdapter.MovieViewHolder>() {
 
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -41,7 +41,7 @@ class MovieSearchAdapter (
         return movies.size
     }
 
-    fun updateData(newMovies: List<PopularMovies>) {
+    fun updateData(newMovies: List<Movie>) {
         movies = newMovies
         notifyDataSetChanged()
     }

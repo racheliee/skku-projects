@@ -1,4 +1,4 @@
-package edu.skku.map.pa3.ui
+package edu.skku.map.pa3.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,9 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import edu.skku.map.pa3.MediaAdapter
 import edu.skku.map.pa3.MovieSearchAdapter
 import edu.skku.map.pa3.R
-import edu.skku.map.pa3.models.PopularMovies
+import edu.skku.map.pa3.models.Movie
 import edu.skku.map.pa3.network.HomeMediaNetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,7 +75,7 @@ class SearchFragment : Fragment() {
             val url = "https://api.themoviedb.org/3/search/movie?api_key=<YOUR_API_KEY>&query=$query$genreFilter"
 
             HomeMediaNetworkUtils.getPopularMovies(url, object : HomeMediaNetworkUtils.MovieCallback {
-                override fun onSuccess(movies: List<PopularMovies>) {
+                override fun onSuccess(movies: List<Movie>) {
                     CoroutineScope(Dispatchers.Main).launch {
                         searchResultsAdapter.updateData(movies)
                     }

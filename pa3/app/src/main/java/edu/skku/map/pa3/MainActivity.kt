@@ -7,7 +7,10 @@ import android.view.WindowInsets
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import edu.skku.map.pa3.ui.*
+import edu.skku.map.pa3.fragments.FavouriteFragment
+import edu.skku.map.pa3.fragments.HomeFragment
+import edu.skku.map.pa3.fragments.ProfileFragment
+import edu.skku.map.pa3.fragments.SearchFragment
 import edu.skku.map.pa3.models.*
 
 class MainActivity : AppCompatActivity() {

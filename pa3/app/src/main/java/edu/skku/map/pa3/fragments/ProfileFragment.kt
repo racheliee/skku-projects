@@ -1,4 +1,4 @@
-package edu.skku.map.pa3.ui
+package edu.skku.map.pa3.fragments
 
 import android.content.Intent
 import android.os.Bundle

@@ -3,9 +3,9 @@ package edu.skku.map.pa3.network
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import edu.skku.map.pa3.models.MovieResponses
+import edu.skku.map.pa3.models.PopularMovieResponses
 import edu.skku.map.pa3.models.*
-import edu.skku.map.pa3.models.TVShowResponses
+import edu.skku.map.pa3.models.PopularTVShowResponse
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,7 +27,7 @@ object SearchMediaNetworkUtils {
 
     // Search movies by name and genre
     @Throws(IOException::class)
-    fun searchMovies(query: String, selectedGenre: String?): List<PopularMovies> {
+    fun searchMovies(query: String, selectedGenre: String?): List<Movie> {
         val genreFilter = if (selectedGenre.isNullOrEmpty()) "" else "&with_genres=$selectedGenre"
         val url = "https://api.themoviedb.org/3/search/movie?query=$query$genreFilter&language=en-US&page=1"
 
@@ -41,8 +41,8 @@ object SearchMediaNetworkUtils {
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
             val json = response.body!!.string()
 
-            val type = object : TypeToken<MovieResponses>() {}.type
-            val tmdbResponse: MovieResponses = gson.fromJson(json, type)
+            val type = object : TypeToken<PopularMovieResponses>() {}.type
+            val tmdbResponse: PopularMovieResponses = gson.fromJson(json, type)
             Log.d("SearchMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} movies")
 
             return tmdbResponse.results
@@ -51,7 +51,7 @@ object SearchMediaNetworkUtils {
 
     // Search TV shows by name and genre
     @Throws(IOException::class)
-    fun searchTVShows(query: String, selectedGenre: String?): List<PopularTVShows> {
+    fun searchTVShows(query: String, selectedGenre: String?): List<TVShow> {
         val genreFilter = if (selectedGenre.isNullOrEmpty()) "" else "&with_genres=$selectedGenre"
         val url = "https://api.themoviedb.org/3/search/tv?query=$query$genreFilter&language=en-US&page=1"
 
@@ -65,8 +65,8 @@ object SearchMediaNetworkUtils {
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
             val json = response.body!!.string()
 
-            val type = object : TypeToken<TVShowResponses>() {}.type
-            val tmdbResponse: TVShowResponses = gson.fromJson(json, type)
+            val type = object : TypeToken<PopularTVShowResponse>() {}.type
+            val tmdbResponse: PopularTVShowResponse = gson.fromJson(json, type)
             Log.d("SearchMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} TV shows")
 
             return tmdbResponse.results

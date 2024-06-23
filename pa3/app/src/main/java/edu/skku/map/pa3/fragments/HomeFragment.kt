@@ -1,4 +1,4 @@
-package edu.skku.map.pa3
+package edu.skku.map.pa3.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.skku.map.pa3.MediaAdapter
+import edu.skku.map.pa3.R
 import edu.skku.map.pa3.network.*
 import edu.skku.map.pa3.models.*
 import kotlinx.coroutines.CoroutineScope
@@ -19,10 +21,10 @@ import kotlin.random.Random
 
 class HomeFragment : Fragment() { // OnItemClickListener {
 
-    private lateinit var popularMoviesAdapter: MediaAdapter<PopularMovies>
-    private lateinit var popularTVShowsAdapter: MediaAdapter<PopularTVShows>
-    private lateinit var upcomingMoviesAdapter: MediaAdapter<UpcomingMovie>
-    private lateinit var upcomingTVShowsAdapter: MediaAdapter<AiringTodayShow>
+    private lateinit var popularMoviesAdapter: MediaAdapter<Movie>
+    private lateinit var popularTVShowsAdapter: MediaAdapter<TVShow>
+    private lateinit var upcomingMoviesAdapter: MediaAdapter<Movie>
+    private lateinit var upcomingTVShowsAdapter: MediaAdapter<TVShow>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +33,7 @@ class HomeFragment : Fragment() { // OnItemClickListener {
         val view = inflater.inflate(R.layout.homepage_layout, container, false)
 
         // Initialize adapters
-        popularMoviesAdapter = MediaAdapter() //listOf(), this
+        popularMoviesAdapter = MediaAdapter()
         popularTVShowsAdapter = MediaAdapter()
         upcomingMoviesAdapter = MediaAdapter()
         upcomingTVShowsAdapter = MediaAdapter()
@@ -69,7 +71,7 @@ class HomeFragment : Fragment() { // OnItemClickListener {
 
     private fun fetchPopularMovies() {
         HomeMediaNetworkUtils.getPopularMovies("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1", object : HomeMediaNetworkUtils.MovieCallback {
-            override fun onSuccess(movies: List<PopularMovies>) {
+            override fun onSuccess(movies: List<Movie>) {
                 CoroutineScope(Dispatchers.Main).launch {
                     popularMoviesAdapter.updateData(movies)
                 }
@@ -127,7 +129,7 @@ class HomeFragment : Fragment() { // OnItemClickListener {
         val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$randomPage"
 
         HomeMediaNetworkUtils.getPopularMovies(url, object : HomeMediaNetworkUtils.MovieCallback {
-            override fun onSuccess(movies: List<PopularMovies>) {
+            override fun onSuccess(movies: List<Movie>) {
                 CoroutineScope(Dispatchers.Main).launch {
                     // Select a random movie from the list
                     val randomMovie = movies.random()
@@ -146,13 +148,17 @@ class HomeFragment : Fragment() { // OnItemClickListener {
         })
     }
 
-
-
 //    override fun onItemClick(item: Any) {
 //        when (item) {
 //            is PopularMovies -> {
-//                val fragment = MovieInfoFragment.newInstance(item)
-//                fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
+//                val intent = Intent(activity, MovieActivity::class.java)
+//                intent.putExtra("movie", item)
+//                startActivity(intent)
+//            }
+//            is PopularTVShows -> {
+//                val intent = Intent(activity, MovieActivity::class.java)
+//                intent.putExtra("tvShow", item)
+//                startActivity(intent)
 //            }
 //            // Handle other item types if needed
 //        }

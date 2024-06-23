@@ -1,4 +1,4 @@
-package edu.skku.map.pa3.ui
+package edu.skku.map.pa3.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.skku.map.pa3.MediaAdapter
-import edu.skku.map.pa3.OnItemClickListener
 import edu.skku.map.pa3.R
 import edu.skku.map.pa3.network.*
 import edu.skku.map.pa3.models.*
@@ -23,10 +22,10 @@ class FavouriteFragment: Fragment() { //OnItemClickListener
     private lateinit var sessionID: String
     private var accountID: Int = 21341108
 
-    private lateinit var favoriteMoviesAdapter: MediaAdapter<FavoriteMovie>
-    private lateinit var favoriteTVShowsAdapter: MediaAdapter<FavoriteTVShow>
-    private lateinit var movieWatchlistAdapter: MediaAdapter<WatchlistMovie>
-    private lateinit var tvWatchlistAdapter: MediaAdapter<WatchlistTVShow>
+    private lateinit var favoriteMoviesAdapter: MediaAdapter<Movie>
+    private lateinit var favoriteTVShowsAdapter: MediaAdapter<TVShow>
+    private lateinit var movieWatchlistAdapter: MediaAdapter<Movie>
+    private lateinit var tvWatchlistAdapter: MediaAdapter<TVShow>
 
     companion object{
         private const val ARG_SESSION_ID = "session_id"

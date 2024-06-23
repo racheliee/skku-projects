@@ -25,7 +25,7 @@ object FavouriteMediaNetworkUtils {
 
     // Fetch favorite movies from the TMDB API
     @Throws(IOException::class)
-    fun getFavoriteMovies(url: String): List<FavoriteMovie> {
+    fun getFavoriteMovies(url: String): List<Movie> {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -45,7 +45,7 @@ object FavouriteMediaNetworkUtils {
     }
 
     @Throws(IOException::class)
-    fun getFavoriteTVShows(url: String): List<FavoriteTVShow> {
+    fun getFavoriteTVShows(url: String): List<TVShow> {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -66,7 +66,7 @@ object FavouriteMediaNetworkUtils {
 
     // Fetch movie watchlist from the TMDB API
     @Throws(IOException::class)
-    fun getMovieWatchlist(url: String): List<WatchlistMovie> {
+    fun getMovieWatchlist(url: String): List<Movie> {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -87,7 +87,7 @@ object FavouriteMediaNetworkUtils {
 
     // Fetch TV show watchlist from the TMDB API
     @Throws(IOException::class)
-    fun getTVShowWatchlist(url: String): List<WatchlistTVShow> {
+    fun getTVShowWatchlist(url: String): List<TVShow> {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
