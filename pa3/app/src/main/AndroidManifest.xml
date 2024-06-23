@@ -22,12 +22,6 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileFragment"
-            android:exported="false" />
-        <activity
-            android:name=".HomePageActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
