@@ -25,12 +25,8 @@ object SearchMediaNetworkUtils {
             .build()
     }
 
-    // Search movies by name and genre
     @Throws(IOException::class)
-    fun searchMovies(query: String, selectedGenre: String?): List<Movie> {
-        val genreFilter = if (selectedGenre.isNullOrEmpty()) "" else "&with_genres=$selectedGenre"
-        val url = "https://api.themoviedb.org/3/search/movie?query=$query$genreFilter&language=en-US&page=1"
-
+    fun searchMovies(url: String): List<Movie> {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -43,18 +39,14 @@ object SearchMediaNetworkUtils {
 
             val type = object : TypeToken<PopularMovieResponses>() {}.type
             val tmdbResponse: PopularMovieResponses = gson.fromJson(json, type)
-            Log.d("SearchMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} movies")
+            Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} movies")
 
             return tmdbResponse.results
         }
     }
 
-    // Search TV shows by name and genre
     @Throws(IOException::class)
-    fun searchTVShows(query: String, selectedGenre: String?): List<TVShow> {
-        val genreFilter = if (selectedGenre.isNullOrEmpty()) "" else "&with_genres=$selectedGenre"
-        val url = "https://api.themoviedb.org/3/search/tv?query=$query$genreFilter&language=en-US&page=1"
-
+    fun searchTVShows(url: String): List<TVShow> {
         val request = Request.Builder()
             .url(url)
             .addHeader("accept", "application/json")
@@ -67,7 +59,7 @@ object SearchMediaNetworkUtils {
 
             val type = object : TypeToken<PopularTVShowResponse>() {}.type
             val tmdbResponse: PopularTVShowResponse = gson.fromJson(json, type)
-            Log.d("SearchMediaNetworkUtils", "Fetched ${tmdbResponse.results.size} TV shows")
+            Log.d("MediaNetworkUtils", "Fetched ${tmdbResponse.results.size} TV shows")
 
             return tmdbResponse.results
         }

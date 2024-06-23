@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.skku.map.pa3.MovieSearchAdapter
 import edu.skku.map.pa3.R
-import edu.skku.map.pa3.models.Movie
-import edu.skku.map.pa3.network.HomeMediaNetworkUtils
+import edu.skku.map.pa3.models.*
+import edu.skku.map.pa3.network.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,19 +21,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var searchEditText: EditText
     private lateinit var searchButton: Button
-    private lateinit var genreSpinner: Spinner
     private lateinit var searchResultsAdapter: MovieSearchAdapter
-
-    private val genres = mapOf(
-        "All" to "",
-        "Action" to 28,
-        "Comedy" to 35,
-        "Drama" to 18,
-        "Fantasy" to 14,
-        "Horror" to 27,
-        "Romance" to 10749,
-        "Sci-Fi" to 878
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,20 +31,11 @@ class SearchFragment : Fragment() {
 
         searchEditText = view.findViewById(R.id.search_edit_text)
         searchButton = view.findViewById(R.id.search_button)
-        genreSpinner = view.findViewById(R.id.genre_spinner)
         val searchResultsList = view.findViewById<RecyclerView>(R.id.search_results_list)
 
         searchResultsAdapter = MovieSearchAdapter()
         searchResultsList.layoutManager = LinearLayoutManager(context)
         searchResultsList.adapter = searchResultsAdapter
-
-        val genreAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            genres.keys.toList()
-        )
-        genreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        genreSpinner.adapter = genreAdapter
 
         searchButton.setOnClickListener {
             performSearch()
@@ -65,33 +44,34 @@ class SearchFragment : Fragment() {
         return view
     }
 
-
     private fun performSearch() {
         val query = searchEditText.text.toString()
-        val selectedGenre = genres[genreSpinner.selectedItem.toString()]
 
         if (query.isNotEmpty()) {
-            val genreFilter = selectedGenre?.let { "&with_genres=$it" } ?: ""
-            val url = "https://api.themoviedb.org/3/search/movie?api_key=<YOUR_API_KEY>&query=$query$genreFilter"
+            val movieUrl = "https://api.themoviedb.org/3/search/movie?api_key=<YOUR_API_KEY>&query=$query"
+            val tvShowUrl = "https://api.themoviedb.org/3/search/tv?api_key=<YOUR_API_KEY>&query=$query"
 
-            HomeMediaNetworkUtils.getPopularMovies(url, object : HomeMediaNetworkUtils.MovieCallback {
-                override fun onSuccess(movies: List<Movie>) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val movies = SearchMediaNetworkUtils.searchMovies(movieUrl)
+                    val tvShows = SearchMediaNetworkUtils.searchTVShows(tvShowUrl)
+
+                    val searchResults = mutableListOf<Any>()
+                    searchResults.addAll(movies)
+                    searchResults.addAll(tvShows)
+
                     CoroutineScope(Dispatchers.Main).launch {
-                        searchResultsAdapter.updateData(movies)
+                        searchResultsAdapter.updateData(searchResults)
                     }
-                }
-
-                override fun onFailure(e: IOException) {
+                } catch (e: IOException) {
                     CoroutineScope(Dispatchers.Main).launch {
                         e.printStackTrace()
                         Toast.makeText(context, "Failed to fetch search results", Toast.LENGTH_SHORT).show()
                     }
                 }
-            })
+            }
         } else {
             Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

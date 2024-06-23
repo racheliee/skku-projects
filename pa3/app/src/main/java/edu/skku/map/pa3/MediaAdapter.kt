@@ -19,12 +19,12 @@ class MediaAdapter<T>(
     companion object {
         private const val VIEW_TYPE_MOVIE_POPULAR = 0
         private const val VIEW_TYPE_TV_SHOW_POPULAR = 1
-        private const val VIEW_TYPE_MOVIE_UPCOMING = 2
-        private const val VIEW_TYPE_TV_SHOW_AIRING = 3
-        private const val VIEW_TYPE_MOVIE_WATCHLIST = 4
-        private const val VIEW_TYPE_TV_SHOW_WATCHLIST = 5
-        private const val VIEW_TYPE_MOVIE_FAVORITE = 6
-        private const val VIEW_TYPE_TV_SHOW_FAVORITE = 7
+//        private const val VIEW_TYPE_MOVIE_UPCOMING = 2
+//        private const val VIEW_TYPE_TV_SHOW_AIRING = 3
+//        private const val VIEW_TYPE_MOVIE_WATCHLIST = 4
+//        private const val VIEW_TYPE_TV_SHOW_WATCHLIST = 5
+//        private const val VIEW_TYPE_MOVIE_FAVORITE = 6
+//        private const val VIEW_TYPE_TV_SHOW_FAVORITE = 7
     }
 
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -79,12 +79,6 @@ class MediaAdapter<T>(
         return when (items[position]) {
             is Movie -> VIEW_TYPE_MOVIE_POPULAR
             is TVShow -> VIEW_TYPE_TV_SHOW_POPULAR
-            is Movie -> VIEW_TYPE_MOVIE_UPCOMING
-            is TVShow -> VIEW_TYPE_TV_SHOW_AIRING
-            is Movie -> VIEW_TYPE_MOVIE_WATCHLIST
-            is TVShow -> VIEW_TYPE_TV_SHOW_WATCHLIST
-            is Movie -> VIEW_TYPE_MOVIE_FAVORITE
-            is TVShow -> VIEW_TYPE_TV_SHOW_FAVORITE
 
             else -> throw IllegalArgumentException("Invalid item type")
         }
@@ -114,72 +108,72 @@ class MediaAdapter<T>(
                     }
                 }
             }
-            VIEW_TYPE_MOVIE_UPCOMING -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                UpcomingMovieViewHolder(view).apply{
-                    itemView.setOnClickListener {
-                        val upcomingMovie = items[adapterPosition] as Movie
-                        val intent = Intent(parent.context, MovieActivity::class.java)
-                        intent.putExtra("movie", upcomingMovie)
-                        parent.context.startActivity(intent)
-                    }
-                }
-            }
-            VIEW_TYPE_TV_SHOW_AIRING -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                AiringTodayShowViewHolder(view).apply {
-                    itemView.setOnClickListener {
-                        val airingTodayShow = items[adapterPosition] as TVShow
-                        val intent = Intent(parent.context, TVShowActivity::class.java)
-                        intent.putExtra("tvShow", airingTodayShow)
-                        parent.context.startActivity(intent)
-                    }
-                }
-            }
-            VIEW_TYPE_MOVIE_WATCHLIST -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                WatchlistMovieViewHolder(view).apply{
-                    itemView.setOnClickListener {
-                        val watchlistMovie = items[adapterPosition] as Movie
-                        val intent = Intent(parent.context, MovieActivity::class.java)
-                        intent.putExtra("movie", watchlistMovie)
-                        parent.context.startActivity(intent)
-                    }
-                }
-            }
-            VIEW_TYPE_TV_SHOW_WATCHLIST -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                WatchlistTVShowViewHolder(view).apply{
-                    itemView.setOnClickListener {
-                        val watchlistTVShow = items[adapterPosition] as TVShow
-                        val intent = Intent(parent.context, TVShowActivity::class.java)
-                        intent.putExtra("tvShow", watchlistTVShow)
-                        parent.context.startActivity(intent)
-                    }
-                }
-            }
-            VIEW_TYPE_MOVIE_FAVORITE -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                FavoriteMovieViewHolder(view).apply{
-                    itemView.setOnClickListener {
-                        val favoriteMovie = items[adapterPosition] as Movie
-                        val intent = Intent(parent.context, MovieActivity::class.java)
-                        intent.putExtra("movie", favoriteMovie)
-                        parent.context.startActivity(intent)
-                    }
-                }
-            }
-            VIEW_TYPE_TV_SHOW_FAVORITE -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                FavoriteTVShowViewHolder(view).apply{
-                    itemView.setOnClickListener {
-                        val favoriteTVShow = items[adapterPosition] as TVShow
-                        val intent = Intent(parent.context, TVShowActivity::class.java)
-                        intent.putExtra("tvShow", favoriteTVShow)
-                        parent.context.startActivity(intent)
-                    }
-                }
-            }
+//            VIEW_TYPE_MOVIE_UPCOMING -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+//                UpcomingMovieViewHolder(view).apply{
+//                    itemView.setOnClickListener {
+//                        val upcomingMovie = items[adapterPosition] as Movie
+//                        val intent = Intent(parent.context, MovieActivity::class.java)
+//                        intent.putExtra("movie", upcomingMovie)
+//                        parent.context.startActivity(intent)
+//                    }
+//                }
+//            }
+//            VIEW_TYPE_TV_SHOW_AIRING -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+//                AiringTodayShowViewHolder(view).apply {
+//                    itemView.setOnClickListener {
+//                        val airingTodayShow = items[adapterPosition] as TVShow
+//                        val intent = Intent(parent.context, TVShowActivity::class.java)
+//                        intent.putExtra("tvShow", airingTodayShow)
+//                        parent.context.startActivity(intent)
+//                    }
+//                }
+//            }
+//            VIEW_TYPE_MOVIE_WATCHLIST -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+//                WatchlistMovieViewHolder(view).apply{
+//                    itemView.setOnClickListener {
+//                        val watchlistMovie = items[adapterPosition] as Movie
+//                        val intent = Intent(parent.context, MovieActivity::class.java)
+//                        intent.putExtra("movie", watchlistMovie)
+//                        parent.context.startActivity(intent)
+//                    }
+//                }
+//            }
+//            VIEW_TYPE_TV_SHOW_WATCHLIST -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+//                WatchlistTVShowViewHolder(view).apply{
+//                    itemView.setOnClickListener {
+//                        val watchlistTVShow = items[adapterPosition] as TVShow
+//                        val intent = Intent(parent.context, TVShowActivity::class.java)
+//                        intent.putExtra("tvShow", watchlistTVShow)
+//                        parent.context.startActivity(intent)
+//                    }
+//                }
+//            }
+//            VIEW_TYPE_MOVIE_FAVORITE -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+//                FavoriteMovieViewHolder(view).apply{
+//                    itemView.setOnClickListener {
+//                        val favoriteMovie = items[adapterPosition] as Movie
+//                        val intent = Intent(parent.context, MovieActivity::class.java)
+//                        intent.putExtra("movie", favoriteMovie)
+//                        parent.context.startActivity(intent)
+//                    }
+//                }
+//            }
+//            VIEW_TYPE_TV_SHOW_FAVORITE -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+//                FavoriteTVShowViewHolder(view).apply{
+//                    itemView.setOnClickListener {
+//                        val favoriteTVShow = items[adapterPosition] as TVShow
+//                        val intent = Intent(parent.context, TVShowActivity::class.java)
+//                        intent.putExtra("tvShow", favoriteTVShow)
+//                        parent.context.startActivity(intent)
+//                    }
+//                }
+//            }
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
