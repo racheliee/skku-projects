@@ -7,15 +7,19 @@ import android.view.WindowInsets
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import edu.skku.map.pa3.models.Movie
+import edu.skku.map.pa3.network.AccountMediaNetworkUtils
 
 class MovieActivity : AppCompatActivity() {
 
     private lateinit var movie: Movie
     private lateinit var watchlistButton: Button
     private lateinit var favoriteButton: Button
+    val sessionId = GlobalData.sessionId
+    val accountId = GlobalData.accountDetails!!.id
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,40 +43,47 @@ class MovieActivity : AppCompatActivity() {
             .into(moviePoster)
 
         // Set up button click listeners
-//        watchlistButton.setOnClickListener {
-//            addToWatchlist()
-//        }
-//
-//        favoriteButton.setOnClickListener {
-//            addToFavorite()
-//        }
+        watchlistButton.setOnClickListener {
+            addToWatchlist()
+        }
+
+        favoriteButton.setOnClickListener {
+            addToFavorite()
+        }
+    }
+    private fun addToWatchlist() {
+        if (sessionId != null) {
+            AccountMediaNetworkUtils.addToWatchlist(movie.id, "movie", sessionId,
+                accountId.toString()
+            ) { success, e ->
+                runOnUiThread {
+                    if (success) {
+                        Toast.makeText(this, "${movie.title} added to Watchlist", Toast.LENGTH_SHORT).show()
+                    } else {
+                        e?.printStackTrace()
+                        Toast.makeText(this, "Failed to add ${movie.title} to Watchlist", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
-//    private fun addToWatchlist() {
-//        AccountMediaNetworkUtils.addToWatchlist(movie.id) { success, e ->
-//            runOnUiThread {
-//                if (success) {
-//                    Toast.makeText(this, "${movie.title} added to Watchlist", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    e?.printStackTrace()
-//                    Toast.makeText(this, "Failed to add ${movie.title} to Watchlist", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun addToFavorite() {
-//        AccountMediaNetworkUtils.addToFavorites(movie.id) { success, e ->
-//            runOnUiThread {
-//                if (success) {
-//                    Toast.makeText(this, "${movie.title} added to Favorites", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    e?.printStackTrace()
-//                    Toast.makeText(this, "Failed to add ${movie.title} to Favorites", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
+    private fun addToFavorite() {
+        if (sessionId != null) {
+            AccountMediaNetworkUtils.addToFavorites(movie.id, "movie", sessionId,
+                accountId.toString()
+            ) { success, e ->
+                runOnUiThread {
+                    if (success) {
+                        Toast.makeText(this, "${movie.title} added to Favorites", Toast.LENGTH_SHORT).show()
+                    } else {
+                        e?.printStackTrace()
+                        Toast.makeText(this, "Failed to add ${movie.title} to Favorites", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()

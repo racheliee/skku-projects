@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         const val ACCOUNT_DETAILS = "ACCOUNT_DETAILS"
     }
 
-    private lateinit var sessionId: String
-    private lateinit var accountDetails: AccountDetail
+//    private lateinit var sessionId: String
+//    private lateinit var accountDetails: AccountDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Get the session ID and account details
-        sessionId = intent.getStringExtra(SESSION_ID)!!
-        accountDetails = intent.getSerializableExtra(ACCOUNT_DETAILS) as AccountDetail
+        GlobalData.sessionId = intent.getStringExtra(SESSION_ID)!!
+        GlobalData.accountDetails = intent.getSerializableExtra(ACCOUNT_DETAILS) as AccountDetail
 
         // Set default fragment
         loadFragment(HomeFragment())
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<ImageButton>(R.id.profile_button).setOnClickListener {
-            loadFragment(ProfileFragment.newInstance(accountDetails))
+            loadFragment(ProfileFragment.newInstance(GlobalData.accountDetails!!))
         }
 
         findViewById<ImageButton>(R.id.search_button).setOnClickListener {
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<ImageButton>(R.id.favourite_button).setOnClickListener {
-            loadFragment(FavouriteFragment.newInstance(sessionId, accountDetails.id))
+            loadFragment(FavouriteFragment.newInstance(GlobalData.sessionId!!, GlobalData.accountDetails!!.id))
         }
     }
 

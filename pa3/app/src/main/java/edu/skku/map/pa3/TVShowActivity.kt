@@ -18,6 +18,8 @@ class TVShowActivity : AppCompatActivity() {
     private lateinit var tvShow: TVShow
     private lateinit var watchlistButton: Button
     private lateinit var favoriteButton: Button
+    val sessionId = GlobalData.sessionId
+    val accountId = GlobalData.accountDetails!!.id
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,40 +43,48 @@ class TVShowActivity : AppCompatActivity() {
             .into(tvShowPoster)
 
         // Set up button click listeners
-//        watchlistButton.setOnClickListener {
-//            addToWatchlist()
-//        }
-//
-//        favoriteButton.setOnClickListener {
-//            addToFavorite()
-//        }
+        watchlistButton.setOnClickListener {
+            addToWatchlist()
+        }
+
+        favoriteButton.setOnClickListener {
+            addToFavorite()
+        }
     }
-//
-//    private fun addToWatchlist() {
-//        AccountMediaNetworkUtils.addToWatchlist(tvShow.id, "tv") { success, e ->
-//            runOnUiThread {
-//                if (success) {
-//                    Toast.makeText(this, "${tvShow.name} added to Watchlist", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    e?.printStackTrace()
-//                    Toast.makeText(this, "Failed to add ${tvShow.name} to Watchlist", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun addToFavorite() {
-//        AccountMediaNetworkUtils.addToFavorites(tvShow.id, "tv") { success, e ->
-//            runOnUiThread {
-//                if (success) {
-//                    Toast.makeText(this, "${tvShow.name} added to Favorites", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    e?.printStackTrace()
-//                    Toast.makeText(this, "Failed to add ${tvShow.name} to Favorites", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
+
+    private fun addToWatchlist() {
+        if (sessionId != null) {
+            AccountMediaNetworkUtils.addToWatchlist(tvShow.id, "tv", sessionId,
+                accountId.toString()
+            ) { success, e ->
+                runOnUiThread {
+                    if (success) {
+                        Toast.makeText(this, "${tvShow.name} added to Watchlist", Toast.LENGTH_SHORT).show()
+                    } else {
+                        e?.printStackTrace()
+                        Toast.makeText(this, "Failed to add ${tvShow.name} to Watchlist", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addToFavorite() {
+        if (sessionId != null) {
+            AccountMediaNetworkUtils.addToFavorites(tvShow.id, "tv", sessionId,
+                accountId.toString()
+            ) { success, e ->
+                runOnUiThread {
+                    if (success) {
+                        Toast.makeText(this, "${tvShow.name} added to Favorites", Toast.LENGTH_SHORT).show()
+                    } else {
+                        e?.printStackTrace()
+                        Toast.makeText(this, "Failed to add ${tvShow.name} to Favorites", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
