@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val host = "https://api.weatherapi.com/v1/current.json"
 
         btn.setOnClickListener {
-            val api_key="3bbfdf9b56a14ad2849164126241905"
+            val api_key="YOUR API KEY"
             val find_city=et.text
             val path = "?key=" + api_key + "&q=" + find_city
             val req = Request.Builder().url(host+path).build()
