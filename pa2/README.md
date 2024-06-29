@@ -1,5 +1,9 @@
 # System Programming Lab PA2: Mini-Shell
 
+## Grade
+92.5/100
+All test cases passed, but points lost for accidentally named the commands `head` instead of `pa2head` and such.
+
 ## Objective
 The goal of this assignment is to implement a mini-shell program that supports basic shell commands. The shell should be able to execute commands, handle signals, job control, support I/O redirection, and support background processing.   
 
