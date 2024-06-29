@@ -1,4 +1,4 @@
-# Project 0: Introduction to xv6
+# OS Project 0: Introduction to xv6
 
 ## Overview
 This project provides a hands-on experience with the xv6 operating system. You will learn how to set up the development environment, boot the operating system, and make simple modifications to its source code.
