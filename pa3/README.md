@@ -47,9 +47,15 @@ The API Keys are stored securely and are not exposed in the codebase. To use thi
 4. Once the session ID is obtained, the user information such as user ID can be fetched.
 
 ## Screenshots
-![Login](readme_images/filmdr_1.png)
-![Main Page](readme_images/filmdr_2.png)
-![Random Movie](readme_images/filmdr_3.png)
-![Search](readme_images/filmdr_4.png)
-![Detail](readme_images/filmdr_5.png)
-![Favourites](readme_images/filmdr_6.png)
+<table>
+    <tr>
+        <td><img src="readme_images/filmdr_1.png" width="150"/></td>
+        <td><img src="readme_images/filmdr_2.png" width="150"/></td>
+        <td><img src="readme_images/filmdr_3.png" width="150"/></td>
+    </tr>
+    <tr>
+        <td><img src="readme_images/filmdr_4.png" width="150"/></td>
+        <td><img src="readme_images/filmdr_5.png" width="150"/></td>
+        <td><img src="readme_images/filmdr_6.png" width="150"/></td>
+    </tr>
+</table>
