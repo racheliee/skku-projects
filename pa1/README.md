@@ -1,5 +1,8 @@
 # System Programming Lab PA1: File Search Utility
 
+## Grade
+92.5/100
+
 ## Overview
 This project involves creating a file search utility program that performs various search functions on a text file. The application will read a text file, process user input to search for specific words or phrases, and return the occurrences in the specified format. The program utilizes Unix File I/O and data structures.
 
