@@ -3,7 +3,7 @@
 This project involves creating three new system calls in the xv6 operating system: `getnice`, `setnice`, and `ps`. These system calls manage and retrieve the "nice" value of processes, influencing their scheduling priority.  
 
 ## Grade
-Full Score: 100/100
+full score (100/100)
 
 ## Objective
 System calls:
