@@ -1,4 +1,4 @@
-# OS PA3 : Virtual Memory
+# OS Project 3: Virtual Memory
 
 ## Overview
 This assignment involves implementing virtual memory support in the xv6 operating system. Implement the `mmap()`, `munmap()`, and `freemem()` system calls, as well as a page fault handler to handle page faults for memory accesses to mapped regions.
