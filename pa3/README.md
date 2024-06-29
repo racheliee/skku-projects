@@ -1,4 +1,4 @@
-# Project Assignment 2: Filmdr
+# Project Assignment 3: Filmdr
 
 ## Overview
 Filmdr is a mobile application developed for the Mobile App Programming personal project. This app allows users to browse, search, and view detailed information about popular movies and TV shows using The Movie Database (TMDB) API. Users can also add movies and TV shows to their favorites or watchlist for easy access.
