@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
-    private val tmdbApiKey = "5e9e0af68c59eafeb71723f56a3862bc"
+    private val tmdbApiKey = "YOUR API KEY"
     private lateinit var requestToken: String
     private lateinit var sessionID: String
     private lateinit var accountDetail: AccountDetail

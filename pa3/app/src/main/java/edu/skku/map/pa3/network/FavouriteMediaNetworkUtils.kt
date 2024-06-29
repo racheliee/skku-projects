@@ -12,7 +12,7 @@ import java.io.IOException
 object FavouriteMediaNetworkUtils {
     private val client: OkHttpClient
     private val gson: Gson = Gson()
-    private val tmdbAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTllMGFmNjhjNTllYWZlYjcxNzIzZjU2YTM4NjJiYyIsInN1YiI6IjY2NzVkYTkyZGU3MmZkMzI3N2IwNTIyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QLYG3b_OYmMs6zYxSj_KaahIUM8jcCkssz1AUxWaZmA"
+    private val tmdbAccessToken = "YOUR ACCESS TOKEN"
 
     init {
         val logging = HttpLoggingInterceptor()

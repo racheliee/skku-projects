@@ -14,7 +14,7 @@ import java.io.IOException
 object LoginNetworkUtils {
     private val client: OkHttpClient
     private val gson: Gson = Gson()
-    private val tmdbAcessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTllMGFmNjhjNTllYWZlYjcxNzIzZjU2YTM4NjJiYyIsInN1YiI6IjY2NzVkYTkyZGU3MmZkMzI3N2IwNTIyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QLYG3b_OYmMs6zYxSj_KaahIUM8jcCkssz1AUxWaZmA"
+    private val tmdbAcessToken = "YOUR ACCESS TOKEN"
 
     init {
         val logging = HttpLoggingInterceptor()
