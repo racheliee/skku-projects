@@ -3,10 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#define FILE_NAME "shakespeare.txt"
 #define MAX_WORD_SIZE 100
 #define BUCKET_SIZE 1021
 #define MAX_BIGRAMS 100000000
-#define FILE_NAME "shakespeare.txt"
 
 // structs ==============================================
 typedef struct Node{
@@ -16,24 +16,37 @@ typedef struct Node{
     struct Node* next;
 } Node;
 
+//wrapper functions ======================================
+int string_length(char* s){
+    return strlen(s);
+}
+
+int string_compare(char* s1, char* s2){
+    return strcmp(s1, s2);
+}
+
+void string_copy(char* dest, char* src){
+    strcpy(dest, src);
+}
+
 // helper functions ======================================
-/*Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
-which we know to have quadratic run time due to repeated calls to strlen.*/
+// Each word is read from the file and converted to lowercase. Our initial version used the function lower1 (Figure 5.7), 
+// which we know to have quadratic run time due to repeated calls to strlen.
 void lower_case(char* s){
-    for(long i = 0; i < strlen(s); i++){
+    for(long i = 0; i < string_length(s); i++){
         if(s[i] >= 'A' && s[i] <= 'Z'){
             s[i] -= ('A' - 'a');
         }
     }
 }
 
-// remove punctuation from a word; apostrophes are not counted as punctuation
+// remove punctuation from a word
 void remove_punctuation(char* word){
-    char no_punct[strlen(word)+1];
+    char no_punct[string_length(word)+1];
     int index = 0;
     int i = 0;
 
-    for(i = 0; i < strlen(word); i++){
+    for(i = 0; i < string_length(word); i++){
         if(!ispunct(word[i])){
             no_punct[index] = word[i];
             index++;
@@ -41,20 +54,19 @@ void remove_punctuation(char* word){
     }
 
     no_punct[index] = '\0';
-    strcpy(word, no_punct);
+    string_copy(word, no_punct);
 }
 
 // functions ============================================
-
 //A hash function is applied to the string to create a number between 0 and s − 1, for a hash table with s buckets. 
 //Our initial function simply summed the ASCII codes for the characters modulo s.
 int hash_function(char* word1, char* word2){
     int ascii_sum = 0;
 
-    for(int i = 0; i < strlen(word1); i++){
+    for(int i = 0; i < string_length(word1); i++){
         ascii_sum += word1[i];
     }
-    for(int i = 0; i < strlen(word2); i++){
+    for(int i = 0; i < string_length(word2); i++){
         ascii_sum += word2[i];
     }
 
@@ -66,10 +78,10 @@ void insert(Node** hashtable, char* first_w, char* second_w){
     //create a new node
     Node* new_node = (Node*)malloc(sizeof(Node));
 
-    new_node->word1 = (char*)malloc(sizeof(char) * (strlen(first_w)+1));
-    new_node->word2 = (char*)malloc(sizeof(char) * (strlen(second_w)+1));  
-    strcpy(new_node->word1, first_w);
-    strcpy(new_node->word2, second_w);
+    new_node->word1 = (char*)malloc(sizeof(char) * (string_length(first_w)+1));
+    new_node->word2 = (char*)malloc(sizeof(char) * (string_length(second_w)+1));  
+    string_copy(new_node->word1, first_w);
+    string_copy(new_node->word2, second_w);
 
     new_node->count = 1;
     new_node->next = NULL;
@@ -84,7 +96,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
 
         while(temp->next != NULL){
             // if the bigram already exists, increment the count
-            if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
+            if(string_compare(temp->word1, first_w) == 0 && string_compare(temp->word2, second_w) == 0){
                 temp->count++;
                 return;
             }
@@ -93,7 +105,7 @@ void insert(Node** hashtable, char* first_w, char* second_w){
             temp = temp->next;
         }
         // if the bigram already exists and is at the end of the linked list, increment the count
-        if(strcmp(temp->word1, first_w) == 0 && strcmp(temp->word2, second_w) == 0){
+        if(string_compare(temp->word1, first_w) == 0 && string_compare(temp->word2, second_w) == 0){
             temp->count++;
             return;
         }
@@ -129,7 +141,7 @@ void read_file_and_hash(Node** hashtable){
 
         insert(hashtable, first_w, second_w);
         
-        strcpy(first_w, second_w); //change the first word to the second word
+        string_copy(first_w, second_w); //change the first word to the second word
     }
 }
 
