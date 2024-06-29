@@ -1,5 +1,8 @@
 # System Programming Lab - PA3
 
+## Grade
+82.64/100
+
 ## Objective
 &nbsp; &nbsp; The goal of this project is to design and implement a reservation server that supports many clients.
 - Server manages the reservation procedure for each client.
