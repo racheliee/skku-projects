@@ -1,6 +1,7 @@
 # Algorithms Project Assignments 
 This repository contains implementations of several algorithms assignments from introduction to algorithms, each organized into separate folders. Each assignment folder includes its implementation files and documentation, meeting course requirements and coding standards.
 
+# Projects Included
 ## pa1: Min-Max-Median Priority Queue
 - **Objective:** Implement a Min-Max-Median Priority Queue in C.
 - **Grade:** Full score (16/10) - additional credit received.
