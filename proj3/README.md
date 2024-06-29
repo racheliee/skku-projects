@@ -1,4 +1,4 @@
-# Computer Architecture Proj3
+# Computer Architecture Project 3
 Spike RISC-V Simulator
 
 ## Grade
