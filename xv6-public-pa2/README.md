@@ -1,4 +1,4 @@
-# Project 2: CPU Scheduling
+# OS Project 2: CPU Scheduling
 
 ## Overview
 This project involves implementing the Completely Fair Scheduler (CFS) in the xv6 operating system. The CFS scheduler ensures that processes with higher priority receive more CPU time than those with lower priority. You will also modify the `ps` system call to display relevant scheduling information for each process.
