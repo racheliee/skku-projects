@@ -1,7 +1,7 @@
 # Project 0: Introduction to xv6
 
 ## Grade
-full score
+full score (100/100)
 
 ## Objective
 The objective of this project is to introduce students to the xv6 operating system, a Unix-like teaching OS developed by MIT. Students will clone, boot, and modify the xv6 OS to display a custom boot message.
