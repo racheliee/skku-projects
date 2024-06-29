@@ -1,4 +1,4 @@
-# System Programming Lab - PA3
+# System Programming Lab PA3: Reservation Server
 
 ## Grade
 82.64/100
