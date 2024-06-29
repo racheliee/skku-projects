@@ -40,3 +40,18 @@ This repository contains implementations of several operating systems projects f
   - Implement swap-in and swap-out operations to move pages between main memory and backing store.
   - Manage swappable pages with an LRU list.
   - Implement the clock algorithm for page replacement.
+ 
+# Notes
+In order to run on mac, the following changes need to be made to the `Makefile`:
+1. Remove `-Werror` from `CFLAGS`
+```shell
+CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer
+```
+2. Uncomment the following two sections
+```shell
+# If the makefile can't find QEMU, specify its path here
+QEMU = qemu-system-i386
+
+# Using native tools (e.g., on X86 Linux)
+TOOLPREFIX = i686-elf-
+```
