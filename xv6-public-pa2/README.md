@@ -1,15 +1,16 @@
 # Project 2: CPU Scheduling
 
+## Overview
+This project involves implementing the Completely Fair Scheduler (CFS) in the xv6 operating system. The CFS scheduler ensures that processes with higher priority receive more CPU time than those with lower priority. You will also modify the `ps` system call to display relevant scheduling information for each process.
+
 ## Grade
 full score (100/100)
 
 ## Objective
-
 - Linux CFS scheduler to ensure runtime increases in accordance with process priority
 - `ps` system call to output relevant scheduling information
 
 ## Tasks
-
 ### 1. Implement CFS on xv6
 
 - **Select process with minimum virtual runtime**: The process with the lowest virtual runtime is scheduled next.
@@ -40,7 +41,3 @@ sh      2      SLEEPING 5           0                1000       0           5480
 mytest  4      RUNNABLE 5           28               832000     38770       5480000
 mytest  5      RUNNING  0           37               3370000    38755       5480000
 ```
-
-## Score 
-
-100/100
