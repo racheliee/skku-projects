@@ -21,6 +21,7 @@ FRUIT_PRICES = {
     'strawberries': 1.00
 }
 
+
 def buyLotsOfFruit(orderList):
     """
     orderList: List of (fruit, weight) tuples
@@ -28,9 +29,17 @@ def buyLotsOfFruit(orderList):
     Returns cost of order
     """
 
-    # *** Your Code Here ***
+    total_cost = 0.0
 
-    return None
+    for items in orderList:
+        if items[0] in FRUIT_PRICES:  # check if the fruit is in the fruit_price list
+            total_cost += FRUIT_PRICES[items[0]] * items[1]
+        else:
+            print(f"Error: {items[0]} is not in the list of FRUIT_PRICES.")
+            return None
+
+    return total_cost
+
 
 def main():
     orderList = [
@@ -40,6 +49,7 @@ def main():
     ]
 
     print("Cost of %s is %s." % (orderList, buyLotsOfFruit(orderList)))
+
 
 if __name__ == '__main__':
     main()

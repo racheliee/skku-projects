@@ -19,9 +19,11 @@ def shopSmart(orderList, fruitShops):
     fruitShops: List of FruitShops
     """
 
-    # *** Your Code Here ***
+    if fruitShops[0].getPriceOfOrder(orderList) <= fruitShops[1].getPriceOfOrder(orderList):
+        return fruitShops[0]
+    else:
+        return fruitShops[1]
 
-    return None
 
 def main():
     dir1 = {
@@ -40,10 +42,13 @@ def main():
     shops = [shop1, shop2]
 
     orders = [('apples', 1.0), ('oranges', 3.0)]
-    print("For orders: %s the best shop is %s." % (orders, shopSmart(orders, shops).getName()))
+    print("For orders: %s the best shop is %s." %
+          (orders, shopSmart(orders, shops).getName()))
 
     orders = [('apples', 3.0)]
-    print("For orders: %s the best shop is %s." % (orders, shopSmart(orders, shops).getName()))
+    print("For orders: %s the best shop is %s." %
+          (orders, shopSmart(orders, shops).getName()))
+
 
 if __name__ == '__main__':
     main()
