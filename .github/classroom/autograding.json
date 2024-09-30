@@ -1,0 +1,232 @@
+{
+  "tests": [
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 1, Sequential",
+      "setup": "cp /home/cse113/cse113-autograder/hw1/part1/main.py part1",
+      "run": "python3 part1/main.py 64 1 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 1, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 1 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 2, Sequential",
+      "setup": "",
+      "run": "python3 part1/main.py 64 2 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 2, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 2 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 4, Sequential",
+      "setup": "",
+      "run": "python3 part1/main.py 64 4 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 4, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 4 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 8, Sequential",
+      "setup": "",
+      "run": "python3 part1/main.py 64 8 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 8, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 8 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 16, Sequential",
+      "setup": "",
+      "run": "python3 part1/main.py 64 16 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 16, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 16 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 32, Sequential",
+      "setup": "",
+      "run": "python3 part1/main.py 64 32 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 32, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 32 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 64, Sequential",
+      "setup": "",
+      "run": "python3 part1/main.py 64 64 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Chain Length = 64, Unroll Factor = 64, Interleaved",
+      "setup": "",
+      "run": "python3 part1/main.py 64 64 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 2: Unroll Factor = 1",
+      "setup": "cp /home/cse113/cse113-autograder/hw1/part2/main.py part2",
+      "run": "python3 part2/main.py 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Unroll Factor = 2",
+      "setup": "",
+      "run": "python3 part2/main.py 2",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Unroll Factor = 4",
+      "setup": "",
+      "run": "python3 part2/main.py 4",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Unroll Factor = 8",
+      "setup": "",
+      "run": "python3 part2/main.py 8",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Unroll Factor = 16",
+      "setup": "",
+      "run": "python3 part2/main.py 16",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+
+    {
+      "name": "Part 3: Sequential vs. Round Robin",
+      "setup": "cp /home/cse113/cse113-autograder/hw1/part3/* part3",
+      "run": "cd part3 && make && ./homework 0",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Sequential vs. Custom",
+      "setup": "",
+      "run": "cd part3 && ./homework 1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Round Robin vs. Custom",
+      "setup": "",
+      "run": "cd part3 && ./homework 2",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    }
+  ]
+}
