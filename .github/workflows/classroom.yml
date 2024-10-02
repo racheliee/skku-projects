@@ -15,5 +15,15 @@ jobs:
     name: Autograding
     runs-on: self-hosted 
     steps:
-      - uses: actions/checkout@v2
-      - uses: education/autograding@v1
+      - id: checkout
+        uses: actions/checkout@v2
+      - name: Autograder
+        id: autograder
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: 'Part 1: Chain Length = 64, Unroll Factor = 1, Sequential'
+          setup: "cp $HOME/cse113-autograder/hw1/part1/main.py part1",
+          run: "python3 part1/main.py 64 1 0",
+          comparison: "included",
+          timeout: 10,
+          points: 1
