@@ -201,7 +201,7 @@
     {
       "name": "Part 3: Sequential vs. Round Robin",
       "setup": "cp $HOME/cse113-autograder/hw1/part3/* part3",
-      "run": "cd part3 && make && ./homework 0",
+      "run": "python3 part3/main.py 0",
       "input": "",
       "output": "",
       "comparison": "included",
@@ -211,7 +211,7 @@
     {
       "name": "Part 3: Sequential vs. Custom",
       "setup": "",
-      "run": "cd part3 && ./homework 1",
+      "run": "python3 part3/main.py 1",
       "input": "",
       "output": "",
       "comparison": "included",
@@ -221,7 +221,7 @@
     {
       "name": "Part 3: Round Robin vs. Custom",
       "setup": "",
-      "run": "cd part3 && ./homework 2",
+      "run": "python3 part3/main.py 2",
       "input": "",
       "output": "",
       "comparison": "included",
