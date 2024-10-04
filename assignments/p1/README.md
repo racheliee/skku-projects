@@ -8,6 +8,24 @@
     So teach them to search.
 </p>
 
+## Discussion notes
+- start early
+- typical BFS, DFS but the instead of node save states
+- if DFS and BFS general enough, it will work for all four
+- copy the files (search.py, searchAgents.py) into p1 and submit OR get config to json to pacman/ and submit
+- BFS & DFS = cost is always 1
+
+### Explanation
+- starting state (x, y)
+- successor states (node, action, cost) => NWSE 4가지 방향 존재
+  - `[((0, 1), North, 1), ((1, 0), East, 1), ...]`
+- isgoal = checks if its the goal state (already implemented)
+- UFS, A* => priority queue
+- DFS => stack?
+- BFS => queue?
+- 
+
+
 ## Introduction
 
 In this project, your Pac-Man agent will find paths through their maze world,
