@@ -2,7 +2,7 @@
   "tests": [
     {
       "name": "Part 1: Chain Length = 64, Unroll Factor = 1, Sequential",
-      "setup": "cp $HOME/cse113-autograder/hw1/part1/main.py part1",
+      "setup": "cp /home/jimlauda/cse113-autograder/hw1/part1/main.py part1",
       "run": "python3 part1/main.py 64 1 0",
       "input": "",
       "output": "",
@@ -149,7 +149,7 @@
 
     {
       "name": "Part 2: Unroll Factor = 1",
-      "setup": "cp $HOME/cse113-autograder/hw1/part2/main.py part2",
+      "setup": "cp /home/jimlauda/cse113-autograder/hw1/part2/main.py part2",
       "run": "python3 part2/main.py 1",
       "input": "",
       "output": "",
@@ -200,7 +200,7 @@
 
     {
       "name": "Part 3: Sequential vs. Round Robin",
-      "setup": "cp $HOME/cse113-autograder/hw1/part3/* part3",
+      "setup": "cp /home/jimlauda/cse113-autograder/hw1/part3/* part3",
       "run": "python3 part3/main.py 0",
       "input": "",
       "output": "",
