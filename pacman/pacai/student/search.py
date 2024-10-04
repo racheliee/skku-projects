@@ -1,4 +1,5 @@
 from pacai.util.queue import Queue
+from pacai.util.stack import Stack
 
 """
 In this file, you will implement generic search algorithms which are called by Pacman agents.
@@ -26,10 +27,30 @@ def depthFirstSearch(problem):
     print("Start's successors: %s" % (problem.successorStates(problem.startingState())))
     ```
     """
-    
 
     # *** Your Code Here ***
-    raise NotImplementedError()
+    s = Stack() # frontier
+    visited = set() # visited states
+    
+    start = problem.startingState()
+    
+    s.push([start, []]) # [state, path]
+    
+    while not s.isEmpty():
+        curr_state, curr_path = s.pop()
+        
+        if problem.isGoal(curr_state):
+            return curr_path
+        
+        if curr_state in visited:
+            continue
+        
+        visited.add(curr_state)
+        
+        for new_state, action, cost in problem.successorStates(curr_state):
+            s.push([new_state, curr_path + [action]])
+    
+    return []
 
 def breadthFirstSearch(problem):
     """
