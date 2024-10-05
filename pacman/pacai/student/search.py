@@ -1,5 +1,6 @@
 from pacai.util.queue import Queue
 from pacai.util.stack import Stack
+from pacai.util.priorityQueue import PriorityQueueWithFunction
 
 """
 In this file, you will implement generic search algorithms which are called by Pacman agents.
@@ -11,6 +12,7 @@ return 값들:
     Is the start a goal?: False
     Start's successors: [((35, 2), 'North', 1), ((34, 1), 'West', 1)]
 '''
+
 
 def depthFirstSearch(problem):
     """
@@ -29,66 +31,95 @@ def depthFirstSearch(problem):
     """
 
     # *** Your Code Here ***
-    s = Stack() # frontier
-    visited = set() # visited states
-    
+    s = Stack()  # frontier
+    visited = set()  # visited states
+
     start = problem.startingState()
-    
-    s.push([start, []]) # [state, path]
-    
+
+    s.push([start, []])  # [state, path]
+
     while not s.isEmpty():
         curr_state, curr_path = s.pop()
-        
+
         if problem.isGoal(curr_state):
             return curr_path
-        
+
         if curr_state in visited:
             continue
-        
+
         visited.add(curr_state)
-        
+
         for new_state, action, cost in problem.successorStates(curr_state):
             s.push([new_state, curr_path + [action]])
-    
+
     return []
+
 
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first. [p 81]
     """
-    
+
     # *** Your Code Here ***
-    q = Queue() # frontier
-    visited = set() # visited states
-    
+    q = Queue()  # frontier
+    visited = set()  # visited states
+
     start = problem.startingState()
-    
-    q.push([start, []]) # [state, path]
-    
+
+    q.push([start, []])  # [state, path]
+
     while not q.isEmpty():
         curr_state, curr_path = q.pop()
-        
+
         if problem.isGoal(curr_state):
             return curr_path
-        
+
         if curr_state in visited:
             continue
-        
+
         visited.add(curr_state)
-        
+
         for new_state, action, cost in problem.successorStates(curr_state):
             q.push([new_state, curr_path + [action]])
-    
-    
+
     return []
+
 
 def uniformCostSearch(problem):
     """
     Search the node of least total cost first.
     """
+    
+    def priorityFunction(curr):
+        # sort based on cost, tie-breaker is length of path
+        return (curr[2], len(curr[1]))
 
     # *** Your Code Here ***
-    raise NotImplementedError()
+    # frontier; priority function given with price
+    pq = PriorityQueueWithFunction(priorityFunction)
+    visited = set()
+
+    start = problem.startingState()
+
+    pq.push([start, [], 0]) # [state, path, 0]
+
+    while not pq.isEmpty():
+        curr_state, curr_path, curr_cost = pq.pop()
+
+        if problem.isGoal(curr_state):
+            return curr_path
+
+        if curr_state in visited:
+            continue
+
+        visited.add(curr_state)
+
+        for new_state, action, cost in problem.successorStates(curr_state):
+            if new_state not in visited:
+                pq.push([new_state, curr_path+[action], curr_cost + cost])
+
+    return []
+
 
 def aStarSearch(problem, heuristic):
     """
@@ -97,3 +128,4 @@ def aStarSearch(problem, heuristic):
 
     # *** Your Code Here ***
     raise NotImplementedError()
+
