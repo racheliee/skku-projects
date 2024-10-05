@@ -89,7 +89,7 @@ def uniformCostSearch(problem):
     """
     Search the node of least total cost first.
     """
-    
+
     def priorityFunction(curr):
         # sort based on cost, tie-breaker is length of path
         return (curr[2], len(curr[1]))
@@ -101,7 +101,7 @@ def uniformCostSearch(problem):
 
     start = problem.startingState()
 
-    pq.push([start, [], 0]) # [state, path, 0]
+    pq.push([start, [], 0])  # [state, path, cost]
 
     while not pq.isEmpty():
         curr_state, curr_path, curr_cost = pq.pop()
@@ -125,7 +125,33 @@ def aStarSearch(problem, heuristic):
     """
     Search the node that has the lowest combined cost and heuristic first.
     """
-
+    
     # *** Your Code Here ***
-    raise NotImplementedError()
+    def heuristic(curr):
+        # compare h+g, if same tie-break with g
+        return (curr[2]+curr[3], curr[2]) 
+
+    pq = PriorityQueueWithFunction(heuristic)
+    visited = set()
+    
+    start = problem.startingState()
+
+    pq.push([start, [], 0, 0])  # [state, path, depth(g), cost(h)]
+
+    while not pq.isEmpty():
+        curr_state, curr_path, curr_depth, curr_cost = pq.pop()
+
+        if problem.isGoal(curr_state):
+            return curr_path
+
+        if curr_state in visited:
+            continue
+
+        visited.add(curr_state)
+
+        for new_state, action, cost in problem.successorStates(curr_state):
+            if new_state not in visited:
+                pq.push([new_state, curr_path+[action], curr_depth+1, curr_cost + cost])
+
+    return []
 
