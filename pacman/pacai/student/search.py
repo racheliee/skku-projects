@@ -68,11 +68,10 @@ def breadthFirstSearch(problem):
 
     q.push([start, []])  # [state, path]
 
+    # print("Start's successors: %s" % (problem.successorStates(problem.startingState())))
+
     while not q.isEmpty():
         curr_state, curr_path = q.pop()
-
-        if problem.isGoal(curr_state):
-            return curr_path
 
         if curr_state in visited:
             continue
@@ -80,6 +79,9 @@ def breadthFirstSearch(problem):
         visited.add(curr_state)
 
         for new_state, action, cost in problem.successorStates(curr_state):
+            if problem.isGoal(new_state):  # goal check here to expand less nodes
+                return curr_path + [action]
+
             q.push([new_state, curr_path + [action]])
 
     return []
@@ -116,7 +118,7 @@ def uniformCostSearch(problem):
 
         for new_state, action, cost in problem.successorStates(curr_state):
             if new_state not in visited:
-                pq.push([new_state, curr_path+[action], curr_cost + cost])
+                pq.push([new_state, curr_path + [action], curr_cost + cost])
 
     return []
 
@@ -125,15 +127,12 @@ def aStarSearch(problem, heuristic):
     """
     Search the node that has the lowest combined cost and heuristic first.
     """
-    
-    # *** Your Code Here ***
-    def heuristic(curr):
-        # compare h+g, if same tie-break with g
-        return (curr[2]+curr[3], curr[2]) 
 
-    pq = PriorityQueueWithFunction(heuristic)
+    # *** Your Code Here ***
+    pq = PriorityQueueWithFunction(lambda curr: (
+        curr[3] + heuristic(curr[0], problem), curr[2]))
     visited = set()
-    
+
     start = problem.startingState()
 
     pq.push([start, [], 0, 0])  # [state, path, depth(g), cost(h)]
@@ -141,17 +140,17 @@ def aStarSearch(problem, heuristic):
     while not pq.isEmpty():
         curr_state, curr_path, curr_depth, curr_cost = pq.pop()
 
-        if problem.isGoal(curr_state):
-            return curr_path
-
         if curr_state in visited:
             continue
 
         visited.add(curr_state)
 
         for new_state, action, cost in problem.successorStates(curr_state):
+            if problem.isGoal(new_state):
+                return curr_path + [action]
+
             if new_state not in visited:
-                pq.push([new_state, curr_path+[action], curr_depth+1, curr_cost + cost])
+                pq.push([new_state, curr_path + [action],
+                        curr_depth + 1, curr_cost + cost])
 
     return []
-
