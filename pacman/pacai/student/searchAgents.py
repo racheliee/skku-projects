@@ -14,7 +14,7 @@ from pacai.core.search.problem import SearchProblem
 from pacai.agents.base import BaseAgent
 from pacai.agents.search.base import SearchAgent
 from pacai.core.directions import Directions
-
+from pacai.student.search import breadthFirstSearch, aStarSearch
 
 class CornersProblem(SearchProblem):
     """
@@ -256,14 +256,22 @@ class ClosestDotSearchAgent(SearchAgent):
         """
 
         # Here are some useful elements of the startState
-        # startPosition = gameState.getPacmanPosition()
-        # food = gameState.getFood()
-        # walls = gameState.getWalls()
+        # startPosition = gameState.getPacmanPosition() => (x, y)
+        # food = gameState.getFood() => TF Grid
+        # walls = gameState.getWalls() => TF Grid
         # problem = AnyFoodSearchProblem(gameState)
 
-        # todo
         # *** Your Code Here ***
-        raise NotImplementedError()
+        # print("Start: %s" % (str(gameState.getPacmanPosition())))
+        # print("Food: %s" % (gameState.getFood()))
+        # print("Walls: %s" % (gameState.getWalls()))
+        
+        problem = AnyFoodSearchProblem(gameState)
+        
+        # return aStarSearch(problem, foodHeuristic)
+        return breadthFirstSearch(problem)
+        
+        # raise NotImplementedError()
 
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -292,6 +300,10 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
         # Store the food for later reference.
         self.food = gameState.getFood()
+        
+    def isGoal(self, state):
+        x, y = state
+        return self.food[x][y]
 
 
 class ApproximateSearchAgent(BaseAgent):
