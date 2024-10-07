@@ -13,6 +13,8 @@ from pacai.core.search.position import PositionSearchProblem
 from pacai.core.search.problem import SearchProblem
 from pacai.agents.base import BaseAgent
 from pacai.agents.search.base import SearchAgent
+from pacai.core.directions import Directions
+
 
 class CornersProblem(SearchProblem):
     """
@@ -64,7 +66,11 @@ class CornersProblem(SearchProblem):
                 logging.warning('Warning: no food in corner ' + str(corner))
 
         # *** Your Code Here ***
-        raise NotImplementedError()
+        # state representation: (x, y, (corners visited))
+        # You NEED to use a tuple because lists are not hashable
+        self.startState = (
+            self.startingPosition[0], self.startingPosition[1], tuple())
+        # raise NotImplementedError()
 
     def actionsCost(self, actions):
         """
@@ -85,6 +91,49 @@ class CornersProblem(SearchProblem):
 
         return len(actions)
 
+    def startingState(self):
+        return self.startState
+
+    def isGoal(self, state):
+        # check if all four corners have been visited
+        if (len(state[2]) != 4):
+            return False
+
+        # register visited locations
+        # self._visitedLocations.add(state)
+        # coordinates = state[0]
+        # self._visitHistory.append(coordinates)
+
+        return True
+
+    def successorStates(self, state):
+        successors = []
+        x, y = state[0], state[1]
+
+        for action in Directions.CARDINAL:
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+
+            if (not hitsWall):
+                nextPosition = (nextx, nexty)
+                nextCorners = state[2]
+                if nextPosition in self.corners and nextPosition not in nextCorners:
+                    nextCorners = nextCorners + (nextPosition,)
+                successors.append(((nextx, nexty, nextCorners), action, 1))
+
+        # Bookkeeping for display purposes (the highlight in the GUI).
+        self._numExpanded += 1
+        # if (state not in self._visitedLocations):
+        #     self._visitedLocations.add(state)
+        #     # Note: visit history requires coordinates not states. In this situation
+        #     # they are equivalent.
+        #     coordinates = state
+        #     self._visitHistory.append(coordinates)
+
+        return successors
+
+
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
@@ -100,7 +149,41 @@ def cornersHeuristic(state, problem):
     # walls = problem.walls  # These are the walls of the maze, as a Grid.
 
     # *** Your Code Here ***
-    return heuristic.null(state, problem)  # Default to trivial solution
+    currX, currY, currCorners = state
+    unvisitedCorners = [
+        corner for corner in problem.corners if corner not in currCorners]
+
+    if len(unvisitedCorners) == 0:
+        return 0
+
+    # return the distance to the farthest corner => expands to 1359 nodes
+    # distances = [manhattanDistance((currX, currY), corner) for corner in unvisitedCorners]
+    # return max(distances)
+
+    # use a greedy algorithm to find the minimum spanning tree of the four corners
+    # choose the next closest corner to visit from the current position
+    curr = (currX, currY)
+    heuristic = 0
+    while (len(unvisitedCorners)):
+        distances = []
+        for corner in unvisitedCorners:
+            distances.append(
+                (manhattanDistance((curr[0], curr[1]), corner), corner))
+        minDistance, closestCorner = min(distances)
+        heuristic += minDistance
+        curr = closestCorner
+        unvisitedCorners.remove(closestCorner)
+        
+    # note: mst might be a better heuristic
+
+    return heuristic
+    # return heuristic.null(state, problem)  # Default to trivial solution
+
+
+# helper function to calculate manhattan distance
+def manhattanDistance(pos1, pos2):
+    return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+
 
 def foodHeuristic(state, problem):
     """
@@ -134,7 +217,9 @@ def foodHeuristic(state, problem):
     position, foodGrid = state
 
     # *** Your Code Here ***
+    # todo
     return heuristic.null(state, problem)  # Default to the null heuristic.
+
 
 class ClosestDotSearchAgent(SearchAgent):
     """
@@ -151,14 +236,15 @@ class ClosestDotSearchAgent(SearchAgent):
         currentState = state
 
         while (currentState.getFood().count() > 0):
-            nextPathSegment = self.findPathToClosestDot(currentState)  # The missing piece
+            nextPathSegment = self.findPathToClosestDot(
+                currentState)  # The missing piece
             self._actions += nextPathSegment
 
             for action in nextPathSegment:
                 legal = currentState.getLegalActions()
                 if action not in legal:
                     raise Exception('findPathToClosestDot returned an illegal move: %s!\n%s' %
-                            (str(action), str(currentState)))
+                                    (str(action), str(currentState)))
 
                 currentState = currentState.generateSuccessor(0, action)
 
@@ -175,8 +261,10 @@ class ClosestDotSearchAgent(SearchAgent):
         # walls = gameState.getWalls()
         # problem = AnyFoodSearchProblem(gameState)
 
+        # todo
         # *** Your Code Here ***
         raise NotImplementedError()
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -199,11 +287,12 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     Fill this in with a goal test that will complete the problem definition.
     """
 
-    def __init__(self, gameState, start = None):
-        super().__init__(gameState, goal = None, start = start)
+    def __init__(self, gameState, start=None):
+        super().__init__(gameState, goal=None, start=start)
 
         # Store the food for later reference.
         self.food = gameState.getFood()
+
 
 class ApproximateSearchAgent(BaseAgent):
     """
@@ -218,6 +307,7 @@ class ApproximateSearchAgent(BaseAgent):
     `pacai.agents.base.BaseAgent.registerInitialState`:
     This method is called before any moves are made.
     """
+    # todo
 
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)

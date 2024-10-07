@@ -129,6 +129,8 @@ def aStarSearch(problem, heuristic):
     """
 
     # *** Your Code Here ***
+    # heuristic to use cost + manhattan distance(current state, goal state)
+    # tie-breaker is depth (g or length of path)
     pq = PriorityQueueWithFunction(lambda curr: (
         curr[3] + heuristic(curr[0], problem), curr[2]))
     visited = set()
