@@ -1,0 +1,203 @@
+{
+  "tests": [
+    {
+      "name": "Part 1: Compile",
+      "setup": "cp /home/cse113/cse113-autograder/hw2/main-grader.py .",
+      "run": "python3 main-grader.py C 1 0",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Check data race on filter version",
+      "run": "python3 main-grader.py R 1 1",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Check data race on bakery version",
+      "run": "python3 main-grader.py R 1 2",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Get throughput on filter version",
+      "run": "python3 main-grader.py T 1 1",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Get throughput on bakery version",
+      "run": "python3 main-grader.py T 1 2",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 1: Get throughput on cpp version",
+      "run": "python3 main-grader.py T 1 3",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Compile",
+      "run": "python3 main-grader.py C 2 0",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Check data race on fair mutex",
+      "run": "python3 main-grader.py R 2 0",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Get throughput for input 6 2 1 with fair mutex",
+      "run": "python3 main-grader.py T 2 1",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Get throughput for input 6 2 1 with default",
+      "run": "python3 main-grader.py T 2 2",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Get throughput for input 8 0 1 with fair mutex",
+      "run": "python3 main-grader.py T 2 3",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 2: Get throughput for input 8 0 1 with default",
+      "run": "python3 main-grader.py T 2 4",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Compile",
+      "run": "python3 main-grader.py C 3 0",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Check data race on coarse version",
+      "run": "python3 main-grader.py R 3 1",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Check data race on read/write version",
+      "run": "python3 main-grader.py R 3 2",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Check data race on swaptop version",
+      "run": "python3 main-grader.py R 3 3",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Check sequential with coarse",
+      "run": "python3 main-grader.py S 3 1",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Check sequential wih read/write",
+      "run": "python3 main-grader.py S 3 2",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Check sequential with swaptop",
+      "run": "python3 main-grader.py S 3 3",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Get throughput from coarse version",
+      "run": "python3 main-grader.py T 3 1",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Get throughput from read/write version",
+      "run": "python3 main-grader.py T 3 2",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Part 3: Get throughput from swaptop version",
+      "run": "python3 main-grader.py T 3 3",
+      "input": "",
+      "output": "pass",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    }
+  ]
+}
