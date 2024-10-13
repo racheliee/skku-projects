@@ -1,7 +1,7 @@
 UNROLL FACTOR 1 =============================================
-new loop time: 0.509579
-reference loop time: 0.238078
-speedup: 0.467205
+new loop time: 1.36738
+reference loop time: 1.86999
+speedup: 1.36758
 
 
 ----------
@@ -13,9 +13,9 @@ running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 2 =============================================
-new loop time: 0.252477
-reference loop time: 0.234994
-speedup: 0.930754
+new loop time: 0.762719
+reference loop time: 1.49333
+speedup: 1.9579
 
 
 ----------
@@ -27,9 +27,9 @@ running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 4 =============================================
-new loop time: 0.127535
-reference loop time: 0.235588
-speedup: 1.84724
+new loop time: 0.404795
+reference loop time: 1.56935
+speedup: 3.87691
 
 
 ----------
@@ -41,9 +41,9 @@ running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 8 =============================================
-new loop time: 0.084164
-reference loop time: 0.238633
-speedup: 2.83534
+new loop time: 0.589756
+reference loop time: 1.68565
+speedup: 2.85822
 
 
 ----------
@@ -55,9 +55,9 @@ running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 16 =============================================
-new loop time: 0.735914
-reference loop time: 0.238629
-speedup: 0.324262
+new loop time: 4.09867
+reference loop time: 2.04811
+speedup: 0.499701
 
 
 ----------
