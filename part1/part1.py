@@ -25,10 +25,15 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
     function_body = []
     function_body.append(f" for (int i = 0; i < size; i+={unroll_factor}) {{")
     for i in range(unroll_factor):
-        function_body.append(f'     float tmp{i} = b[i];')
+        function_body.append(f'     float tmp{i} = b[i + {i}];')
+        # function_body.append(f'     float tmp{i} = b[i];')
+        # function_body.append(f'     for(int j = 1; j <= {chain_length}; ++j) {{')
+        # function_body.append(f'         tmp{i} += (float)j;')
+        # function_body.append(f'     }}')
+        # function_body.append(f'     b[i] = tmp{i};')
         for j in range(1, chain_length+1):
             function_body.append(f'     tmp{i} += {j}.0f;')
-        function_body.append(f'     b[i] = tmp{i};')
+        function_body.append(f'     b[i + {i}] = tmp{i};')
     function_body.append(" }")
     function_close = "}"
 
@@ -51,7 +56,7 @@ def homework_loop_interleaved_source(chain_length, unroll_factor):
     
     # write out the `float tmp{i} = b[i];` for each sequence
     for i in range(unroll_factor):
-        function_body.append(f'     float tmp{i} = b[i];')
+        function_body.append(f'     float tmp{i} = b[i + {i}];')
     
     # write out the sequence of instructions for each sequence
     for i in range(1, chain_length + 1):
@@ -60,7 +65,7 @@ def homework_loop_interleaved_source(chain_length, unroll_factor):
     
     # write out the `b[i] = tmp{i};` for each sequence
     for i in range(unroll_factor):
-        function_body.append(f'     b[i] = tmp{i};')
+        function_body.append(f'     b[i + {i}] = tmp{i};')
     function_body.append(" }")
     function_close = "}"
     

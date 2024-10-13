@@ -1,12 +1,12 @@
 UNROLL FACTOR 1 =============================================
-sequential loop time: 1.25315
-interleaved loop time: 1.25801
-reference loop time: 1.29412
+sequential loop time: 1.24958
+interleaved loop time: 1.24774
+reference loop time: 1.28086
 ----
 speedups:
-sequential speedup over reference: 1.03269
+sequential speedup over reference: 1.02503
 
-interleaved speedup over reference: 1.02871
+interleaved speedup over reference: 1.02655
 
 
 ----------
@@ -19,14 +19,14 @@ running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 2 =============================================
-sequential loop time: 1.57902
-interleaved loop time: 0.850129
-reference loop time: 1.24023
+sequential loop time: 1.21176
+interleaved loop time: 0.851196
+reference loop time: 1.25287
 ----
 speedups:
-sequential speedup over reference: 0.785441
+sequential speedup over reference: 1.03393
 
-interleaved speedup over reference: 1.45887
+interleaved speedup over reference: 1.4719
 
 
 ----------
@@ -39,14 +39,14 @@ running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 4 =============================================
-sequential loop time: 2.02434
-interleaved loop time: 0.512149
-reference loop time: 1.28713
+sequential loop time: 1.19415
+interleaved loop time: 0.5156
+reference loop time: 1.24083
 ----
 speedups:
-sequential speedup over reference: 0.635827
+sequential speedup over reference: 1.03909
 
-interleaved speedup over reference: 2.5132
+interleaved speedup over reference: 2.40657
 
 
 ----------
@@ -59,14 +59,14 @@ running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 8 =============================================
-sequential loop time: 2.1846
-interleaved loop time: 0.28592
-reference loop time: 1.24016
+sequential loop time: 1.21588
+interleaved loop time: 0.282196
+reference loop time: 1.24376
 ----
 speedups:
-sequential speedup over reference: 0.567682
+sequential speedup over reference: 1.02293
 
-interleaved speedup over reference: 4.33744
+interleaved speedup over reference: 4.40744
 
 
 ----------
@@ -79,14 +79,14 @@ running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 16 =============================================
-sequential loop time: 2.27207
-interleaved loop time: 0.167297
-reference loop time: 1.32087
+sequential loop time: 1.22682
+interleaved loop time: 0.167757
+reference loop time: 1.24545
 ----
 speedups:
-sequential speedup over reference: 0.581349
+sequential speedup over reference: 1.01519
 
-interleaved speedup over reference: 7.89535
+interleaved speedup over reference: 7.42411
 
 
 ----------
@@ -99,14 +99,14 @@ running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 32 =============================================
-sequential loop time: 2.35448
-interleaved loop time: 0.116386
-reference loop time: 1.25438
+sequential loop time: 1.23073
+interleaved loop time: 0.119481
+reference loop time: 1.23877
 ----
 speedups:
-sequential speedup over reference: 0.532762
+sequential speedup over reference: 1.00653
 
-interleaved speedup over reference: 10.7777
+interleaved speedup over reference: 10.3679
 
 
 ----------
@@ -119,14 +119,14 @@ running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
 UNROLL FACTOR 64 =============================================
-sequential loop time: 2.39989
-interleaved loop time: 0.118324
-reference loop time: 1.3425
+sequential loop time: 1.24011
+interleaved loop time: 0.118549
+reference loop time: 1.24652
 ----
 speedups:
-sequential speedup over reference: 0.559398
+sequential speedup over reference: 1.00517
 
-interleaved speedup over reference: 11.346
+interleaved speedup over reference: 10.5148
 
 
 ----------
