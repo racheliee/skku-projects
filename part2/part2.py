@@ -24,8 +24,8 @@ def homework_reduction_source(partitions):
     
     # create a special case for partitions == 1
     # I implemented this because there is unnecessary overhead that is created in order to loop unroll when the partition is only 1
-    function_body.append(f'  if (size == 1) {{')
-    function_body.append(f'  int acc = a[0];')
+    function_body.append(f'  if ({partitions} == 1) {{')
+    function_body.append(f'    reduce_type acc = a[0];')
     function_body.append(f'    for (int i = 1; i < size; ++i) {{')
     function_body.append(f'      acc += a[i];')
     function_body.append(f'    }}')
