@@ -22,22 +22,22 @@ def homework_reduction_source(partitions):
     # implement me!
     function_body = []
     
-    # create a special case for partitions == 1
-    # I implemented this because there is unnecessary overhead that is created in order to loop unroll when the partition is only 1
-    function_body.append(f'  if ({partitions} == 1) {{')
-    function_body.append(f'    reduce_type acc = a[0];')
-    function_body.append(f'    for (int i = 1; i < size; ++i) {{')
-    function_body.append(f'      acc += a[i];')
-    function_body.append(f'    }}')
-    function_body.append(f'    a[0] = acc;')
-    function_body.append(f'    return;')
-    function_body.append(f'  }}')
+    # # create a special case for partitions == 1
+    # # I implemented this because there is unnecessary overhead that is created in order to loop unroll when the partition is only 1
+    # function_body.append(f'  if ({partitions} == 1) {{')
+    # function_body.append(f'    reduce_type acc = a[0];')
+    # function_body.append(f'    for (int i = 1; i < size; ++i) {{')
+    # function_body.append(f'      acc += a[i];')
+    # function_body.append(f'    }}')
+    # function_body.append(f'    a[0] = acc;')
+    # function_body.append(f'    return;')
+    # function_body.append(f'  }}')
     
 
     # declare variables: size and N accumulators (N = number of partitions)
     function_body.append(f'  int s = size / {partitions};')
     for i in range(partitions):
-        function_body.append(f'  int acc{i} = a[{i}*s];')
+        function_body.append(f'  reduce_type acc{i} = a[{i}*s];')
         
 
     # reduction loop
