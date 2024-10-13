@@ -1,0 +1,70 @@
+UNROLL FACTOR 1 =============================================
+new loop time: 0.509579
+reference loop time: 0.238078
+speedup: 0.467205
+
+
+----------
+generating and running for:
+partitions = 1
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 2 =============================================
+new loop time: 0.252477
+reference loop time: 0.234994
+speedup: 0.930754
+
+
+----------
+generating and running for:
+partitions = 2
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 4 =============================================
+new loop time: 0.127535
+reference loop time: 0.235588
+speedup: 1.84724
+
+
+----------
+generating and running for:
+partitions = 4
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 8 =============================================
+new loop time: 0.084164
+reference loop time: 0.238633
+speedup: 2.83534
+
+
+----------
+generating and running for:
+partitions = 8
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 16 =============================================
+new loop time: 0.735914
+reference loop time: 0.238629
+speedup: 0.324262
+
+
+----------
+generating and running for:
+partitions = 16
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+

@@ -107,12 +107,12 @@ The loop can be unrolled by a factor of $k$ if $k$ accumulators are used to stor
 Let `REDUCE(a, b)` denote the reduction operation that combines the two values `a` and `b`.
 ```c
 // unrolling
-acc0 = a[0]; acc1 = a[1]; acc2 = a[2]; ... accSIZE/2 = a[SIZE/2];
+acc0 = a[0]; acc1 = a[SIZE/2]; acc2 = a[SIZE/2 * 2]; ... accSIZE/2 = a[SIZE/2 * (SIZE/2)];
 for (int i= 1; i ‹ SIZE/2; i++) {
     acc0 = REDUCE(acc0, a[i]);
-    acc1 = REDUCE(acc1, a[i+SIZE/2]);
+    acc1 = REDUCE(acc1, a[i+SIZE/2 * 1]);
     // ...
-    accSIZE/2 = REDUCE(accSIZE/2, a[i+SIZE/2]);
+    accSIZE/2 = REDUCE(accSIZE/2, a[i+SIZE/2 * (SIZE/2)]);
 }
 
 // combining the accumulators
