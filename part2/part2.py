@@ -20,9 +20,27 @@ def homework_reduction_source(partitions):
     function = "void homework_reduction(reduce_type *a, int size) {"
 
     # implement me!
-    function_body = ""
+    function_body = []
+
+    # declare variables: size and N accumulators (N = number of partitions)
+    function_body.append(f'  int s = size / {partitions};')
+    for i in range(partitions):
+        function_body.append(f'  int acc{i} = a[{i}*s];')
+        
+
+    # reduction loop
+    function_body.append(f'  for (int i = 1; i < s; ++i) {{')
+    for i in range(partitions):
+        function_body.append(f'    acc{i} += a[i + ({i} * s)];')
+    function_body.append('  }')
+
+    # accumulate the N accumulators
+    for i in range(1, partitions):
+        function_body.append(f'  acc0 += acc{i};')
+    function_body.append(f'  a[0] = acc0;')
 
     # closing brace
     function_close = "}"
-    return "\n".join([function, function_body,function_close])
 
+    function_body = "\n".join(function_body)
+    return "\n".join([function, function_body, function_close])

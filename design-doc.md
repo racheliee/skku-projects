@@ -39,9 +39,9 @@ abstract: |
 
 
 
-# 1. Loop Unrolling Independent Iterations for ILP
+# 1. Part 1: Loop Unrolling Independent Iterations for ILP
 
-## 1.1 Introduction
+## 1.1 Intuition
 The loop structure provided in the assignment is chracterized by a dependency chain of length 64. Since the dependency chain cannot be re-ordered or pre-computed due to the non-associative nature of floating point addition, the loop iterations are dependent on each other. 
 
 While the instructions themselves are not independent, each chain of computation is independent of the other chains. Hence, we can unroll the loop to increase the number of independent instructions that can be executed in parallel.
@@ -96,5 +96,25 @@ void loop(float * a, int size) {
 }
 ```
 
+# 2. Part 2: Unrolling Reduction Loops for ILP
+## 2.1 Intuition
+Reduction loops are loops where the entire computation is dependent on the previous iteration. By separating the large dependent chain into multiple independent chains of computation, we can create several control flow paths that can be executed in parallel.
 
+## 2.2 Approach to reduction loops
+The loop can be unrolled by a factor of $k$ if $k$ accumulators are used to store the intermediate results of the computation. Then, the accumulators can be combined at the end of the loop sequence to obtain the final result. Since the accumulators are independent of each other, they can be computed in parallel.
 
+### 2.3 Pseudocode
+Let `REDUCE(a, b)` denote the reduction operation that combines the two values `a` and `b`.
+```c
+// unrolling
+acc0 = a[0]; acc1 = a[1]; acc2 = a[2]; ... accSIZE/2 = a[SIZE/2];
+for (int i= 1; i ‹ SIZE/2; i++) {
+    acc0 = REDUCE(acc0, a[i]);
+    acc1 = REDUCE(acc1, a[i+SIZE/2]);
+    // ...
+    accSIZE/2 = REDUCE(accSIZE/2, a[i+SIZE/2]);
+}
+
+// combining the accumulators
+final_result = REDUCE(acc0, acc1, acc2, ..., accSIZE/2);
+```
