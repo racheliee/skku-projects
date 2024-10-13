@@ -36,7 +36,7 @@ def reference_reduction_source():
 # String for the main function, including timings and
 # reference checks.
 main_source_string = """
-#define SIZE (1024*1024*64) // changed from 1024*1024*512
+#define SIZE (1024*1024*512) // changed from 1024*1024*512
 
 
 int main() {
