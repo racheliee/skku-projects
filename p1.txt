@@ -1,0 +1,140 @@
+UNROLL FACTOR 1 =============================================
+sequential loop time: 1.25315
+interleaved loop time: 1.25801
+reference loop time: 1.29412
+----
+speedups:
+sequential speedup over reference: 1.03269
+
+interleaved speedup over reference: 1.02871
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 1
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 2 =============================================
+sequential loop time: 1.57902
+interleaved loop time: 0.850129
+reference loop time: 1.24023
+----
+speedups:
+sequential speedup over reference: 0.785441
+
+interleaved speedup over reference: 1.45887
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 2
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 4 =============================================
+sequential loop time: 2.02434
+interleaved loop time: 0.512149
+reference loop time: 1.28713
+----
+speedups:
+sequential speedup over reference: 0.635827
+
+interleaved speedup over reference: 2.5132
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 4
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 8 =============================================
+sequential loop time: 2.1846
+interleaved loop time: 0.28592
+reference loop time: 1.24016
+----
+speedups:
+sequential speedup over reference: 0.567682
+
+interleaved speedup over reference: 4.33744
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 8
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 16 =============================================
+sequential loop time: 2.27207
+interleaved loop time: 0.167297
+reference loop time: 1.32087
+----
+speedups:
+sequential speedup over reference: 0.581349
+
+interleaved speedup over reference: 7.89535
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 16
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 32 =============================================
+sequential loop time: 2.35448
+interleaved loop time: 0.116386
+reference loop time: 1.25438
+----
+speedups:
+sequential speedup over reference: 0.532762
+
+interleaved speedup over reference: 10.7777
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 32
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 64 =============================================
+sequential loop time: 2.39989
+interleaved loop time: 0.118324
+reference loop time: 1.3425
+----
+speedups:
+sequential speedup over reference: 0.559398
+
+interleaved speedup over reference: 11.346
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 64
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+

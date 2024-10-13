@@ -21,9 +21,18 @@
 # for example, try 1,2,4,8, etc.
 def homework_loop_sequential_source(chain_length, unroll_factor):
     function = "void homework_loop_sequential(float *b, int size) {"
-    #implement me!
-    function_body = ""
+    # implement me!
+    function_body = []
+    function_body.append(f" for (int i = 0; i < size; i+={unroll_factor}) {{")
+    for i in range(unroll_factor):
+        function_body.append(f'     float tmp{i} = b[i];')
+        for j in range(1, chain_length+1):
+            function_body.append(f'     tmp{i} += {j}.0f;')
+        function_body.append(f'     b[i] = tmp{i};')
+    function_body.append(" }")
     function_close = "}"
+
+    function_body = "\n".join(function_body)
     return "\n".join([function, function_body, function_close])
 
 
@@ -36,8 +45,24 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
 # the dependency chain also a power of two.
 def homework_loop_interleaved_source(chain_length, unroll_factor):
     function = "void homework_loop_interleaved(float *b, int size) {"
-    #implement me!
-    function_body = ""
+    # implement me!
+    function_body = []
+    function_body.append(f" for (int i = 0; i < size; i+={unroll_factor}) {{")
+    
+    # write out the `float tmp{i} = b[i];` for each sequence
+    for i in range(unroll_factor):
+        function_body.append(f'     float tmp{i} = b[i];')
+    
+    # write out the sequence of instructions for each sequence
+    for i in range(1, chain_length + 1):
+        for j in range(unroll_factor):
+            function_body.append(f'     tmp{j} += {i}.0f;')
+    
+    # write out the `b[i] = tmp{i};` for each sequence
+    for i in range(unroll_factor):
+        function_body.append(f'     b[i] = tmp{i};')
+    function_body.append(" }")
     function_close = "}"
+    
+    function_body = "\n".join(function_body)
     return "\n".join([function, function_body, function_close])
-
