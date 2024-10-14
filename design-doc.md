@@ -118,3 +118,76 @@ for (int i= 1; i ‹ SIZE/2; i++) {
 // combining the accumulators
 final_result = REDUCE(acc0, acc1, acc2, ..., accSIZE/2);
 ```
+
+# 3. Part 3: SPMD Parallel Programming Using C++ Threads
+## 3.1 Intuition
+In order to implement Single Program Multiple Data (SPMD) parallel programming, C++ threads can be used to execute the same program on different data. By varying the ways the threads access the data of the array and increment it, it will be possible to distribute the computation across multiple threads.
+
+## 3.2 Approach
+### 3.2.1 Sequential Increment
+Simply increment each element of the array by $k$ sequentially.
+
+#### Pseudocode
+```c
+void sequential_increment(volatile int * a, int size, int k) {
+    for (each element in a) {
+        increment each element k times
+    }
+}
+```
+
+### 3.2.2 Round Robin Increment
+In order to distribute the threads to access the array elements in a round-robin fashion, each thread will be assigned to a specific element of the array based on their thread ID (`tid`). The thread will then increment the element until the element is equal to $k$.
+
+#### Pseudocode
+- Each thread will be handling `size / num_threads` elements of the array.
+- Each thread handles elements at `i % num_threads == tid` where `i` is the index of the element in the array.
+```c
+void round_robin_increment(volatile int * b, int size, int k, int tid, int num_threads) {
+
+    // declare lambda function to increment the element
+    auto increment = [b, size, k, num_threads](int tid) {
+        for (int i = tid; i < size; i += num_threads) {
+            increment element i k times
+        }
+    };
+
+    // create threads
+    vector<threads> threads;
+    for number of threads {
+        create/launch threads, assign them to `increment`, and push to vector
+    }
+
+    // join threads
+    for each thread in threads {
+        join the thread
+    }
+}
+```
+
+### 3.2.3 Custom Increment
+A more efficient way to distribute the threads is to assign each threads to a specific range of the array, or contiguous blocks of the array. This will improve the cache locality of the threads and reduce the number of cache misses. I presume that this will work better than the round-robin approach because each thread will be more likely to work on the same cache line, reducing the number of cache misses. 
+
+## 3.3 Pseudocode
+- The size of the contiguous block of the array that each thread will handle is `size / num_threads`.
+```c
+void custom_increment(volatile int *c, int size, int k, int num_threads){
+    // declare lambda function to increment the element
+    auto increment = [c, size, k, num_threads](int tid) {
+        for (int i = tid * (size / num_threads); i < (tid + 1) * (size / num_threads); i++) {
+            increment element i k times
+        }
+    };
+
+    // create threads
+    vector<threads> threads;
+    for number of threads {
+        create/launch threads, assign them to `increment`, and push to vector
+    }
+
+    // join threads
+    for each thread in threads {
+        join the thread
+    }
+}
+```
