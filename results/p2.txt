@@ -68,3 +68,56 @@ partitions = 16
 running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
 running: ./homework
 
+
+
+// SERVER TIME ==================================================
+📝 Part 2: Unroll Factor = 1
+
+
+  
+  new loop time: 1.48592
+  reference loop time: 1.51252
+  speedup: 1.0179
+  
+  
+✅ Part 2: Unroll Factor = 1
+
+📝 Part 2: Unroll Factor = 2
+
+
+  new loop time: 0.766602
+  reference loop time: 1.50789
+  speedup: 1.96698
+  
+  
+✅ Part 2: Unroll Factor = 2
+
+📝 Part 2: Unroll Factor = 4
+
+
+  new loop time: 0.640458
+  reference loop time: 1.50661
+  speedup: 2.35239
+  
+  
+✅ Part 2: Unroll Factor = 4
+
+📝 Part 2: Unroll Factor = 8
+
+
+  new loop time: 0.745589
+  reference loop time: 1.50428
+  speedup: 2.01758
+  
+  
+✅ Part 2: Unroll Factor = 8
+
+📝 Part 2: Unroll Factor = 16
+
+
+  new loop time: 1.68795
+  reference loop time: 1.50617
+  speedup: 0.892308
+  
+  
+✅ Part 2: Unroll Factor = 16

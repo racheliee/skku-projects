@@ -1,0 +1,52 @@
+NUM OF THREADS 1 =====================================
+
+Round Robin Speedup over Sequential: 1.01181
+Custom Speedup over Sequential: 0.945048
+Custom Speedup over Round Robin: 0.934017
+
+NUM OF THREADS 2 =====================================
+
+Round Robin Speedup over Sequential: 1.3885
+Custom Speedup over Sequential: 2.01758
+Custom Speedup over Round Robin: 1.45307
+
+NUM OF THREADS 4 =====================================
+
+Round Robin Speedup over Sequential: 1.98866
+Custom Speedup over Sequential: 3.86068
+Custom Speedup over Round Robin: 1.94135
+
+NUM OF THREADS 8 =====================================
+
+Round Robin Speedup over Sequential: 3.64606
+Custom Speedup over Sequential: 5.97865
+Custom Speedup over Round Robin: 1.63975
+
+
+
+
+SERVER TIME =====================================
+📝 Part 3: Sequential vs. Round Robin
+
+
+  
+  g++ -std=c++14 -pthread main.cpp -o homework 
+  Round Robin Speedup over Sequential: 2.38798
+  
+✅ Part 3: Sequential vs. Round Robin
+
+📝 Part 3: Sequential vs. Custom
+
+
+  g++ -std=c++14 -pthread main.cpp -o homework 
+  Custom Speedup over Sequential: 2.7759
+  
+✅ Part 3: Sequential vs. Custom
+
+📝 Part 3: Round Robin vs. Custom
+
+
+  g++ -std=c++14 -pthread main.cpp -o homework 
+  Custom Speedup over Round Robin: 1.21934
+  
+✅ Part 3: Round Robin vs. Custom
