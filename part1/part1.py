@@ -23,9 +23,14 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
     function = "void homework_loop_sequential(float *b, int size) {"
     # implement me!
     function_body = []
+    
+    # loop header
     function_body.append(f" for (int i = 0; i < size; i+={unroll_factor}) {{")
+    
+    # write out sequence according to unroll factor
     for i in range(unroll_factor):
         function_body.append(f'     float tmp{i} = b[i + {i}];')
+        # write entire sequence without interleaving
         for j in range(1, chain_length+1):
             function_body.append(f'     tmp{i} += {j}.0f;')
         function_body.append(f'     b[i + {i}] = tmp{i};')
@@ -53,7 +58,7 @@ def homework_loop_interleaved_source(chain_length, unroll_factor):
     for i in range(unroll_factor):
         function_body.append(f'     float tmp{i} = b[i + {i}];')
     
-    # write out the sequence of instructions for each sequence
+    # write out the same step of the sequence for each sequence (interleaved)
     for i in range(1, chain_length + 1):
         for j in range(unroll_factor):
             function_body.append(f'     tmp{j} += {i}.0f;')

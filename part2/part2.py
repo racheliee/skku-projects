@@ -31,13 +31,13 @@ def homework_reduction_source(partitions):
     # reduction loop
     function_body.append(f'  for (int i = 1; i < s; ++i) {{')
     for i in range(partitions):
-        function_body.append(f'    acc{i} += a[i + ({i} * s)];')
+        function_body.append(f'    acc{i} += a[i + ({i} * s)];') # accumulate to each of the accumulators
     function_body.append('  }')
 
     # accumulate the N accumulators
     for i in range(1, partitions):
-        function_body.append(f'  acc0 += acc{i};')
-    function_body.append(f'  a[0] = acc0;')
+        function_body.append(f'  acc0 += acc{i};') 
+    function_body.append(f'  a[0] = acc0;') # store the result in a[0]
 
     # closing brace
     function_close = "}"
