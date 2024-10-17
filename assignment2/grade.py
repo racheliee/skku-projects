@@ -2,15 +2,16 @@ import os
 import sys
 import numpy as np
 import random
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-DEBUG = False
+DEBUG = True
 browser_options = webdriver.ChromeOptions()
-if not DEBUG:
-    browser_options.add_argument("--headless")
+# if not DEBUG:
+#     browser_options.add_argument("--headless")
 
 class StopGrading(Exception):
     pass
@@ -24,14 +25,15 @@ class Assignment(object):
         print(f"Grading {url}")
         self.browser =  webdriver.Chrome(options=browser_options)
         self.goto(url)
+        time.sleep(2)
         
     def goto(self, url):
         self.browser.get(url)
-        self.browser.implicitly_wait(0.2)
+        self.browser.implicitly_wait(2)
         
     def refresh(self):
         self.browser.refresh()
-        self.browser.implicitly_wait(0.2)
+        self.browser.implicitly_wait(2)
        
     def append_comment(self, points, comment):
         self._comments.append((points, comment))
