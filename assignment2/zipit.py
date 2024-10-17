@@ -16,7 +16,7 @@ def zip_all_in_folder(folder_path, base_path, output_zip):
 if os.path.exists('submission.zip'):
     os.remove('submission.zip')
 with open('README.md', 'r') as f:
-    assert f.readline().startswith("# Assignment: Creating a Tax Form"), "You should run zipit from the assignment folder"
+    assert f.readline().startswith("# Assignment: Tic-Tac-Toe"), "You should run zipit from the assignment folder"
 base_path = os.getcwd()
 folder_path = os.path.join(base_path, 'assignment')
 zip_all_in_folder(folder_path, base_path, 'submission.zip')
