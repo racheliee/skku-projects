@@ -1,0 +1,11 @@
+[Unit]
+Description=Simple Cron Daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/SPL/week6/simple_cron
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
