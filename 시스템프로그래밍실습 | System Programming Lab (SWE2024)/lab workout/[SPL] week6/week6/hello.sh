@@ -1,0 +1,1 @@
+echo "Hello World" >> /SPL/week6/hello.txt
