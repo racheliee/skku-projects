@@ -1,0 +1,85 @@
+The Great Gatsby
+F. Scott Fitzgerald
+2
+Fiction
+/images/gatsby_cover.png
+1984
+George Orwell
+4
+Fiction
+/images/1984_cover.jpeg
+Animal Farm
+George Orwell
+3
+Fiction
+/images/animal_farm_cover.jpeg
+The Big Friendly Giant (BFG)
+Roald Dahl
+1
+Fiction
+/images/BFG_cover.jpeg
+Cosmos
+Carl Sagan
+3
+Non-Fiction
+/images/cosmos_book_cover.jpg
+Fahrenheit 451
+Ray Bradbury
+2
+Fiction
+/images/fahrenheit_451_cover.jpg
+Fifty Shades of Gray
+E L James
+2
+Romance
+/images/fifty_shades_cover.jpg
+Hamlet
+William Shakespeare
+3
+Fiction
+/images/hamlet_cover.jpeg
+Harry Potter and the Prisoner of Azkaban
+JK Rowling
+2
+Fiction
+/images/harry_potter_3_cover.jpg
+Harry Potter and the Goblet of Fire
+JK Rowling
+1
+Fiction
+/images/harry_potter_4_cover.jpeg
+Harry Potter and the Order of the Pheonix
+JK Rowling
+2
+Fiction
+/images/harry_potter_5.cover.jpeg
+James and the Giant Peach
+Roald Dahl
+1
+Fiction
+/images/james_and_the_giant_peach_cover.jpeg
+The Adventures of Sherlock Holmes 
+Sir Arthur Conan Doyle
+2
+Mystery
+/images/sherlock_holmes_cover.jpg
+The Sun is Also a Star
+Nicola Yooon
+1
+Romance
+/images/sun_is_also_a_star_cover.jpeg
+Twelve New Mysteries
+Agatha Christie
+2
+Mystery
+/images/twelve_new_mysteries.jpeg
+The ABC Murder
+Agatha Christie
+1
+Mystery
+/images/abc_murder_cover.png
+The Witches
+Roald Dahl
+4
+Fiction
+/images/the_witches_cover.png
