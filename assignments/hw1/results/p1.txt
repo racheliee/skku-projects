@@ -1,0 +1,283 @@
+UNROLL FACTOR 1 =============================================
+sequential loop time: 1.24958
+interleaved loop time: 1.24774
+reference loop time: 1.28086
+----
+speedups:
+sequential speedup over reference: 1.02503
+
+interleaved speedup over reference: 1.02655
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 1
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 2 =============================================
+sequential loop time: 1.21176
+interleaved loop time: 0.851196
+reference loop time: 1.25287
+----
+speedups:
+sequential speedup over reference: 1.03393
+
+interleaved speedup over reference: 1.4719
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 2
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 4 =============================================
+sequential loop time: 1.19415
+interleaved loop time: 0.5156
+reference loop time: 1.24083
+----
+speedups:
+sequential speedup over reference: 1.03909
+
+interleaved speedup over reference: 2.40657
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 4
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 8 =============================================
+sequential loop time: 1.21588
+interleaved loop time: 0.282196
+reference loop time: 1.24376
+----
+speedups:
+sequential speedup over reference: 1.02293
+
+interleaved speedup over reference: 4.40744
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 8
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 16 =============================================
+sequential loop time: 1.22682
+interleaved loop time: 0.167757
+reference loop time: 1.24545
+----
+speedups:
+sequential speedup over reference: 1.01519
+
+interleaved speedup over reference: 7.42411
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 16
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 32 =============================================
+sequential loop time: 1.23073
+interleaved loop time: 0.119481
+reference loop time: 1.23877
+----
+speedups:
+sequential speedup over reference: 1.00653
+
+interleaved speedup over reference: 10.3679
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 32
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 64 =============================================
+sequential loop time: 1.24011
+interleaved loop time: 0.118549
+reference loop time: 1.24652
+----
+speedups:
+sequential speedup over reference: 1.00517
+
+interleaved speedup over reference: 10.5148
+
+
+----------
+generating and running for:
+chain length = 64
+unroll factor = 64
+-----
+
+running: g++ -std=c++14 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+
+
+// SEVER TIME ============================================================
+📝 Part 1: Chain Length = 64, Unroll Factor = 1, Sequential
+
+
+  
+  reference loop time: 1.18012
+  sequential loop time: 1.17928
+  sequential speedup over reference: 1.0007
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 1, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 1, Interleaved
+
+
+  reference loop time: 1.17214
+  interleaved loop time: 1.17305
+  interleaved speedup over reference: 0.999226
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 1, Interleaved
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 2, Sequential
+
+
+  reference loop time: 1.17125
+  sequential loop time: 1.18344
+  sequential speedup over reference: 0.989701
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 2, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 2, Interleaved
+
+
+  reference loop time: 1.17125
+  interleaved loop time: 0.690957
+  interleaved speedup over reference: 1.69511
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 2, Interleaved
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 4, Sequential
+
+
+  reference loop time: 1.17577
+  sequential loop time: 1.2323
+  sequential speedup over reference: 0.954126
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 4, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 4, Interleaved
+
+
+  reference loop time: 1.17175
+  interleaved loop time: 0.388986
+  interleaved speedup over reference: 3.01233
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 4, Interleaved
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 8, Sequential
+
+
+  reference loop time: 1.17429
+  sequential loop time: 1.2641
+  sequential speedup over reference: 0.92896
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 8, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 8, Interleaved
+
+
+  reference loop time: 1.17435
+  interleaved loop time: 0.278602
+  interleaved speedup over reference: 4.21516
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 8, Interleaved
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 16, Sequential
+
+
+  reference loop time: 1.17168
+  sequential loop time: 1.28119
+  sequential speedup over reference: 0.914527
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 16, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 16, Interleaved
+
+
+  reference loop time: 1.17139
+  interleaved loop time: 0.227252
+  interleaved speedup over reference: 5.15459
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 16, Interleaved
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 32, Sequential
+
+
+  reference loop time: 1.17228
+  sequential loop time: 1.29845
+  sequential speedup over reference: 0.902834
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 32, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 32, Interleaved
+
+
+  reference loop time: 1.17259
+  interleaved loop time: 0.239318
+  interleaved speedup over reference: 4.8997
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 32, Interleaved
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 64, Sequential
+
+
+  reference loop time: 1.1607
+  sequential loop time: 1.29203
+  sequential speedup over reference: 0.898353
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 64, Sequential
+
+📝 Part 1: Chain Length = 64, Unroll Factor = 64, Interleaved
+
+
+  reference loop time: 1.17516
+  interleaved loop time: 0.265255
+  interleaved speedup over reference: 4.43032
+  
+  
+✅ Part 1: Chain Length = 64, Unroll Factor = 64, Interleaved
