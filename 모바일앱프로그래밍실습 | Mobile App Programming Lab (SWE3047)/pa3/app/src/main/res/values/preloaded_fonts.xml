@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/andika_new_basic</item>
+        <item>@font/archivo</item>
+        <item>@font/bebas_neue</item>
+        <item>@font/duru_sans</item>
+        <item>@font/fira_code</item>
+    </array>
+</resources>

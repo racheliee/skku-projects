@@ -1,0 +1,33 @@
+[
+    {
+      "id": "skku",
+      "passwd": "1234",
+      "info": 
+      {
+        "name": "James",
+        "age": 25,
+        "gender": "male"
+      },
+      "reserved": [
+        {   
+            "reservation_id": 1,
+            "restaurant_id" : 1,
+            "number_of_people" : 4,
+            "date" : "2024-06-01",
+            "time" : "18:00"
+        }
+      ]
+    },
+    {
+      "id": "agent1",
+      "passwd": "asdf",
+      "info": 
+      {
+        "name": "Catherine",
+        "age": 20,
+        "gender": "female"
+      },
+      "reserved": [
+      ]
+    }
+]
