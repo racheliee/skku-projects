@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HintStyle">
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+    </style>
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+</resources>
