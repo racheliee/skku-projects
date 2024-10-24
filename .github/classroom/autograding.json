@@ -1,0 +1,149 @@
+{
+    "tests": [
+        {
+            "name": "Part 1: Compile",
+            "setup": "cp /home/cse113/cse113-autograder/hw3/main-grader.py .",
+            "run": "python3 main-grader.py C 1 0",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 1.1",
+            "run": "python3 main-grader.py R 1 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 1.2",
+            "run": "python3 main-grader.py R 1 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 1.3",
+            "run": "python3 main-grader.py R 1 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Get timings on part 1.1",
+            "run": "python3 main-grader.py T 1 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1: Get timings on part 1.2",
+            "run": "python3 main-grader.py T 1 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1: Get timings on part 1.3",
+            "run": "python3 main-grader.py T 1 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 2: Compile",
+            "run": "python3 main-grader.py C 2 0",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 2.1",
+            "run": "python3 main-grader.py R 2 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 2.2",
+            "run": "python3 main-grader.py R 2 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 2.3",
+            "run": "python3 main-grader.py R 2 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Check data race on part 2.4",
+            "run": "python3 main-grader.py R 2 4",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1: Get timings on part 2.1",
+            "run": "python3 main-grader.py T 2 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1: Get timings on part 2.2",
+            "run": "python3 main-grader.py T 2 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1: Get timings on part 2.3",
+            "run": "python3 main-grader.py T 2 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1: Get timings on part 2.4",
+            "run": "python3 main-grader.py T 2 4",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          }
+    ]
+}
