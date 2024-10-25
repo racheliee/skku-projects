@@ -244,7 +244,7 @@ The mutex will be locked and unlocked in the following locations for each method
 - `pop()`: 
   - Lock: at the beginning of the function because it is reading the head pointer.
   - Unlock: before the return statement because it is deleting the current node and updating the head pointer before returning.
-    - Unlocking will be also needed before it returns -1 from the first if-statement.
+    - Unlocking will be also needed before it returns from the first and second if-statement.
 - `peek()`:
   - Lock: at the beginning of the function because it is reading the head pointer.
   - Unlock: before the return statement because it loops through reading the linked list.
