@@ -152,4 +152,86 @@ void unlock(int thread_id) {
 }
 ```
 
+# A Fair Reader-Writer Lock
+In the default reader-writer lock, readers are more often allowed in the critical section than writers. To provide more fiairness to the writer, a flag can be added to indicate whether a writer is waiting.
 
+If a writer is waiting, the readers will be blocked until the writer has finished, and therefore, prevent the writer from being starved.
+
+## Constructor & Initialization
+The other variables remain the same as the ones in the default reader-writer lock. An additional variable called `_writer_waiting` will be added to indicate whether a writer is waiting.
+
+**Pseudocode**
+```cpp
+class rw_mutex {
+ public:
+  rw_mutex() {
+    // Initialize the number of readers, writer, and writer_waiting
+    _num_readers = 0;
+    _writer = false;
+    _writer_waiting = false;
+  }
+
+ private:
+  int _num_readers;
+  bool _writer;
+  mutex m;
+  atomic<bool> _writer_waiting;
+};
+```
+
+
+## Read Lock
+The reader lock is also similar to that of the default reader-writer lock. However, the reader will now also check if there is a writer waiting before entering the critical section. If there is no writer waiting, the reader will follow the original logic where it checks if there is a writer in the critical section and enters if there are none. However, if there is a writer waiting, the reader will wait until the writer has finished.
+
+The unlock function will remain the same as the default reader-writer lock.
+
+**Pseudocode**
+```cpp
+void lock_reader() {
+  bool acquired = false;
+  while (!acquired) {
+    m.lock();
+    if (no writers are waiting and there are no writers in the critical section) { 
+      _num_readers++;
+      acquired = true;
+    }
+    m.unlock();
+  }
+}
+
+void unlock_reader() {
+  m.lock();
+  _num_readers--;
+  m.unlock();
+}
+```
+
+## Write Lock
+The writer lock will also be similar to the default reader-writer lock. However, the writer will now set the `_writer_waiting` flag to true before approaching the critical section.
+
+After it exists the critical section, the writer sets the `_writer_waiting` flag to false to indicate that it has finished.
+
+**Pseudocode**
+```cpp
+void lock() {
+  _writer_waiting = true; // indicate that a writer is waiting
+  bool acquired = false;
+  while (!acquired) {
+    m.lock();
+    if (no readers and writers in critical section) {
+      _writer = true;
+      acquired = true;
+    } else {
+      _writer_waiting = true; // indicate that a writer is still waiting
+    }
+    m.unlock();
+  }
+}
+
+void unlock() {
+  m.lock();
+  _writer = false;
+  _writer_waiting = false; // indicate that the writer has finished
+  m.unlock();
+}
+```
