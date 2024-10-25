@@ -1,0 +1,6 @@
+default mutex =============================================
+total readers: 2382899
+total writers: 36026
+fair_mutex =============================================
+total readers: 431023
+total writers: 191396
