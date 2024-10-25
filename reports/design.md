@@ -274,7 +274,7 @@ The `shared_mutex` will be locked and unlocked in the following locations for ea
     - Unlocking will be also needed before it returns from the first if-statement.
 
 ## SwapTop
-The `swap_top()` method will be implemented with a reader lock. This is possible because the pop and push operations already have writer locks implemented, and therefore the `swap_top()` method can be efficiently implemented with a reader lock.
+The `swap_top()` method will be implemented with a reader lock. This is possible because the pop and push operations already have writer locks implemented, and peeking can have several readers at the same time. Therefore, only a reader lock is needed despite the method modifying the linked list.
 
 The rest of the implementation will remain the same as the RW Locking implementation.
 
@@ -286,10 +286,10 @@ void swap_top(int to_swap){
     reader_lock.unlock();
     return;
   
+  reader_lock.unlock();
+
   pop();
   push(to_swap);
-
-  reader_lock.unlock();
   
   return;
 }

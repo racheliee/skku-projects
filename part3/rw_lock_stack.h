@@ -30,6 +30,7 @@ class CSE113_Stack {
       int ret = start->data;
       delete start;
       start = NULL;
+      m.unlock();
       return ret;
     }
 

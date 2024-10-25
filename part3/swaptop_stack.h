@@ -91,11 +91,11 @@ class CSE113_Stack {
       m.unlock_shared();
       return;
     }
+    m.unlock_shared();
 
     pop();
     push(to_swap);
 
-    m.unlock_shared();
     return;
   }
 
