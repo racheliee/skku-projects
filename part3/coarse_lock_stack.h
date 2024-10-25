@@ -20,7 +20,9 @@ class CSE113_Stack {
   }
   
   int pop() {
+    m.lock();
     if (start == NULL) {
+      m.unlock();
       return -1;
     }
 
@@ -41,12 +43,16 @@ class CSE113_Stack {
     int ret = current->data;
     previous->next = NULL;
     delete current;
+
+    m.unlock();
     return ret;
   }
 
   
   int peek() {
+    m.lock();
     if (start == NULL) {
+      m.unlock();
       return -1;
     }
     
@@ -54,13 +60,16 @@ class CSE113_Stack {
     while (current->next != NULL) {
       current = current->next;
     }
+
+    m.unlock();
     return current->data;    
   }
   
   void push(int p) {
+    m.lock();
     if (start == NULL) {
-
       start = new Llist_node(p);
+      m.unlock();
       return;
     }
 
@@ -70,9 +79,12 @@ class CSE113_Stack {
     }
 
     current->next = new Llist_node(p);
+
+    m.unlock();
   }
 
  private:
   Llist_node *start;  
+  mutex m;
 };
 

@@ -235,3 +235,62 @@ void unlock() {
   m.unlock();
 }
 ```
+
+# Concurrent Linked List
+## Coarse-grained Locking
+`mutex m` will be added to the private variables. It is a single lock that every thread must acquire before accessing any method in the linked list.
+
+The mutex will be locked and unlocked in the following locations for each method:
+- `pop()`: 
+  - Lock: at the beginning of the function because it is reading the head pointer.
+  - Unlock: before the return statement because it is deleting the current node and updating the head pointer before returning.
+    - Unlocking will be also needed before it returns -1 from the first if-statement.
+- `peek()`:
+  - Lock: at the beginning of the function because it is reading the head pointer.
+  - Unlock: before the return statement because it loops through reading the linked list.
+    - Unlocking will be also needed before it returns -1 from the first if-statement.
+- `push()`:
+  - Lock: at the beginning of the function because it is updating the head pointer.
+  - Unlock: at the end of the functioin because it is adding a new node to the linked list.
+    - Unlocking will be also needed before it returns from the first if-statement.
+
+## RW Locking
+In this implementation, the `shared_mutex m` will be added to the private variables. The `shared_mutex` will allow the RW lock to allow multiple readers to access the linked list at the same time.
+
+Since `pop()` and `push()` methods are modifying the linekd list (i.e are writers), they will need to acquire an exclusive lock. Meanwhile, the `peek()` method is only reading the linked list (i.e. a reader), it will only need a shared lock.
+
+The `shared_mutex` will be locked and unlocked in the following locations for each method:
+- `pop()`:
+  - Lock: at the beginning of the function because it is reading the head pointer.
+  - Unlock: before the return statement because it is deleting the current node and updating the head pointer before returning.
+    - Unlocking will be also needed before it returns -1 from the first if-statement.
+- `peek()`:
+  - Lock: `m.lock_shared()` at the beginning of the function because it is reading the head pointer.
+  - Unlock: `m.unlock_shared()` before the return statement because it loops through reading the linked list.
+    - Unlocking will be also needed before it returns -1 from the first if-statement.
+- `push()`:
+  - Lock: at the beginning of the function because it is updating the head pointer.
+  - Unlock: at the end of the functioin because it is adding a new node to the linked list.
+    - Unlocking will be also needed before it returns from the first if-statement.
+
+## SwapTop
+The `swap_top()` method will be implemented with a reader lock. This is possible because the pop and push operations already have writer locks implemented, and therefore the `swap_top()` method can be efficiently implemented with a reader lock.
+
+The rest of the implementation will remain the same as the RW Locking implementation.
+
+### Pseudocode
+```cpp
+void swap_top(int to_swap){
+  reader_lock.lock();
+  if (stack is empty)
+    reader_lock.unlock();
+    return;
+  
+  pop();
+  push(to_swap);
+
+  reader_lock.unlock();
+  
+  return;
+}
+```
