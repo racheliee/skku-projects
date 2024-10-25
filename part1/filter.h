@@ -30,7 +30,7 @@ class mutex {
                     continue;
                     
                 while (_level[j].load() >= i && _victim[i].load() == thread_id) {
-                    // this_thread::yield();
+                    this_thread::yield();
                 };
             }
         }

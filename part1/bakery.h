@@ -41,13 +41,13 @@ class mutex {
                 continue;
 
             while (_entering[j].load()) {
-                // this_thread::yield();
+                this_thread::yield();
             };
 
             while (_number[j].load() != 0 &&
                    (_number[j].load() < _number[thread_id].load() ||
                     (_number[j].load() == _number[thread_id].load() && j < thread_id))) {
-                // this_thread::yield();
+                this_thread::yield();
             };
         }
     }
