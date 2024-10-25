@@ -282,6 +282,7 @@ The rest of the implementation will remain the same as the RW Locking implementa
 ```cpp
 void swap_top(int to_swap){
   reader_lock.lock();
+  // this is just a peek operation, so it is okay to have a reader lock
   if (stack is empty)
     reader_lock.unlock();
     return;
