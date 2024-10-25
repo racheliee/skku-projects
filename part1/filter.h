@@ -29,9 +29,15 @@ class mutex {
             for (int j = 0; j < _num_threads; ++j) {
                 if (j == thread_id)
                     continue;
-                while (_level[j].load(memory_order_relaxed) >= i && _victim[i].load(memory_order_relaxed) == thread_id) {
+
+                int level_j = _level[j].load(memory_order_acquire); 
+                int victim_i = _victim[i].load(memory_order_acquire); 
+                
+                while (level_j >= i && victim_i == thread_id) {
                     this_thread::yield();
-                };
+                    level_j = _level[j].load(memory_order_acquire); 
+                    victim_i = _victim[i].load(memory_order_acquire); 
+                }
             }
         }
     }
