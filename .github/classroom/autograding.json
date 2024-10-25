@@ -2,7 +2,7 @@
     "tests": [
         {
             "name": "Part 1: Compile",
-            "setup": "cp /home/cse113/cse113-autograder/hw3/main-grader.py .",
+            "setup": "cp /home/jimlauda/cse113-autograder/hw3/main-grader.py .",
             "run": "python3 main-grader.py C 1 0",
             "input": "",
             "output": "pass",
