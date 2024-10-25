@@ -16,34 +16,28 @@ class mutex {
         _victim = new atomic<int>[num_threads];
 
         for (int i = 0; i < num_threads; ++i) {
-            _level[i].store(0, memory_order_relaxed);
-            _victim[i].store(0, memory_order_relaxed);
+            _level[i].store(0);
         }
     }
 
     void lock(int thread_id) {
         for (int i = 1; i < _num_threads; ++i) {
-            _level[thread_id].store(i, memory_order_relaxed);
-            _victim[i].store(thread_id, memory_order_relaxed);
+            _level[thread_id].store(i);
+            _victim[i].store(thread_id);
 
             for (int j = 0; j < _num_threads; ++j) {
                 if (j == thread_id)
                     continue;
-
-                int level_j = _level[j].load(memory_order_acquire); 
-                int victim_i = _victim[i].load(memory_order_acquire); 
-                
-                while (level_j >= i && victim_i == thread_id) {
+                    
+                while (_level[j].load() >= i && _victim[i].load() == thread_id) {
                     this_thread::yield();
-                    level_j = _level[j].load(memory_order_acquire); 
-                    victim_i = _victim[i].load(memory_order_acquire); 
-                }
+                };
             }
         }
     }
 
     void unlock(int thread_id) {
-        _level[thread_id].store(0, memory_order_relaxed);
+        _level[thread_id].store(0);
     }
 
   private:
