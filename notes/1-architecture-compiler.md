@@ -130,9 +130,10 @@ a[0] = REDUCE (a[0], a[SIZE/2]); // combine the two accumulators
 - unrolling is great but can lead to register spilling!
   - register가 부족하면 memory에 저장해야함
   - memory access는 느림!
-- topological sort를 통해 resource 관리 => compiler가 복잡해짐 
-  - register allocation이 어려워짐
-- compiler time도 고려 해야함!
-  - compile time이 길면 리소스가 사라지는 경우 존재
-  - scalar라는 언어가 그랫음...?
+- resource model 제작
+  - topological sort를 통해 resource 관리 => compiler가 복잡해짐 
+    - register allocation이 어려워짐
+  - compiler time도 고려 해야함!
+    - compile time이 길면 리소스가 사라지는 경우 존재
+    - scalar라는 언어가 그랫음...?
   

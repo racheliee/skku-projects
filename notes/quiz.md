@@ -137,7 +137,7 @@ with different values?
    - [ ] Sleeping
    - [ ] Yielding
    - [ ] Using a ticket lock
-   - [ ] relaxed peeking
+   - [x] relaxed peeking
 2. A reader-writer mutex allows multiple readers in the critical section, mutliple writers in the critical section, but never a combination of readers and writers.
    - false
    - multiple readers or single writer at a time
@@ -145,3 +145,24 @@ with different values?
    - false
 4. Why is the compare-and-swap operation required after the relaxed peeking sees that the mutex is available?
    - compare-and-swap is required to ensure that the mutex is still available when the thread tries to acquire the lock. relaxed peeking is not enough to guarantee that the lock is still available because the state of the lock can change between the time the thread sees the lock is available and the time it tries to acquire the lock.
+ 
+## quiz #8
+1. It is impossible to use objects that are not thread-safe in a concurrent program.
+   - false
+   - you can use locks to protect the data structures
+2. Non-locking objects do not use mutexes in their implementation. This is beneficial because:
+   - [ ] it is faster
+   - [ ] it is easier to reason about
+   - [ ] it is easier to extend
+3. When multiple threads access a concurrent object, only 1 possible execution is allowed. We reason about that execution by sequentializing object method calls and it is called sequential consistency
+   - false
+   - this is called linearizability
+     - each method call on a concurrent object appears to take effect instantaneously at some point between its invocation and its response, ensuring that even though multiple threads access the object, only one possible execution is valid
+   - Sequential consistency, on the other hand, ensures that operations of all threads are interleaved in a single order, but this order does not have to respect the real-time order of operations. In other words, sequential consistency guarantees a total order of operations that could be arbitrary, as long as it’s consistent across threads.
+4. What is the relationship between linearizable (L) and sequentially consistent (SC)?
+   - Objects that are L are also SC, but not the other way around.
+5. Write a few sentences about the pros and cons of using a concurrent data structure vs. using mutexes to protect data structures that are not thread-safe.
+   - Using concurrent data structures is beneficial because it allows for multi-threaded programming without the concern for locks when accessing or modifying the data structure thanks to its internal synchronization mechanisms. However, the concurrent data structures are compplex and could potentially present difficulty in debugging.
+   - Mutexes provide flexibility in protecting data structures. A user can declare their own data structures and make them thread-safe through mutexes. However, this approach can lead to significant performance drawbacks due to increased blocking and potential contention, as threads must wait for exclusive access to the resource, which can lead to issues like deadlocks and priority inversion if not managed carefully.
+
+
