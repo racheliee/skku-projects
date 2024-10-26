@@ -132,3 +132,142 @@ total number: 2927698
 33720
 66645
 100077
+
+// server results =================================================
+📝 Part 1: Get throughput on filter version
+
+
+  0
+  0
+  0
+  0
+  total number: 44
+  1
+  1
+  2
+  1
+  1
+  2
+  1
+  2
+  1
+  1
+  1
+  1
+  1
+  2
+  2
+  2
+  1
+  1
+  1
+  2
+  2
+  2
+  1
+  1
+  1
+  2
+  1
+  2
+  1
+  1
+  2
+  1
+  44
+  Avg Throughput of 5 runs: 8.8 - Minimum expected: 70000
+  failed
+  
+❌ Part 1: Get throughput on filter version
+::error::The output for test Part 1: Get throughput on filter version did not match%0AExpected:%0Apass%0AActual:%0A0%0A0%0A0%0A0%0Atotal number: 44%0A1%0A1%0A2%0A1%0A1%0A2%0A1%0A2%0A1%0A1%0A1%0A1%0A1%0A2%0A2%0A2%0A1%0A1%0A1%0A2%0A2%0A2%0A1%0A1%0A1%0A2%0A1%0A2%0A1%0A1%0A2%0A1%0A44%0AAvg Throughput of 5 runs: 8.8 - Minimum expected: 70000%0Afailed
+📝 Part 1: Get throughput on bakery version
+
+
+  0
+  0
+  0
+  0
+  total number: 0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  Avg Throughput of 5 runs: 0.0 - Minimum expected: 93000
+  failed
+  
+❌ Part 1: Get throughput on bakery version
+::error::The output for test Part 1: Get throughput on bakery version did not match%0AExpected:%0Apass%0AActual:%0A0%0A0%0A0%0A0%0Atotal number: 0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0AAvg Throughput of 5 runs: 0.0 - Minimum expected: 93000%0Afailed
+📝 Part 1: Get throughput on cpp version
+
+
+  4058503
+  4106905
+  4042889
+  3870396
+  total number: 4077227
+  128333
+  128004
+  128844
+  128431
+  127243
+  123138
+  128875
+  126050
+  125539
+  126299
+  128784
+  129858
+  125544
+  127620
+  129962
+  127104
+  127337
+  129259
+  125359
+  127505
+  127518
+  126013
+  128556
+  129091
+  123709
+  124852
+  127592
+  127050
+  129091
+  128416
+  128275
+  127976
+  4077227
+  Avg Throughput of 5 runs: 4031184.0 - Minimum expected: 0
+  pass
+  
+✅ Part 1: Get throughput on cpp version

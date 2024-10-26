@@ -4,3 +4,40 @@ total writers: 36026
 fair_mutex =============================================
 total readers: 431023
 total writers: 191396
+
+// server results =================================================
+📝 Part 2: Get throughput for input 6 2 1 with fair mutex
+
+
+  total readers: 184765
+  total writers: 162643
+  pass
+  
+✅ Part 2: Get throughput for input 6 2 1 with fair mutex
+
+📝 Part 2: Get throughput for input 6 2 1 with default
+
+
+  total readers: 1775347
+  total writers: 26565
+  pass
+  
+✅ Part 2: Get throughput for input 6 2 1 with default
+
+📝 Part 2: Get throughput for input 8 0 1 with fair mutex
+
+
+  total readers: 2473887
+  total writers: 0
+  pass
+  
+✅ Part 2: Get throughput for input 8 0 1 with fair mutex
+
+📝 Part 2: Get throughput for input 8 0 1 with default
+
+
+  total readers: 2466762
+  total writers: 0
+  pass
+  
+✅ Part 2: Get throughput for input 8 0 1 with default

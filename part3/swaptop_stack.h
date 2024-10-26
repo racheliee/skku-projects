@@ -22,7 +22,7 @@ class CSE113_Stack {
   int pop() {
     m.lock();
     if (start == NULL) {
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return -1;
     }
 
@@ -30,7 +30,7 @@ class CSE113_Stack {
       int ret = start->data;
       delete start;
       start = NULL;
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return ret;
     }
 
@@ -45,15 +45,15 @@ class CSE113_Stack {
     previous->next = NULL;
     delete current;
 
-    m.unlock();
+    m.unlock();  // unlock after accessing shared data
     return ret;
   }
 
   
   int peek() {
-    m.lock_shared();
+    m.lock_shared();  // use a shared lock because we are only reading
     if (start == NULL) {
-      m.unlock_shared();
+      m.unlock_shared(); // unlock after accessing shared data
       return -1;
     }
     
@@ -62,16 +62,16 @@ class CSE113_Stack {
       current = current->next;
     }
 
-    m.unlock_shared();
+    m.unlock_shared(); // unlock after accessing shared data
 
     return current->data;    
   }
   
   void push(int p) {
-    m.lock();
+    m.lock(); // lock before accessing shared data
     if (start == NULL) {
       start = new Llist_node(p);
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return;
     }
 
@@ -82,17 +82,18 @@ class CSE113_Stack {
 
     current->next = new Llist_node(p);
 
-    m.unlock();
+    m.unlock();  // unlock after accessing shared data
   }
 
   void swaptop(int to_swap) {
-    m.lock_shared();
+    m.lock_shared();  // use a shared lock because we are only reading
     if (start == NULL) {
-      m.unlock_shared();
+      m.unlock_shared(); // unlock after accessing shared data
       return;
     }
-    m.unlock_shared();
+    m.unlock_shared(); // unlock after accessing shared data
 
+    // no need to lock here because these functions already lock
     pop();
     push(to_swap);
 

@@ -20,9 +20,9 @@ class CSE113_Stack {
   }
   
   int pop() {
-    m.lock();
+    m.lock(); // lock before accessing shared data
     if (start == NULL) {
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return -1;
     }
 
@@ -30,7 +30,7 @@ class CSE113_Stack {
       int ret = start->data;
       delete start;
       start = NULL;
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return ret;
     }
 
@@ -45,15 +45,15 @@ class CSE113_Stack {
     previous->next = NULL;
     delete current;
 
-    m.unlock();
+    m.unlock();  // unlock after accessing shared data
     return ret;
   }
 
   
   int peek() {
-    m.lock();
+    m.lock(); // lock before accessing shared data
     if (start == NULL) {
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return -1;
     }
     
@@ -62,15 +62,15 @@ class CSE113_Stack {
       current = current->next;
     }
 
-    m.unlock();
+    m.unlock();  // unlock after accessing shared data
     return current->data;    
   }
   
   void push(int p) {
-    m.lock();
+    m.lock(); // lock before accessing shared data
     if (start == NULL) {
       start = new Llist_node(p);
-      m.unlock();
+      m.unlock();  // unlock after accessing shared data
       return;
     }
 
@@ -81,7 +81,7 @@ class CSE113_Stack {
 
     current->next = new Llist_node(p);
 
-    m.unlock();
+    m.unlock(); // unlock after accessing shared data
   }
 
  private:

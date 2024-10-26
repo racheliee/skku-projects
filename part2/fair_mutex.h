@@ -16,7 +16,7 @@ class rw_mutex {
         bool acquired = false;
         while (!acquired) {
             m.lock();
-            if (!_writer && !_writer_waiting) {
+            if (!_writer && !_writer_waiting) { // no writer and no writer waiting
                 _num_readers++;
                 acquired = true;
             }
@@ -31,7 +31,7 @@ class rw_mutex {
     }
 
     void lock() {
-        _writer_waiting.store(true);
+        _writer_waiting.store(true); // indicate that writer is waiting
         bool acquired = false;
         while (!acquired) {
             m.lock();
@@ -39,7 +39,8 @@ class rw_mutex {
                 _writer = true;
                 acquired = true;
             } else {
-                _writer_waiting.store(true);
+                // indicate that writer is still waiting
+                _writer_waiting.store(true); 
             }
             m.unlock();
         }
@@ -48,7 +49,7 @@ class rw_mutex {
     void unlock() {
         m.lock();
         _writer = false;
-        _writer_waiting = false;
+        _writer_waiting = false; // reset writer waiting
         m.unlock();
     }
 
@@ -56,5 +57,5 @@ class rw_mutex {
     mutex m;
     int _num_readers;
     bool _writer;
-    atomic<bool> _writer_waiting;
+    atomic<bool> _writer_waiting; // indicate if writer is waiting
 };
