@@ -2,6 +2,7 @@ import random
 
 from pacai.agents.base import BaseAgent
 from pacai.agents.search.multiagent import MultiAgentSearchAgent
+from pacai.core.directions import Directions
 
 class ReflexAgent(BaseAgent):
     """
@@ -31,10 +32,13 @@ class ReflexAgent(BaseAgent):
         legalMoves = gameState.getLegalActions()
 
         # Choose one of the best actions.
-        scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
+        scores = [self.evaluationFunction(
+            gameState, action) for action in legalMoves]
         bestScore = max(scores)
-        bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
-        chosenIndex = random.choice(bestIndices)  # Pick randomly among the best.
+        bestIndices = [index for index in range(
+            len(scores)) if scores[index] == bestScore]
+        # Pick randomly among the best.
+        chosenIndex = random.choice(bestIndices)
 
         return legalMoves[chosenIndex]
 
@@ -51,14 +55,36 @@ class ReflexAgent(BaseAgent):
         successorGameState = currentGameState.generatePacmanSuccessor(action)
 
         # Useful information you can extract.
-        # newPosition = successorGameState.getPacmanPosition()
+        newPosition = successorGameState.getPacmanPosition()
         # oldFood = currentGameState.getFood()
+        newFoodList = successorGameState.getFood().asList()
         # newGhostStates = successorGameState.getGhostStates()
         # newScaredTimes = [ghostState.getScaredTimer() for ghostState in newGhostStates]
 
         # *** Your Code Here ***
 
-        return successorGameState.getScore()
+        def manhattanDistance(pos1, pos2):
+            return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+
+        # note: sometimes gets stuck until the ghost gets close
+        # calc distance with food
+        foodDist = [manhattanDistance(newPosition, food)
+                    for food in newFoodList]
+        foodScore = min(foodDist) if foodDist else -1
+
+        # calc distance with ghost and check if ghost is near
+        ghostDist = 1
+        ghostNearBy = 0
+        for g in successorGameState.getGhostPositions():
+            temp = manhattanDistance(newPosition, g)
+            ghostDist += temp
+            if temp < 2:
+                ghostNearBy += 1
+
+        # do reciprocal of the values bc we want to maximize the score
+        return successorGameState.getScore() + 1.0 / foodScore - 1.0 / ghostDist - ghostNearBy
+        # return successorGameState.getScore()
+
 
 class MinimaxAgent(MultiAgentSearchAgent):
     """
@@ -90,6 +116,41 @@ class MinimaxAgent(MultiAgentSearchAgent):
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)
 
+    def getAction(self, gameState):
+
+        def minimax(gameState, depth, agentIndex):
+            if depth == self.getTreeDepth() or gameState.isWin() or gameState.isLose():
+                return self.getEvaluationFunction()(gameState)
+            # maximzing pacman
+            if agentIndex == 0:
+                return max(
+                    minimax(gameState.generateSuccessor(agentIndex, action), depth, agentIndex + 1)
+                    for action in gameState.getLegalActions(agentIndex)
+                )
+            # minimizing ghost
+            else:
+                nextAgent = agentIndex + 1
+                # check if all agents have played
+                if gameState.getNumAgents() == nextAgent:
+                    nextAgent = 0
+                    depth += 1
+                return min(
+                    minimax(gameState.generateSuccessor(agentIndex, action), depth, nextAgent)
+                    for action in gameState.getLegalActions(agentIndex)
+                )
+
+        # get actions for pacman
+        maxUtil = float('-inf')
+        bestAction = None  # best action
+        legalActions = [a for a in gameState.getLegalActions(0) if a != Directions.STOP]
+        for a in legalActions:
+            util = minimax(gameState.generateSuccessor(0, a), 0, 1)
+            if util > maxUtil:
+                maxUtil = util
+                bestAction = a
+
+        return bestAction
+
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
     A minimax agent with alpha-beta pruning.
@@ -104,6 +165,53 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)
+        
+    def getAction(self, gameState):
+
+        def minimax(gameState, depth, agentIndex, alpha, beta):
+            if depth == self.getTreeDepth() or gameState.isWin() or gameState.isLose():
+                return self.getEvaluationFunction()(gameState)
+            
+            # maximizing pacman
+            if agentIndex == 0:
+                v = float('-inf')
+                legalActions = [a for a in gameState.getLegalActions(agentIndex) if a != Directions.STOP]
+                for a in legalActions:
+                    curr = minimax(gameState.generateSuccessor(agentIndex, a), depth, agentIndex + 1, alpha, beta)
+                    v = max(v, curr)
+                    alpha = max(alpha, curr)
+                    if beta <= alpha:
+                        break
+                return v
+            
+            # minimizing ghost
+            else:
+                v = float('inf')
+                nextAgent = agentIndex + 1
+                if gameState.getNumAgents() == nextAgent:
+                    nextAgent = 0
+                    depth += 1
+                
+                legalActions = [a for a in gameState.getLegalActions(agentIndex) if a != Directions.STOP]
+                for a in legalActions:
+                    curr = minimax(gameState.generateSuccessor(agentIndex, a), depth, nextAgent, alpha, beta)
+                    v = min(v, curr)
+                    beta = min(beta, curr)
+                    if beta <= alpha:
+                        break
+                return v
+        
+        bestAction = None
+        alpha, beta = float('-inf'), float('inf')
+        legalActions = [a for a in gameState.getLegalActions(0) if a != Directions.STOP]
+        for action in legalActions:
+            util = minimax(gameState.generateSuccessor(0, action), 0, 1, alpha, beta)
+            if util > alpha:
+                alpha = util
+                bestAction = action
+                    
+        return bestAction
+
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
@@ -122,6 +230,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)
 
+
 def betterEvaluationFunction(currentGameState):
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable evaluation function.
@@ -130,6 +239,7 @@ def betterEvaluationFunction(currentGameState):
     """
 
     return currentGameState.getScore()
+
 
 class ContestAgent(MultiAgentSearchAgent):
     """
