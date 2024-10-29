@@ -288,9 +288,60 @@ def betterEvaluationFunction(currentGameState):
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable evaluation function.
 
     DESCRIPTION: <write something here so we know what you did>
+    - distance to the closest food
+    - distance to the closest capsule
+    - distance to ghosts (if close, run away)
+    - bonus points if there are scared ghosts
+    - score of current state
+    --> weights are chosen based on the importance of each factor (done empirically)
     """
+    # *** Your Code Here ***
 
-    return currentGameState.getScore()
+    def manhattanDistance(pos1, pos2):
+        return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+
+    # food
+    pos = currentGameState.getPacmanPosition()
+    foodList = currentGameState.getFood().asList()
+
+    min_food_dist = min([manhattanDistance(pos, food)
+                        for food in foodList]) if foodList else 0
+    total_food_dist = sum([manhattanDistance(pos, food)
+                          for food in foodList]) if foodList else 0
+
+    # capsules
+    capsuleList = currentGameState.getCapsules()
+    min_capsule_dist = min([manhattanDistance(pos, capusle)
+                           for capusle in capsuleList]) if capsuleList else 0
+
+    # ghost
+    ghostStates = currentGameState.getGhostStates()
+    ghostDist = 1
+    ghostNearBy = 0
+    scaredGhost = 0
+    for g in ghostStates:
+        dist = manhattanDistance(pos, g.getPosition())
+        ghostDist += dist
+        if dist < 2:
+            ghostNearBy += 1
+
+        # Check if the ghost is scared
+        if hasattr(g, 'scaredTimer') and g.scaredTimer > 0:  # Check scaredTimer directly
+            scaredGhost += max(10 - dist, 0)
+        elif hasattr(g, 'getScaredTimer') and g.getScaredTimer() > 0:  # Use getScaredTimer method
+            scaredGhost += max(10 - dist, 0)
+        elif hasattr(g, 'isScared') and g.isScared():  # Check isScared method
+            scaredGhost += max(10 - dist, 0)
+
+    score = currentGameState.getScore()
+    score += (1.5 / min_food_dist) if min_food_dist else 10
+    score += 1.0 / total_food_dist if total_food_dist else 0
+    score += 1.0 / min_capsule_dist if min_capsule_dist else 5
+    score -= 2.0 / ghostDist
+    score -= 10 * ghostNearBy
+    score += scaredGhost
+
+    return score
 
 
 class ContestAgent(MultiAgentSearchAgent):
