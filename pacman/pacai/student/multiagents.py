@@ -4,6 +4,7 @@ from pacai.agents.base import BaseAgent
 from pacai.agents.search.multiagent import MultiAgentSearchAgent
 from pacai.core.directions import Directions
 
+
 class ReflexAgent(BaseAgent):
     """
     A reflex agent chooses an action at each choice point by examining
@@ -124,7 +125,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # maximzing pacman
             if agentIndex == 0:
                 return max(
-                    minimax(gameState.generateSuccessor(agentIndex, action), depth, agentIndex + 1)
+                    minimax(gameState.generateSuccessor(
+                        agentIndex, action), depth, agentIndex + 1)
                     for action in gameState.getLegalActions(agentIndex)
                 )
             # minimizing ghost
@@ -135,14 +137,16 @@ class MinimaxAgent(MultiAgentSearchAgent):
                     nextAgent = 0
                     depth += 1
                 return min(
-                    minimax(gameState.generateSuccessor(agentIndex, action), depth, nextAgent)
+                    minimax(gameState.generateSuccessor(
+                        agentIndex, action), depth, nextAgent)
                     for action in gameState.getLegalActions(agentIndex)
                 )
 
         # get actions for pacman
         maxUtil = float('-inf')
         bestAction = None  # best action
-        legalActions = [a for a in gameState.getLegalActions(0) if a != Directions.STOP]
+        legalActions = [a for a in gameState.getLegalActions(
+            0) if a != Directions.STOP]
         for a in legalActions:
             util = minimax(gameState.generateSuccessor(0, a), 0, 1)
             if util > maxUtil:
@@ -150,6 +154,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 bestAction = a
 
         return bestAction
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
@@ -165,25 +170,27 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)
-        
+
     def getAction(self, gameState):
 
         def minimax(gameState, depth, agentIndex, alpha, beta):
             if depth == self.getTreeDepth() or gameState.isWin() or gameState.isLose():
                 return self.getEvaluationFunction()(gameState)
-            
+
             # maximizing pacman
             if agentIndex == 0:
                 v = float('-inf')
-                legalActions = [a for a in gameState.getLegalActions(agentIndex) if a != Directions.STOP]
+                legalActions = [a for a in gameState.getLegalActions(
+                    agentIndex) if a != Directions.STOP]
                 for a in legalActions:
-                    curr = minimax(gameState.generateSuccessor(agentIndex, a), depth, agentIndex + 1, alpha, beta)
+                    curr = minimax(gameState.generateSuccessor(
+                        agentIndex, a), depth, agentIndex + 1, alpha, beta)
                     v = max(v, curr)
                     alpha = max(alpha, curr)
                     if beta <= alpha:
                         break
                 return v
-            
+
             # minimizing ghost
             else:
                 v = float('inf')
@@ -191,25 +198,29 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 if gameState.getNumAgents() == nextAgent:
                     nextAgent = 0
                     depth += 1
-                
-                legalActions = [a for a in gameState.getLegalActions(agentIndex) if a != Directions.STOP]
+
+                legalActions = [a for a in gameState.getLegalActions(
+                    agentIndex) if a != Directions.STOP]
                 for a in legalActions:
-                    curr = minimax(gameState.generateSuccessor(agentIndex, a), depth, nextAgent, alpha, beta)
+                    curr = minimax(gameState.generateSuccessor(
+                        agentIndex, a), depth, nextAgent, alpha, beta)
                     v = min(v, curr)
                     beta = min(beta, curr)
                     if beta <= alpha:
                         break
                 return v
-        
+
         bestAction = None
         alpha, beta = float('-inf'), float('inf')
-        legalActions = [a for a in gameState.getLegalActions(0) if a != Directions.STOP]
+        legalActions = [a for a in gameState.getLegalActions(
+            0) if a != Directions.STOP]
         for action in legalActions:
-            util = minimax(gameState.generateSuccessor(0, action), 0, 1, alpha, beta)
+            util = minimax(gameState.generateSuccessor(
+                0, action), 0, 1, alpha, beta)
             if util > alpha:
                 alpha = util
                 bestAction = action
-                    
+
         return bestAction
 
 
