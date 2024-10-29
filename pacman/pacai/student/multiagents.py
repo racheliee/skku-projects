@@ -147,11 +147,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
         bestAction = None  # best action
         legalActions = [a for a in gameState.getLegalActions(
             0) if a != Directions.STOP]
-        for a in legalActions:
-            util = minimax(gameState.generateSuccessor(0, a), 0, 1)
+        for action in legalActions:
+            util = minimax(gameState.generateSuccessor(0, action), 0, 1)
             if util > maxUtil:
                 maxUtil = util
-                bestAction = a
+                bestAction = action
 
         return bestAction
 
@@ -240,6 +240,47 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
     def __init__(self, index, **kwargs):
         super().__init__(index, **kwargs)
+
+    def getAction(self, gameState):
+        def expectimax(gameState, depth, agentIndex):
+            if depth == self.getTreeDepth() or gameState.isWin() or gameState.isLose():
+                return self.getEvaluationFunction()(gameState)
+
+            # maximizing pacman
+            if agentIndex == 0:
+                return max(
+                    expectimax(gameState.generateSuccessor(
+                        agentIndex, action), depth, agentIndex + 1)
+                    for action in gameState.getLegalActions(agentIndex)
+                )
+
+            # minimizing ghost
+            else:
+                nextAgent = agentIndex + 1
+                if gameState.getNumAgents() == nextAgent:
+                    nextAgent = 0
+                    depth += 1
+
+                legalActions = [a for a in gameState.getLegalActions(
+                    agentIndex) if a != Directions.STOP]
+                return sum(
+                    expectimax(gameState.generateSuccessor(
+                        agentIndex, action), depth, nextAgent)
+                    for action in legalActions
+                ) / len(legalActions)
+
+        maxUtil = float('-inf')
+        bestAction = None
+        legalAction = [a for a in gameState.getLegalActions(
+            0) if a != Directions.STOP]
+
+        for action in legalAction:
+            util = expectimax(gameState.generateSuccessor(0, action), 0, 1)
+            if util > maxUtil:
+                maxUtil = util
+                bestAction = action
+
+        return bestAction
 
 
 def betterEvaluationFunction(currentGameState):
