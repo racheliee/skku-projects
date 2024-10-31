@@ -18,4 +18,12 @@ def get_time():
 #    Field('product_name', requires=IS_NOT_EMPTY()),
 #    )
 
+db.define_table(
+    'shopping_item',
+    Field('item_name', requires=IS_NOT_EMPTY()),
+    Field('purchased', 'boolean', default=False),
+    Field('user_id', 'reference auth_user', default=auth.current_user.get('id') if auth.current_user else None, readable=False, writable=False),
+    Field('last_modified', 'datetime', default=get_time, readable=False, writable=False),
+)
+
 db.commit()

@@ -30,6 +30,7 @@ from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from py4web.utils.url_signer import URLSigner
 from .models import get_user_email
+import datetime
 
 url_signer = URLSigner(session)
 
@@ -40,12 +41,46 @@ def index():
         # For example...
         load_data_url = URL('load_data'),
         # Add other things here.
+        add_item_url = URL('add_item'),
+        toggle_item_url = URL('toggle_item'),
+        delete_item_url = URL('delete_item'),
     )
 
 @action('load_data')
 @action.uses(db, auth.user)
 def load_data():
     # Complete.
-    return dict()
+    user_id = auth.current_user.get('id')
+    items = db(db.shopping_item.user_id == user_id).select(orderby=(db.shopping_item.purchased, ~db.shopping_item.id)).as_list()
+    return dict(items=items)
+    # return dict()
 
 # You can add other controllers here.
+@action('add_item', method='POST')
+@action.uses(db, auth.user)
+def add_item():
+    user_id = auth.current_user.get('id')
+    item_name = request.json.get('item_name')
+    if item_name:
+        db.shopping_item.insert(item_name=item_name, user_id=user_id, last_modified=datetime.datetime.utcnow())
+    return "ok"
+
+@action('toggle_item', method='POST')
+@action.uses(db, auth.user)
+def toggle_item():
+    item_id = request.json.get('item_id')
+    item = db.shopping_item[item_id]
+    if item and item.user_id == auth.current_user.get('id'):
+        item.update_record(purchased=not item.purchased, last_modified=datetime.datetime.utcnow())
+    # else:
+    #     item.update_record(purchased=not item.purchased)
+    return "ok"
+
+@action('delete_item', method='POST')
+@action.uses(db, auth.user)
+def delete_item():
+    item_id = request.json.get('item_id')
+    item = db.shopping_item[item_id]
+    if item and item.user_id == auth.current_user.get('id'):
+        db(db.shopping_item.id == item_id).delete()
+    return "ok"
