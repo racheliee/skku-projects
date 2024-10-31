@@ -1,0 +1,38 @@
+[[extend 'layout.html']]
+
+<style>
+[v-cloak] {
+     display: none;
+}
+</style>
+
+
+<div class="section" id="app" v-cloak>
+  <!-- Put here your Vue.js template -->
+  <h1 class="title">Shopping List</h1>
+
+  <div class="container">
+    <table class="table is-fullwidth is-striped">
+      <tr class="add-row">
+        <td class="is-narrow"><i class="is-size-2 fa fa-plus-square has-text-success add-item"></i></td>
+        <td><input class="input add-item" type="text" name="new_item"></td>
+        <td class="is-narrow"></td>
+      </tr>
+      <tr class="item-row">
+        <td class="check is-narrow"><input type="checkbox"></td>
+        <td class="item"></td>
+        <td class="trash is-narrow"><i class="trash has-text-danger fa fa-trash"></i></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+  let load_data_url = "[[=XML(load_data_url)]]";
+  // Add other URLs here if you wish.
+</script>
+<script src="js/index.js"></script>
+[[end]]
