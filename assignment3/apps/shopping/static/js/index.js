@@ -16,9 +16,15 @@ app.data = {
       // return unchecked items first, then sort by id
       return this.items.sort((a, b) => {
         if (a.purchased !== b.purchased) {
+          return a.purchased - b.purchased; // Unchecked items (false) before checked items (true)
+        }
+        if (!a.purchased) {
+          // For unchecked items, sort by last_modified in descending order (newest first)
+          return new Date(b.last_modified) - new Date(a.last_modified);
+        } else {
+          // For checked items, sort by last_modified in ascending order (oldest first)
           return a.id - b.id;
         }
-        return a.purchased - b.purchased; 
       });
     },
   },

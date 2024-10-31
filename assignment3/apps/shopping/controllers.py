@@ -51,7 +51,7 @@ def index():
 def load_data():
     # Complete.
     user_id = auth.current_user.get('id')
-    items = db(db.shopping_item.user_id == user_id).select(orderby=(db.shopping_item.purchased, ~db.shopping_item.id)).as_list()
+    items = db(db.shopping_item.user_id == user_id).select(orderby=(db.shopping_item.purchased, ~db.shopping_item.last_modified)).as_list()
     return dict(items=items)
     # return dict()
 
