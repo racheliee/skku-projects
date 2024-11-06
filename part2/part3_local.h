@@ -28,32 +28,32 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   // You should use the Q IOQueues to compute
   // local work and then try to steal work
   // from others until all the work is completed
-  while (true) {
-    int idx = Q[tid].deq();  // Attempt to dequeue from the local queue
+  while(1){
+    int idx = Q[tid].deq();
 
-    // If local queue is empty, attempt to steal work
-    if (idx == -1) {
-      bool work_found = false;
+    // If the queue is empty, try to steal work
+    if(idx == -1) {
+      bool success = false;
       for (int i = 0; i < num_threads; i++) {
         if (i != tid) {
-          idx = Q[i].deq();  // Try stealing from other threads' queues
+          idx = Q[i].deq();
           if (idx != -1) {
-            work_found = true;  // Successfully stole work
+            success = true;
             break;
           }
         }
       }
 
-      if (!work_found) {  // No work available in any queue
-        if (finished_threads.fetch_add(1) == num_threads - 1) return;  // All threads are done
-        finished_threads.fetch_sub(1);  // Reset if work is still available
+      if(!success){
+        if(finished_threads.fetch_add(1) == num_threads - 1) return;
+        finished_threads.fetch_add(-1);
         continue;
       }
     }
 
-    // Perform the computation if work is found
+    // If the queue is not empty, do the work
     float base = result[idx];
-    for (int w = 0; w < mult[idx] - 1; w++) {
+    for (int w = 0; w < mult[idx]-1; w++) {
       result[idx] += base;
     }
   }
@@ -68,6 +68,10 @@ void launch_threads(float* result_parallel, int* mult) {
   // function from part1_static.h and part2_global.h but using workstealing
 
   vector<thread> threads;
+
+  for(int i = 0; i < NUM_THREADS; i++) {
+    Q[i].init(SIZE);
+  }
 
   // initial queues in parallel
   for (int i = 0; i < NUM_THREADS; i++) {

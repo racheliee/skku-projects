@@ -346,7 +346,7 @@ function launch_threads(result_parallel, mult):
 To parallelize a loop with varying workloads across iterations using a local worklist workstealing approach. Each thread has a local queue (`IOQueue`) that initially holds a unique subset of work items. When a thread’s queue is empty, it attempts to steal work from the queues of other threads. This approach provides dynamic load balancing, allowing idle threads to remain productive by helping other threads complete work.
 
 ### Architecture
-
+#### local.h
 **Parallel Strategy**: Local Worklist with Workstealing
 - **Local Queues**: Each thread has its own local queue (`IOQueue`) which initially contains a unique set of work items (indices to process). Threads operate on their local queues by dequeuing work until their queue is empty.
 - **Workstealing**: If a thread’s local queue is empty, it attempts to “steal” work from other threads' queues. This dynamic work assignment keeps threads busy even if they finish their initial assigned tasks early.
@@ -365,8 +365,21 @@ To parallelize a loop with varying workloads across iterations using a local wor
 - `result_parallel`: Array of floats, where each index `i` is updated with the value of `result_parallel[i]` multiplied `mult[i]` times (computed via repeat additions).
 - `mult`: Array of integers indicating the number of times each index in `result_parallel` should be multiplied by itself.
 
-### Function Breakdown
+#### IOQueue.h
+**Concurrent Queue Structure**:
+- The queue uses a circular buffer for efficient storage and wraparound of indices.
+- Two atomic pointers, `head` and `tail`, keep track of the dequeuing and enqueuing positions, respectively. This allows threads to safely enqueue and dequeue items without overlap.
 
+**Atomic Variables**:
+- `head`: Points to the next element to be dequeued.
+- `tail`: Points to the next position where a new element can be enqueued.
+
+**Private Variables**:
+- `buffer`: The array that stores elements in a circular fashion.
+- `capacity`: The maximum number of elements that the queue can hold.
+
+### Functions
+#### local.h
 1. **`parallel_enq`**: Initializes local queues for each thread with assigned indices.
    - **Inputs**: `size` (total size of the array), `tid` (thread ID), and `num_threads` (total number of threads).
    - **Operation**:
@@ -387,7 +400,21 @@ To parallelize a loop with varying workloads across iterations using a local wor
      - Next, calls `parallel_mult` in parallel for each thread.
      - Joins all threads at the end of each phase.
 
-### Pseudocode
+#### IOQueue.h
+4. **`init(int size)`**:
+   - Initializes the queue with a specified size by setting the buffer capacity, allocating memory, and initializing `head` and `tail` to `0`.
+
+5. **`enq(int e)`**:
+   - Enqueues a single element `e` into the queue.
+   - Checks if there is space by comparing `tail` and `head`.
+   - If there’s space, the element is added to the `tail` position, and `tail` is incremented atomically.
+
+6. **`deq()`**:
+   - Dequeues a single element from the queue.
+   - Returns the value at `head` and increments `head`.
+   - If the queue is empty (`head` == `tail`), it returns `-1`.
+
+### Pseudocode for local.h
 
 ```cpp
 function parallel_enq(size, tid, num_threads):
@@ -468,8 +495,10 @@ To parallelize a loop with varying workloads across iterations using a local wor
 - `result_parallel`: Array of floats where each index `i` is updated with the value of `result_parallel[i]` multiplied `mult[i]` times (using repeat additions).
 - `mult`: Array of integers indicating the number of times each index in `result_parallel` should be multiplied.
 
-### Function Breakdown
+`IOQueue.h` has the same structure as in the previous local worklist workstealing approach, with the addition of a `deq_32` function that dequeues 32 elements at a time.
 
+### Function Breakdown
+#### local.h
 1. **`parallel_enq`**: Initializes local queues for each thread with assigned indices.
    - **Inputs**: `size` (total size of the array), `tid` (thread ID), `num_threads` (total number of threads).
    - **Operation**:
@@ -489,6 +518,11 @@ To parallelize a loop with varying workloads across iterations using a local wor
      - Next, calls `parallel_mult` in parallel.
      - Joins all threads at the end of each phase.
 
+#### IOQueue.h
+4. **`deq_32(int ret[32])`**:
+   - Attempts to dequeue 32 elements in one operation.
+   - If there are fewer than 32 elements in the queue, it returns `1` (error code).
+   - If 32 elements are available, it copies them to `ret` and updates `head`.
 
 ### Pseudocode
 

@@ -36,7 +36,7 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   int batch[32];
   while(1){
     int status = Q[tid].deq_32(batch);
-    if(status == -1){
+    if(status == 1){
       bool success = false;
       for (int i = 0; i < num_threads; i++) {
         if (i != tid) {
@@ -59,7 +59,7 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
       int index = batch[i];
       float base = result[index];
       for (int w = 0; w < mult[index]-1; w++) {
-        result[index] += +base;
+        result[index] += base;
       }
     }
   }
@@ -76,6 +76,9 @@ void launch_threads(float* result_parallel, int* mult) {
   // hint: this part should be the same as in part3_local.h
 
   vector<thread> threads;
+  for(int i = 0; i < NUM_THREADS; i++) {
+    Q[i].init(SIZE);
+  }
 
   for (int i = 0; i < NUM_THREADS; i++) {
     threads.emplace_back(parallel_enq, SIZE, i, NUM_THREADS);
