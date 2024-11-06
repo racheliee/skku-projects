@@ -28,50 +28,33 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   // You should use the Q IOQueues to compute
   // local work and then try to steal work
   // from others until all the work is completed
-  int batch[32];
-  const int local_retry_threshold = 5;  // Number of local retries before stealing
+  while(1){
+    int idx = Q[tid].deq();
 
-  while (true) {
-    int retries = 0;
-
-    while (retries < local_retry_threshold) {
-      if (Q[tid].deq_32(batch) == 0) {
-        // Process the batch
-        for (int i = 0; i < 32; i++) {
-          int index = batch[i];
-          float base = result[index];
-          for (int w = 0; w < mult[index] - 1; w++) {
-            result[index] += base;
+    // If the queue is empty, try to steal work
+    if(idx == -1) {
+      bool success = false;
+      for (int i = 0; i < num_threads; i++) {
+        if (i != tid) {
+          idx = Q[i].deq();
+          if (idx != -1) {
+            success = true;
+            break;
           }
         }
-        retries = 0;  // Reset retries after successful dequeue
-      } else {
-        retries++;
+      }
+
+      if(!success){
+        if(finished_threads.fetch_add(1) == num_threads - 1) return;
+        finished_threads.fetch_add(-1);
+        continue;
       }
     }
 
-    // Try workstealing after exceeding the retry threshold
-    bool work_found = false;
-    for (int i = 0; i < num_threads; i++) {
-      if (i != tid && Q[i].deq_32(batch) == 0) {
-        work_found = true;
-        // Process the stolen batch
-        for (int i = 0; i < 32; i++) {
-          int index = batch[i];
-          float base = result[index];
-          for (int w = 0; w < mult[index] - 1; w++) {
-            result[index] += base;
-          }
-        }
-        break;
-      }
-    }
-
-    // If no work found in any queue, mark as finished
-    if (!work_found) {
-      if (finished_threads.fetch_add(1) == num_threads - 1) return;
-      finished_threads.fetch_sub(1);
-      continue;
+    // If the queue is not empty, do the work
+    float base = result[idx];
+    for (int w = 0; w < mult[idx]-1; w++) {
+      result[idx] += base;
     }
   }
 }
