@@ -2,3 +2,7 @@
 part1/asyncQueue
 part1/syncQueue
 part1/queue8API
+part2/global
+part2/static
+part2/stealing
+part2/stealing32
