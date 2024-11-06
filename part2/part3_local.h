@@ -28,33 +28,33 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   // You should use the Q IOQueues to compute
   // local work and then try to steal work
   // from others until all the work is completed
-  while(1){
-    int idx = Q[tid].deq();
+while (true) {
+    int idx = Q[tid].deq();  // Attempt to dequeue from the local queue
 
-    // If the queue is empty, try to steal work
-    if(idx == -1) {
+    // If local queue is empty, attempt to steal from other queues
+    if (idx == -1) {
       bool success = false;
       for (int i = 0; i < num_threads; i++) {
         if (i != tid) {
-          idx = Q[i].deq();
+          idx = Q[i].deq();  // Try stealing from queue of thread `i`
           if (idx != -1) {
-            success = true;
+            success = true;  // Successful steal
             break;
           }
         }
       }
 
-      if(!success){
-        if(finished_threads.fetch_add(1) == num_threads - 1) return;
-        finished_threads.fetch_add(-1);
+      if (!success) {  // No work found in any queue
+        if (finished_threads.fetch_add(1) == num_threads - 1) return;  // All threads done
+        finished_threads.fetch_sub(1);  // Work might still be available, decrement and continue
         continue;
       }
     }
 
-    // If the queue is not empty, do the work
+    // Perform the repeated addition for result[idx]
     float base = result[idx];
-    for (int w = 0; w < mult[idx]-1; w++) {
-      result[idx] = result[idx]+base;
+    for (int w = 0; w < mult[idx] - 1; w++) {
+      result[idx] += base;
     }
   }
 }
