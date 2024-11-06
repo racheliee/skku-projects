@@ -15,7 +15,7 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   int end = (tid == num_threads-1) ? size : start + chunk;
 
 
-  for (int i = 0; i < end; i++) {
+  for (int i = start; i < end; i++) {
     float base = result[i];
     for (int w = 0; w < mult[i]-1; w++) {
       result[i] = result[i]+base;
