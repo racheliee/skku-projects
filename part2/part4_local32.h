@@ -33,36 +33,50 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   // Unlike in part3_local.h, you should deq 32 elements
   // at a time.
 
-  int batch[32];
-  while(1){
-    int status = Q[tid].deq_32(batch);
-    if(status == 1){
-      bool success = false;
-      for (int i = 0; i < num_threads; i++) {
-        if (i != tid) {
-          status = Q[i].deq_32(batch);
-          if (status == 0) {
-            success = true;
-            break;
-          }
-        }
-      }
+  int tasks[32];
 
-      if(!success){
-        if(finished_threads.fetch_add(1) == num_threads - 1) return;
-        finished_threads.fetch_add(-1);
-        continue;
-      }
-    }
-
-    for(int i = 0; i < 32; i++){
-      int index = batch[i];
-      float base = result[index];
-      for (int w = 0; w < mult[index]-1; w++) {
-        result[index] += base;
+  // Process tasks in chunks of 32 from the local queue
+  while (Q[tid].deq_32(tasks) == 0) {
+    for (int k = 0; k < 32; k++) {
+      int task = tasks[k];
+      float base = result[task];
+      for (int j = 0; j < mult[task] - 1; j++) {
+        result[task] += base;
       }
     }
   }
+
+  // Work stealing loop for stealing chunks of 32 tasks
+  while (true) {
+    bool has_work = false;
+
+    // Check if all threads are finished
+    if (finished_threads.load() >= num_threads) {
+      break;
+    }
+
+    // Attempt to steal a chunk of 32 tasks from other queues
+    for (int i = 0; i < num_threads; ++i) {
+      if (i != tid && Q[i].deq_32(tasks) == 0) {  // Successful steal
+        for (int k = 0; k < 32; k++) {
+          int task = tasks[k];
+          float base = result[task];
+          for (int j = 0; j < mult[task] - 1; j++) {
+            result[task] += base;
+          }
+        }
+        has_work = true;
+        break;
+      }
+    }
+
+    if (!has_work) {
+      // No work found in any queue, mark thread as finished
+      atomic_fetch_add(&finished_threads, 1);
+      break;
+    }
+  }
+
 }
 
 void launch_threads(float* result_parallel, int* mult) {
@@ -89,6 +103,8 @@ void launch_threads(float* result_parallel, int* mult) {
   }
 
   threads.clear();
+
+  finished_threads.store(0);
 
   for (int i = 0; i < NUM_THREADS; i++) {
     threads.emplace_back(parallel_mult, result_parallel, mult, SIZE, i, NUM_THREADS);

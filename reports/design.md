@@ -346,238 +346,101 @@ function launch_threads(result_parallel, mult):
 To parallelize a loop with varying workloads across iterations using a local worklist workstealing approach. Each thread has a local queue (`IOQueue`) that initially holds a unique subset of work items. When a thread’s queue is empty, it attempts to steal work from the queues of other threads. This approach provides dynamic load balancing, allowing idle threads to remain productive by helping other threads complete work.
 
 ### Architecture
-#### local.h
-**Parallel Strategy**: Local Worklist with Workstealing
-- **Local Queues**: Each thread has its own local queue (`IOQueue`) which initially contains a unique set of work items (indices to process). Threads operate on their local queues by dequeuing work until their queue is empty.
-- **Workstealing**: If a thread’s local queue is empty, it attempts to “steal” work from other threads' queues. This dynamic work assignment keeps threads busy even if they finish their initial assigned tasks early.
-- **Global Variables**: 
-  - `Q`: An array of `IOQueue` instances, one for each thread.
-  - `finished_threads`: An atomic counter to track the number of threads that have finished processing.
+
+**Parallel Strategy**: Local Worklist with Work Stealing
+- **Local Queues**: Each thread has a local queue (`Q[tid]`), where it enqueues and dequeues tasks independently.
+- **Work Stealing**: When a thread's queue is empty, it attempts to steal work from other threads' queues in a round-robin manner. This dynamic task allocation balances the workload by allowing threads to pick up additional tasks if they complete their own early.
+- **Finished Threads Tracking**: An atomic counter (`finished_threads`) tracks completed threads. When all threads have finished their tasks and cannot steal more work, execution ends.
 
 **Thread Management**:
-1. **Queue Initialization**:
-   - In `parallel_enq`, each thread enqueues its assigned indices into its local queue in a chunked manner.
-   - Each queue is initialized with sufficient space to hold the assigned indices.
-2. **Parallel Processing**:
-   - The `parallel_mult` function performs the main computation, where threads dequeue tasks from their local queue and process them. If a thread’s queue is empty, it attempts to steal work from other threads.
+- **Thread Creation and Joining**: The `launch_threads` function initializes queues and spawns `NUM_THREADS` threads. Each thread runs `parallel_mult`, where it processes its local tasks and performs work stealing if necessary. Threads continue fetching work until they complete all available tasks.
 
-**Variables**
-- `result_parallel`: Array of floats, where each index `i` is updated with the value of `result_parallel[i]` multiplied `mult[i]` times (computed via repeat additions).
-- `mult`: Array of integers indicating the number of times each index in `result_parallel` should be multiplied by itself.
-
-#### IOQueue.h
-**Concurrent Queue Structure**:
-- The queue uses a circular buffer for efficient storage and wraparound of indices.
-- Two atomic pointers, `head` and `tail`, keep track of the dequeuing and enqueuing positions, respectively. This allows threads to safely enqueue and dequeue items without overlap.
-
-**Atomic Variables**:
-- `head`: Points to the next element to be dequeued.
-- `tail`: Points to the next position where a new element can be enqueued.
-
-**Private Variables**:
-- `buffer`: The array that stores elements in a circular fashion.
-- `capacity`: The maximum number of elements that the queue can hold.
-
-### Functions
-#### local.h
-1. **`parallel_enq`**: Initializes local queues for each thread with assigned indices.
-   - **Inputs**: `size` (total size of the array), `tid` (thread ID), and `num_threads` (total number of threads).
-   - **Operation**:
-     - Each thread enqueues its own chunk of indices into its local queue `Q[tid]`.
-     - Indices are assigned in contiguous chunks similar to static partitioning.
-
-2. **`parallel_mult`**: Performs parallel multiplication with workstealing.
-   - **Inputs**: `result_parallel` (array), `mult` (multiplication counts), `size` (total size of the array), `tid` (thread ID), and `num_threads` (total number of threads).
-   - **Operation**:
-     - Each thread dequeues indices from its local queue and processes them.
-     - If the queue is empty, the thread attempts to steal work from other threads’ queues.
-     - When a thread finishes, it increments `finished_threads`.
-     - Threads continue attempting to work or steal until all threads have completed.
-
-3. **`launch_threads`**: Manages thread creation and joining.
-   - **Operation**:
-     - First, initializes the queues by calling `parallel_enq` in parallel for each thread.
-     - Next, calls `parallel_mult` in parallel for each thread.
-     - Joins all threads at the end of each phase.
-
-#### IOQueue.h
-4. **`init(int size)`**:
-   - Initializes the queue with a specified size by setting the buffer capacity, allocating memory, and initializing `head` and `tail` to `0`.
-
-5. **`enq(int e)`**:
-   - Enqueues a single element `e` into the queue.
-   - Checks if there is space by comparing `tail` and `head`.
-   - If there’s space, the element is added to the `tail` position, and `tail` is incremented atomically.
-
-6. **`deq()`**:
-   - Dequeues a single element from the queue.
-   - Returns the value at `head` and increments `head`.
-   - If the queue is empty (`head` == `tail`), it returns `-1`.
-
-### Pseudocode for local.h
-
-```cpp
-function parallel_enq(size, tid, num_threads):
-    chunk_size = size / num_threads
-    start = tid * chunk_size
-    end = start + chunk_size
-    if tid == num_threads - 1:
-        end = size  // Last thread takes any remaining elements
-
-    for i from start to end:
-        Q[tid].enq(i)  // Enqueue index i to the local queue for this thread
-
-function parallel_mult(result, mult, size, tid, num_threads):
-    while true:
-        index = Q[tid].deq()  // Dequeue from this thread's local queue
-        if index == -1:  // Queue is empty, attempt to steal work
-            success = false
-            for other_tid from 0 to num_threads - 1:
-                if other_tid != tid:
-                    index = Q[other_tid].deq()  // Attempt to steal work
-                    if index != -1:
-                        success = true
-                        break  // Exit loop if work is found
-            if not success:  // No work available in any queue
-                if finished_threads.fetch_add(1) == num_threads - 1:
-                    return  // All threads are done
-                finished_threads.fetch_sub(1)
-                continue  // Retry
-        else:
-            base = result[index]
-            for j from 0 to mult[index] - 1:
-                result[index] += base
-
-function launch_threads(result_parallel, mult):
-    threads = empty list
-
-    // Initialize queues in parallel
-    for tid from 0 to NUM_THREADS - 1:
-        create thread to execute parallel_enq(SIZE, tid, NUM_THREADS)
-        add thread to threads list
-
-    for each thread in threads:
-        wait for thread to complete (join)
-
-    threads = empty list  // Reset thread list
-
-    // Launch threads for parallel multiplication with workstealing
-    for tid from 0 to NUM_THREADS - 1:
-        create thread to execute parallel_mult(result_parallel, mult, SIZE, tid, NUM_THREADS)
-        add thread to threads list
-
-    for each thread in threads:
-        wait for thread to complete (join)
-```
-
----
-
-
-## Task Granularity
-To parallelize a loop with varying workloads across iterations using a local worklist workstealing approach with 32-element batching. Each thread has a local queue (`IOQueue`) initially holding a subset of work items (indices). Threads dequeue work in batches of 32 to reduce the number of queue operations and improve throughput. If a thread’s queue is empty, it attempts to steal batches of 32 elements from other threads' queues.
-
-### Architecture
-
-**Parallel Strategy**: Local Worklist with Workstealing and Batch Processing
-- **Local Queues**: Each thread has a local queue (`IOQueue`) initialized with unique indices to process.
-- **Workstealing with Batching**: Each thread dequeues and processes 32 elements at a time. If a thread’s queue is empty, it tries to steal 32-element batches from other threads’ queues. This approach ensures efficient processing and minimizes queue operation overhead.
-- **Global Variables**: 
-  - `Q`: Array of `IOQueue` instances (one for each thread) for local worklists.
-  - `finished_threads`: Atomic counter to track the number of threads that have finished processing.
-
-**Thread Management**:
-1. **Queue Initialization**:
-   - The `parallel_enq` function initializes each thread’s queue by enqueuing a unique range of indices in chunks.
-2. **Parallel Processing**:
-   - The `parallel_mult` function performs repeated addition, where threads dequeue and process batches of 32 elements. If a thread’s queue is empty, it attempts to steal 32-element batches from other threads.
-
-**Variables**
-- `result_parallel`: Array of floats where each index `i` is updated with the value of `result_parallel[i]` multiplied `mult[i]` times (using repeat additions).
-- `mult`: Array of integers indicating the number of times each index in `result_parallel` should be multiplied.
-
-`IOQueue.h` has the same structure as in the previous local worklist workstealing approach, with the addition of a `deq_32` function that dequeues 32 elements at a time.
-
-### Function Breakdown
-#### local.h
-1. **`parallel_enq`**: Initializes local queues for each thread with assigned indices.
-   - **Inputs**: `size` (total size of the array), `tid` (thread ID), `num_threads` (total number of threads).
-   - **Operation**:
-     - Each thread enqueues its chunk of indices into its local queue, `Q[tid]`.
-     - Indices are assigned in contiguous chunks similar to static partitioning.
-
-2. **`parallel_mult`**: Processes work in 32-element batches with workstealing.
-   - **Inputs**: `result_parallel` (array), `mult` (multiplication counts), `size` (total size of the array), `tid` (thread ID), `num_threads` (total number of threads).
-   - **Operation**:
-     - Each thread dequeues a batch of 32 elements from its local queue and processes them.
-     - If the local queue is empty, the thread attempts to steal a batch of 32 elements from other threads.
-     - When a thread completes its work, it increments `finished_threads`. Threads continue working or stealing until all threads complete.
-
-3. **`launch_threads`**: Manages thread creation and joining.
-   - **Operation**:
-     - First, initializes the queues by calling `parallel_enq` in parallel.
-     - Next, calls `parallel_mult` in parallel.
-     - Joins all threads at the end of each phase.
-
-#### IOQueue.h
-4. **`deq_32(int ret[32])`**:
-   - Attempts to dequeue 32 elements in one operation.
-   - If there are fewer than 32 elements in the queue, it returns `1` (error code).
-   - If 32 elements are available, it copies them to `ret` and updates `head`.
+**Variables**:
+- `result_parallel`: Array of floats, where each index `i` is updated by performing `mult[i]` repeat additions.
+- `mult`: Array of integers specifying the number of times each `result_parallel[i]` should be added to itself.
 
 ### Pseudocode
 
 ```cpp
-function parallel_enq(size, tid, num_threads):
-    chunk_size = size / num_threads
-    start = tid * chunk_size
-    end = start + chunk_size
-    if tid == num_threads - 1:
-        end = size  // Last thread takes any remaining elements
-
-    for i from start to end:
-        Q[tid].enq(i)  // Enqueue index i to the local queue for this thread
-
 function parallel_mult(result, mult, size, tid, num_threads):
-    batch = empty array of size 32
+    while Q[tid] has tasks:
+        task = Q[tid].deq()
+        base = result[task]
+        for j from 0 to mult[task] - 1:
+            result[task] += base
+
+    // Work stealing loop
     while true:
-        status = Q[tid].deq_32(batch)  // Try to dequeue 32 elements from local queue
-        if status == -1:  // Local queue is empty, attempt to steal work
-            success = false
-            for other_tid from 0 to num_threads - 1:
-                if other_tid != tid:
-                    status = Q[other_tid].deq_32(batch)  // Try stealing 32 elements
-                    if status != -1:
-                        success = true
-                        break
-            if not success:  // No work available in any queue
-                if finished_threads.fetch_add(1) == num_threads - 1:
-                    return  // All threads are done
-                finished_threads.fetch_sub(1)
-                continue  // Retry
-        else:
-            for each index in batch:
-                base = result[index]
-                for j from 0 to mult[index] - 1:
-                    result[index] += base
+        if all threads are finished:
+            break
+        for each other thread's queue:
+            task = Q[other_thread].deq()
+            if task found:
+                base = result[task]
+                for j from 0 to mult[task] - 1:
+                    result[task] += base
+                break  // Exit if task stolen
+        if no work found:
+            mark thread as finished
+            break
 
 function launch_threads(result_parallel, mult):
-    threads = empty list
+    initialize queues for each thread
+    create threads to execute parallel_mult with work-stealing
+    join all threads
+```
 
-    // Initialize queues in parallel
-    for tid from 0 to NUM_THREADS - 1:
-        create thread to execute parallel_enq(SIZE, tid, NUM_THREADS)
-        add thread to threads list
+---
 
-    for each thread in threads:
-        wait for thread to complete (join)
+## Local Worklist Work-Stealing with 32-element Dequeue
 
-    threads = empty list  // Reset thread list
+In this variation, we use the same local worklist and work-stealing strategy but with an optimization: each thread dequeues and processes tasks in chunks of 32 elements. This approach reduces the frequency of dequeue operations, potentially improving performance, especially for high-contention scenarios.
 
-    // Launch threads for parallel multiplication with workstealing
-    for tid from 0 to NUM_THREADS - 1:
-        create thread to execute parallel_mult(result_parallel, mult, SIZE, tid, NUM_THREADS)
-        add thread to threads list
+### Architecture
 
-    for each thread in threads:
-        wait for thread to complete (join)
+**Parallel Strategy**: Local Worklist with 32-Element Chunked Work Stealing
+- **32-Element Dequeue (`deq_32`)**: Each thread dequeues tasks in chunks of 32. If fewer than 32 tasks are available, the function returns `-1`, indicating the need to attempt stealing from other queues.
+- **Work Stealing in Chunks**: When a thread’s queue is empty, it tries to steal 32 tasks from other threads. This minimizes overhead by reducing the number of steal attempts, improving load distribution efficiency.
+- **Finished Threads Tracking**: The `finished_threads` counter tracks completed threads, ensuring that all threads finish before terminating.
+
+**Thread Management**:
+- **Thread Creation and Joining**: `launch_threads` initializes the task queues, then creates and joins threads as in `part3_local.h`. Each thread runs `parallel_mult`, dequeuing and processing 32-element chunks and performing chunked work-stealing if its queue is empty.
+
+**Variables**:
+- `result_parallel`: Array of floats where each index `i` is updated by performing `mult[i]` repeat additions.
+- `mult`: Array of integers specifying the number of times each `result_parallel[i]` should be added to itself.
+- `tasks[32]`: Temporary array for holding 32 tasks dequeued at once.
+
+### Pseudocode
+
+```cpp
+function parallel_mult(result, mult, size, tid, num_threads):
+    tasks = array of 32 elements
+
+    // Process 32-element chunks from local queue
+    while Q[tid].deq_32(tasks) == 0:
+        for each task in tasks:
+            base = result[task]
+            for j from 0 to mult[task] - 1:
+                result[task] += base
+
+    // Work stealing loop
+    while true:
+        if all threads are finished:
+            break
+        for each other thread's queue:
+            if Q[other_thread].deq_32(tasks) == 0:
+                for each task in tasks:
+                    base = result[task]
+                    for j from 0 to mult[task] - 1:
+                        result[task] += base
+                break  // Exit if 32 tasks stolen
+        if no work found:
+            mark thread as finished
+            break
+
+function launch_threads(result_parallel, mult):
+    initialize queues for each thread
+    create threads to execute parallel_mult with 32-element work-stealing
+    join all threads
 ```
