@@ -28,29 +28,28 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   // You should use the Q IOQueues to compute
   // local work and then try to steal work
   // from others until all the work is completed
-  int task = 0;
-  for(int x = Q[tid].deq(); x != -1; x = Q[tid].deq()) {
-    float base = result[x];
-    for (int w = 0; w < mult[x]-1; w++) {
-      result[x] = result[x]+base;
-    }
-    task++;
+  int task;
+  while ((task = Q[tid].deq()) != -1) {  // Process local tasks
+      float base = result[task];
+      for (int j = 0; j < mult[task] - 1; j++) {
+          result[task] += base;
+      }
   }
 
   atomic_fetch_add(&finished_threads, 1);
 
-  while(finished_threads.load() != num_threads){
-    for(int i = 0; i < num_threads; i++) {
-      int x = Q[i].deq();
-
-      if(x != -1) {
-        float base = result[x];
-        for (int w = 0; w < mult[x]-1; w++) {
-          result[x] = result[x]+base;
-        }
-        task++;
+  while (finished_threads.load() < num_threads) {  // Continue to steal until all threads finish
+      for (int i = 0; i < num_threads; i++) {
+          if (i != tid) {  // Try to steal from other threads
+              task = Q[i].deq();
+              if (task != -1) {
+                  float base = result[task];
+                  for (int j = 0; j < mult[task] - 1; j++) {
+                      result[task] += base;
+                  }
+              }
+          }
       }
-    }
   }
 }
 
