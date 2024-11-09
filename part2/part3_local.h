@@ -47,18 +47,16 @@ void parallel_mult(float *result, int *mult, int size, int tid, int num_threads)
             break;
         }
 
-        // Attempt to steal from other queues
-        for (int i = 0; i < num_threads; ++i) {
-            if (i != tid) { // Skip own queue
-                task = Q[i].deq();
-                if (task != -1) {
-                    float base = result[task];
-                    for (int j = 0; j < mult[task] - 1; j++) {
-                        result[task] += base;
-                    }
-                    has_work = true;
-                    break; // Exit after successful steal
+        // Attempt to steal work from other threads’ queues
+        for (int i = (tid + 1) % num_threads; i != tid; i = (i + 1) % num_threads) {
+            task = Q[i].deq();
+            if (task != -1) {
+                float base = result[task];
+                for (int j = 0; j < mult[task] - 1; j++) {
+                    result[task] += base;
                 }
+                has_work = true;
+                break; // Exit loop on successful steal
             }
         }
 
