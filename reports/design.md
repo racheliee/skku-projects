@@ -38,11 +38,13 @@ The goal is to implement a synchronous producer-consumer queue for a program tha
 
 ### Architecture
 **Threads**
+
 - **Memory load thread**: loads values from an input array and stores them in `memory_to_trig`
 - **Trig thread**: dequeues values from `memory_to_trig`, computes the cosine of each value, and enqueues the results in `trig_to_memory`
 - **Memory store thread**: dequeues values from `trig_to_memory` and writes back to the array
 
 **Queues**
+
 - `memory_to_trig`: queue between memory load thread and trig thread
 - `trig_to_memory`: queue between trig thread and memory store thread
 
@@ -89,18 +91,20 @@ class CQueue {
 }
 ```
 
----
+
 
 ## Asynchronous Producer-Consumer Queue
 The goal is to implement an asynchronous producer-consumer queue for a program that processes an array of floating-point values by computing the cosine of each value using three communicating threads.
 
 ### Architecture
 **Threads**
+
 - **Memory Load Thread**: Loads values from an input array and stores them in `memory_to_trig`.
 - **Trig Thread**: Dequeues values from `memory_to_trig`, computes the cosine of each value, and enqueues the results in `trig_to_memory`.
 - **Memory Store Thread**: Dequeues values from `trig_to_memory` and writes values back to the array.
 
 **Queues**
+
 - **`memory_to_trig`**: Queue between memory load thread and trig thread.
 - **`trig_to_memory`**: Queue between trig thread and memory store thread.
 
@@ -147,7 +151,7 @@ class CQueue {
 }
 ```
 
----
+
 
 ## Batching Communication
 
@@ -156,11 +160,13 @@ The goal is to implement a batch-based producer-consumer queue that processes an
 ### Architecture
 
 **Threads**
+
 - **Memory Load Thread**: Loads values from an input array in batches of 8 and stores them in the `memory_to_trig` queue.
 - **Trig Thread**: Dequeues batches of 8 values from `memory_to_trig`, computes the cosine of each value, and enqueues the results in the `trig_to_memory` queue.
 - **Memory Store Thread**: Dequeues batches of 8 values from `trig_to_memory` and writes them back to the output array.
 
 **Queues**
+
 - **`memory_to_trig`**: The queue connecting the memory load thread and trig thread, used to pass batches of 8 values at a time.
 - **`trig_to_memory`**: The queue connecting the trig thread and memory store thread, also used to pass batches of 8 values at a time.
 
@@ -297,7 +303,7 @@ function launch_threads(result_parallel, mult):
         wait for thread to complete (join)
 ```
 
----
+
 
 ## Global Worklist Work-Stealing Schedule
 To parallelize a loop with varying workloads across iterations using a global worklist strategy. The global worklist approach with an atomic counter dynamically assigns loop iterations to threads as they request work. This reduces load imbalance, as each thread pulls work from a shared counter until all work is completed.
@@ -305,13 +311,16 @@ To parallelize a loop with varying workloads across iterations using a global wo
 ### Architecture
 
 **Parallel Strategy**: Global Worklist with Atomic Counter
+
 - **Global Counter**: An atomic counter is used to keep track of the next unprocessed loop iteration (`counter`). Each thread uses `counter.fetch_add(1)` to atomically increment and retrieve an index, ensuring unique assignments without race conditions.
 - **Dynamic Work Assignment**: Each thread processes an index obtained from `counter` and continues pulling new work until `counter` reaches the array's size. This strategy dynamically balances the load by allowing threads that finish quickly to continue pulling work.
 
 **Thread Management**:
+
 - **Thread Creation and Joining**: Threads are created and managed in `launch_threads`, which launches `NUM_THREADS` threads, each executing `parallel_mult` with the shared `counter`. Threads continue fetching work until the counter surpasses the total size.
 
 **Variables**
+
 - `result_parallel`: Array of floats, where each index `i` is updated with the value of `result_parallel[i]` multiplied `mult[i]` times (computed via repeat additions).
 - `mult`: Array of integers indicating the number of times each index in `result_parallel` should be multiplied by itself.
 
@@ -339,7 +348,7 @@ function launch_threads(result_parallel, mult):
         wait for thread to complete (join)
 ```
 
----
+
 
 
 ## Local Worklist Work-Stealing Schedule
@@ -348,14 +357,17 @@ To parallelize a loop with varying workloads across iterations using a local wor
 ### Architecture
 
 **Parallel Strategy**: Local Worklist with Work Stealing
+
 - **Local Queues**: Each thread has a local queue (`Q[tid]`), where it enqueues and dequeues tasks independently.
 - **Work Stealing**: When a thread's queue is empty, it attempts to steal work from other threads' queues in a round-robin manner. This dynamic task allocation balances the workload by allowing threads to pick up additional tasks if they complete their own early.
 - **Finished Threads Tracking**: An atomic counter (`finished_threads`) tracks completed threads. When all threads have finished their tasks and cannot steal more work, execution ends.
 
 **Thread Management**:
+
 - **Thread Creation and Joining**: The `launch_threads` function initializes queues and spawns `NUM_THREADS` threads. Each thread runs `parallel_mult`, where it processes its local tasks and performs work stealing if necessary. Threads continue fetching work until they complete all available tasks.
 
 **Variables**:
+
 - `result_parallel`: Array of floats, where each index `i` is updated by performing `mult[i]` repeat additions.
 - `mult`: Array of integers specifying the number of times each `result_parallel[i]` should be added to itself.
 
@@ -390,7 +402,7 @@ function launch_threads(result_parallel, mult):
     join all threads
 ```
 
----
+
 
 ## Local Worklist Work-Stealing with 32-element Dequeue
 
@@ -399,14 +411,17 @@ In this variation, we use the same local worklist and work-stealing strategy but
 ### Architecture
 
 **Parallel Strategy**: Local Worklist with 32-Element Chunked Work Stealing
+
 - **32-Element Dequeue (`deq_32`)**: Each thread dequeues tasks in chunks of 32. If fewer than 32 tasks are available, the function returns `-1`, indicating the need to attempt stealing from other queues.
 - **Work Stealing in Chunks**: When a thread’s queue is empty, it tries to steal 32 tasks from other threads. This minimizes overhead by reducing the number of steal attempts, improving load distribution efficiency.
 - **Finished Threads Tracking**: The `finished_threads` counter tracks completed threads, ensuring that all threads finish before terminating.
 
 **Thread Management**:
+
 - **Thread Creation and Joining**: `launch_threads` initializes the task queues, then creates and joins threads as in `part3_local.h`. Each thread runs `parallel_mult`, dequeuing and processing 32-element chunks and performing chunked work-stealing if its queue is empty.
 
 **Variables**:
+
 - `result_parallel`: Array of floats where each index `i` is updated by performing `mult[i]` repeat additions.
 - `mult`: Array of integers specifying the number of times each `result_parallel[i]` should be added to itself.
 - `tasks[32]`: Temporary array for holding 32 tasks dequeued at once.
