@@ -29,28 +29,45 @@ void parallel_mult(float * result, int *mult, int size, int tid, int num_threads
   // local work and then try to steal work
   // from others until all the work is completed
   int task;
-  while ((task = Q[tid].deq()) != -1) {  // Process local tasks
-      float base = result[task];
-      for (int j = 0; j < mult[task] - 1; j++) {
-          result[task] += base;
-      }
-  }
+    bool has_work = true;
 
-  atomic_fetch_add(&finished_threads, 1);
+    // Process local tasks
+    while ((task = Q[tid].deq()) != -1) {
+        float base = result[task];
+        for (int j = 0; j < mult[task] - 1; j++) {
+            result[task] += base;
+        }
+    }
 
-  while (finished_threads.load() < num_threads) {  // Continue to steal until all threads finish
-      for (int i = 0; i < num_threads; i++) {
-          if (i != tid) {  // Try to steal from other threads
-              task = Q[i].deq();
-              if (task != -1) {
-                  float base = result[task];
-                  for (int j = 0; j < mult[task] - 1; j++) {
-                      result[task] += base;
-                  }
-              }
-          }
-      }
-  }
+    // Now attempt work stealing if needed
+    while (true) {
+        // Check if all threads are finished
+        if (finished_threads.load() >= num_threads) {
+            break; // All work is done
+        }
+
+        // Attempt to steal from other queues
+        has_work = false;
+        for (int i = 0; i < num_threads; ++i) {
+            if (i != tid) {  // Skip self-queue
+                task = Q[i].deq();
+                if (task != -1) {
+                    float base = result[task];
+                    for (int j = 0; j < mult[task] - 1; j++) {
+                        result[task] += base;
+                    }
+                    has_work = true;
+                    break; // Exit inner loop after successful steal
+                }
+            }
+        }
+
+        if (!has_work) {
+            // Indicate thread has completed if no work found
+            atomic_fetch_add(&finished_threads, 1);
+            break;
+        }
+    }
 }
 
 void launch_threads(float* result_parallel, int* mult) {
@@ -63,28 +80,31 @@ void launch_threads(float* result_parallel, int* mult) {
 
   vector<thread> threads;
 
-  for(int i = 0; i < NUM_THREADS; i++) {
-    Q[i].init(SIZE);
-  }
+    // Initialize each IOQueue
+    for (int i = 0; i < NUM_THREADS; i++) {
+        Q[i].init(SIZE);
+    }
 
-  // initial queues in parallel
-  for (int i = 0; i < NUM_THREADS; i++) {
-    threads.emplace_back(parallel_enq, SIZE, i, NUM_THREADS);
-  }
+    // Enqueue indices in parallel
+    for (int i = 0; i < NUM_THREADS; i++) {
+        threads.emplace_back(parallel_enq, SIZE, i, NUM_THREADS);
+    }
 
-  for(auto& thread : threads) {
-    thread.join();
-  }
+    for (auto &thread : threads) {
+        thread.join();
+    }
 
-  threads.clear();
+    threads.clear();
 
-  // Launch the parallel_mult function with workstealing
-  for (int i = 0; i < NUM_THREADS; i++) {
-    threads.emplace_back(parallel_mult, result_parallel, mult, SIZE, i, NUM_THREADS);
-  }
+    // Reset finished_threads counter for fresh execution
+    finished_threads.store(0);
 
-  for(auto& thread : threads) {
-    thread.join();
-  }
+    // Run parallel_mult function with work-stealing strategy
+    for (int i = 0; i < NUM_THREADS; i++) {
+        threads.emplace_back(parallel_mult, result_parallel, mult, SIZE, i, NUM_THREADS);
+    }
 
+    for (auto &thread : threads) {
+        thread.join();
+    }
 }
