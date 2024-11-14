@@ -51,4 +51,40 @@
   - instructions inside methods cannot be interleaved
 - not enough specification for concurrent data structures
   - 실제 함수의 순서에 대한 제약을 제공하지 않음
-  - 
+- sequentialization must respect per-thread 'program order'
+  - order in which the object method calls occur in the thread
+  - ex: enqueue1 -> enqueue2 -> dequeue2 -> dequeue1
+- interleaving의 경우의 수
+  - $\frac{(N+M)!}{N!M!}$
+
+### reasoning about concurrent data structures
+- 만약 어떤 outcome이 가능하다면, 그 outcome을 만들어내는 interleaving이 존재한다
+- 가능한 sequential sequence가 없다면, 그 outcome은 불가능하다
+- BUT sequential consistency는 충분하지 않음
+  - even if objects in isolation are sequentially consistent, programs composed of multiple objects might not be
+  - ex: 만약 각 process의 virtual sequence timeline이 다르다면, 이는 sequential consistency를 만족하지만, 이는 concurrent data structure의 spec을 만족하지 않음
+  - <img src="./assets/4-1.png" width="500">
+
+## Linearizability
+- defined in term of real-time histories
+- sequential consistency + real-time
+  - sequential은 약간 lego brick 쌓는 느낌 vs. linearizability는 slider 느낌
+- linearization point
+  - each operation has a linearization point (unique)
+  - can be anywhere between invocation and response (event가 시작하고 끝나는 지점 사이 어딘가,, 겹치지만 않으면 ok)
+  - indivisible computation
+  - object update/read occurs at this point
+  - mapped to a global time line
+  - <img src="./assets/4-2.png" width="500">
+- strictly stronger that sequential consistency
+  - if a behaviour is disallowed under SC, it is also disallowed under linearizability
+  - locked data structures are linearizable
+
+
+## Progree Properties
+- blocking
+  - a thread is blocked if it is waiting for an event that will never occur
+- linearizability does not dictate that one needs to wait for another thread to finish
+- non-blocking
+  - every thread is allowed to continue executing REGARDLESS of the behaviour of other threads
+  - specification property (not an implementation property)

@@ -166,3 +166,72 @@ with different values?
    - Mutexes provide flexibility in protecting data structures. A user can declare their own data structures and make them thread-safe through mutexes. However, this approach can lead to significant performance drawbacks due to increased blocking and potential contention, as threads must wait for exclusive access to the resource, which can lead to issues like deadlocks and priority inversion if not managed carefully.
 
 
+## quiz #9
+1. Input/output queues use atomic increments and decrements to protect against threads that are trying to concurrently enqueue and dequeue
+   - true
+   - atomic increments and decrements are used to ensure that the producer and consumer threads do not access the same memory location at the same time
+2. The performance of an application using a producer-consumer queue depends most on:
+   - [ ] If the queue is implemented using mutex or not
+   - [ ] The rate at which the consumer enqueues elements --> consumer dequeues
+   - [x] The rate at which the producer enqueues elements
+3. A circular buffer is:
+   - [x] A useful data representation for fixed-length queues
+   - [ ] Part of the C++ standard library
+   - [ ] A special type of memory that is organized in circular pattersTrue
+4. Lock-free data structures are technically undefined because they contain data conflicts
+   - false
+   - lock-free data structures are defined as data structures that can be accessed by multiple threads without the use of locks
+5. Write a few sentences about the pros and cons of using a specialized concurrent queue (e.g. an IO queue) and a fully general concurrent queue.
+   - A specialized concurrent queue offers optimized performance for specific tasks (e.g., I/O operations) but lacks flexibility for other workloads. A general concurrent queue is versatile and reusable but may have lower performance due to lack of specific optimizations.
+
+## quiz #11
+1. A DOALL Loop must have:
+   - [ ] A loop variable that starts at 0 and is incremented by 1
+   - [x] loop iterations that are independent
+   - [ ] be unrolled and interleaved
+   - [ ] not access any memory locations
+2. Given what we've learned: what role do you believe the compiler should play in parallelizing DOALL loops? For example, should it: (1) identify them? (2) parallelize them? (3) pick a parallel schedule? There is no right or wrong answer here, but it is interesting to think about!
+   - (1) identify doall loops 
+   - (2) parallelize them to convert the identified doall loops into parallel code
+   - (3) pick a parallel schedule to optimize the performance of the parallelized code
+3. Which one of the following is NOT a drawback of a global workstealing parallel schedule
+   - [ ] Requires a concurrent data structure
+   - [ ] Contention on shared cache lines
+   - [x] Contention on a single location with RMWs
+4. Which of the following is NOT an overhead of the local worklist workstealing parallel schedule (that we studied in class)
+   - [ ] Initialization of the queues
+   - [ ] Checking a global variable to ensure all work is completed
+   - [x] Managing concurrent enqueues to the worklists
+5. Which of the following solutions can guarantee that a static schedule will not be out of bounds?
+   - [x] The last thread always checks to get the minimum between the end of the array or the value allocated
+   - [ ] The last thread always get the end of the array
+   - [ ] The last thread never receives more than N tasks
+6. Write a few sentences about the pros and cons of using local workstealing queues over the global implicit worklist
+   - pros:
+     - reduced contention because local workstealing queues minimize contention on shared data structures
+     - better cache performance because each thread has its own queue
+     - better scalability because threads can work independently
+   - cons:
+     - load imbalance could occur because threads may not have the same amount of work
+     - overhead of work stealing because threads need to check other threads' queues
+     - more complex to implement because each thread has its own queue
+
+
+## quiz #12
+1. What is a warp?
+   - [x] Group of 32 threads in a GPU
+   - [ ] Group of 16 threads in a GPU
+   - [ ] Group of 2 threads in a GPU
+   - [ ] Group of some threads in a GPU
+2. Like the CPU cache, the Load/Store Unit reads in memory in chunks. Is this affirmation true or false?
+   - true
+   - the Load/Store Unit reads in memory in chunks, just like the CPU cache
+3. What we could observe with the demonstrations made in class about memory accesses on GPUs?
+   - In class, we saw that how data is accessed in GPU memory can make a big difference in performance. When threads access memory locations in order, the GPU can handle it more efficiently, reducing the time it takes. But if threads access random spots in memory, it slows things down because the GPU has to do more work to get the data. Using shared memory, where threads in a block can share data, also helps speed things up by reducing the need to access slower global memory.
+4. Why do we need to calculate int i = blockIdx.x * blockDim.x + threadIdx.x?
+   - [ ] To get the index in the matrix we want to compute in that thread
+   - [x] To get the whole matrix we want to compute in that thread
+   - [ ] To get the index in the matrix we want to compute in that warp
+
+
+
