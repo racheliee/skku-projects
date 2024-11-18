@@ -1,2 +1,2 @@
-> [!INFO]
+> [!NOTE]
 > markdown test
