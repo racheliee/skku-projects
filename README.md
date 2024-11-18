@@ -1,2 +1,2 @@
->[!INFO]
->markdown test
+> [!INFO]
+> markdown test
