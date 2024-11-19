@@ -172,7 +172,7 @@
 - Response time
   - 1 RTT to establish TCP connection
   - 2 RTT to send HTTP request and receive HTTP response (ignore data transmission time)
-  - 
+  
 <img src="./assets/2-6.png" width="500">
 
 ### Persistent HTTP
@@ -182,12 +182,27 @@
 - parallel - multiple TCP connections
   - wire shark에서 ack, syn의 갯수가 적음
 - Response time
-  - Base Pgae: 2RTT (for file transmission time)
-  - additional embedded objects: 1RTT to grabthem all; TCP remains open
+  - Base Page: 2RTT + transmission time
+  - additional embedded objects: (1RTT + transmission time) * n
+    - n = number of embedded objects
+    - TCP remains open
 
 ### Non-Persistent HTTP
 - OS overhead for each connection
 - http header - close
+- Response time
+  - Base Page: 2RTT + transmission time
+  - additional embedded objects: (2RTT + transmission time) * n
+    - n = number of embedded objects
+    - TCP remains open
+
+### pipelining
+- client sends multiple requests without waiting for responses
+- server sends responses in the same order as requests
+- reduces response time
+  - Persistent: 1RTT + transmission time * n
+  - Non-Persistent: 2RTT + transmission time * n
+
 
 ## Cookies
 - User-server state management
@@ -227,6 +242,8 @@
 ### DNS Nameserver
 - on port 53
 - stores DNS RR for a domain
+  - RR: Resource Record
+
 
 ### DNS Services
 - mapping
@@ -246,8 +263,128 @@
 - minimum three levels, each layer has a different role
 <img src="assets/2-8.png" width="500">
 - client queries the root server --> get IP addres for `.com` server 
+  - doesn't have all the info
+  - guaranteed to know the top-level domain (TLD) server
 - client queries the `.com` server --> get IP address for `amazon.com` TLD DNS server
 - client queries the `amazon.com` authoritative DNS server --> get IP address for `www.amazon.com`
 
 ### centralized vs. distributed DNS
-- centralized: single point of failure & load too high for single server
+- centralized: single point of failure & load too high for single server, scalability issues
+- decentralized: no single point of failure, but consistency issues
+
+
+### DNS Name resolution: iterated query
+- root server: if it knows the IP address, it returns the IP address
+- if not, it returns the IP address of the TLD server
+- always a final answer or referral to another server
+- recursive query
+   - return either the IP address or an error message
+   - 정확한 ip 알떄까지 돌아오지 마라 느낌
+- iterated query
+   - return the IP address or the IP address of the next server to query
+- UDP 사용 
+  - faster bc no connection setup
+
+### DNS Caching
+- once a server learns a mapping, it caches the mapping
+- only authoritive NS guaranteed to have up-to-date mapping
+  - chached mappings are NOT considered authoritative
+- benefits
+  - reduced response time
+  - reduced traffic
+  - reduced load on root servers
+- drawbacks
+  - mapping may become stale
+  - DNS poisoning
+
+### DNS records
+- RR format
+  - (name, value, type, ttl)
+
+#### type
+1. A
+   - name: hostname
+   - value: IP address
+2. NS
+   - name: domain
+   - value: authoritative name server
+3. MX
+   - name: domain
+   - value: mail server associated with name
+4. CNAME
+   - name: alias hostname
+   - value: canonical hostname
+   - ex: ibm.com --> servereast.backup2.ibm.com
+
+### DNS protocol messages
+- both query & reply have same format
+
+<img src="assets/2-9.png" width="500">
+
+- message header
+  - identification = 16 bit for query & reply matching
+  - flags
+    - query or reply
+    - recursion desired
+    - recursion available
+    - reply is authoritative
+
+### Using DNS
+```
+gethostbyname() --> Local DNS Server (필요하면 그 위로, TLD 등) --> get reply and connect with web server --> open tcp --> request web page
+```
+- all steps incur delay
+
+## cache
+- goal: satisfy client request without involving origin server
+- holds content previously requested by other users
+- advantages
+  - reduced response time
+  - reduced traffic
+  - reduced load on origin server
+- acts as a middleman between client and origin server
+  - both a client and a server (depends on the pov)
+  - conditional GET이 필요할떄가 있음
+
+> difference bt cache and replication?
+> - cache: temporary storage
+> - replication: permanent storage
+
+### placements
+#### client-side
+- put cache close to client
+- reduce response time for client requests
+- access network --> usually the bottleneck
+- access link/ISP/Internet
+  - if there is a good hit rate, not as much traffic on the access link
+
+#### middle-box
+- put cache near the access ISP
+- 
+
+#### server-side
+- put cache close to server
+- access link/ISP, user에게는 베네핏이 없음
+- origin server: benefits from reduced load
+
+## delay
+- `Internet delay + access delay + LAN delay`
+- Internet delay
+  - RTT (~2sec)
+  - ISP router to origin server
+- access delay
+  - if link not over-utilized (load/intensity < 0.8), delay over access link = ~10ms
+  - if over-utilized (intensity >= 0.8), delay over access link delay increases to many seconds
+    - packets potentially dropped
+- LAN delay
+  - high speed, low delay
+  - ~10ms
+- total delay under heavy load
+  - delay >> ~2sec + *access delay* + 10ms
+
+### improvements
+1. pay access ISP to upgrade access link rate
+2. install cache
+   1. hit rate에 따라 delay가ㄷ 달라짐
+   2. <img src="assets/2-10.png" width="500">
+  

@@ -20,6 +20,7 @@ Table of Contents
     - [desirable characteristics](#desirable-characteristics)
       - [그렇게 만드는 방법:](#그렇게-만드는-방법)
   - [Internet](#internet-1)
+    - [Internet Hierachy](#internet-hierachy)
     - [Internet Service Provider (ISP)](#internet-service-provider-isp)
     - [Components](#components-2)
     - [Services](#services)
@@ -34,6 +35,12 @@ Table of Contents
   - [links: physical media](#links-physical-media)
   - [Organization of nodes](#organization-of-nodes)
   - [Communication path](#communication-path)
+    - [1. circuit switching (reserved)](#1-circuit-switching-reserved)
+      - [advantages:](#advantages)
+      - [disadvantages:](#disadvantages)
+    - [2. packet switching (ond-demand)](#2-packet-switching-ond-demand)
+      - [advantages:](#advantages-1)
+      - [disadvantages:](#disadvantages-1)
   - [Channel Partitioning](#channel-partitioning)
     - [FDM (Frequency Division Multiplexing)](#fdm-frequency-division-multiplexing)
     - [TDM (Time Division Multiplexing)](#tdm-time-division-multiplexing)
@@ -95,8 +102,6 @@ Table of Contents
 
 #### 1. Application Layer (L5)
 
--
-
 #### 2. Transport Layer (L4)
 
 #### 3. Network Layer (L3)
@@ -148,6 +153,19 @@ N hosts --> middle box --> web server (여러개 존재; replication) --> databa
 
 - network of networks
 - interconnected ISPs
+  
+### Internet Hierachy
+1. Tier 1 ISP (Internet Backbone)
+   - 국제ISP
+2. Tier 2 ISP (Regional ISP)
+   - 국제 ISP와 특정 지역을 연결
+3. Tier 3 ISP (Local ISP)
+   - Tier 2 ISP와 연결, local internet 제공
+4. Access Network
+   - connects end users to the internet
+   - cable modem, DSL, etc
+5. End User Device
+   - laptop, phone
 
 ### Internet Service Provider (ISP)
 
@@ -301,18 +319,40 @@ N hosts --> middle box --> web server (여러개 존재; replication) --> databa
 
 ## Communication path
 
-1. circuit switching (reserved)
-
+### 1. circuit switching (reserved)
 - dedicated communication path -> service guaranteed
 - resources are **reserved** for the duration of the communication (end-to-end)
-- reclaiming idle resouces is not possible until the communication is over
-- inefficient for bursty data / data communication
+ - reclaiming idle resouces is not possible until the communication is over
 - ex: telephone network
 
-2. packet switching (ond-demand)
-   - data is divided into packets
-   - packets are sent over the network and reassembled at the destination
-   - **on-demand** resource allocation
+#### advantages:
+- guaranteed bandwidth
+- consistent quality of service
+- reliable & predicatble
+- low latency
+
+#### disadvantages:
+- inefficient for bursty data / data communication
+- limited scalability
+- longer setup time
+- idle resources
+
+### 2. packet switching (ond-demand)
+- data is divided into packets
+- packets are sent over the network and reassembled at the destination
+- **on-demand** resource allocation
+
+#### advantages:
+- efficient use of resources
+- scalable
+- fault tolerant (다른 길로 가셈 노드가 죽으면)
+- shorter setup time
+
+#### disadvantages:
+- no guarantee of service
+- variable throughput, delay, jitter, etc.
+- potential packet loss
+- overhead (header)
 
 ## Channel Partitioning
 
@@ -555,16 +595,31 @@ packet = header + data
 1. **Physical Layer**
    - bits on the wire
    - how to transmit bits
-   - ex: ethernet, wifi, fiber
+   - convert bits and transmitted over the physical medium
+   - ex: ethernet, wifi, fiber, cables, wireless signals
 2. **Data Link Layer**
    - data transfer between end systems connected by a single physical link
+   - adds fream header to the packet to creame a frame
+   - MAC address and information for delivery over the physical medium
    - ex: ethernet, wifi
 3. **Network Layer**
-   - todo: write explanation
+   - data transfer between end systems connected by multiple links
+   - adds an IP heaeder to create ta packet
+    - contains src and dest IP address
+   - ex: IP
+4. **Transport Layer**
+   - data transfer between processes
+   - contains src and dest port number
+   - forms a segment
+   - ex: TCP, UDP
+5. **Application Layer**
+   - data transfer between applications
+   - ex: HTTP, SMTP, FTP, email
 
 ## Encapsulation
 <img src="assets/1-6.png" width="500">
 <img src="assets/1-7.png" width="500">
+
 - message = ICMP message
 - TTL자체는 header의 hop limit이 큼 (도착하라고) --> 얜 response임
 - switch
