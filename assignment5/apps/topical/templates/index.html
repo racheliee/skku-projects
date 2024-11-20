@@ -1,12 +1,43 @@
 [[extend 'layout.html']]
 
 <div class="section" id="app">
-<!-- Complete.  -->
+  <div class="columns">
+    <div class="column is-three-quarters">
+      <textarea id="post-input" v-model="postContent"></textarea>
+      <button id="post-button" @click="createPost">Post</button>
+      <div v-for="post in filteredPosts" :key="post.id" class="post">
+        <p class="post-content">{{ post.content }}</p>
+        <button
+          class="delete-button"
+          @click="deletePost(post.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <div class="column">
+      <div class="tags">
+        <button
+          v-for="tag in tags"
+          :key="tag"
+          class="tag"
+          @click="toggleTag(tag)"
+          :class="{ active: activeTags.includes(tag) }"
+        >
+          {{ tag }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 [[block page_scripts]]
 <script>
   // Complete.
+  let get_posts_url = "[[=XML(get_posts_url)]]";
+  let create_post_url = "[[=URL('create_post')]]";
+  let delete_post_url = "[[=URL('delete_post')]]";
+  let get_tags_url = "[[=XML(get_tags_url)]]";
 </script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
