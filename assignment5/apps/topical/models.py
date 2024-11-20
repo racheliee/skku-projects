@@ -29,3 +29,5 @@ db.define_table(
     Field("user_email", default=get_user_email),
     Field("created_at", "datetime", default=datetime.datetime.utcnow),
 )
+
+db.commit()

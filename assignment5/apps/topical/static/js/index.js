@@ -31,11 +31,16 @@ app.data = {
       fetch(get_posts_url)
         .then((res) => res.json())
         .then((data) => {
-          this.posts = data.posts.map((post) => ({
-            ...post,
-            tags: post.tags ? post.tags.split(",") : [],
-          }));
-        });
+          console.log("Fetched posts:", data.posts); // Debug log
+          this.posts = [
+            ...data.posts.map((post) => ({
+              ...post,
+              tags: post.tags || [], // Ensure tags is an array
+            })),
+          ];
+          console.log("Updated posts in Vue:", this.posts); // Debug log
+        })
+        .catch((error) => console.error("Error fetching posts:", error));
     },
     createPost: function () {
       if (!this.isLoggedIn) {

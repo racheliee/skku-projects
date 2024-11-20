@@ -17,11 +17,12 @@ def index():
     )
 
 @action('get_posts')
-@action.uses(db, auth.user)
+@action.uses(db)
 def get_posts():
     posts = db(db.post).select(orderby=~db.post.created_at).as_list()
     for post in posts:
         post['tags'] = post['tags'].split(",") if post['tags'] else []
+    print(f"Posts: {posts}")
     return {"posts": posts}
 
 @action('create_post', method="POST")
