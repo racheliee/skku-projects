@@ -59,7 +59,7 @@ app.data = {
             this.posts.unshift({
               id: data.post_id,
               content: this.postContent,
-              tags: data.tags || [],
+              tags: data.tags.split(","),
               created_at: new Date().toISOString(),
               user_email: this.currentUser,
             });
@@ -88,6 +88,14 @@ app.data = {
         })
         .catch((error) => console.error("Error:", error));
     },
+    filteredPosts: function () {
+      if (this.activeTags.length === 0) {
+        return this.posts; // Show all posts if no tag is active
+      }
+      return this.posts.filter((post) =>
+        post.tags.some((tag) => this.activeTags.includes(tag))
+      );
+    },
     fetchTags: function () {
       fetch(get_tags_url)
         .then((res) => res.json())
@@ -108,7 +116,7 @@ app.data = {
       this.posts.forEach((post) => {
         post.tags.forEach((tag) => tagSet.add(tag));
       });
-      this.tags = Array.from(tagSet);
+      this.tags = Array.from(tagSet); // Update the tags array
     },
   },
   mounted: function () {
