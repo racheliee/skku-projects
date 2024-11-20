@@ -12,6 +12,8 @@ app.data = {
       tags: [],
       activeTags: [],
       postContent: "",
+      currentUser: current_user_email, // Set the logged-in user's email
+      isLoggedIn: !!current_user_email, // Check if the user is logged in
     };
   },
   computed: {
@@ -35,7 +37,15 @@ app.data = {
           }));
         });
     },
-    createPost() {
+    createPost: function () {
+      if (!this.isLoggedIn) {
+        console.error("You must be logged in to create a post.");
+        return;
+      }
+      if (!this.postContent.trim()) {
+        console.error("Post content cannot be empty.");
+        return;
+      }
       fetch(create_post_url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,26 +60,35 @@ app.data = {
               id: data.post_id,
               content: this.postContent,
               tags: data.tags || [],
+              created_at: new Date().toISOString(),
+              user_email: this.currentUser,
             });
+            this.updateTags();
             this.postContent = ""; // Clear the input
           }
         })
         .catch((error) => console.error("Error creating post:", error));
     },
-    deletePost: async function (postId) {
+    deletePost: function (postId) {
+      const post = this.posts.find((p) => p.id === postId);
+      if (post.user_email !== this.currentUser) {
+        console.error("You can only delete your own posts.");
+        return;
+      }
       fetch(`${delete_post_url}/${postId}`, {
         method: "DELETE",
       })
         .then((response) => {
           if (response.ok) {
             this.posts = this.posts.filter((post) => post.id !== postId);
+            this.updateTags();
           } else {
             console.error("Failed to delete post");
           }
         })
         .catch((error) => console.error("Error:", error));
     },
-    fetchTags: async function () {
+    fetchTags: function () {
       fetch(get_tags_url)
         .then((res) => res.json())
         .then((data) => {
@@ -84,10 +103,17 @@ app.data = {
         this.activeTags.splice(index, 1);
       }
     },
+    updateTags: function () {
+      const tagSet = new Set();
+      this.posts.forEach((post) => {
+        post.tags.forEach((tag) => tagSet.add(tag));
+      });
+      this.tags = Array.from(tagSet);
+    },
   },
-  mounted: async function () {
-    await this.fetchPosts();
-    await this.fetchTags();
+  mounted: function () {
+    this.fetchPosts();
+    this.fetchTags();
   },
 };
 
