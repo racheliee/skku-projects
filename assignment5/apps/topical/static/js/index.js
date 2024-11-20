@@ -1,10 +1,7 @@
 "use strict";
 
-// This will be the object that will contain the Vue attributes
-// and be used to initialize it.
 let app = {};
 
-// Vue data and methods
 app.data = {
   data: function () {
     return {
@@ -31,14 +28,14 @@ app.data = {
       fetch(get_posts_url)
         .then((res) => res.json())
         .then((data) => {
-          console.log("Fetched posts:", data.posts); // Debug log
+          console.log("Fetched posts:", data.posts); 
           this.posts = [
             ...data.posts.map((post) => ({
               ...post,
               tags: post.tags || [], // Ensure tags is an array
             })),
           ];
-          console.log("Updated posts in Vue:", this.posts); // Debug log
+          console.log("Updated posts in Vue:", this.posts); 
         })
         .catch((error) => console.error("Error fetching posts:", error));
     },
@@ -130,12 +127,10 @@ app.data = {
   },
 };
 
-// Vue app initialization
 app.vue = Vue.createApp(app.data).mount("#app");
 
-// Initialize the app
 app.load_data = function () {
-  console.log("App loaded and initialized."); // Debug log
+  console.log("App loaded and initialized.");
 };
 
 app.load_data();
