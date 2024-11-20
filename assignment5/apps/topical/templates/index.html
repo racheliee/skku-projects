@@ -27,20 +27,22 @@
       <div>
         <div v-for="post in filteredPosts" :key="post.id" class="post box">
           <p class="post-content">{{ post.content }}</p>
-          <p class="post-meta">
-            Tags:
-            <span v-for="tag in post.tags" :key="tag" class="post-tag">
-              #{{ tag }}
-            </span>
-          </p>
-          <button
-            v-if="post.user_email === currentUser"
-            class="delete-button button is-danger is-small mt-1"
-            @click="deletePost(post.id)"
-            aria-label="Delete"
+          <p
+            class="post-meta is-flex is-justify-content-space-between is-align-items-center"
           >
-            <i class="fas fa-trash"></i>
-          </button>
+            <span>
+              Posted on {{ new Date(post.created_at).toLocaleString() }} by {{
+              post.user_email }}
+            </span>
+            <button
+              v-if="post.user_email === currentUser"
+              class="delete-button button is-danger is-small"
+              @click="deletePost(post.id)"
+              aria-label="Delete"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </p>
         </div>
       </div>
     </div>
