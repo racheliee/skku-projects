@@ -177,6 +177,7 @@ class ApproximateQAgent(PacmanQAgent):
         self.featExtractor = reflection.qualifiedImport(extractor)
 
         # You might want to initialize weights here.
+        self.weights = {}
 
     def final(self, state):
         """
@@ -190,4 +191,26 @@ class ApproximateQAgent(PacmanQAgent):
         if self.episodesSoFar == self.numTraining:
             # You might want to print your weights here for debugging.
             # *** Your Code Here ***
-            raise NotImplementedError()
+            print("final weights: ", self.weights)
+            # raise NotImplementedError()
+        
+    def getQValue(self, state, action):
+        features = self.featExtractor.getFeatures(self, state, action)
+        q_value = 0.0
+        
+        for feature, value in features.items():
+            q_value += self.weights.get(feature, 0.0) * value
+        
+        return q_value
+
+    def update(self, state, action, nextState, reward):
+        features = self.featExtractor.getFeatures(self, state, action)
+        q_val = self.getQValue(state, action)
+        
+        next_val = self.getValue(nextState)
+        correction = (reward + self.getDiscountRate() * next_val) - q_val
+        
+        for feature, value in features.items():
+            if feature not in self.weights:
+                self.weights[feature] = 0.0
+            self.weights[feature] += self.getAlpha() * correction * value
