@@ -5,7 +5,7 @@
 
 function main() {
     // Number of particles
-    const NUMPARTICLES = 128;
+    const NUMPARTICLES = 128; // N = 4096
 
     // Number of workers
     const NUMWORKERS = 4;
