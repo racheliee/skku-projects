@@ -1,5 +1,9 @@
 from pacai.agents.learning.reinforcement import ReinforcementAgent
 from pacai.util import reflection
+from collections import defaultdict
+import random
+from pacai.util.probability import flipCoin
+
 
 class QLearningAgent(ReinforcementAgent):
     """
@@ -46,6 +50,7 @@ class QLearningAgent(ReinforcementAgent):
         super().__init__(index, **kwargs)
 
         # You can initialize Q-values here.
+        self.qValues = defaultdict(float)
 
     def getQValue(self, state, action):
         """
@@ -54,7 +59,7 @@ class QLearningAgent(ReinforcementAgent):
         Should return 0.0 if the (state, action) pair has never been seen.
         """
 
-        return 0.0
+        return self.qValues[(state, action)]
 
     def getValue(self, state):
         """
@@ -69,7 +74,11 @@ class QLearningAgent(ReinforcementAgent):
         Whereas this method returns the value of the best action.
         """
 
-        return 0.0
+        legalActions = self.getLegalActions(state)
+        if not legalActions:
+            return 0.0
+
+        return max(self.getQValue(state, action) for action in legalActions)
 
     def getPolicy(self, state):
         """
@@ -84,14 +93,45 @@ class QLearningAgent(ReinforcementAgent):
         Whereas this method returns the best action itself.
         """
 
-        return None
+        legalActions = self.getLegalActions(state)
+
+        if not legalActions:
+            return None  # terminal state
+
+        best_value = self.getValue(state)
+        best_actions = [action for action in legalActions if self.getQValue(
+            state, action) == best_value]
+
+        return random.choice(best_actions)
+
+    def getAction(self, state):
+        legalActions = self.getLegalActions(state)
+
+        if not legalActions:
+            return None  # terminal state
+
+        if flipCoin(self.getEpsilon()):
+            return random.choice(legalActions)  # explore
+        else:
+            return self.getPolicy(state)  # exploit
+
+    def update(self, state, action, nextState, reward):
+        old_q_value = self.getQValue(state, action)
+        next_value = self.getValue(nextState)
+        alpha = self.getAlpha()
+        gamma = self.getDiscountRate()
+
+        # Update rule
+        self.qValues[(state, action)] = old_q_value + alpha * \
+            (reward + gamma * next_value - old_q_value)
+
 
 class PacmanQAgent(QLearningAgent):
     """
     Exactly the same as `QLearningAgent`, but with different default parameters.
     """
 
-    def __init__(self, index, epsilon = 0.05, gamma = 0.8, alpha = 0.2, numTraining = 0, **kwargs):
+    def __init__(self, index, epsilon=0.05, gamma=0.8, alpha=0.2, numTraining=0, **kwargs):
         kwargs['epsilon'] = epsilon
         kwargs['gamma'] = gamma
         kwargs['alpha'] = alpha
@@ -109,6 +149,7 @@ class PacmanQAgent(QLearningAgent):
         self.doAction(state, action)
 
         return action
+
 
 class ApproximateQAgent(PacmanQAgent):
     """
@@ -131,7 +172,7 @@ class ApproximateQAgent(PacmanQAgent):
     """
 
     def __init__(self, index,
-            extractor = 'pacai.core.featureExtractors.IdentityExtractor', **kwargs):
+                 extractor='pacai.core.featureExtractors.IdentityExtractor', **kwargs):
         super().__init__(index, **kwargs)
         self.featExtractor = reflection.qualifiedImport(extractor)
 
