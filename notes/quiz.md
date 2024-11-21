@@ -222,11 +222,12 @@ with different values?
    - [x] Group of 32 threads in a GPU
    - [ ] Group of 16 threads in a GPU
    - [ ] Group of 2 threads in a GPU
-   - [ ] Group of some threads in a GPU
+   - [x] Group of some threads in a GPU --> 여러개 일 수도 있으니까!! spectrum of designs
 2. Like the CPU cache, the Load/Store Unit reads in memory in chunks. Is this affirmation true or false?
    - true
    - the Load/Store Unit reads in memory in chunks, just like the CPU cache
 3. What we could observe with the demonstrations made in class about memory accesses on GPUs?
+   - Memory coalescing accelerates execution
    - In class, we saw that how data is accessed in GPU memory can make a big difference in performance. When threads access memory locations in order, the GPU can handle it more efficiently, reducing the time it takes. But if threads access random spots in memory, it slows things down because the GPU has to do more work to get the data. Using shared memory, where threads in a block can share data, also helps speed things up by reducing the need to access slower global memory.
 4. Why do we need to calculate int i = blockIdx.x * blockDim.x + threadIdx.x?
    - [ ] To get the index in the matrix we want to compute in that thread
@@ -234,4 +235,37 @@ with different values?
    - [ ] To get the index in the matrix we want to compute in that warp
 
 
+## quiz #13
+1. A relaxed memory execution refers to:
+   - [ ] An execution where some stores failed to reach main memory
+   - [ ] Any execution which contains a data-conflict
+   - [ ] An execution that utilizes the processor's store buffer
+   - [x] An execution that is not sequentially consistent
+2. Which of the following memory accesses pairs, when they appear in program order, does x86 allow to be re-ordered?
+   - [ ] Load followed by a Store
+   - [ ] Load followed by a Load
+   - [ ] Store followed by a Store
+   - [x] Store followed by a Load
+3. How do weak memory models cause unintended behaviors in parallel code?
+   - Weak memory models allow memory operations to be reordered or delayed, leading to inconsistencies between the order of operations intended by the programmer and the order observed by threads. This can cause unintended behaviors in parallel code, such as race conditions, stale or incorrect data being read, and violations of dependencies between threads, ultimately leading to hard-to-debug errors.
 
+## quiz #14
+1. The C++ relaxed memory order provides
+   - [ ] no orderings at all
+   - [ ] orderings only between accesses of the same address
+   - [x] TSO memory behaviors when run on an x86 system
+   - [x] an easy way to accidentally introduce horrible bugs into your program
+2. In terms of memory models, the compiler needs to ensure the following property:
+   - [x] Any weak behavior allowed in the language is also allowed in the ISA
+   - [ ] Any weak behaviors that are disallowed in the language need to be disallowed in the ISA
+   - [ ] The compilation ensures that the program has sequentially consistent behavior at the ISA level
+   - [ ] The compiler does not need to reason about relaxed memory
+3. A program that uses mutexes and has no data conflicts does not have weak memory behaviors for which of the following reasons?
+   - [ ] Mutexes prevent memory accesses from happening close enough in time for weak behaviors to occur
+   - [ ] The OS has built in support for Mutexes that disable architecture features, such as the store buffer
+   - [x] A correct mutex implementation uses fences in lock and unlock to disallow weak behaviors
+4. Assuming you had a sequentially consistent processor, any C/++ program you ran on it would also be sequentially consistent, regardless of if there are data-conflicts or not.
+   - true
+   - sequentially consistent processor guarantees that the program has sequentially consistent behavior at the ISA level
+5. If you put a fence after every memory instruction, would that be sufficient to disallow all weak behaviors on a weak architecture? Please write a few sentences explaining your answer.
+   - Yes, placing a fence after every memory instruction would disallow all weak behaviors because fences enforce ordering constraints and flush store buffers. However, this approach is inefficient, as it would significantly degrade performance by preventing hardware optimizations like instruction reordering and store buffering, which are the main benefits of weak memory models.
