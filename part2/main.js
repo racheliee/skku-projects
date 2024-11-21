@@ -9,7 +9,7 @@ function main() {
 
     // Number of workers
     const NUMWORKERS = 4;
-    
+
     // Get canvas and context 
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext("2d");
@@ -51,65 +51,75 @@ function main() {
     var frameCounter = 0;
 
     // Initialize a worker
-    var worker = new Worker('./webWorker.js');
+    // var worker = new Worker('./webWorker.js');
+
+    // create array of workers
+    const workers = Array.from({ length: NUMWORKERS }, () => new Worker('./webWorker.js'));
+    const chunkSize = Math.ceil(NUMPARTICLES / NUMWORKERS);
 
     // Update Particles
     function frame() {
+        let workersCompleted = 0;
 
-        // Gather all data together that will get send over to worker
-        var transferData = {
-            NUMPARTICLES: NUMPARTICLES,
-            particlesComputeBuffer: particlesComputeBuffer,
-            particlesRenderBuffer: particlesRenderBuffer
-        };
+        // Divide the work among workers
+        workers.forEach((worker, workerIndex) => {
+            const startIndex = workerIndex * chunkSize;
+            const endIndex = Math.min(startIndex + chunkSize, NUMPARTICLES);
 
-        // Send work to web worker
-        worker.postMessage(transferData);
-        
-        // Receive work done by web worker
-        worker.onmessage = function() {
+            const transferData = {
+                NUMPARTICLES: NUMPARTICLES,
+                STARTINDEX: startIndex,
+                ENDINDEX: endIndex,
+                particlesComputeBuffer: particlesComputeBuffer,
+                particlesRenderBuffer: particlesRenderBuffer,
+            };
 
-            // Erase all particles
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            worker.postMessage(transferData);
 
-            // Draw canvas background
-            context.fillStyle = "black";
-            context.fillRect(0, 0, canvas.width, canvas.height);
+            worker.onmessage = function () {
+                workersCompleted++;
 
-            // Draw particles with new data into canvas and
-	        // update particlesComputeData with particlesRenderData
-            for (let i = 0; i < NUMPARTICLES; i++) {
-                context.fillStyle = "white";
-                context.fillRect(particlesRenderData[2 * i], particlesRenderData[2 * i + 1], 3, 3);
-                particlesComputeData[2*i] = particlesRenderData[2*i];
-                particlesComputeData[2*i+1] = particlesRenderData[2*i+1];
-            }
+                // When all workers finish
+                if (workersCompleted === NUMWORKERS) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.fillStyle = "black";
+                    context.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Measure performance
-            currentTime = performance.now();
-            var elapsedTime = currentTime - previousTime;
-            previousTime = currentTime;
-            var framePerSecond = Math.round(1 / (elapsedTime / 1000));
-            totalFramePerSecond += framePerSecond;
-            frameCounter++;
+                    for (let i = 0; i < NUMPARTICLES; i++) {
+                        context.fillStyle = "white";
+                        context.fillRect(particlesRenderData[2 * i], particlesRenderData[2 * i + 1], 3, 3);
 
-            if(updatePerformance) {
-                updatePerformance = false;
+                        // Update compute buffer for the next frame
+                        particlesComputeData[2 * i] = particlesRenderData[2 * i];
+                        particlesComputeData[2 * i + 1] = particlesRenderData[2 * i + 1];
+                    }
 
-                let averageFramePerSecond = Math.round(totalFramePerSecond / frameCounter);
-                
-                frameCounter = 0;
-                totalFramePerSecond = 0;
+                    // Measure FPS
+                    currentTime = performance.now();
+                    const elapsedTime = currentTime - previousTime;
+                    previousTime = currentTime;
+                    const framePerSecond = Math.round(1 / (elapsedTime / 1000));
+                    totalFramePerSecond += framePerSecond;
+                    frameCounter++;
 
-                document.getElementById("fps").innerHTML = `FPS:  ${averageFramePerSecond}`;
+                    if (updatePerformance) {
+                        updatePerformance = false;
+                        const averageFramePerSecond = Math.round(totalFramePerSecond / frameCounter);
+                        frameCounter = 0;
+                        totalFramePerSecond = 0;
 
-                // Update FPS every 100ms
-                setTimeout(() => {
-                    updatePerformance = true;
-                }, 100);
-            }
-            requestAnimationFrame(frame);
-        }
+                        document.getElementById("fps").innerHTML = `FPS: ${averageFramePerSecond}`;
+
+                        setTimeout(() => {
+                            updatePerformance = true;
+                        }, 100);
+                    }
+
+                    // Request the next frame
+                    requestAnimationFrame(frame);
+                }
+            };
+        });
     }
     requestAnimationFrame(frame);
 }
