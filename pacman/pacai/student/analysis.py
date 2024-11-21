@@ -12,42 +12,48 @@ NOT_POSSIBLE = None
 def question2():
     """
     [Enter a description of what you did here.]
+    Updated parameters to encourage agent to cross the bridge
     """
 
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0.0
 
     return answerDiscount, answerNoise
 
 def question3a():
     """
     [Enter a description of what you did here.]
+    Added a penalty for each step to encourage faster decision making
     """
 
     answerDiscount = 0.9
-    answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerNoise = 0.0
+    answerLivingReward = -4.0
 
     return answerDiscount, answerNoise, answerLivingReward
 
 def question3b():
     """
     [Enter a description of what you did here.]
+    reduced discount rate to encourage agent to take immediate rewards
+    introduced penalty for delays
     """
 
-    answerDiscount = 0.9
-    answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerDiscount = 0.5
+    answerNoise = 0.4
+    answerLivingReward = -2.0
 
     return answerDiscount, answerNoise, answerLivingReward
 
 def question3c():
     """
     [Enter a description of what you did here.]
+    Left it at longterm focus with 0.9 discount rate
+    lowered noise to toerlate risks
     """
 
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0.0
     answerLivingReward = 0.0
 
     return answerDiscount, answerNoise, answerLivingReward
@@ -55,22 +61,26 @@ def question3c():
 def question3d():
     """
     [Enter a description of what you did here.]
+    added noise to add caution to avoid the cliff
+    encouraged faster decision making with a penalty for each step
     """
 
     answerDiscount = 0.9
-    answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerNoise = 0.3
+    answerLivingReward = -0.1
 
     return answerDiscount, answerNoise, answerLivingReward
 
 def question3e():
     """
     [Enter a description of what you did here.]
+    high noise to avoid exists
+    strong penalty for each step to discourage movement
     """
 
     answerDiscount = 0.9
-    answerNoise = 0.2
-    answerLivingReward = 0.0
+    answerNoise = 0.9
+    answerLivingReward = -1.0
 
     return answerDiscount, answerNoise, answerLivingReward
 
