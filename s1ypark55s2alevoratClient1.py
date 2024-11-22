@@ -44,7 +44,6 @@ def main():
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 client_socket.connect((server_ip, server_port))
-                message = f"BRIDGE\nclientID: {client_id}\n\n"
                 message = (
                     f"BRIDGE\r\n"
                     f"clientID: {client_id}\r\n"
