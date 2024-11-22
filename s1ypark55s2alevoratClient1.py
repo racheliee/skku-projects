@@ -60,7 +60,7 @@ def main():
         while True:
             command = input("Enter a command (/id, /register, /bridge): ").strip().lower()
             if command == "/id":
-                print(f"Your Client ID is: {client_id}")
+                print(f"{client_id}")
             elif command == "/register":
                 send_register()
             elif command == "/bridge":
