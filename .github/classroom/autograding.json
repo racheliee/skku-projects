@@ -1,0 +1,233 @@
+{
+    "tests": [
+        {
+            "name": "Part 1: Compile",
+            "setup": "cp /home/cse113/cse113-autograder/hw4/main-grader.py .",
+            "run": "python3 main-grader.py C 1 0",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1.1 (Spawn and Join): Check for data race",
+            "run": "python3 main-grader.py R 1 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1.2 (Basic SR Barrier): Check for data race",
+            "run": "python3 main-grader.py R 1 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1.3 (Optimized SR Barrier): Check for data race",
+            "run": "python3 main-grader.py R 1 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 1.1 (Spawn and Join): 1 Thread Timing",
+            "run": "python3 main-grader.py T 1 1 --threads 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1.1 (Spawn and Join): CORES (16) Threads Timing",
+            "run": "python3 main-grader.py T 1 1 --threads 16",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1.1 (Spawn and Join): 2x CORES (32) Threads Timing",
+            "run": "python3 main-grader.py T 1 1 --threads 32",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 60,
+            "points": 1
+          },
+          {
+            "name": "Part 1.2 (Basic SR Barrier): 1 Thread Timing",
+            "run": "python3 main-grader.py T 1 2 --threads 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1.2 (Basic SR Barrier): CORES (16) Threads Timing",
+            "run": "python3 main-grader.py T 1 2 --threads 16",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1.2 (Basic SR Barrier): 2x CORES (32) Threads Timing",
+            "run": "python3 main-grader.py T 1 2 --threads 32",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 60,
+            "points": 1
+          },
+          {
+            "name": "Part 1.3 (Optimized SR Barrier): 1 Thread Timing",
+            "run": "python3 main-grader.py T 1 3 --threads 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1.3 (Optimized SR Barrier): CORES (16) Threads Timing",
+            "run": "python3 main-grader.py T 1 3 --threads 16",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 1.3 (Optimized SR Barrier): 2x CORES (32) Threads Timing",
+            "run": "python3 main-grader.py T 1 3 --threads 32",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+
+          {
+            "name": "Part 2: Compile",
+            "run": "python3 main-grader.py C 2 0",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 2.1 (Relaxed SB): Check for data race",
+            "run": "python3 main-grader.py R 2 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 2.2 (Sync SB): Check for data race",
+            "run": "python3 main-grader.py R 2 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 2.3 (Disallowed SB): Check for data race",
+            "run": "python3 main-grader.py R 2 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 2.1 (Relaxed SB): Behavior Histogram",
+            "run": "python3 main-grader.py T 2 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 30,
+            "points": 1
+          },
+          {
+            "name": "Part 2.2 (Sync SB): Behavior Histogram",
+            "run": "python3 main-grader.py T 2 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 30,
+            "points": 1
+          },
+          {
+            "name": "Part 2.3 (Disallowed SB): Behavior Histogram",
+            "run": "python3 main-grader.py T 2 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 30,
+            "points": 1
+          },
+
+
+          {
+            "name": "Part 3: Compile",
+            "run": "python3 main-grader.py C 3 0",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 3.1 (SCDekkers): Check for data race",
+            "run": "python3 main-grader.py R 3 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+        },
+        {
+            "name": "Part 3.1 (SCDekkers): Throughput/Violations",
+            "run": "python3 main-grader.py T 3 1",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 3.2 (RDekkers): Throughput/Violations",
+            "run": "python3 main-grader.py T 3 2",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          },
+          {
+            "name": "Part 3.3 (TSODekkers): Throughput/Violations",
+            "run": "python3 main-grader.py T 3 3",
+            "input": "",
+            "output": "pass",
+            "comparison": "included",
+            "timeout": 10,
+            "points": 1
+          }
+    ]
+}
