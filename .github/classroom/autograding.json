@@ -2,7 +2,7 @@
     "tests": [
         {
             "name": "Part 1: Compile",
-            "setup": "cp /home/cse113/cse113-autograder/hw4/main-grader.py .",
+            "setup": "cp /home/jimlauda/cse113-autograder/hw4/main-grader.py .",
             "run": "python3 main-grader.py C 1 0",
             "input": "",
             "output": "pass",
@@ -47,8 +47,8 @@
             "points": 1
           },
           {
-            "name": "Part 1.1 (Spawn and Join): CORES (16) Threads Timing",
-            "run": "python3 main-grader.py T 1 1 --threads 16",
+            "name": "Part 1.1 (Spawn and Join): CORES (4) Threads Timing",
+            "run": "python3 main-grader.py T 1 1 --threads 4",
             "input": "",
             "output": "pass",
             "comparison": "included",
@@ -56,8 +56,8 @@
             "points": 1
           },
           {
-            "name": "Part 1.1 (Spawn and Join): 2x CORES (32) Threads Timing",
-            "run": "python3 main-grader.py T 1 1 --threads 32",
+            "name": "Part 1.1 (Spawn and Join): 2x CORES (8) Threads Timing",
+            "run": "python3 main-grader.py T 1 1 --threads 8",
             "input": "",
             "output": "pass",
             "comparison": "included",
@@ -74,8 +74,8 @@
             "points": 1
           },
           {
-            "name": "Part 1.2 (Basic SR Barrier): CORES (16) Threads Timing",
-            "run": "python3 main-grader.py T 1 2 --threads 16",
+            "name": "Part 1.2 (Basic SR Barrier): CORES (4) Threads Timing",
+            "run": "python3 main-grader.py T 1 2 --threads 4",
             "input": "",
             "output": "pass",
             "comparison": "included",
@@ -83,8 +83,8 @@
             "points": 1
           },
           {
-            "name": "Part 1.2 (Basic SR Barrier): 2x CORES (32) Threads Timing",
-            "run": "python3 main-grader.py T 1 2 --threads 32",
+            "name": "Part 1.2 (Basic SR Barrier): 2x CORES (8) Threads Timing",
+            "run": "python3 main-grader.py T 1 2 --threads 8",
             "input": "",
             "output": "pass",
             "comparison": "included",
@@ -101,8 +101,8 @@
             "points": 1
           },
           {
-            "name": "Part 1.3 (Optimized SR Barrier): CORES (16) Threads Timing",
-            "run": "python3 main-grader.py T 1 3 --threads 16",
+            "name": "Part 1.3 (Optimized SR Barrier): CORES (4) Threads Timing",
+            "run": "python3 main-grader.py T 1 3 --threads 4",
             "input": "",
             "output": "pass",
             "comparison": "included",
@@ -110,8 +110,8 @@
             "points": 1
           },
           {
-            "name": "Part 1.3 (Optimized SR Barrier): 2x CORES (32) Threads Timing",
-            "run": "python3 main-grader.py T 1 3 --threads 32",
+            "name": "Part 1.3 (Optimized SR Barrier): 2x CORES (8) Threads Timing",
+            "run": "python3 main-grader.py T 1 3 --threads 8",
             "input": "",
             "output": "pass",
             "comparison": "included",
@@ -231,3 +231,4 @@
           }
     ]
 }
+
