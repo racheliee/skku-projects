@@ -33,7 +33,7 @@ def main():
         print(f"Server listening on {server_ip}:{server_port}")
     except Exception as e:
         print(f"Error setting up the server: {e}")
-        sys.exit(1)
+        sys.exit(0)
 
     while True:
         try:
