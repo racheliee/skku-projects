@@ -70,8 +70,12 @@ class OffenseAgent(CaptureAgent):
 
         # Food-related features
         foodList = self.getFood(successorGameState).asList()
+        capsules = self.getCapsules(successorGameState)
         features['foodEaten'] = len(self.getFood(currentGameState).asList()) - len(foodList)
         features['minFoodDistance'] = min([self.getMazeDistance(myPos, food) for food in foodList])
+
+        if len(capsules) != 0:
+            features['minCapsuleDistance'] = min([self.getMazeDistance(myPos, capsule) for capsule in capsules])
 
         # Ghost-related features
         enemies = [successorGameState.getAgentState(i) for i in self.getOpponents(successorGameState)]
@@ -115,6 +119,7 @@ class OffenseAgent(CaptureAgent):
             'distanceToScaredGhost': -5,  # Encourage moving toward scared ghosts
             'scaredGhostEaten': 50,  # Slight reward for eating a scared ghost
             'distanceToHome': -0.5,  # Slight incentive to return home
+            'minCapsuleDistance': -30,  # Incentivize capsules over food
         }
 
 
