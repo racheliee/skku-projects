@@ -1,9 +1,18 @@
 import socket
 import argparse
 import sys
+import signal
 
 # Data structure to store registered clients
 clients = {}
+server_socket = None
+
+def handle_sigint(signum, frame):
+    global server_socket
+    if server_socket:
+        print("\nShutting down the server.")
+        server_socket.close()
+    sys.exit(0)
 
 def main():
     # Parse input arguments
@@ -13,6 +22,8 @@ def main():
 
     server_ip = "127.0.0.1"
     server_port = args.port
+    
+    signal.signal(signal.SIGINT, handle_sigint)
 
     # Create and bind the server socket
     try:
