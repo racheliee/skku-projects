@@ -97,6 +97,23 @@ class OffenseAgent(BaseAgent):
         (otherwise a random legal action will be chosen for you).
         """
 
+        actions = gameState.getLegalActions(self.index)
+        bestAction = None
+        maxScore = float('-inf')
+        
+        for action in actions:
+            successor = gameState.generateSuccessor(self.index, action)
+            score = self.evaluateOffense(successor)
+            if score > maxScore:
+                maxScore = score
+                bestAction = action
+        
+        return bestAction
+
+    def evaluateOffense(self, gameState):
+        """
+        Evaluate the offense strategy.
+        """
         pass
 
     def getFood(self, gameState):
@@ -284,6 +301,23 @@ class DefenseAgent(BaseAgent):
         (otherwise a random legal action will be chosen for you).
         """
 
+        actions = gameState.getLegalActions(self.index)
+        bestAction = None
+        maxScore = float('-inf')
+        
+        for action in actions:
+            successor = gameState.generateSuccessor(self.index, action)
+            score = self.evaluateDefense(successor)
+            if score > maxScore:
+                maxScore = score
+                bestAction = action
+        
+        return bestAction
+
+    def evaluateDefense(self, gameState):
+        """
+        Evaluate the defense strategy.
+        """
         pass
 
     def getFood(self, gameState):
