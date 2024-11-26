@@ -83,30 +83,63 @@ def main():
 
     # Function to handle chatting with a peer
     def chat_with_peer_connection(peer_socket):
+        """
+        Handles a turn-based chat session with a peer.
+        Only one message can be sent at a time, and the client must wait for a response before sending another message.
+        """
         print("Chat session started. Type '/quit' to end.")
         peer_socket.setblocking(False)
+        
+        turn = True  # True means it's this client's turn to send a message
         sockets = [sys.stdin, peer_socket]
 
         while True:
+            # Monitor sockets
             readable, _, _ = select.select(sockets, [], [])
             for s in readable:
-                if s == sys.stdin:  # User input
+                if turn and s == sys.stdin:  # User input, only allowed during user's turn
                     message = sys.stdin.readline().strip()
                     if message.lower() == "/quit":
-                        peer_socket.sendall(b"QUIT\r\n")
+                        # Send QUIT message to the peer
+                        quit_message = "CHAT\r\nType: QUIT\r\n\r\n"
+                        peer_socket.sendall(quit_message.encode())
                         print("Chat session ended.")
                         return
-                    peer_socket.sendall((message + "\r\n").encode())
-                elif s == peer_socket:  # Incoming peer message
+
+                    # Format message with headers
+                    chat_message = (
+                        f"CHAT\r\n"
+                        f"Type: MESSAGE\r\n"
+                        f"Length: {len(message)}\r\n"
+                        f"\r\n"
+                        f"{message}\r\n"
+                    )
+                    peer_socket.sendall(chat_message.encode())
+                    turn = False  # Switch to read mode
+                    print("Waiting for peer response...")
+                elif not turn and s == peer_socket:  # Incoming peer message
                     try:
-                        data = peer_socket.recv(1024).decode().strip()
-                        if not data or data == "QUIT":
+                        # Read and parse the incoming message
+                        data = peer_socket.recv(1024).decode()
+                        if not data.strip():  # Connection closed
                             print("Peer ended the chat session.")
                             return
-                        print(f"Peer: {data}")
+
+                        # Process message headers and content
+                        headers, body = data.split("\r\n\r\n", 1)
+                        header_lines = headers.split("\r\n")
+                        message_type = [line.split(": ")[1] for line in header_lines if line.startswith("Type")][0]
+
+                        if message_type == "QUIT":
+                            print("Peer ended the chat session.")
+                            return
+                        elif message_type == "MESSAGE":
+                            print(f"Peer: {body.strip()}")
+                            turn = True  # Switch to write mode
                     except Exception:
                         print("Connection to peer lost.")
                         return
+
 
     # Main loop
     try:
