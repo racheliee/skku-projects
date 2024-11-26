@@ -52,7 +52,7 @@ def main():
                 )
                 client_socket.send(message.encode())
                 response = client_socket.recv(1024).decode()
-                print("Server Response:", response)
+                # print("Server Response:", response)
         except Exception as e:
             print(f"Error during REGISTER: {e}")
 
@@ -134,7 +134,7 @@ def main():
                             quit_message = "CHAT\r\nType: QUIT\r\n\r\n"
                             peer_socket.sendall(quit_message.encode())
                             # print("Chat session ended.")
-                            return
+                            sys.exit(0)
                         
                     if s == peer_socket:  # Incoming peer message
                         try:
@@ -151,7 +151,7 @@ def main():
 
                             if message_type == "QUIT":
                                 # print("Peer ended the chat session.")
-                                return
+                                sys.exit(0)
                             elif message_type == "MESSAGE":
                                 print(f"{body.strip()}")
                                 turn = True  # Switch to write mode
@@ -163,7 +163,7 @@ def main():
                         chat_message = (
                             f"CHAT\r\n"
                             f"Type: MESSAGE\r\n"
-                            f"Length: {len(message)}\r\n"
+                            # f"Length: {len(message)}\r\n"
                             f"\r\n"
                             f"{message}\r\n"
                         )
@@ -181,8 +181,8 @@ def main():
     # Main loop
     try:
         while True:
-            command = input(
-                "Enter a command (/id, /register, /bridge, /chat, /quit): ").strip().lower()
+            # command = input("Enter a command (/id, /register, /bridge, /chat, /quit): ").strip().lower()
+            command = input().strip().lower()
             if command == "/id":
                 print(f"{client_id}")
             elif command == "/register":
@@ -198,7 +198,7 @@ def main():
                     else:
                         peer_info["IP"] = [line.split(": ")[1] for line in lines if line.startswith("IP")][0]
                         peer_info["Port"] = int([line.split(": ")[1] for line in lines if line.startswith("Port")][0])
-                        print(f"Peer info received: {peer_info}")
+                        # print(f"Peer info received: {peer_info}")
                 else:
                     print("Error: Failed to retrieve peer info.")
             elif command == "/chat":
@@ -221,9 +221,10 @@ def main():
                 else:
                     print("Error: No peer info available. Use /bridge first.")
             elif command == "/quit":
-                print("Exiting program.")
+                # print("Exiting program.")
                 sys.exit(0)
             else:
+                # continue
                 print("Error: Invalid command. Use /id, /register, /bridge, /chat, or /quit.")
     except KeyboardInterrupt:
         sys.exit(0)

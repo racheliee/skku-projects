@@ -39,10 +39,10 @@ def main():
         try:
             # Accept incoming client connections
             client_socket, client_address = server_socket.accept()
-            print(f"Connection established with {client_address}")
+            # print(f"Connection established with {client_address}")
             handle_client(client_socket)
         except KeyboardInterrupt:
-            print("\nShutting down the server.")
+            # print("\nShutting down the server.")
             server_socket.close()
             sys.exit(0)
         except Exception as e:
