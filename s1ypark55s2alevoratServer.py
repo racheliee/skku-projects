@@ -2,6 +2,7 @@ import socket
 import argparse
 import sys
 import signal
+import select
 
 # Data structure to store registered clients
 clients = {}
@@ -10,7 +11,6 @@ server_socket = None
 def handle_sigint(signum, frame):
     global server_socket
     if server_socket:
-        print("\nShutting down the server.")
         server_socket.close()
     sys.exit(0)
 
@@ -30,23 +30,33 @@ def main():
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind((server_ip, server_port))
         server_socket.listen(5)
-        print(f"Server listening on {server_ip}:{server_port}")
+        sys.stdout.write(f"Server is listening on {server_ip}:{server_port}\n")
+        sys.stdout.flush()
     except Exception as e:
-        print(f"Error setting up the server: {e}")
         sys.exit(0)
+
+    sockets = [server_socket, sys.stdin]
 
     while True:
         try:
-            # Accept incoming client connections
-            client_socket, client_address = server_socket.accept()
-            # print(f"Connection established with {client_address}")
-            handle_client(client_socket)
+            # Monitor server socket and stdin for readiness
+            readable, _, _ = select.select(sockets, [], [])
+            for s in readable:
+                if s == server_socket:
+                    # Accept incoming client connections
+                    client_socket, client_address = server_socket.accept()
+                    handle_client(client_socket)
+                elif s == sys.stdin:
+                    # Handle stdin commands
+                    command = sys.stdin.readline().strip()
+                    if command == "/info":
+                        handle_info()
+                    else:
+                        continue
         except KeyboardInterrupt:
-            # print("\nShutting down the server.")
-            server_socket.close()
-            sys.exit(0)
+            handle_sigint(None, None)
         except Exception as e:
-            print(f"Error handling client: {e}")
+            print(f"Error in main loop: {e}")
 
 def handle_client(client_socket):
     try:
@@ -64,9 +74,9 @@ def handle_client(client_socket):
         elif request_type == "BRIDGE":
             handle_bridge(client_socket, lines)
         else:
-            send_error(client_socket, "Invalid Request")
+            return
     except Exception as e:
-        print(f"Error processing client request: {e}")
+        return
     finally:
         client_socket.close()
 
@@ -86,12 +96,12 @@ def handle_register(client_socket, lines):
                 client_port = line.split(": ")[1]
 
         if not (client_id and client_ip and client_port):
-            send_error(client_socket, "Missing required headers for REGISTER")
             return
 
         # Register the client
         clients[client_id] = {"IP": client_ip, "Port": client_port}
-        print(f"REGISTER: {client_id} from {client_ip}:{client_port}")
+        sys.stdout.write(f"REGISTER: {client_id} from {client_ip}:{client_port}\n")
+        sys.stdout.flush()
 
         # Send REGACK response
         response = (
@@ -104,7 +114,7 @@ def handle_register(client_socket, lines):
         )
         client_socket.sendall(response.encode())
     except Exception as e:
-        print(f"Error handling REGISTER: {e}")
+        return
 
 def handle_bridge(client_socket, lines):
     try:
@@ -115,7 +125,6 @@ def handle_bridge(client_socket, lines):
                 client_id = line.split(": ")[1]
 
         if not client_id:
-            send_error(client_socket, "Missing clientID in BRIDGE request")
             return
 
         # Find another client to bridge
@@ -134,7 +143,8 @@ def handle_bridge(client_socket, lines):
                 f"Port: \r\n"
                 f"\r\n"
             )
-            print(f"BRIDGE: {client_id} {clients[client_id]['IP']}:{clients[client_id]['Port']} -> No peer available")
+            sys.stdout.write(f"BRIDGE: {client_id} {clients[client_id]['IP']}:{clients[client_id]['Port']}\n")
+            sys.stdout.flush()
         else:
             # Return the peer information
             peer_info = clients[peer_id]
@@ -145,17 +155,23 @@ def handle_bridge(client_socket, lines):
                 f"Port: {peer_info['Port']}\r\n"
                 f"\r\n"
             )
-            print(
+            sys.stdout.write(
                 f"BRIDGE: {client_id} {clients[client_id]['IP']}:{clients[client_id]['Port']} "
-                f"{peer_id} {peer_info['IP']}:{peer_info['Port']}"
+                f"{peer_id} {peer_info['IP']}:{peer_info['Port']}\n"
             )
+            sys.stdout.flush()
         client_socket.sendall(response.encode())
     except Exception as e:
-        print(f"Error handling BRIDGE: {e}")
-
-def send_error(client_socket, message):
-    response = f"ERROR\r\nMessage: {message}\r\n\r\n"
-    client_socket.sendall(response.encode())
+        return
+        
+        
+def handle_info():
+    if not clients:
+        return
+    
+    for client_id, client_info in clients.items():
+        sys.stdout.write(f"{client_id} {client_info['IP']}:{client_info['Port']}\n")
+    sys.stdout.flush()
 
 if __name__ == "__main__":
     main()
