@@ -210,16 +210,16 @@ class DefenseAgent(CaptureAgent):
         minPatrolDist = min([self.getMazeDistance(myPos, point) for point in patrolPoints])
         features['distanceToPatrol'] = float(minPatrolDist) / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
 
-        # Avoid being in the same position as before
-        if len(self.observationHistory) > 1:
-            prevGameState = self.observationHistory[-2]
-            prevPos = prevGameState.getAgentState(self.index).getPosition()
-            if myPos == prevPos:
-                features['isStuck'] = 1.0
-            else:
-                features['isStuck'] = 0.0
-        else:
-            features['isStuck'] = 0.0
+        # # Avoid being in the same position as before
+        # if len(self.observationHistory) > 1:
+        #     prevGameState = self.observationHistory[-2]
+        #     prevPos = prevGameState.getAgentState(self.index).getPosition()
+        #     if myPos == prevPos:
+        #         features['isStuck'] = 1.0
+        #     else:
+        #         features['isStuck'] = 0.0
+        # else:
+        #     features['isStuck'] = 0.0
 
         return features
 
@@ -232,5 +232,5 @@ class DefenseAgent(CaptureAgent):
             'invaderDistance': -100.0,
             'foodLost': -500.0,
             'distanceToPatrol': -10.0,
-            'isStuck': -100.0,
+            'isStuck': -100.0,  # isStuck is currently commented out
         }
