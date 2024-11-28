@@ -95,7 +95,6 @@ def main():
                 intro_message = (
                     f"CHAT\r\n"
                     f"Type: MESSAGE\r\n"
-                    f"Length: {len(f'Incoming chat request from {client_id} {client_ip}:{client_port}')}\r\n"
                     f"\r\n"
                     f"Incoming chat request from {client_id} {client_ip}:{client_port}\r\n"
                 )
@@ -114,7 +113,12 @@ def main():
                         message = sys.stdin.readline().strip()
                         if message.lower() == "/quit":
                             # Send QUIT message to the peer
-                            quit_message = "CHAT\r\nType: QUIT\r\n\r\n"
+                            # sys.stdout.write("Chat session ended\n")
+                            # sys.stdout.flush()
+                            # sys.stdout.write("Exiting Program\n")
+                            # sys.stdout.flush()
+                            # quit_message = f"CHAT\r\nType: QUIT\r\n\r\n{client_id} has ended the chat session.\nExiting Program\n"
+                            quit_message = f"CHAT\r\nType: QUIT\r\n\r\n"
                             peer_socket.sendall(quit_message.encode())
                             sys.exit(0)
                         
@@ -131,6 +135,8 @@ def main():
                             message_type = [line.split(": ")[1] for line in header_lines if line.startswith("Type")][0]
 
                             if message_type == "QUIT":
+                                # sys.stdout.write(body.strip() + "\n")
+                                # sys.stdout.flush()
                                 sys.exit(0)
                             elif message_type == "MESSAGE":
                                 sys.stdout.write(body.strip() + "\n")
@@ -144,7 +150,7 @@ def main():
                             f"CHAT\r\n"
                             f"Type: MESSAGE\r\n"
                             f"\r\n"
-                            f"{message}\r\n"
+                            f"{client_id}> {message}\r\n"
                         )
                         peer_socket.sendall(chat_message.encode())
                         turn = False  # Switch to read mode
@@ -173,6 +179,8 @@ def main():
                     lines = response.split("\r\n")
                     peer_id = [line.split(": ")[1] for line in lines if line.startswith("clientID")][0]
                     if not peer_id:
+                        # sys.stdout.write(f"{client_id} IN WAIT MODE\n")
+                        # sys.stdout.flush()
                         wait_for_peer()  # Enter waiting mode if no peer is available
                     else:
                         peer_info["IP"] = [line.split(": ")[1] for line in lines if line.startswith("IP")][0]
@@ -191,6 +199,9 @@ def main():
 
                             # Connect to the peer
                             chat_socket.connect((peer_ip, peer_port))
+                            
+                            # sys.stdout.write("IN CHAT MODE\n")
+                            # sys.stdout.flush()
 
                             # Initiate the chat session with the introductory message
                             chat_with_peer_connection(chat_socket, initiator=True)
@@ -211,67 +222,68 @@ if __name__ == "__main__":
     main()
 
 
-''' sys.stdin.readline() version
-
- # Main loop
+''' sys.stdin.readline() version --> works on mininet but the ./grader cannot parse the output
+    # Main loop
     try:
         while True:
-            # command = input().strip()
-            readable, _, _ = select.select([sys.stdin], [], [], 20)
 
-            if not readable:
-                continue
-            
-            for s in readable:
-                if s == sys.stdin:
-                    command = sys.stdin.readline().strip()
-                    if not command:
-                        continue
-                    
-                    if command == "/id":
-                        sys.stdout.write(f"{client_id}\n")
-                        sys.stdout.flush()
-                    elif command == "/register":
-                        send_register()
-                    elif command == "/bridge":
-                        response = send_bridge()
-                        if response:
-                            # Parse the BRIDGE response
-                            lines = response.split("\r\n")
-                            peer_id = [line.split(": ")[1] for line in lines if line.startswith("clientID")][0]
-                            if not peer_id:
-                                wait_for_peer()  # Enter waiting mode if no peer is available
-                            else:
-                                peer_info["IP"] = [line.split(": ")[1] for line in lines if line.startswith("IP")][0]
-                                peer_info["Port"] = int([line.split(": ")[1] for line in lines if line.startswith("Port")][0])
+            for command in sys.stdin:
+             #    command = input().strip()
+                command = command.strip()
+
+                if command == "/id":
+                    sys.stdout.write(f"{client_id}\n")
+                    sys.stdout.flush()
+                elif command == "/register":
+                    send_register()
+                elif command == "/bridge":
+                    response = send_bridge()
+                    if response:
+                        # Parse the BRIDGE response
+                        lines = response.split("\r\n")
+                        peer_id = [line.split(
+                            ": ")[1] for line in lines if line.startswith("clientID")][0]
+                        if not peer_id:
+                            wait_for_peer()  # Enter waiting mode if no peer is available
                         else:
-                            continue
-                    elif command == "/chat":
-                        if peer_info:
-                            try:
-                                # Create a socket to connect to the peer
-                                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as chat_socket:
-                                    chat_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1) # flush data immediately
-
-                                    peer_ip = peer_info["IP"]
-                                    peer_port = peer_info["Port"]
-
-                                    # Connect to the peer
-                                    chat_socket.connect((peer_ip, peer_port))
-
-                                    # Initiate the chat session with the introductory message
-                                    chat_with_peer_connection(chat_socket, initiator=True)
-                            except ConnectionRefusedError:
-                                sys.exit(0)
-                        else:
-                            continue
-                    elif command == "/quit":
-                        sys.exit(0)
+                            peer_info["IP"] = [line.split(
+                                ": ")[1] for line in lines if line.startswith("IP")][0]
+                            peer_info["Port"] = int(
+                                [line.split(": ")[1] for line in lines if line.startswith("Port")][0])
                     else:
                         continue
+                elif command == "/chat":
+                    if peer_info:
+                        try:
+                            # Create a socket to connect to the peer
+                            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as chat_socket:
+                                # flush data immediately
+                                chat_socket.setsockopt(
+                                    socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
+                                peer_ip = peer_info["IP"]
+                                peer_port = peer_info["Port"]
+
+                                # Connect to the peer
+                                chat_socket.connect((peer_ip, peer_port))
+
+                                # Initiate the chat session with the introductory message
+                                chat_with_peer_connection(
+                                    chat_socket, initiator=True)
+                        except ConnectionRefusedError:
+                            sys.exit(0)
+                    else:
+                        continue
+                elif command == "/quit":
+                    sys.exit(0)
+                else:
+                    continue
     except KeyboardInterrupt:
         sys.exit(0)
     except Exception as e:
         sys.exit(0)
 
+
+if __name__ == "__main__":
+    main()
 '''
