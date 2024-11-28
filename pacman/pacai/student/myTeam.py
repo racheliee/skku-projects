@@ -74,14 +74,21 @@ class OffenseAgent(CaptureAgent):
         features['foodEaten'] = len(self.getFood(currentGameState).asList()) - len(foodList)
         features['minFoodDistance'] = min([self.getMazeDistance(myPos, food) for food in foodList])
 
-        if len(capsules) != 0:
-            features['minCapsuleDistance'] = min([self.getMazeDistance(myPos, capsule) for capsule in capsules])
-
         # Ghost-related features
-        enemies = [successorGameState.getAgentState(i) for i in self.getOpponents(successorGameState)]
+        enemies = [successorGameState.getAgentState(i)
+            for i in self.getOpponents(successorGameState)]
         ghosts = [a for a in enemies if not a.isPacman() and a.getPosition() is not None]
         scaredGhosts = [g for g in ghosts if g.getScaredTimer() > 0]
         activeGhosts = [g for g in ghosts if g.getScaredTimer() == 0]
+
+        # Capsule-related feature
+        if len(capsules) != 0:
+            # There are scared ghosts --> No need to get a second capsule for now
+            if len(scaredGhosts) > 0:
+                features['minCapsuleDistance'] = 0
+            else:
+                features['minCapsuleDistance'] = min([self.getMazeDistance(myPos, capsule)
+                    for capsule in capsules])
 
         # Distance to active ghosts
         if len(activeGhosts) > 0:
@@ -92,7 +99,8 @@ class OffenseAgent(CaptureAgent):
 
         # Distance to scared ghosts
         if len(scaredGhosts) > 0:
-            scaredGhostDistances = [self.getMazeDistance(myPos, g.getPosition()) for g in scaredGhosts]
+            scaredGhostDistances = [self.getMazeDistance(myPos, g.getPosition())
+                for g in scaredGhosts]
             features['distanceToScaredGhost'] = min(scaredGhostDistances)
         else:
             features['distanceToScaredGhost'] = 9999
@@ -113,7 +121,7 @@ class OffenseAgent(CaptureAgent):
         Assign weights to the features.
         """
         return {
-            'foodEaten': 200,  # Strong reward for eating food
+            'foodEaten': 450,  # Strong reward for eating food
             'minFoodDistance': -20,  # Incentivize minimizing total distance to food
             'distanceToActiveGhost': 15,  # Avoid active ghosts
             'distanceToScaredGhost': -5,  # Encourage moving toward scared ghosts
@@ -163,10 +171,9 @@ class DefenseAgent(CaptureAgent):
         Evaluate the game state to determine the desirability.
         """
         features = self.getFeatures(gameState)
-        weights = self.getWeights(gameState)
+        weights = self.getWeights()
 
         return sum(features[feature] * weights.get(feature, 0) for feature in features)
-
 
     def getFeatures(self, gameState):
         """
@@ -184,7 +191,8 @@ class DefenseAgent(CaptureAgent):
         if len(invaders) > 0:
             invaderDistances = [self.getMazeDistance(myPos, inv.getPosition()) for inv in invaders]
             minInvaderDist = min(invaderDistances)
-            features['invaderDistance'] = float(minInvaderDist) / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
+            features['invaderDistance'] = float(minInvaderDist) \
+                / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
         else:
             features['invaderDistance'] = 1.0  # No invaders, focus on patrolling
 
@@ -206,9 +214,11 @@ class DefenseAgent(CaptureAgent):
             patrolX = midWidth - 1
         else:
             patrolX = midWidth
-        patrolPoints = [(patrolX, y) for y in range(gameState.getWalls().getHeight()) if not gameState.hasWall(patrolX, y)]
+        patrolPoints = [(patrolX, y) for y in range(gameState.getWalls().getHeight())
+            if not gameState.hasWall(patrolX, y)]
         minPatrolDist = min([self.getMazeDistance(myPos, point) for point in patrolPoints])
-        features['distanceToPatrol'] = float(minPatrolDist) / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
+        features['distanceToPatrol'] = float(minPatrolDist) \
+            / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
 
         # # Avoid being in the same position as before
         # if len(self.observationHistory) > 1:
@@ -223,7 +233,7 @@ class DefenseAgent(CaptureAgent):
 
         return features
 
-    def getWeights(self, gameState):
+    def getWeights(self):
         """
         Assign weights to the features.
         """
