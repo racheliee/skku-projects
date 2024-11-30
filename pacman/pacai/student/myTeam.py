@@ -97,14 +97,33 @@ class OffenseAgent(CaptureAgent):
         else:
             features['distanceToActiveGhost'] = 9999  # No active ghosts nearby
 
+        # Encourage pac man to avoid getting close to active ghosts
+        if features['distanceToActiveGhost'] <= 2:
+            features['potentiallyDead'] = 1
+        else:
+            features['potentiallyDead'] = 0
         # Incentivize eating scared ghosts
         if len(scaredGhosts) > 0:
             for g in scaredGhosts:
-                if self.getMazeDistance(myPos, g.getPosition()) <= 1:
+                if self.getMazeDistance(myPos, g.getPosition()) < 1:
                     features['scaredGhostEaten'] = 1
 
         # Check if carrying food and consider returning home
         features['distanceToHome'] = self.getMazeDistance(myPos, self.start)
+
+        # Compute distance to the center of own territory for crossOver check
+        midWidth = currentGameState.getWalls().getWidth() // 2
+        if self.red:
+            midWidth = midWidth - 1
+        else:
+            midWidth = midWidth
+        
+        if self.red and myPos[0] > midWidth:
+            features['crossOver'] = 1
+        elif not self.red and myPos[0] < midWidth:
+            features['crossOver'] = 1
+        else:
+            features['crossOver'] = 0 
 
         return features
 
@@ -114,11 +133,13 @@ class OffenseAgent(CaptureAgent):
         """
         return {
             'foodEaten': 450,  # Strong reward for eating food
-            'minFoodDistance': -20,  # Incentivize minimizing total distance to food
-            'distanceToActiveGhost': 15,  # Avoid active ghosts
+            'minFoodDistance': -20,  # Incentivize minimizing distance to food
+            'distanceToActiveGhost': 19,  # Avoid active ghosts
+            'potentiallyDead': -100,  # Encourage Pac-Man to run away from nearby ghosts
             'scaredGhostEaten': 50,  # Slight reward for eating a scared ghost
             'distanceToHome': -0.5,  # Slight incentive to return home
-            'minCapsuleDistance': -30,  # Incentivize capsules over food
+            'minCapsuleDistance': -40,  # Incentivize capsules over food
+            'crossOver': 30,  # Encourage Offense Agent to cross the border
         }
 
 
@@ -211,14 +232,22 @@ class DefenseAgent(CaptureAgent):
         # Compute distance to the center of own territory (for patrolling)
         midWidth = gameState.getWalls().getWidth() // 2
         if self.red:
-            patrolX = midWidth - 1
+            patrolX = midWidth - 2
         else:
-            patrolX = midWidth
+            patrolX = midWidth + 1
         patrolPoints = [(patrolX, y) for y in range(gameState.getWalls().getHeight())
             if not gameState.hasWall(patrolX, y)]
         minPatrolDist = min([self.getMazeDistance(myPos, point) for point in patrolPoints])
         features['distanceToPatrol'] = float(minPatrolDist) \
             / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
+        
+        # Determine if defender is about to cross the border
+        if self.red and myPos[0] > patrolX:
+            features['crossOver'] = 1
+        elif not self.red and myPos[0] < patrolX:
+            features['crossOver'] = 1
+        else:
+            features['crossOver'] = 0
 
         # # Avoid being in the same position as before
         # if len(self.observationHistory) > 1:
@@ -243,5 +272,5 @@ class DefenseAgent(CaptureAgent):
             'avgFoodDist': -0.005,
             'avgCapsuleDist': -0.01,
             'distanceToPatrol': -10.0,
-            'isStuck': -100.0,  # isStuck is currently commented out
+            'crossOver': -200,  # Forbid the ghost from crossing the border
         }
