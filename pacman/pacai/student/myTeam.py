@@ -123,7 +123,7 @@ class OffenseAgent(CaptureAgent):
         elif not self.red and myPos[0] < midWidth:
             features['crossOver'] = 1
         else:
-            features['crossOver'] = 0 
+            features['crossOver'] = 0
 
         return features
 
