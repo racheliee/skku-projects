@@ -97,14 +97,6 @@ class OffenseAgent(CaptureAgent):
         else:
             features['distanceToActiveGhost'] = 9999  # No active ghosts nearby
 
-        # Distance to scared ghosts
-        if len(scaredGhosts) > 0:
-            scaredGhostDistances = [self.getMazeDistance(myPos, g.getPosition())
-                for g in scaredGhosts]
-            features['distanceToScaredGhost'] = min(scaredGhostDistances)
-        else:
-            features['distanceToScaredGhost'] = 9999
-
         # Incentivize eating scared ghosts
         if len(scaredGhosts) > 0:
             for g in scaredGhosts:
@@ -124,7 +116,6 @@ class OffenseAgent(CaptureAgent):
             'foodEaten': 450,  # Strong reward for eating food
             'minFoodDistance': -20,  # Incentivize minimizing total distance to food
             'distanceToActiveGhost': 15,  # Avoid active ghosts
-            'distanceToScaredGhost': -5,  # Encourage moving toward scared ghosts
             'scaredGhostEaten': 50,  # Slight reward for eating a scared ghost
             'distanceToHome': -0.5,  # Slight incentive to return home
             'minCapsuleDistance': -30,  # Incentivize capsules over food
@@ -194,19 +185,28 @@ class DefenseAgent(CaptureAgent):
             features['invaderDistance'] = float(minInvaderDist) \
                 / (gameState.getWalls().getWidth() * gameState.getWalls().getHeight())
         else:
-            features['invaderDistance'] = 1.0  # No invaders, focus on patrolling
+            features['invaderDistance'] = 0.0  # No invaders, focus on patrolling
 
-        # Compute the amount of food being defended
+        # Compute the average distance from team food
         currentFood = self.getFoodYouAreDefending(gameState).asList()
-        if self.lastObservedFood is not None:
-            if len(self.lastObservedFood) > len(currentFood):
-                features['foodLost'] = 1.0
-            else:
-                features['foodLost'] = 0.0
-        else:
-            features['foodLost'] = 0.0
+        netDist = 0.0
+        for food in currentFood:
+            netDist += self.getMazeDistance(food, myPos)
 
-        self.lastObservedFood = currentFood
+        netDist /= len(currentFood)
+        features['avgFoodDist'] = netDist
+
+        # Compute the average distance from team capsules
+        currentCapsules = self.getCapsulesYouAreDefending(gameState)
+        netCapsuleDist = 0.0
+        for cap in currentCapsules:
+            netCapsuleDist += self.getMazeDistance(cap, myPos)
+        
+        if len(currentCapsules) != 0:
+            netCapsuleDist /= len(currentCapsules)
+            features['avgCapsuleDist'] = netCapsuleDist
+        else:
+            features['avgCapsuleDist'] = 0.0
 
         # Compute distance to the center of own territory (for patrolling)
         midWidth = gameState.getWalls().getWidth() // 2
@@ -240,7 +240,8 @@ class DefenseAgent(CaptureAgent):
         return {
             'numInvaders': -1000.0,
             'invaderDistance': -100.0,
-            'foodLost': -500.0,
+            'avgFoodDist': -0.005,
+            'avgCapsuleDist': -0.01,
             'distanceToPatrol': -10.0,
             'isStuck': -100.0,  # isStuck is currently commented out
         }
