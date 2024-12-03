@@ -19,6 +19,7 @@ class barrier_object {
     void barrier(int tid) {
         // Implement me
         static thread_local bool my_sense = !sense.load();
+        my_sense = !my_sense;
         int arrival = counter.fetch_add(1) + 1;
 
         if (arrival == num_threads) {
@@ -29,7 +30,6 @@ class barrier_object {
                 ;
         }
 
-        my_sense = !my_sense;
     }
 
   private:
