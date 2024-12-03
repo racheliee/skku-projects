@@ -4,34 +4,35 @@ using namespace std;
 
 class barrier_object {
  public:
-  barrier_object() : count(0), num_threads(0), sense(true) {
+  barrier_object() {
     // Probably don't need to do anything here.
   }
 
   void init(int num_threads) {
     // Implement me
-    this->num_threads = num_threads;
-    count.store(0);
-    sense.store(true);
+    size = num_threads;
+    count.store(num_threads);
+    sense.store(false);
   }
 
   void barrier(int tid) {
     // Implement me
-    static thread_local bool thread_sense = !sense.load();
-    thread_sense = !thread_sense;
+    static thread_local bool my_sense = !sense.load();
+    int pos = count.fetch_add(-1);
 
-    int pos = count.fetch_add(1);
-    if(pos == num_threads -1) {
-      count.store(0);
-      sense.store(thread_sense);
+    if (pos == 1) {
+      count.store(size);
+      sense.store(my_sense);
     }else{
-      while(sense.load() != thread_sense);
+      while (sense.load() != my_sense);
     }
+
+    my_sense = !my_sense;
   }
 
 private:
   // Give me some private variables
-  atomic<int>  count;
-  int num_threads;
+  atomic<int> count;
+  int size;
   atomic<bool> sense;
 };
