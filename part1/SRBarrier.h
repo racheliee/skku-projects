@@ -14,21 +14,22 @@ class barrier_object {
         this->num_threads = num_threads;
         counter.store(0);
         sense.store(false);
-        thread_sense.resize(num_threads, true);
     }
 
     void barrier(int tid) {
         // Implement me
+        static thread_local bool my_sense = !sense.load();
         int arrival = counter.fetch_add(1) + 1;
+
         if (arrival == num_threads) {
             counter.store(0);
-            sense = thread_sense[tid];
+            sense.store(my_sense);
         } else {
-            while (sense != thread_sense[tid])
+            while (sense.load() != my_sense)
                 ;
         }
 
-        thread_sense[tid] = !thread_sense[tid];
+        my_sense = !my_sense;
     }
 
   private:
@@ -36,5 +37,4 @@ class barrier_object {
     atomic<int> counter;
     int num_threads;
     atomic<bool> sense;
-    vector<bool> thread_sense;
 };

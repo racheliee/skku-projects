@@ -15,15 +15,18 @@ barrier_object B;
 
 void blur_chunk(double *input, double *output, int start, int end, int repeats, int tid) {
     for (int r = 0; r < repeats; ++r) {
-        for (int i = start; i < end; ++i) 
-            output[i] = (input[i-1] + input[i] + input[i+1]) / 3.0;
-        
-        B.barrier(tid);
+        // Perform blur operation for the assigned chunk
+        for (int i = start; i < end; ++i) {
+            output[i] = (input[i - 1] + input[i] + input[i + 1]) / 3.0;
+        }
 
-        if(r < repeats -1)
-            swap(input, output);
+        B.barrier(tid);  // Synchronize all threads after computation
 
-        B.barrier(tid); // sync before next iteration   
+        if (r < repeats - 1) {
+            swap(input, output);  // Swap input and output for the next iteration
+        }
+
+        B.barrier(tid);  // Synchronize all threads before the next iteration
     }
 }
 
@@ -40,7 +43,7 @@ void repeated_blur(double *input, double *output, int size, int repeats, int num
 
     for(int t = 0; t < num_threads; ++t){
         int start = t * chunk_size + 1;
-        int end = (t == num_threads -1) ? size -1 : start + chunk_size;
+        int end = min(size - 1, start + chunk_size);
         threads.emplace_back(blur_chunk, input, output, start, end, repeats, t);
     }
 
