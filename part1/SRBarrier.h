@@ -11,30 +11,32 @@ class barrier_object {
 
     void init(int num_threads) {
         // Implement me
-        this->num_threads = num_threads;
-        counter.store(0);
+        size = num_threads;
+        counter.store(num_threads);
         sense.store(false);
     }
 
     void barrier(int tid) {
         // Implement me
         static thread_local bool my_sense = !sense.load();
-        my_sense = !my_sense;
-        int arrival = counter.fetch_add(1) + 1;
+        int pos = counter.fetch_sub(1);
 
-        if (arrival == num_threads) {
-            counter.store(0);
+        if (pos == 1) {
+            counter.store(size);
             sense.store(my_sense);
         } else {
             while (sense.load() != my_sense)
                 ;
         }
 
+        my_sense = !my_sense;
     }
 
   private:
     // Give me some private variables
     atomic<int> counter;
-    int num_threads;
+    int size;
     atomic<bool> sense;
+
+
 };
