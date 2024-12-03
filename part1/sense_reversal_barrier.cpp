@@ -35,7 +35,7 @@ void repeated_blur(double *input, double *output, int size, int repeats, int num
 
     B.init(num_threads);
 
-    int chunk_size = (size -2) / num_threads;
+    int chunk_size = (size -2 + num_threads -1) / num_threads;
     vector<thread> threads;
 
     for(int t = 0; t < num_threads; ++t){
