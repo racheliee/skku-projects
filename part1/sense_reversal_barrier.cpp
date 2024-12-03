@@ -15,8 +15,7 @@ barrier_object B;
 
 void blur_chunk(double *input, double *output, int start, int end, int repeats, int tid) {
     for (int r = 0; r < repeats; ++r) {
-        // 
-        for (int i = start; i < end; ++i) 
+        for (int i = start; i < end && i < end -1; ++i) 
             output[i] = (input[i-1] + input[i] + input[i+1]) / 3.0;
         
         B.barrier(tid);

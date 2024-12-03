@@ -17,7 +17,7 @@ class barrier_object {
 
   void barrier(int tid) {
     // Implement me
-    static thread_local bool thread_sense = true;
+    static thread_local bool thread_sense = !sense.load();
     thread_sense = !thread_sense;
 
     int pos = count.fetch_add(1);
