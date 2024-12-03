@@ -1,5 +1,4 @@
 #include <atomic>
-#include <vector>
 
 using namespace std;
 
@@ -37,6 +36,4 @@ class barrier_object {
     atomic<int> counter;
     int size;
     atomic<bool> sense;
-
-
 };

@@ -20,13 +20,13 @@ void blur_chunk(double *input, double *output, int start, int end, int repeats, 
             output[i] = (input[i - 1] + input[i] + input[i + 1]) / 3.0;
         }
 
-        B.barrier(tid);  // Synchronize all threads after computation
+        B.barrier(tid); // Synchronize all threads after computation
 
         if (r < repeats - 1) {
-            swap(input, output);  // Swap input and output for the next iteration
+            swap(input, output); // Swap input and output for the next iteration
         }
 
-        B.barrier(tid);  // Synchronize all threads before the next iteration
+        B.barrier(tid); // Synchronize all threads before the next iteration
     }
 }
 
@@ -38,20 +38,20 @@ void repeated_blur(double *input, double *output, int size, int repeats, int num
 
     B.init(num_threads);
 
-    int chunk_size = (size -2 + num_threads -1) / num_threads;
+    int chunk_size = (size - 2 + num_threads - 1) / num_threads;
     vector<thread> threads;
 
-    for(int t = 0; t < num_threads; ++t){
+    for (int t = 0; t < num_threads; ++t) {
         int start = t * chunk_size + 1;
         int end = min(size - 1, start + chunk_size);
         threads.emplace_back(blur_chunk, input, output, start, end, repeats, t);
     }
 
-    for(auto &t : threads)
+    for (auto &t : threads)
         t.join();
-    
-    if(repeats % 2 == 1) {
-        for(int i = 0; i < size; ++i)
+
+    if (repeats % 2 == 1) {
+        for (int i = 0; i < size; ++i)
             output[i] = input[i];
     }
 }
