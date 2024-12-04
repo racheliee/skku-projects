@@ -27,7 +27,7 @@ void blur_chunk(double *input, double *output, int start, int end, int repeats, 
     for (int r = 1; r < repeats; r+=2) {
         // Perform blur operation for the assigned chunk
         for (int i = start; i < end; ++i) 
-            output[i] = (input[i - 1] + input[i] + input[i + 1]) / 3;
+            input[i] = (output[i - 1] + output[i] + output[i + 1]) / 3;
 
         B.barrier(tid); // Synchronize all threads after computation
 
