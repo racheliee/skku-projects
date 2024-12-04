@@ -51,7 +51,7 @@ void repeated_blur(double *input, double *output, int size, int repeats, int num
 
     for (int t = 0; t < num_threads; ++t) {
         int start = t * chunk_size + 1;
-        int end = (t == num_threads - 1) ? (size - 1) : start + chunk_size;
+        int end = (t == num_threads - 1) ? (t + 1) * chunk_size - 1 : (t + 1) * chunk_size + 1;
         threads.emplace_back(blur_chunk, input, output, start, end, repeats, t);
     }
 
