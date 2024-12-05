@@ -30,9 +30,11 @@ class dekkers_mutex {
         while (flag[other].load(memory_order_relaxed)) {
             if (turn.load(memory_order_relaxed) != tid) {
                 flag[tid].store(false, memory_order_relaxed);
+                FENCE;
                 while (turn.load(memory_order_relaxed) != tid)
                     ;
                 flag[tid].store(true, memory_order_relaxed);
+                FENCE;
             }
         }
     }
@@ -43,6 +45,7 @@ class dekkers_mutex {
         flag[tid].store(false, memory_order_relaxed);
         FENCE;                                     // ensure flag store is visible to other threads
         turn.store(1 - tid, memory_order_relaxed); // Give the other thread a chance
+        FENCE;
     }
 
   private:
