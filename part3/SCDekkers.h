@@ -18,8 +18,14 @@ class dekkers_mutex {
         flag[tid].store(true, memory_order_seq_cst);
 
         // Wait until the other thread is done
-        while (flag[other].load(memory_order_seq_cst) && turn.load(memory_order_seq_cst) == tid)
-            ;
+        while (flag[other].load(memory_order_seq_cst)) {
+            if (turn.load(memory_order_seq_cst) != tid) {
+                flag[tid].store(false, memory_order_seq_cst);
+                while (turn.load(memory_order_seq_cst) != tid)
+                    ;
+                flag[tid].store(true, memory_order_seq_cst);
+            }
+        }
     }
 
     void unlock(int tid) {
