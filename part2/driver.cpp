@@ -35,14 +35,16 @@ vector<int> test_driver(int iterations) {
   int output2 = 0;
   int output3 = 0;
 
+  B.init(2);
+
   for (int i = 0; i < iterations; i++) {
     // Reset shared variables
     atomic_int x(0), y(0);
     int r0 = -1, r1 = -1;
 
     // Launch threads
-    thread t0(t0_function, &x, &y, &r0, nullptr);
-    thread t1(t1_function, &x, &y, &r1, nullptr);
+    thread t0(t0_function, &x, &y, &r0, &B);
+    thread t1(t1_function, &x, &y, &r1, &B);
 
     t0.join();
     t1.join();
