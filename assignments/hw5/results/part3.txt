@@ -1,0 +1,15 @@
+rdekker ========================
+throughput (critical sections per second): 4.15319e+07
+number of critical sections: 83063774
+number of mutual exclusion violations: 46827379
+percent of times that mutual exclusion was violated: 56.3752%
+scdekker ========================
+throughput (critical sections per second): 2.40163e+07
+number of critical sections: 48032651
+number of mutual exclusion violations: 0
+percent of times that mutual exclusion was violated: 0%
+tsodekker ========================
+throughput (critical sections per second): 3.0219e+07
+number of critical sections: 60437976
+number of mutual exclusion violations: 0
+percent of times that mutual exclusion was violated: 0%
