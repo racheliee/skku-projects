@@ -7,6 +7,7 @@
 // needs to be placed.
 
 #define FENCE asm volatile("mfence" ::: "memory");
+// #define FENCE __atomic_thread_fence(__ATOMIC_SEQ_CST) // to make it work on my local
 
 using namespace std;
 

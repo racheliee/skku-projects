@@ -1,0 +1,66 @@
+relaxed sb ========================
+first run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 2
+  condition: r0 == 1 && r1 == 0 result: 31792
+  condition: r0 == 0 && r1 == 1 result: 230304
+  condition: r0 == 0 && r1 == 0 result: 46
+relaxed behavior frequency: 0.000175476
+second run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 1
+  condition: r0 == 1 && r1 == 0 result: 31635
+  condition: r0 == 0 && r1 == 1 result: 230489
+  condition: r0 == 0 && r1 == 0 result: 19
+relaxed behavior frequency: 7.24792e-05
+third run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 0
+  condition: r0 == 1 && r1 == 0 result: 32487
+  condition: r0 == 0 && r1 == 1 result: 229634
+  condition: r0 == 0 && r1 == 0 result: 23
+relaxed behavior frequency: 8.7738e-05
+sync sb ========================
+first run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 0
+  condition: r0 == 1 && r1 == 0 result: 251136
+  condition: r0 == 0 && r1 == 1 result: 7156
+  condition: r0 == 0 && r1 == 0 result: 3852
+relaxed behavior frequency: 0.0146942
+second run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 0
+  condition: r0 == 1 && r1 == 0 result: 242707
+  condition: r0 == 0 && r1 == 1 result: 12331
+  condition: r0 == 0 && r1 == 0 result: 7106
+relaxed behavior frequency: 0.0271072
+third run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 1
+  condition: r0 == 1 && r1 == 0 result: 250953
+  condition: r0 == 0 && r1 == 1 result: 8643
+  condition: r0 == 0 && r1 == 0 result: 2547
+relaxed behavior frequency: 0.00971603
+disallowed sb ========================
+first run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 544
+  condition: r0 == 1 && r1 == 0 result: 252829
+  condition: r0 == 0 && r1 == 1 result: 8771
+  condition: r0 == 0 && r1 == 0 result: 0
+relaxed behavior frequency: 0
+second run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 1346
+  condition: r0 == 1 && r1 == 0 result: 238664
+  condition: r0 == 0 && r1 == 1 result: 22134
+  condition: r0 == 0 && r1 == 0 result: 0
+relaxed behavior frequency: 0
+third run: 
+histogram of different observations:
+  condition: r0 == 1 && r1 == 1 result: 4
+  condition: r0 == 1 && r1 == 0 result: 240488
+  condition: r0 == 0 && r1 == 1 result: 21652
+  condition: r0 == 0 && r1 == 0 result: 0
+relaxed behavior frequency: 0
