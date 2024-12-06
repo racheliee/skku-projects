@@ -271,9 +271,21 @@ class Assignment(ProtoAssignment):
     def step5(self):
         self.goto("contact_requests")
         email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_email")
-        emails = {e.text for e in email_cells}
-        assert emails == self.emails, "S5-1 The emails are not correct in the grid."
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_email")
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-email")
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-email")
+        emails1 = {e.text for e in email_cells}
+        assert emails1 == self.emails, "S5-1 The emails are not correct in the grid."
         message_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_message")
+        if len(message_cells) == 0:
+            message_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_message")
+        if len(message_cells) == 0:
+            message_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-message")
+        if len(message_cells) == 0:
+            message_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-message")
         messages = {e.text for e in message_cells}
         correct_messages = {self.info1["message"], self.info2["message"], self.info3["message"]}
         assert messages == correct_messages, "S5-2 The messages are not correct in the grid."        
@@ -288,8 +300,15 @@ class Assignment(ProtoAssignment):
         inp.send_keys(self.key1)
         self.browser.find_element(By.CSS_SELECTOR, "input.grid-search-button").click()
         email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_email")
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_email")
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-email")        
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-email")        
         emails = {e.text for e in email_cells}
-        assert emails == {f["email"] for f in [self.info1, self.info3]}, "S6-1 Search by name does not work."
+        ok_emails = {f["email"] for f in [self.info1, self.info3]}
+        assert emails == ok_emails, "S6-1 Search by name does not work."
         # Then an empty search. 
         select = Select(self.browser.find_element(By.CSS_SELECTOR, "select.grid-search-form-input"))
         select.select_by_visible_text("Search by Name")
@@ -297,6 +316,12 @@ class Assignment(ProtoAssignment):
         inp.send_keys(str(uuid.uuid4()))
         self.browser.find_element(By.CSS_SELECTOR, "input.grid-search-button").click()
         email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_email")
+        assert len(email_cells) == 0, "S6-12 Search by name returns spurious results."
+        email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_email")
+        assert len(email_cells) == 0, "S6-12 Search by name returns spurious results."
+        email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-email")        
+        assert len(email_cells) == 0, "S6-12 Search by name returns spurious results."
+        email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-email")        
         assert len(email_cells) == 0, "S6-12 Search by name returns spurious results."
         return 1, "Search by name works."
         
@@ -309,8 +334,13 @@ class Assignment(ProtoAssignment):
         inp.send_keys(self.key3)
         self.browser.find_element(By.CSS_SELECTOR, "input.grid-search-button").click()
         email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_email")
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_email")
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-email")      
+        if len(email_cells) == 0:
+            email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-email")      
         emails = {e.text for e in email_cells}
-        print("Emails:", emails)
         assert emails == {f["email"] for f in [self.info2, self.info3]}, "S7-1 Search by message does not work."
         # Then an empty search. 
         select = Select(self.browser.find_element(By.CSS_SELECTOR, "select.grid-search-form-input"))
@@ -320,20 +350,38 @@ class Assignment(ProtoAssignment):
         self.browser.find_element(By.CSS_SELECTOR, "input.grid-search-button").click()
         email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_email")
         assert len(email_cells) == 0, "S7-2 Search by message returns spurious results."
+        email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_email")
+        assert len(email_cells) == 0, "S7-2 Search by message returns spurious results."
+        email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-email")      
+        assert len(email_cells) == 0, "S7-2 Search by message returns spurious results."
+        email_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-email")      
+        assert len(email_cells) == 0, "S7-2 Search by message returns spurious results."
         return 1, "Search by message works."
 
     def step8(self):
         self.goto("contact_requests")
         for i in range(3):
             rows = self.browser.find_elements(By.CSS_SELECTOR, "tr[role='row']")
-            name_cells = [r.find_element(By.CSS_SELECTOR, "td.grid-col-contact_request_name") for r in rows]
+            name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_name")
+            if len(name_cells) == 0:
+                name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_name")
+            if len(name_cells) == 0:
+                name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-name")
+            if len(name_cells) == 0:
+                name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-name")
             names = [n.text for n in name_cells]
             k = random.randint(0, len(names) - 1)
             del_button = rows[k].find_element(By.CSS_SELECTOR, "a.grid-delete-button")
             del_button.click()
             self.browser.switch_to.alert.accept();
             rows = self.browser.find_elements(By.CSS_SELECTOR, "tr[role='row']")
-            name_cells = [r.find_element(By.CSS_SELECTOR, "td.grid-col-contact_request_name") for r in rows]
+            name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_request_name")
+            if len(name_cells) == 0:
+                name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-col-contact_requests_name")
+            if len(name_cells) == 0:
+                name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_request-name")
+            if len(name_cells) == 0:
+                name_cells = self.browser.find_elements(By.CSS_SELECTOR, "td.grid-cell-contact_requests-name")
             remaining_names = [n.text for n in name_cells]
             names.pop(k)
             assert names == remaining_names, "S8-1 Deletion does not work."
