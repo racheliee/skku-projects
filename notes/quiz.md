@@ -269,3 +269,33 @@ with different values?
    - sequentially consistent processor guarantees that the program has sequentially consistent behavior at the ISA level
 5. If you put a fence after every memory instruction, would that be sufficient to disallow all weak behaviors on a weak architecture? Please write a few sentences explaining your answer.
    - Yes, placing a fence after every memory instruction would disallow all weak behaviors because fences enforce ordering constraints and flush store buffers. However, this approach is inefficient, as it would significantly degrade performance by preventing hardware optimizations like instruction reordering and store buffering, which are the main benefits of weak memory models.
+
+## quiz #15
+1. Concurrent linked lists can be implemented using locks on every node if:
+   - [x] locks are always acquired in the same order
+   - [ ] two locks are acquired at a time
+   - [x] Both of the above
+   - [ ] Neither of the above
+2. Lock coupling provides higher performance than a single global lock because threads can traverse the list in parallel 
+   - true
+   - Lock coupling allows fine-grained locking, enabling threads to operate on different parts of the list concurrently, improving performance compared to a single global lock
+3. Optimistic concurrency refers to the pattern where functions optimistically assume that no other thread will interfere. In the case where another thread interferes, the program is left in an erroneous state, but since this is so rare, it does not tend to happen in practice.
+   - false
+   - In optimistic concurrency, functions assume no interference, but if interference is detected (via validation or retries), the operation is retried or aborted to maintain correctness. The program should never be left in an erroneous state
+4. After this lecture, do you think you would be able to optimize your implementation of the concurrent stack in homework 2? Write a few sentences on what you might try.
+   - Yes, I think I could optimize my implementation. For instance, I might explore using lock-free techniques, such as compare-and-swap (CAS), to reduce contention and avoid blocking other threads. Additionally, I could consider employing fine-grained locking or a backoff strategy to minimize lock contention and improve scalability. Finally, leveraging ideas from optimistic concurrency could also allow threads to operate speculatively and retry only when conflicts occur.
+
+## quiz #16
+1. Barrier objects have how many API calls?
+   - 2
+   - barrier_wait, barrier_init
+2. A barrier call emits which of the following events? Check all that apply
+   - [ ] barrier_lock
+   - [x] barrier_arrive
+   - [ ] barrier_enqueue
+   - [x] barrier_leave
+3. If a program uses both barriers and mutexes, the outcome is deterministic (i.e. the same every time) if there are no data conflicts
+   - true
+   - If there are no data conflicts and synchronization primitives (barriers and mutexes) are used correctly, the program's execution order is deterministic. Synchronization ensures predictable thread interactions
+4. Write a few sentences about what you think the best interface for parallel programming is: that is: do you think it is atomics? Mutexes? Concurrent Data Structures? Barriers? Or even maybe the compiler should simply do it all automatically? Or is it some combination of the above? What are the trade-offs involved?
+   - The best interface for parallel programming depends on the specific requirements and trade-offs of the problem at hand. Low-level primitives like atomics are lightweight and highly efficient but can be error-prone due to their complexity in ensuring correctness. Mutexes are effective for protecting shared resources, but their usage introduces overhead and risks deadlocks if not managed carefully. Concurrent data structures abstract much of the complexity, allowing safe concurrent access, though they may have higher overhead compared to hand-optimized solutions. Barriers are ideal for synchronizing threads in phases but lack versatility for finer-grained control. Compiler automation offers a promising way to offload the complexity of parallel programming but may lack transparency or flexibility in handling complex systems. Ultimately, a combination of these approaches often yields the best results: higher-level abstractions and automation for productivity and simplicity, coupled with lower-level primitives for performance-critical sections. The trade-offs involve balancing efficiency, ease of use, control, and complexity.
