@@ -107,6 +107,11 @@
     - transport layer에서 하는건 end-to-end에만 영향을 줌
     - network layer에서 하는건 hop-by-hop에 영향을 줌 (router마다 checksum을 확인해야함)
 
+> [!NOTE]
+> - The Network Layer handles the routing and packet forwarding between networks, using IP addresses. <br>
+> - The Data Link Layer is responsible for framing and addressing within the local network, using MAC addresses. <br>
+> - Routers move down to the Data Link Layer when they need to forward packets between different network segments or technologies, handling the encapsulation of packets into the appropriate frames for transmission.
+
 ### impairments
 - packet loss --> retransmission
 - bit errors --> error detection 
@@ -146,8 +151,10 @@
   - receiver: reads data from underlying perfect channel
   - no feedback necessary bc channel is perfect
 - <img src="./assets/3-2.png" width="500">
+- above is event
+- below is action
 
-### rdt 2.0: lossy channel (bite errors)
+### rdt 2.0: lossy channel (bit errors)
 - assumptions:
   - bit errors on channel
   - no packet loss
@@ -254,11 +261,13 @@
 
 - advantages:
   - simple
+  - powerful ack
   - sender can send multiple packets before receiving ack
+  - rdt
+  - higher utilization than stop & wait
 - disadvantages:
   - if packet is lost, all packets after it are retransmitted
-  - receiver must buffer out-of-order packets (or discard)
-
+  
 ### Selective Repeat Protocol
 - "window" of packets (up to N) can be sent before ack is received
 - each packet laebeled with sequence number in increasing order
@@ -288,6 +297,7 @@
   - limited to a max payload of 65,507 bytes in IPv4
   - usually 'fragmented' into multiple IP packets
 - <img src="./assets/3-16.png" width="500">
+
   - overhead of udp is less than tcp because of smaller header size, no connection setup, etc.
 - example: DNS, multimedia streaming, etc.
 
@@ -355,6 +365,7 @@
 <img src="./assets/3-18.png" width="500">
 
 - ack는 80이 됨
+- A의 SN은 B의 ack + 1이 됨
 
 ### TCP connection management
 #### 3-way handshake
@@ -365,7 +376,7 @@
 - <img src="./assets/3-19.png" width="500">
 
 #### 4-way handshake
-- terminate connection (FIN, FIN-ACK, ACK, FIN, ACK)
+- terminate connection (FIN, ACK, FIN, ACK)
 - <img src="./assets/3-20.png" width="500">
 
 ### retransmission timer
@@ -398,39 +409,166 @@
 - fast retransmit: retransmit segment before timeout
 - if 3 duplicate acks are received, retransmit
 
+<img src="./assets/3-25.png" width="500">
+
 ## TCP flow control
 - pace sender to prevent overwhelming receiver
 - sender won't overflow receiver's buffer by transmitting too much data too fast
-- speed-matching service (send rate = receive app's read rate)
+- speed-matching service 
+  - send rate = receive app's read rate
+- `receive window` is noted in the TCP header
 
-### congestion
+## TCP congestion control
+- don't overwhelm network
+- receiver advertises free buffer space
+- sender limits its window size accordingly
+  - sender's window <= `rwnd`
+  - `rwnd = RcvBuffer - [LastByteRcvd - LastByteRead]`
+  - guarantees that receiver won't overflow
 - assumption of the scenarios: 
   - sending hosts share router on path from source to destination
 
-#### sending rate vs throughput
+> [!NOTE]
+> TCP congestion control vs. flow control
+> - flow control: receiver controls sender
+> - congestion control: network controls sender
+
+## sending rate vs throughput
 - sending rate: rate at which sender sends data
 - throughput: rate at which receiver receives data
   - rate original data is delivered to the app layer (omit duplicates & retransmissions)
 
 ### scenario 1 - infinite buffer
-<img src="./assets/3-22.png" width="500">
+<img src="./assets/3-26.png" width="500">
 
 - large queueing delays as packet arrival rate nears link capacity
 
 ### scenario 2 - packet loss
 
-- finite buffer
+- finite buffer & multiple routers
 - packets can be dropped at router (requires retransmission)
-  - sender knows exactly when packet is dropped
-- sender can also timeoute prematurely, sending two copies, both of which are delivered
+  - sender knows exactly when packet is dropped (perfect timer)
+- sender can also timeout prematurely, sending two copies, both of which are delivered
   - un-needed duplicates
   - once again $\lambda_{out}$ will be reduced even more because of the duplicates
 
 <img src="./assets/3-23.png" width="500">
 
-<img src="./assets/3-24.png" width="500">s
+<img src="./assets/3-24.png" width="500">
 
 ### scenario 3 - multihop path
+- output capacity/rate of routers = R bits/sec
+- finite buffer
+  - timeout & retransmission
+
+<img src="./assets/3-27.png" width="500">
+
+- $\lambda_{in}' \leq \lambda_{in}$
+
+<img src="./assets/3-28.png" width="500">
+
+
+### congestion insights
+<img src="./assets/3-29.png" width="500">
+
+
+## Congestion Control
+1. Network-assisted congestion control
+   - help from the network
+   - router monitors state and provides direct feedback from the network
+2. End-to-end congestion control
+   - no explicit feedback from the network
+
+### finding out packet loss
+1. RTO timer expires --> probably a packet loss
+   - packet loss = congestion
+   - an ack arrives
+2. 3 duplicate acks --> probably a packet loss
+
+## TCP congestion control
+- goal: optimal transmission rate given network conditions
+  - transmit at max rate BUT
+    - slow down when network is congested
+    - speed up when network is not congested
+- issues
+  - only feedback is from receiver (acks) or timeouts at sender
+  - no feedback from network
+- pipelined protocol!!
+
+## cwnd: congestion window
+- rwnd: receiver's limiting window
+- sender window = min(cwnd, rwnd)
+  - usually `rwnd >> cwnd` so we can focus on `cwnd`
+- dynamic variable, function of perceived congestion
+- sender's view of ideal window size for current network conditions
+- number of unACKed bytes in flight
+- TCP sending rate = cwnd / RTT bytes/sec
+- sender limits window size: lastByteSent - lastByteAcked <= cwnd
+
+<img src="./assets/3-30.png" width="500">
+
+## TCP slow start: exponential increase
+- used when connection is established or after timeout
+- initially, `cwnd = 1 MSS`
+- increase rate exponentially
+  - `cwnd = cwnd * 2`
+  - increment `cwnd` for every ack received
+- stop when `cwnd` reaches `ssthresh` or packet loss
+
+
+<img src="./assets/3-31.png" width="200">
+
+
+## TCP congestion avoidance: linear increase
+- after slow start, increase rate linearly
+- increase `cwnd` by 1 MSS for every RTT
+
+<img src="./assets/3-32.png" width="200">
+
+## ssthresh
+- initially set to 64KB (RFC 5681)
+- exponential increase until `ssthresh` is reached
+  - then switch to linear increase
+- ssthresh is set to half of the current `cwnd` when packet loss occurs
+
+## transition into/out of slow start
+- sender maintains ssthresh and cwnd
+- when `cwnd >= ssthresh`, transition from slow start to congestion avoidance
+- on loss event:
+  - ssthresh = cwnd / 2
+  - allows remembering rate when congestion/loss occured
+
+<img src="./assets/3-33.png" width="500">
+
+## Reaction to packet loss
+### TCP congestion control: AIMD
+- Additive Increase, Multiplicative Decrease
+- Additive Increase
+  - increase sending rate by 1 MSS for every RTT until loss detected
+- Multiplicative Decrease
+  - decrease `cwnd` by half when packet loss is detected
+  - `ssthresh = cwnd / 2`
+- sawtooth behaviour
+  - increase rate linearly, decrease rate exponentially
+
+<img src="./assets/3-34.png" width="500">
+
+### TCP Tahoe
+- any packet loss `cwnd` = 1 MSS
+
+### TCP Reno
+- loss recovered by fast retransmission: `cwnd` = `ssthresh` + 3MSS
+  - `ssthresh` = `cwnd` / 2
+- timeout: `cwnd` = 1 MSS
+
+<img src="./assets/3-35.png" width="500">
+
+- fast recovery allows
+  - once 3 duplicate acks have been received
+  - for each additional duplicate ack received, temporarily increase `cwnd` by 1 MSS
+  - once recovered, reset `cwnd` and transition to congestion avoidance state
+
+<img src="./assets/3-36.png" width="500">
 
 > [!TIP]
 > ON EXAM: How do you transition out from a slow start?

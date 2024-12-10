@@ -38,7 +38,7 @@ Table of Contents
     - [1. circuit switching (reserved)](#1-circuit-switching-reserved)
       - [advantages:](#advantages)
       - [disadvantages:](#disadvantages)
-    - [2. packet switching (ond-demand)](#2-packet-switching-ond-demand)
+    - [2. packet switching (on-demand)](#2-packet-switching-on-demand)
       - [advantages:](#advantages-1)
       - [disadvantages:](#disadvantages-1)
   - [Channel Partitioning](#channel-partitioning)
@@ -52,7 +52,7 @@ Table of Contents
   - [Network-core functions](#network-core-functions)
     - [1. Forwarding](#1-forwarding)
     - [2. Routing](#2-routing)
-  - [network multiplexing](#network-multiplexing)
+  - [packet switching: statistical multiplexing](#packet-switching-statistical-multiplexing)
     - [packet queueing](#packet-queueing)
     - [packet loss \& queue management](#packet-loss--queue-management)
     - [example](#example)
@@ -98,7 +98,7 @@ Table of Contents
 
 ### TCP/IP Internet Protocol Stack
 
-- protocal is orcanized into layers by functionality
+- protocol is organized into layers by functionality
 
 #### 1. Application Layer (L5)
 
@@ -155,6 +155,8 @@ N hosts --> middle box --> web server (여러개 존재; replication) --> databa
 - interconnected ISPs
   
 ### Internet Hierachy
+> all the ISPs are the network core
+
 1. Tier 1 ISP (Internet Backbone)
    - 국제ISP
 2. Tier 2 ISP (Regional ISP)
@@ -162,7 +164,7 @@ N hosts --> middle box --> web server (여러개 존재; replication) --> databa
 3. Tier 3 ISP (Local ISP)
    - Tier 2 ISP와 연결, local internet 제공
 4. Access Network
-   - connects end users to the internet
+   - connects end users to the internet (via access link)
    - cable modem, DSL, etc
 5. End User Device
    - laptop, phone
@@ -337,7 +339,7 @@ N hosts --> middle box --> web server (여러개 존재; replication) --> databa
 - longer setup time
 - idle resources
 
-### 2. packet switching (ond-demand)
+### 2. packet switching (on-demand)
 - data is divided into packets
 - packets are sent over the network and reassembled at the destination
 - **on-demand** resource allocation
@@ -455,7 +457,7 @@ packet = header + data
     - 실시간으로 network topology를 업데이트
   - routing algorithm 사용
 
-## network multiplexing
+## packet switching: statistical multiplexing
 
 - packets arrive probabilistically
 - $arrivals > service\ rate$
@@ -553,7 +555,7 @@ packet = header + data
 - link on end-to-end path that constrains throughput
 - $R_s$: sender's transmission rate (server)
 - $R_c$: receiver's reception rate (client)
-- maximum throughput = min($R_s, R_c, R{network}$)
+- maximum throughput = min($R_s, R_c, R_{network}$)
 
 ### delay
 - bottleneck sets the lower bound on "distribution" time

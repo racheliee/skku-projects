@@ -28,6 +28,12 @@
 - may have dynamic IP address
 - 서로 직접적인 통신 불가능
 
+## P2P (Peer-to-Peer) - ad hoc
+- no always-on server
+- arbitrary end systems directly communicate
+- self-scalability
+  - new peers bring new service capacity
+
 ## Application Layer Protocols
 
 - defines:
@@ -47,6 +53,12 @@
 - usage:
   - display web pages requested & received from web servers
   - HTML defines display format
+- components:
+  - client: browser
+  - server: web server
+  - protocol: HTTP
+  - documents stored on web servers
+  - TSL if https is being used (TLS: Transport Layer Security)
 
 ## HTTP
 
@@ -113,7 +125,11 @@
   - reduces traffic
   - ex: browser cache
 - if the cache has the up-to-date object, the server will not send the object again
+  - cache sends conditional get to origin server
+  - if requested object is up-to-date, server does not return the file
+    - cache forwards response to client
   - 근데 없거나 최신이 아니라고 판단되면 cache forward request to server
+    - cache updates its copy and returns objects to client
 - server랑 client의 중간다리 느낌
 - if object modified, 
   - cache --> conditional GET to origin server
@@ -126,12 +142,18 @@
     - `200 OK` response를 받으면 cache를 업데이트
 
 ## Process Communication
+
+1. same hosts
+   - two processes communicate using inter-process communication (IPC)
+2. different hosts
+   - processes communicate by exchanging messages over a network
+
 ### IPC (Inter-Process Communication)
 - two processes on the same host communicate with each other
 - defined by the OS
 - ex: pipes, message queues, shared memory, sockets
 
-### Server process on remote host
+### remote host
 - server process: process that waits to be contacted
 - client process: process that contacts server
 
@@ -144,7 +166,7 @@
   - well-known ports: 0 ~ 1023
     - ex: 80 (HTTP), 21 (FTP), 25 (SMTP), 53 (DNS), 443 (HTTPS)
   - registered ports: 1024 ~ 49151
-  - dynamic/private ports: 49152 ~ 65535
+  - dynamic/emphemeral ports: 49152 ~ 65535
 
 ## App Implementation
 - application layer uses services of transport layer and network to send/deliver data
@@ -152,18 +174,25 @@
   - send/receive data
 - transport protocols implemented within the OS
 - data integrity, throughput, delay, security, ...
-  - bandwidth sensitive vs. elastic apps,
+  - bandwidth sensitive vs. elastic apps
 
 <img src="assets/2-5.png" width="500">
 
-### Socket Interface
+## Socket Interface
 - allows processes to communicate with each other
 - API (TCP/IP sockets)
   
 ## RTT (Round Trip Time)
 - time elapsed for a small packet to travel from client to server AND back
 
+## UDP
+- unreliable data transfer
+- does not provide reliability, flow control, congestion control
+
 ## TCP Connection
+- Reliable transport, connection-oriented, flow control, congestion control
+- 3 way handshake
+  - SYN, SYN-ACK, ACK
 - Set bits in TCP header
   - SYN: synchronize sequence numbers
   - ACK: acknowledgment (can include data)
@@ -177,10 +206,7 @@
 
 ### Persistent HTTP
 - existing connection used for multiple requests/responses
-- server reclaims resources
 - http header - keep-alive
-- parallel - multiple TCP connections
-  - wire shark에서 ack, syn의 갯수가 적음
 - Response time
   - Base Page: 2RTT + transmission time
   - additional embedded objects: (1RTT + transmission time) * n
@@ -189,7 +215,10 @@
 
 ### Non-Persistent HTTP
 - OS overhead for each connection
+- server reclaims resources
 - http header - close
+- parallel - multiple TCP connections
+  - wire shark에서 ack, syn의 갯수가 적음
 - Response time
   - Base Page: 2RTT + transmission time
   - additional embedded objects: (2RTT + transmission time) * n
@@ -220,6 +249,12 @@
   - 다음번에 request를 보낼때 cookie를 같이 보냄 (`Cookie: <cookie>`)
   - cookie는 브라우저가 관리
 
+### four components
+1. server sets cookie with HTTP header `Set-Cookie: x` in response
+2. when send requests, per domain, client return cookie with HTTP header `Cookie: x`
+3. clients store cookies in cookie file, managed by user's browser
+4. web server keeps track of whatever it can in its backend db
+
 ## Domain Name System (DNS)
 - IP address: 32 bit number
 - domain name: human-readable address
@@ -244,7 +279,6 @@
 - stores DNS RR for a domain
   - RR: Resource Record
 
-
 ### DNS Services
 - mapping
   - host --> IP address translation
@@ -257,33 +291,65 @@
   - multiple IP addresses for one name
     - DNS returns list of IP addresses
 - resolver
-  - local name server spcified by your local ISP
+  - local name server specified by your local ISP --> starting point of DNS query
 
 ### DNS Distributed Hierarchical Database
 - minimum three levels, each layer has a different role
 <img src="assets/2-8.png" width="500">
-- client queries the root server --> get IP addres for `.com` server 
+- client queries the root server --> get IP address for `.com` server 
   - doesn't have all the info
   - guaranteed to know the top-level domain (TLD) server
 - client queries the `.com` server --> get IP address for `amazon.com` TLD DNS server
+  - `CNAME` record
 - client queries the `amazon.com` authoritative DNS server --> get IP address for `www.amazon.com`
+  - `A` record
+  - ip를 가지고 있는건 authoritative DNS server!!
+
+#### DNS Root Name Servers
+- top of hierarchal distributed database
+- holds address of every TLD server
+- root returns IP address of 
+  - TLD 
+  - or authoritative server 
+  - or whatever name server is cached
+- returns NS record pointing to the TLD server
+
+#### TLD (Top-Level Domain) Servers
+- responsible for suffixes in name
+- responsible for authoritative servers within a suffix
+  - returns their IP address
+- returns NS records that point to the authoritative DNS server for a domain
+- typically doesn't return CNAME record directly, but if domain record points to a CNAME, the authoritative DNS servers for that domain would return those records
+
+#### Authoritative DNS Servers
+- an organization's DNS server responsible for all mappings of publicly addressable hosts within its domain
+- cached mappings are NOT considered authoritative
+- benefit
+  - updates/changes done locally
+  - can further sub-divide the name and install additional name servers
+- returns A records (maps domain to an IP address)
+- returns CNAME (provides an alias for a domain)
+- returns MX (specify mail servers for the domain)
 
 ### centralized vs. distributed DNS
 - centralized: single point of failure & load too high for single server, scalability issues
 - decentralized: no single point of failure, but consistency issues
 
-
 ### DNS Name resolution: iterated query
+- begin with local name server
 - root server: if it knows the IP address, it returns the IP address
 - if not, it returns the IP address of the TLD server
 - always a final answer or referral to another server
-- recursive query
+- <img src="assets/2-11.png" width="500">
+
+### DNS name resolution: recursive query
    - return either the IP address or an error message
    - 정확한 ip 알떄까지 돌아오지 마라 느낌
 - iterated query
    - return the IP address or the IP address of the next server to query
 - UDP 사용 
   - faster bc no connection setup
+- <img src="assets/2-12.png" width="500">
 
 ### DNS Caching
 - once a server learns a mapping, it caches the mapping
@@ -298,8 +364,7 @@
   - DNS poisoning
 
 ### DNS records
-- RR format
-  - (name, value, type, ttl)
+- RR format =`(name, value, type, ttl)`
 
 #### type
 1. A
@@ -314,6 +379,7 @@
 4. CNAME
    - name: alias hostname
    - value: canonical hostname
+   - returned by 
    - ex: ibm.com --> servereast.backup2.ibm.com
 
 ### DNS protocol messages
@@ -360,7 +426,7 @@ gethostbyname() --> Local DNS Server (필요하면 그 위로, TLD 등) --> get 
 
 #### middle-box
 - put cache near the access ISP
-- 
+- reduced path
 
 #### server-side
 - put cache close to server
@@ -385,6 +451,6 @@ gethostbyname() --> Local DNS Server (필요하면 그 위로, TLD 등) --> get 
 ### improvements
 1. pay access ISP to upgrade access link rate
 2. install cache
-   1. hit rate에 따라 delay가ㄷ 달라짐
+   1. hit rate에 따라 delay가 달라짐
    2. <img src="assets/2-10.png" width="500">
   
