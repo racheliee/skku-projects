@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic-Tac-Toe</title>
+
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="css/my_style.css" />
+  </head>
+
+  <body>
+    <section class="section" id="app">
+      <h1 class="title">Tic-Tac-Toe</h1>
+      <div class="container">
+        <table class="table">
+          <tbody>
+            <!-- loop through each row & col in the board-->
+            <tr v-for="(row, i) in board" :key="i">
+              <td v-for="(col, j) in row" :key="j">
+                <button
+                  class="button"
+                  :class="{'is-success': isWinningCell(i, j)}"
+                  @click="play(i, j)"
+                >
+                  <span>
+                    <!-- Set icon based on the value of the cell -->
+                    <i
+                      :class="{
+                'fa fa-fw':true,
+                'fa-remove': col === 'X',
+                'fa-circle-o': col === 'O'
+                }"
+                    ></i>
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- new game button -->
+        <div class="mt-5">
+          <button id="new-game" class="button is-danger" @click="resetGame">
+            <span><i class="fa fa-refresh"></i> New Game</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p><a href="">License BSD</a>.</p>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.min.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

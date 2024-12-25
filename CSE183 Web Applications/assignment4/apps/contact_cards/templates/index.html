@@ -1,0 +1,76 @@
+[[extend 'layout.html']]
+
+<style>
+  [v-cloak] {
+    display: none;
+  }
+</style>
+
+<input
+  type="file"
+  id="file-input"
+  style="display: none"
+  accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
+/>
+<div class="section" id="app" v-cloak>
+  <div class="container">
+    <h1 class="title">Contacts</h1>
+    <button id="add_button" @click="addContact" class="button is-success">Add Contact</button>
+
+    <!-- Start of the v-for loop to iterate through contacts -->
+    <div v-for="contact in contacts" :key="contact.id" class="card contact mt-4">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="photo image is-96x96" @click="chooseImage(contact)">
+              <img :src="contact.photo_url" class="photo" />
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title person-name">
+              <!-- Name input field -->
+              <input type="text" class="input is-4 title" name="name"
+                     :readonly="!contact.editingName"
+                     @click="editField(contact, 'name')" v-model="contact.contact_name"
+                     @blur="saveContact(contact, 'name')" placeholder="Name"/>
+            </p>
+            <p class="subtitle person-affiliation">
+              <!-- Affiliation input field -->
+              <input type="text" class="input is-6" name="affiliation"
+                     :readonly="!contact.editingAffiliation"
+                     @click="editField(contact, 'affiliation')" v-model="contact.contact_affiliation"
+                     @blur="saveContact(contact, 'affiliation')" placeholder="Affiliation"/>
+            </p>
+          </div>
+          <div class="media-right">
+            <!-- Delete button -->
+            <i class="delete_button delete-button has-text-danger fa fa-trash" @click="deleteContact(contact)"></i>
+          </div>
+        </div>
+
+        <!-- Description textarea -->
+        <textarea class="textarea" name="description" :readonly="!contact.editingDescription"
+                  @click="editField(contact, 'description')" v-model="contact.contact_description"
+                  @blur="saveContact(contact, 'description')" placeholder="Description"></textarea>
+      </div>
+    </div>
+    <!-- End of the v-for loop -->
+  </div>
+</div>
+
+<!-- File input for image upload -->
+<input type="file" id="file-input" style="display: none" accept="image/*">
+
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+  let get_contacts_url = "[[=XML(get_contacts_url)]]";
+  // Add more URLs if you wish.
+  let add_contact_url = "[[=URL('add_contact')]]";
+  let update_contact_url = "[[=URL('update_contact')]]";
+  let delete_contact_url = "[[=URL('delete_contact')]]";
+</script>
+
+<script src="js/index.js"></script>
+[[end]]
