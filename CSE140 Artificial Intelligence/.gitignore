@@ -1,0 +1,9 @@
+# ignore configs for submission
+*/*/config.json
+
+# ignore cache and venvs
+assignments/cse140_venv
+*/*/__pycache__
+
+# ignore system stuff
+.DS_Store
