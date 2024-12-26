@@ -1,6 +1,153 @@
 # GPU
 
 
+## GPU set up
+- allocate and initialize memory
+ 
+### types
+<img src="./assets/7-1.png" width="500">
+
+- although mobile GPUs share the system memory, most still require you to program as if they didn't have shared memory
+- CPU-GPU communication is not fully supported
+  - coherence, fences, and RMWs might not be supported
+- left-side
+  - heterogenous, parallel, programming model
+  - CPU is the host, GPU is the device
+  - need to allocate GPU memory on the host
+    - `cudaMalloc(&d_x, SIZE*sizeof(int));` (CUDA)
+    - `*d_x` is a pointer in the CPU memory that points to the GPU memory
+    - pointer can be passed around but CPU can't access the memory
+    - GPU has no access to input devices (e.g. disks)
+
+### GPU program
+- kernel: special function that runs on the GPU
+  - keyword: `__global__`
+
+example:
+```cpp
+__global__ void add(int *d_a, int *d_b, int *d_c, int size) {
+  for(int i = 0; i < size; i++) {
+    d_a[i] = d_b[i] + d_c[i];
+  }
+}
+
+// calling the function
+// pass in pointers to GPU memory
+// constants cant be passed the same way
+vector_add<<<1, 1>>>(d_a, d_b, d_c, size); 
+e |= cudaDeviceSynchronize();
+
+// $ nvcc main.cu -o main
+```
+
+- use `cudaMemcpy` to copy data between CPU and GPU
+  - `cudaMemcpy(d_a, h_a, SIZE*sizeof(int), cudaMemcpyHostToDevice);`
+  - `cudaMemcpy(h_a, d_a, SIZE*sizeof(int), cudaMemcpyDeviceToHost);`
+- OS expects GPU kernel to be fast to render graphics
+  - if it takes too long, OS will kill the kernel
+
+
+## First Parallelization Attempt
+```cpp
+_gLobal__ void vector_ add (int * d_a, int * d_b, int * d_c, int size) {
+  int chunk_size = size/blockDim.x; 
+  int start = chunk_size * threadIdx.x;
+  int end = start + end;
+  for (int i = start; i ‹ end; i++) {
+    d_a[i] =d_b[i]+d_c[i];
+  }
+}
+
+
+vector_add<<<1, n>>>(d_a, d_b, d_c, size);  // n threads
+```
+- about 14 times speedup
+
+## GPU memory
+<img src="./assets/7-2.png" width="500">
+
+- bandwidth:
+  - GPU: ~700 GB/s
+  - CPU: ~50 GB/s
+- memory latency:
+  - GPU: ~600 cycles
+  - CPU: ~200 cycles
+- cache latency
+  - GPU: ~20 cycles for L1 hit
+  - CPU: ~4 cycles for L1 hit
+
+### using preemption to hide latency
+- preemption: switching between threads
+- since memory loads are slow, the GPU can switch to another thread while waiting for the load to finish
+- registers all stay on the chip so the context switch is fast and less expensive
+- dedicated warp scheduler
+  - warp: group of 32 threads
+  - scheduler can switch between warps
+
+
+### optimizing memory access
+<img src="./assets/7-3.png" width="300">
+
+- streaming multiprocessor
+- warp execution
+  - instruction fetched from the buffer and distributed to all the cores
+  - all cores need to wait until all cores finish the first instruction
+  - then move on to the next instruction
+- why?
+  - to have more cores (share program counters)
+  - efficient to share hardware resources
+
+#### broadcasting reads
+
+<img src="./assets/7-4.png" width="500">
+
+- memory chunk can be distributed like that
+- or a single value can be broadcasted to all threads
+- reading non-contiguous memory is slow
+  - need to make 4 requests to GPU memory
+
+> [!TIP]
+> Access the memory in a strided way to take advantage of broadcasting!!! <br>
+> ex: `| A | B | C | D | A | B | C | D |` <br>
+
+updated code:
+```cpp
+__global__ void vector_add (int * d_a, int * d_b, int * d_c, int size) {
+  for (int 1 = threadIdx.x; 1 < size; i += blockDim.x) 
+    d_a[i] = d_b[i] + d_c[i];
+}
+
+vector_add<<<1, 1024>>>(d_a, d_b, d_c, size);
+```
+- about 4 times faster
+
+### multiple streaming multiprocessors
+- most GPUs have multiple SMs (streaming multiprocessors)
+- CUDA provides virtual streaming multiprocessors called blocks
+  - hide memory latency
+  - very efficient at launching and joining blocks
+  - no limit on blocks
+    - launch as many blocks as you need to map 1 thread to 1 data element
+
+```cpp
+_global__ void vector_add (int * d_a, int * d b, int * d_c, int size) {
+  int i = blockIdx.x * blockDim.x + threadIdx.x;
+  d_a[i] = d_b[i] + d_c[i];
+}
+
+
+vector_add<<<1024, 1024>>>(d_a, d_b, d_c, size); // 1024 elements, 1024 threads
+```
+
+## javascript multithreading
+- `async`
+  - concurrent (executes on same thread)
+  - good for I/O and user interactions
+- web workers
+  - execute on multiple cores
+  - better for computing intensive applications
+  - better performance
+
 ## WebGPU
 - language: wsgl (WebGPU Shading Language)
 - wsgl is compiled (vulkan (linux), metal (mac), hlsl (windows))
@@ -43,54 +190,3 @@ for (var i : u32 = 0u; i < arrayLength(a); i = i + 1u) {
   // do something
 }
 ```
-
-## memory consistency
-- sequential consistency --> you can only order threads; instructions within a thread cannot be reordered
-  - program order is sequential
-- plain atomic accesses are documented to be sequentially consistent
-  - SC doesn't work compossibly
-  - two objects that are SC might not be SC when combined (no compossibility)
-  - BUT programs contain only 1 shared memory; no reason to compose diff main mems
-    - c++ provides atomic sequential consistency
-- ISA
-  - not SC
-
-## total store order (TSO) memory model
-- has a store buffer where stores are held before being written to memory
-- threads check store bugger before going to main mem
-  - cheap and close to check
-- x86 (most conservative)
-
-### relaxed memory consistency
-- store buffer can reorder stores execution that is not allowed by SC
-- weak memory behaviour
-- x86, c++ (but if you use atomic, it's SC)
-- sometimes, reordering is useful for performance and doesn't affect the program
-  - provides special instructions that disallow weak memory behaviour (aka. fences)
-  - ex: `mfence` instruction
-- they try to delay to store as much as possible (flush together)
-  - store buffer is kept as a queue (FIFO)
-  - order is preserved
-- loads are done earlier so the data is prepared before it is even needed
-
-
-### litmus test
-- collection of tests to check memory consistency
-- small concurrnet programs that check for relaxed memory consistency
-
-### TSO rules
-- all behaviours that can be observed in x86
-1. stores followed by a load do not have to follow program order
-2. stores cannot be reordered past a fence in program order
-3. stores cannot be reordered past laods from the same address
-
-```plain
-      mem access 0
-       L        S
-   +-------+-------+
-L  |  NO   |  YES  |
-   +-------+-------+
-S  |  NO   |  NO   |
-   +-------+-------+
-```
-- if memory access 0 appreas before mem access 1 in program order, can it bypass program order?

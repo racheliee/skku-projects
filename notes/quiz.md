@@ -151,9 +151,9 @@ with different values?
    - false
    - you can use locks to protect the data structures
 2. Non-locking objects do not use mutexes in their implementation. This is beneficial because:
-   - [ ] it is faster
+   - [x] it is faster
    - [ ] it is easier to reason about
-   - [ ] it is easier to extend
+   - [x] it is easier to extend
 3. When multiple threads access a concurrent object, only 1 possible execution is allowed. We reason about that execution by sequentializing object method calls and it is called sequential consistency
    - false
    - this is called linearizability
@@ -162,6 +162,7 @@ with different values?
 4. What is the relationship between linearizable (L) and sequentially consistent (SC)?
    - Objects that are L are also SC, but not the other way around.
 5. Write a few sentences about the pros and cons of using a concurrent data structure vs. using mutexes to protect data structures that are not thread-safe.
+   - pro: easier to use // con: composability
    - Using concurrent data structures is beneficial because it allows for multi-threaded programming without the concern for locks when accessing or modifying the data structure thanks to its internal synchronization mechanisms. However, the concurrent data structures are compplex and could potentially present difficulty in debugging.
    - Mutexes provide flexibility in protecting data structures. A user can declare their own data structures and make them thread-safe through mutexes. However, this approach can lead to significant performance drawbacks due to increased blocking and potential contention, as threads must wait for exclusive access to the resource, which can lead to issues like deadlocks and priority inversion if not managed carefully.
 
@@ -184,7 +185,7 @@ with different values?
 5. Write a few sentences about the pros and cons of using a specialized concurrent queue (e.g. an IO queue) and a fully general concurrent queue.
    - A specialized concurrent queue offers optimized performance for specific tasks (e.g., I/O operations) but lacks flexibility for other workloads. A general concurrent queue is versatile and reusable but may have lower performance due to lack of specific optimizations.
 
-## quiz #11
+## quiz #10
 1. A DOALL Loop must have:
    - [ ] A loop variable that starts at 0 and is incremented by 1
    - [x] loop iterations that are independent
@@ -195,9 +196,9 @@ with different values?
    - (2) parallelize them to convert the identified doall loops into parallel code
    - (3) pick a parallel schedule to optimize the performance of the parallelized code
 3. Which one of the following is NOT a drawback of a global workstealing parallel schedule
-   - [ ] Requires a concurrent data structure
+   - [x] Requires a concurrent data structure
    - [ ] Contention on shared cache lines
-   - [x] Contention on a single location with RMWs
+   - [ ] Contention on a single location with RMWs
 4. Which of the following is NOT an overhead of the local worklist workstealing parallel schedule (that we studied in class)
    - [ ] Initialization of the queues
    - [ ] Checking a global variable to ensure all work is completed
@@ -207,6 +208,7 @@ with different values?
    - [ ] The last thread always get the end of the array
    - [ ] The last thread never receives more than N tasks
 6. Write a few sentences about the pros and cons of using local workstealing queues over the global implicit worklist
+   - simple vs more efficient
    - pros:
      - reduced contention because local workstealing queues minimize contention on shared data structures
      - better cache performance because each thread has its own queue
@@ -215,6 +217,20 @@ with different values?
      - load imbalance could occur because threads may not have the same amount of work
      - overhead of work stealing because threads need to check other threads' queues
      - more complex to implement because each thread has its own queue
+
+
+## quiz #11
+1. The host (CPU) will write a C++-like program that allocates and sets up memory on the GPU. The host will then call a GPU program called a kernel. Is this affirmation true?
+   - true
+2. How do we initialize memory for a variable we aim to use in the GPU computation?
+   - [x] Using cudaMemcpy
+   - [ ] Using memcpy from C++
+   - [ ] Just declaring a new variable
+3. What keyword do we need to include for a function to be executed on the GPU using CUDA?
+   - `__kernel__`
+4. example of workloads that benefit from GPU parallelism
+   - data-parallel workloads
+   - image processing, scientific simulations, machine learning, and deep learning
 
 
 ## quiz #12
@@ -252,12 +268,12 @@ with different values?
 ## quiz #14
 1. The C++ relaxed memory order provides
    - [ ] no orderings at all
-   - [ ] orderings only between accesses of the same address
-   - [x] TSO memory behaviors when run on an x86 system
-   - [x] an easy way to accidentally introduce horrible bugs into your program
+   - [x] orderings only between accesses of the same address
+   - [ ] TSO memory behaviors when run on an x86 system
+   - [ ] an easy way to accidentally introduce horrible bugs into your program
 2. In terms of memory models, the compiler needs to ensure the following property:
-   - [x] Any weak behavior allowed in the language is also allowed in the ISA
-   - [ ] Any weak behaviors that are disallowed in the language need to be disallowed in the ISA
+   - [ ] Any weak behavior allowed in the language is also allowed in the ISA
+   - [x] Any weak behaviors that are disallowed in the language need to be disallowed in the ISA
    - [ ] The compilation ensures that the program has sequentially consistent behavior at the ISA level
    - [ ] The compiler does not need to reason about relaxed memory
 3. A program that uses mutexes and has no data conflicts does not have weak memory behaviors for which of the following reasons?
@@ -265,16 +281,17 @@ with different values?
    - [ ] The OS has built in support for Mutexes that disable architecture features, such as the store buffer
    - [x] A correct mutex implementation uses fences in lock and unlock to disallow weak behaviors
 4. Assuming you had a sequentially consistent processor, any C/++ program you ran on it would also be sequentially consistent, regardless of if there are data-conflicts or not.
-   - true
-   - sequentially consistent processor guarantees that the program has sequentially consistent behavior at the ISA level
+   - false
+   - compiler can reorder instructions
 5. If you put a fence after every memory instruction, would that be sufficient to disallow all weak behaviors on a weak architecture? Please write a few sentences explaining your answer.
+   - sufficient but slow
    - Yes, placing a fence after every memory instruction would disallow all weak behaviors because fences enforce ordering constraints and flush store buffers. However, this approach is inefficient, as it would significantly degrade performance by preventing hardware optimizations like instruction reordering and store buffering, which are the main benefits of weak memory models.
 
 ## quiz #15
 1. Concurrent linked lists can be implemented using locks on every node if:
    - [x] locks are always acquired in the same order
    - [ ] two locks are acquired at a time
-   - [x] Both of the above
+   - [ ] Both of the above
    - [ ] Neither of the above
 2. Lock coupling provides higher performance than a single global lock because threads can traverse the list in parallel 
    - true
