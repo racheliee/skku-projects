@@ -1,0 +1,63 @@
+[[extend 'layout.html']]
+
+<style>
+  [v-cloak] {
+    display: none;
+  }
+</style>
+
+<div class="section" id="app" v-cloak>
+  <!-- Put here your Vue.js template -->
+  <h1 class="title">Shopping List</h1>
+
+  <div class="container">
+    <table class="table is-fullwidth is-striped">
+      <tr class="add-row">
+        <td class="is-narrow">
+          <i
+            class="is-size-2 fa fa-plus-square has-text-success add-item"
+            @click="addItem"
+          ></i>
+        </td>
+        <td>
+          <input
+            class="input add-item"
+            type="text"
+            v-model="newItem"
+            @keyup.enter="addItem"
+            placeholder="Add a new item"
+          />
+        </td>
+        <td class="is-narrow"></td>
+      </tr>
+      <tr class="item-row" v-for="item in sortedItems" :key="item.id">
+        <td class="check is-narrow">
+          <input
+            type="checkbox"
+            v-model="item.purchased"
+            @change="toggleItem(item)"
+          />
+        </td>
+        <td class="item">{{ item.item_name }}</td>
+        <td class="trash is-narrow">
+          <i
+            class="trash has-text-danger fa fa-trash"
+            @click="deleteItem(item)"
+          ></i>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+  let load_data_url = "[[=XML(load_data_url)]]";
+  // Add other URLs here if you wish.
+  let add_item_url = "[[=XML(add_item_url)]]";
+  let toggle_item_url = "[[=XML(toggle_item_url)]]";
+  let delete_item_url = "[[=XML(delete_item_url)]]";
+</script>
+<script src="js/index.js"></script>
+[[end]]

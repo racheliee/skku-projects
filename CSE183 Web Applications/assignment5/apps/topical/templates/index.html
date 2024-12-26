@@ -1,0 +1,82 @@
+[[extend 'layout.html']]
+
+<div class="section" id="app">
+  <div class="columns">
+    <!-- Left Column (3/4 wide) -->
+    <div class="column is-three-quarters">
+      <!-- Create Post Section -->
+      <div v-if="isLoggedIn" class="box">
+        <textarea
+          id="post-input"
+          v-model="postContent"
+          placeholder="Write something..."
+          class="textarea"
+        ></textarea>
+        <button
+          id="post-button"
+          @click="createPost"
+          class="button is-primary mt-2"
+        >
+          Post
+        </button>
+      </div>
+      <div v-else class="notification is-warning">
+        Please log in to create posts.
+      </div>
+      <!-- List of Posts -->
+      <div>
+        <div v-for="post in filteredPosts" :key="post.id" class="post box">
+          <p class="post-content">{{ post.content }}</p>
+          <p
+            class="post-meta is-flex is-justify-content-space-between is-align-items-center"
+          >
+            <span>
+              Posted on {{ new Date(post.created_at).toLocaleString() }} by {{
+              post.user_email }}
+            </span>
+            <button
+              v-if="post.user_email === currentUser"
+              class="delete-button button is-danger is-small"
+              @click="deletePost(post.id)"
+              aria-label="Delete"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column (1/4 wide) -->
+    <div class="column">
+      <div class="box">
+        <h4 class="title is-5">Tags</h4>
+        <div class="tags">
+          <button
+            v-for="tag in tags"
+            :key="tag"
+            class="tag button is-small"
+            @click="toggleTag(tag)"
+            :class="{ 'is-info': activeTags.includes(tag) }"
+          >
+            {{ tag }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+[[block page_scripts]]
+<script>
+  let get_posts_url = "[[=XML(get_posts_url)]]";
+  let create_post_url = "[[=URL('create_post')]]";
+  let delete_post_url = "[[=URL('delete_post')]]";
+  let get_tags_url = "[[=XML(get_tags_url)]]";
+  let current_user_email = "[[=current_user_email or '']]";
+</script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+<script src="[[=URL('static/js/index.js')]]"></script>
+[[end]]
