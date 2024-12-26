@@ -1,0 +1,273 @@
+8 CORES (no yield) =============================================
+filter_mutex
+total number: 544827
+66310
+66990
+68178
+68964
+67721
+66876
+70650
+69138
+bakery_mutex
+total number: 651157
+81448
+81032
+80925
+81022
+81079
+80760
+81375
+83516
+cpp_mutex
+total number: 4495737
+546936
+447715
+469227
+678030
+874949
+430885
+504988
+543007
+32 CORES (no yield) =============================================
+filter_mutex
+total number: 81
+5
+2
+2
+4
+2
+3
+3
+3
+2
+2
+3
+3
+2
+2
+2
+3
+2
+3
+2
+2
+3
+3
+2
+2
+2
+2
+2
+3
+2
+3
+2
+3
+bakery_mutex
+total number: 0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+cpp_mutex
+total number: 2927698
+446935
+304013
+89857
+127980
+48068
+120491
+47904
+51332
+38991
+66417
+70491
+95505
+78646
+93891
+66471
+45711
+112565
+38085
+96102
+67690
+53538
+51773
+40480
+79944
+34949
+96890
+109642
+48982
+103913
+33720
+66645
+100077
+
+// server results =================================================
+📝 Part 1: Get throughput on filter version
+
+
+  0
+  0
+  0
+  0
+  total number: 44
+  1
+  1
+  2
+  1
+  1
+  2
+  1
+  2
+  1
+  1
+  1
+  1
+  1
+  2
+  2
+  2
+  1
+  1
+  1
+  2
+  2
+  2
+  1
+  1
+  1
+  2
+  1
+  2
+  1
+  1
+  2
+  1
+  44
+  Avg Throughput of 5 runs: 8.8 - Minimum expected: 70000
+  failed
+  
+❌ Part 1: Get throughput on filter version
+::error::The output for test Part 1: Get throughput on filter version did not match%0AExpected:%0Apass%0AActual:%0A0%0A0%0A0%0A0%0Atotal number: 44%0A1%0A1%0A2%0A1%0A1%0A2%0A1%0A2%0A1%0A1%0A1%0A1%0A1%0A2%0A2%0A2%0A1%0A1%0A1%0A2%0A2%0A2%0A1%0A1%0A1%0A2%0A1%0A2%0A1%0A1%0A2%0A1%0A44%0AAvg Throughput of 5 runs: 8.8 - Minimum expected: 70000%0Afailed
+📝 Part 1: Get throughput on bakery version
+
+
+  0
+  0
+  0
+  0
+  total number: 0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  Avg Throughput of 5 runs: 0.0 - Minimum expected: 93000
+  failed
+  
+❌ Part 1: Get throughput on bakery version
+::error::The output for test Part 1: Get throughput on bakery version did not match%0AExpected:%0Apass%0AActual:%0A0%0A0%0A0%0A0%0Atotal number: 0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0A0%0AAvg Throughput of 5 runs: 0.0 - Minimum expected: 93000%0Afailed
+📝 Part 1: Get throughput on cpp version
+
+
+  4058503
+  4106905
+  4042889
+  3870396
+  total number: 4077227
+  128333
+  128004
+  128844
+  128431
+  127243
+  123138
+  128875
+  126050
+  125539
+  126299
+  128784
+  129858
+  125544
+  127620
+  129962
+  127104
+  127337
+  129259
+  125359
+  127505
+  127518
+  126013
+  128556
+  129091
+  123709
+  124852
+  127592
+  127050
+  129091
+  128416
+  128275
+  127976
+  4077227
+  Avg Throughput of 5 runs: 4031184.0 - Minimum expected: 0
+  pass
+  
+✅ Part 1: Get throughput on cpp version

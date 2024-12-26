@@ -1,0 +1,123 @@
+UNROLL FACTOR 1 =============================================
+new loop time: 1.36738
+reference loop time: 1.86999
+speedup: 1.36758
+
+
+----------
+generating and running for:
+partitions = 1
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 2 =============================================
+new loop time: 0.762719
+reference loop time: 1.49333
+speedup: 1.9579
+
+
+----------
+generating and running for:
+partitions = 2
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 4 =============================================
+new loop time: 0.404795
+reference loop time: 1.56935
+speedup: 3.87691
+
+
+----------
+generating and running for:
+partitions = 4
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 8 =============================================
+new loop time: 0.589756
+reference loop time: 1.68565
+speedup: 2.85822
+
+
+----------
+generating and running for:
+partitions = 8
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+UNROLL FACTOR 16 =============================================
+new loop time: 4.09867
+reference loop time: 2.04811
+speedup: 0.499701
+
+
+----------
+generating and running for:
+partitions = 16
+-----
+
+running: g++ -std=c++17 -fno-unroll-loops -O0 -o homework homework.cpp
+running: ./homework
+
+
+
+// SERVER TIME ==================================================
+📝 Part 2: Unroll Factor = 1
+
+
+  
+  new loop time: 1.48592
+  reference loop time: 1.51252
+  speedup: 1.0179
+  
+  
+✅ Part 2: Unroll Factor = 1
+
+📝 Part 2: Unroll Factor = 2
+
+
+  new loop time: 0.766602
+  reference loop time: 1.50789
+  speedup: 1.96698
+  
+  
+✅ Part 2: Unroll Factor = 2
+
+📝 Part 2: Unroll Factor = 4
+
+
+  new loop time: 0.640458
+  reference loop time: 1.50661
+  speedup: 2.35239
+  
+  
+✅ Part 2: Unroll Factor = 4
+
+📝 Part 2: Unroll Factor = 8
+
+
+  new loop time: 0.745589
+  reference loop time: 1.50428
+  speedup: 2.01758
+  
+  
+✅ Part 2: Unroll Factor = 8
+
+📝 Part 2: Unroll Factor = 16
+
+
+  new loop time: 1.68795
+  reference loop time: 1.50617
+  speedup: 0.892308
+  
+  
+✅ Part 2: Unroll Factor = 16

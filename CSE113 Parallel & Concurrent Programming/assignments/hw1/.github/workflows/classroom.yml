@@ -1,0 +1,19 @@
+name: GitHub Classroom Workflow
+
+on:
+  push:
+    branches:
+      - 'main'
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: self-hosted 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: education/autograding@v1

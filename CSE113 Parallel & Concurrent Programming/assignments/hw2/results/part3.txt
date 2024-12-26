@@ -1,0 +1,89 @@
+run 1 =============================================
+coarse_lock_stack
+total operations: 375277
+total pops: 62714
+total pushes: 61638
+total peeks: 250925
+rw_lock_stack
+total operations: 419576
+total pops: 38887
+total pushes: 37888
+total peeks: 342801
+swaptop_stack
+total operations: 409196
+total pops: 14902
+total pushes: 14350
+total peeks: 336252
+total swaptops: 43692
+run 2 =============================================
+coarse_lock_stack
+total operations: 471689
+total pops: 79201
+total pushes: 78401
+total peeks: 314087
+rw_lock_stack
+total operations: 427906
+total pops: 40401
+total pushes: 39601
+total peeks: 347904
+swaptop_stack
+total operations: 402732
+total pops: 7994
+total pushes: 8731
+total peeks: 355993
+total swaptops: 30014
+run 3 =============================================
+coarse_lock_stack
+total operations: 453770
+total pops: 76239
+total pushes: 75424
+total peeks: 302107
+rw_lock_stack
+total operations: 418923
+total pops: 36802
+total pushes: 36018
+total peeks: 346103
+swaptop_stack
+total operations: 390225
+total pops: 12792
+total pushes: 11510
+total peeks: 328514
+total swaptops: 37409
+
+
+// server results =================================================
+✅ Part 3: Check sequential with swaptop
+
+📝 Part 3: Get throughput from coarse version
+
+
+  total operations: 73792
+  total pops: 10196
+  total pushes: 15960
+  total peeks: 47636
+  pass
+  
+✅ Part 3: Get throughput from coarse version
+
+📝 Part 3: Get throughput from read/write version
+
+
+  total operations: 959380
+  total pops: 234
+  total pushes: 451
+  total peeks: 958695
+  pass
+  
+✅ Part 3: Get throughput from read/write version
+
+📝 Part 3: Get throughput from swaptop version
+
+
+  total operations: 1062274
+  total pops: 94
+  total pushes: 114
+  total peeks: 1061780
+  total swaptops: 286
+  pass
+  
+✅ Part 3: Get throughput from swaptop version

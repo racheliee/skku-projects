@@ -1,0 +1,320 @@
+Part 1: Compile
+
+
+  
+  g++ -std=c++17 -O3 -DSPAWNJOIN -DRECORDRESULT main.cpp -pthread -o sjbarrier
+  g++ -std=c++17 -O3 -DBARRIER -DSR -DRECORDRESULT main.cpp -pthread -o srbarrier
+  g++ -std=c++17 -O3 -DBARRIER -DSRO -DRECORDRESULT main.cpp -pthread -o srobarrier
+  g++ -std=c++17 -O3 -DSPAWNJOIN main.cpp -fsanitize=thread -pthread -o sjbarrier_test
+  g++ -std=c++17 -O3 -DBARRIER -DSR main.cpp -fsanitize=thread -pthread -o srbarrier_test
+  g++ -std=c++17 -O3 -DBARRIER -DSRO main.cpp -fsanitize=thread -pthread -o srobarrier_test
+  
+  pass
+  
+✅ Part 1: Compile
+
+📝 Part 1.1 (Spawn and Join): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 1.1 (Spawn and Join): Check for data race
+
+📝 Part 1.2 (Basic SR Barrier): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 1.2 (Basic SR Barrier): Check for data race
+
+📝 Part 1.3 (Optimized SR Barrier): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 1.3 (Optimized SR Barrier): Check for data race
+
+📝 Part 1.1 (Spawn and Join): 1 Thread Timing
+
+
+  Time: 0.118043
+  pass
+  
+✅ Part 1.1 (Spawn and Join): 1 Thread Timing
+
+📝 Part 1.1 (Spawn and Join): CORES (4) Threads Timing
+
+
+  Time: 0.240609
+  pass
+  
+✅ Part 1.1 (Spawn and Join): CORES (4) Threads Timing
+
+📝 Part 1.1 (Spawn and Join): 2x CORES (8) Threads Timing
+
+
+  Time: 0.577876
+  pass
+  
+✅ Part 1.1 (Spawn and Join): 2x CORES (8) Threads Timing
+
+📝 Part 1.2 (Basic SR Barrier): 1 Thread Timing
+
+
+  Time: 0.0435064
+  pass
+  
+✅ Part 1.2 (Basic SR Barrier): 1 Thread Timing
+
+📝 Part 1.2 (Basic SR Barrier): CORES (4) Threads Timing
+
+
+  Time: 0.0217753
+  pass
+  
+✅ Part 1.2 (Basic SR Barrier): CORES (4) Threads Timing
+
+📝 Part 1.2 (Basic SR Barrier): 2x CORES (8) Threads Timing
+
+
+  Time: 6.42741
+  pass
+  
+✅ Part 1.2 (Basic SR Barrier): 2x CORES (8) Threads Timing
+
+📝 Part 1.3 (Optimized SR Barrier): 1 Thread Timing
+
+
+  Time: 0.0436983
+  pass
+  
+✅ Part 1.3 (Optimized SR Barrier): 1 Thread Timing
+
+📝 Part 1.3 (Optimized SR Barrier): CORES (4) Threads Timing
+
+
+  Time: 0.0233747
+  pass
+  
+✅ Part 1.3 (Optimized SR Barrier): CORES (4) Threads Timing
+
+📝 Part 1.3 (Optimized SR Barrier): 2x CORES (8) Threads Timing
+
+
+  Time: 0.0442981
+  pass
+  
+✅ Part 1.3 (Optimized SR Barrier): 2x CORES (8) Threads Timing
+
+📝 Part 2: Compile
+
+
+  g++ -std=c++17 -O3 -DRELAXED -DRECORDRESULT main.cpp -pthread -o relaxed_sb
+  g++ -std=c++17 -O3 -DSYNC main.cpp -DRECORDRESULT -pthread -o sync_sb
+  g++ -std=c++17 -O3 -DDISALLOWED main.cpp -DRECORDRESULT -pthread -o sc_sb
+  g++ -std=c++17 -O3 -DRELAXED main.cpp -fsanitize=thread -pthread -o relaxed_sb_test
+  g++ -std=c++17 -O3 -DSYNC main.cpp -fsanitize=thread -pthread -o sync_sb_test
+  g++ -std=c++17 -O3 -DDISALLOWED -fsanitize=thread main.cpp -pthread -o sc_sb_test
+  
+  pass
+  
+✅ Part 2: Compile
+
+📝 Part 2.1 (Relaxed SB): Behavior Histogram
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 0
+    condition: r0 == 1 && r1 == 0 result: 493
+    condition: r0 == 0 && r1 == 1 result: 65042
+    condition: r0 == 0 && r1 == 0 result: 1
+  relaxed behavior frequency: 1.52588e-05
+  pass
+  
+✅ Part 2.1 (Relaxed SB): Behavior Histogram
+📝 Part 2.2 (Sync SB): Behavior Histogram
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 1094
+    condition: r0 == 1 && r1 == 0 result: 63582
+    condition: r0 == 0 && r1 == 1 result: 708
+    condition: r0 == 0 && r1 == 0 result: 152
+  relaxed behavior frequency: 0.00231934
+  pass
+  
+✅ Part 2.2 (Sync SB): Behavior Histogram
+📝 Part 2.3 (Disallowed SB): Behavior Histogram
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 109
+    condition: r0 == 1 && r1 == 0 result: 63623
+    condition: r0 == 0 && r1 == 1 result: 1804
+    condition: r0 == 0 && r1 == 0 result: 0
+  relaxed behavior frequency: 0
+  pass
+  
+✅ Part 2.3 (Disallowed SB): Behavior Histogram
+
+ Part 2.1 (Relaxed SB): Behavior Histogram
+
+
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 3
+    condition: r0 == 1 && r1 == 0 result: 851
+    condition: r0 == 0 && r1 == 1 result: 64682
+    condition: r0 == 0 && r1 == 0 result: 0
+  relaxed behavior frequency: 0
+  pass
+  
+✅ Part 2.1 (Relaxed SB): Behavior Histogram
+
+📝 Part 2.2 (Sync SB): Behavior Histogram
+
+
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 579
+    condition: r0 == 1 && r1 == 0 result: 63877
+    condition: r0 == 0 && r1 == 1 result: 970
+    condition: r0 == 0 && r1 == 0 result: 110
+  relaxed behavior frequency: 0.00167847
+  pass
+  
+✅ Part 2.2 (Sync SB): Behavior Histogram
+
+📝 Part 2.3 (Disallowed SB): Behavior Histogram
+
+
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 106
+    condition: r0 == 1 && r1 == 0 result: 63741
+    condition: r0 == 0 && r1 == 1 result: 1689
+    condition: r0 == 0 && r1 == 0 result: 0
+  relaxed behavior frequency: 0
+  pass
+  
+✅ Part 2.3 (Disallowed SB): Behavior Histogram
+
+
+ Part 2.1 (Relaxed SB): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 2.1 (Relaxed SB): Check for data race
+
+📝 Part 2.2 (Sync SB): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 2.2 (Sync SB): Check for data race
+
+📝 Part 2.3 (Disallowed SB): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 2.3 (Disallowed SB): Check for data race
+
+📝 Part 2.1 (Relaxed SB): Behavior Histogram
+
+
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 0
+    condition: r0 == 1 && r1 == 0 result: 393
+    condition: r0 == 0 && r1 == 1 result: 65143
+    condition: r0 == 0 && r1 == 0 result: 0
+  relaxed behavior frequency: 0
+  pass
+  
+✅ Part 2.1 (Relaxed SB): Behavior Histogram
+
+📝 Part 2.2 (Sync SB): Behavior Histogram
+
+
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 518
+    condition: r0 == 1 && r1 == 0 result: 64223
+    condition: r0 == 0 && r1 == 1 result: 680
+    condition: r0 == 0 && r1 == 0 result: 115
+  relaxed behavior frequency: 0.00175476
+  pass
+  
+✅ Part 2.2 (Sync SB): Behavior Histogram
+
+📝 Part 2.3 (Disallowed SB): Behavior Histogram
+
+
+  histogram of different observations:
+    condition: r0 == 1 && r1 == 1 result: 92
+    condition: r0 == 1 && r1 == 0 result: 63952
+    condition: r0 == 0 && r1 == 1 result: 1492
+    condition: r0 == 0 && r1 == 0 result: 0
+  relaxed behavior frequency: 0
+  pass
+  
+✅ Part 2.3 (Disallowed SB): Behavior Histogram
+
+📝 Part 3: Compile
+
+
+  g++ -std=c++17 -O3 -DRECORDRESULT -DSCDEKKERS  main.cpp -lpthread -o scdekkers
+  g++ -std=c++17 -O3 -DRECORDRESULT -DRDEKKERS   main.cpp -lpthread -o rdekkers
+  g++ -std=c++17 -O3 -DRECORDRESULT -DTSODEKKERS main.cpp -lpthread -o tsodekkers
+  g++ -std=c++17 -O3 -DSCDEKKERS main.cpp -lpthread -o scdekkers_test
+  
+  pass
+  
+✅ Part 3: Compile
+
+📝 Part 3.1 (SCDekkers): Check for data race
+
+
+  No data races detected!
+  pass
+  
+✅ Part 3.1 (SCDekkers): Check for data race
+
+📝 Part 3.1 (SCDekkers): Throughput/Violations
+
+
+  throughput (critical sections per second): 7.00238e+06
+  number of critical sections: 14004769
+  number of mutual exclusion violations: 0
+  percent of times that mutual exclusion was violated: 0%
+  pass
+  
+✅ Part 3.1 (SCDekkers): Throughput/Violations
+
+📝 Part 3.2 (RDekkers): Throughput/Violations
+
+
+  throughput (critical sections per second): 2.03986e+07
+  number of critical sections: 40797149
+  number of mutual exclusion violations: 14971704
+  percent of times that mutual exclusion was violated: 36.6979%
+  pass
+  
+✅ Part 3.2 (RDekkers): Throughput/Violations
+
+📝 Part 3.3 (TSODekkers): Throughput/Violations
+
+
+  throughput (critical sections per second): 4.7432e+06
+  number of critical sections: 9486403
+  number of mutual exclusion violations: 0
+  percent of times that mutual exclusion was violated: 0%
+  pass
+  
+✅ Part 3.3 (TSODekkers): Throughput/Violations
+
+
+::***::
+
+All tests passed
+
+✨🌟💖💎🦄💎💖🌟✨🌟💖💎🦄💎💖🌟✨
+
+Points 25/25
