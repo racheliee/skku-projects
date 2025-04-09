@@ -792,6 +792,7 @@ class Parser:
         ('left', 'PLUS', 'MINUS'),
         ('left', 'TIMES', 'DIVIDE', 'MOD')
     )
+    types = ['int', 'float', 'double', 'void']
 
     def __init__(self, tokens):
         self.tokens = tokens
@@ -828,7 +829,7 @@ class Parser:
         pos += 3
         depth = 1
         while pos < len(self.tokens) and depth > 0:
-            curr_type, curr_val = self.tokens[pos]
+            curr_val = self.tokens[pos][1]
             if curr_val == '(':
                 depth += 1
             elif curr_val == ')':
@@ -866,7 +867,7 @@ class Parser:
             param_name = self.parse_identifier()
             params.append(Decl(
                 name=param_name,
-                quals=[], align=None, storage=[], funcspec=[],
+                quals=[], align=[], storage=[], funcspec=[],
                 type=TypeDecl(param_name, [], None, IdentifierType([param_type])),
                 init=None, bitsize=None
             ))
@@ -881,7 +882,7 @@ class Parser:
         
         return Decl(
             name=function_name,
-            quals=[], align=None, storage=[], funcspec=[],
+            quals=[], align=[], storage=[], funcspec=[],
             type=FuncDecl(
                 args=ParamList(params),
                 type=TypeDecl(function_name, [], None, IdentifierType([return_type]))
@@ -890,7 +891,50 @@ class Parser:
         )
 
     def parse_funcdef(self):
-        ...
+        return_type = self.consume('KEYWORD')[1]
+        function_name = self.consume('ID')[1]
+        self.consume('SYMBOL','(')
+        
+        params = []
+        while self.peek() is not None and self.peek()[1] != ')':
+            # print("params:", self.peek())
+            param_type = self.parse_type()
+            param_name = self.parse_identifier()
+            params.append(Decl(
+                name=param_name,
+                quals=[], align=[], storage=[], funcspec=[],
+                type=TypeDecl(param_name, [], None, IdentifierType([param_type])),
+                init=None, bitsize=None
+            ))
+            if self.peek()[1] == ')':
+                break
+            self.consume('SYMBOL', ',')
+        self.consume('SYMBOL', ')')
+        self.consume('SYMBOL', '{')
+        
+        decls = []
+        while self.peek() is not None and self.peek()[1] != '}':
+            if self.peek()[0] == 'KEYWORD':
+                decls.append(self.parse_declaration())
+            else:
+                decls.append(self.parse_statement())
+        self.consume('SYMBOL', '}')
+        
+        # print("decls:", decls)
+        
+        return FuncDef(
+            decl=Decl(
+                name=function_name,
+                quals=[], align=[], storage=[], funcspec=[],
+                type=FuncDecl(
+                    args=ParamList(params),
+                    type=TypeDecl(function_name, [], None, IdentifierType([return_type]))
+                ),
+                init=None, bitsize=None
+            ),
+            param_decls=params,
+            body=Compound(decls)
+        )
 
     def parse_compound(self):
         ...
@@ -908,10 +952,18 @@ class Parser:
         ...
 
     def parse_type(self):
-        ...
+        if self.peek() is None:
+            return None
+        if self.peek()[0] == 'KEYWORD' and self.peek()[1] in self.types:
+            return self.consume('KEYWORD')[1]
+        return None
 
     def parse_identifier(self):
-        ...
+        if self.peek() is None:
+            return None
+        if self.peek()[0] == 'ID':
+            return self.consume('ID')[1]
+        return None
 
 # evaluator ======================================================================
 
