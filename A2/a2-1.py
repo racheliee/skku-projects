@@ -1,6 +1,7 @@
 
 import sys
 
+
 def _repr(obj):
     """
     Get the representation of an object, with dedicated pprint-like format for lists.
@@ -128,6 +129,22 @@ class Assignment(Node):
 
 
 class BinaryOp(Node):
+    '''
+    binary operation
+    - arithmetic or bitwise operations
+    - consider only the following operators: 
+        - binary operator (+, -, *, /, %), bitwise operator(^, |, &, <<, >>)
+
+    example: a = 3 + 4;
+    BinaryOp: +
+        Constant: int, 3
+        Constant: int, 4
+
+    example: d = 2 << 2;
+    BinaryOp: <<
+        Constant: int, 2
+        Constant: int, 2
+    '''
     __slots__ = ('op', 'left', 'right', 'coord', '__weakref__')
 
     def __init__(self, op, left, right, coord=None):
@@ -154,6 +171,24 @@ class BinaryOp(Node):
 
 
 class Compound(Node):
+    '''
+    Compound statement
+    - a block of code (e.g. function body)
+
+    example:
+    {
+        userDefined2(3);
+        return 0;
+    }
+
+    Compound: 
+        FuncCall: 
+            ID: userDefined2
+            ExprList: 
+                Constant: int, 3
+        Return: 
+            Constant: int, 0
+    '''
     __slots__ = ('block_items', 'coord', '__weakref__')
 
     def __init__(self, block_items, coord=None):
@@ -199,6 +234,11 @@ class CompoundLiteral(Node):
 
 
 class Constant(Node):
+    '''
+    literal value 
+
+    Constant: int, 3
+    '''
     __slots__ = ('type', 'value', 'coord', '__weakref__')
 
     def __init__(self, type, value, coord=None):
@@ -215,6 +255,7 @@ class Constant(Node):
         yield
 
     attr_names = ('type', 'value', )
+
 
 class Decl(Node):
     __slots__ = ('name', 'quals', 'align', 'storage', 'funcspec',
@@ -308,7 +349,6 @@ class EmptyStatement(Node):
     attr_names = ()
 
 
-
 class ExprList(Node):
     __slots__ = ('exprs', 'coord', '__weakref__')
 
@@ -330,6 +370,9 @@ class ExprList(Node):
 
 
 class FileAST(Node):
+    '''
+    FileAST rootnode
+    '''
     __slots__ = ('ext', 'coord', '__weakref__')
 
     def __init__(self, ext, coord=None):
@@ -682,33 +725,37 @@ class UnaryOp(Node):
     attr_names = ('op', )
 
 # lexer ======================================================================
+
+
 class Lexer:
     _keywords = {'int', 'float', 'double', 'return', 'void', 'printf'}
     _symbols = [';', '{', '}', '(', ')', ',', '=', '+',
-               '-', '*', '/', '%', '&', '|', '^', '<<', '>>']
-    
+                '-', '*', '/', '%', '&', '|', '^', '<<', '>>']
+
     def __init__(self, source_code):
         self.source_code = source_code
         self.tokens = []
-    
+
     def tokenize(self):
         for symbol in self._symbols:
             if symbol != "%":
-                self.source_code = self.source_code.replace(symbol, f" {symbol} ")
-        
+                self.source_code = self.source_code.replace(
+                    symbol, f" {symbol} ")
+
         # add spaces around mod
         in_string = False
         for i in range(len(self.source_code)):
             c = self.source_code[i]
-            
+
             if c == '"':
                 in_string = not in_string
             elif c == '%' and not in_string:
-                self.source_code = self.source_code[:i] + " % " + self.source_code[i+1:]
-            
+                self.source_code = self.source_code[:i] + \
+                    " % " + self.source_code[i+1:]
+
         raw_tokens = self.source_code.split()
         # print("Raw tokens:", raw_tokens)
-        
+
         for tok in raw_tokens:
             if tok in self._keywords:
                 self.tokens.append(('KEYWORD', tok))
@@ -727,17 +774,148 @@ class Lexer:
                 self.tokens.append(('SYMBOL', tok))
             else:
                 raise ValueError(f"Unknown token: {tok}")
-        
+
         return self.tokens
-    
-    
+
+
 # parser ======================================================================
 class Parser:
+    precedence = (
+        ('left', 'LOR'),
+        ('left', 'LAND'),
+        ('left', 'OR'),
+        ('left', 'XOR'),
+        ('left', 'AND'),
+        ('left', 'EQ', 'NE'),
+        ('left', 'GT', 'GE', 'LT', 'LE'),
+        ('left', 'RSHIFT', 'LSHIFT'),
+        ('left', 'PLUS', 'MINUS'),
+        ('left', 'TIMES', 'DIVIDE', 'MOD')
+    )
+
     def __init__(self, tokens):
         self.tokens = tokens
         self.pos = 0
+        
+    def peek(self):
+        if self.pos < len(self.tokens):
+            return self.tokens[self.pos]
+        return None
+    
+    def consume(self, expected_type=None, expected_val = None):
+        ' this changes the position of the token stream '
+        curr = self.peek()
+        if curr is None:
+            return None
+    
+        tok_type, tok_val = curr
+
+        if expected_type and tok_type != expected_type:
+            return None
+        if expected_val and tok_val != expected_val:
+            return None
+
+        self.pos += 1
+        return curr
+    
+    def is_prototype(self):
+        ''' return True if the current token is a function prototype (ends with ;) '''
+        pos = self.pos
+        
+        if pos + 2 >= len(self.tokens): # keyword + id
+            return False
+        
+        pos += 3
+        depth = 1
+        while pos < len(self.tokens) and depth > 0:
+            curr_type, curr_val = self.tokens[pos]
+            if curr_val == '(':
+                depth += 1
+            elif curr_val == ')':
+                depth -= 1
+            pos += 1
+        
+        if pos >= len(self.tokens) or self.tokens[pos][1] != ';':
+            return False
+        
+        return True
+        
+        
+    def parse(self):
+        elements = []
+        
+        # no need to consider global variables
+        while self.peek() is not None:
+           token_type = self.is_prototype()
+        #    print("token_type:", token_type)
+           if token_type:
+                elements.append(self.parse_prototype()) 
+           else:
+                elements.append(self.parse_funcdef())
+        return FileAST(elements)
+    
+    def parse_prototype(self):
+        return_type = self.consume('KEYWORD')[1]
+        function_name = self.consume('ID')[1]
+        self.consume('SYMBOL','(')
+        
+        params = []
+        while self.peek() is not None and self.peek()[1] != ')':
+            # print("params:", self.peek())
+            param_type = self.parse_type()
+            param_name = self.parse_identifier()
+            params.append(Decl(
+                name=param_name,
+                quals=[], align=None, storage=[], funcspec=[],
+                type=TypeDecl(param_name, [], None, IdentifierType([param_type])),
+                init=None, bitsize=None
+            ))
+            if self.peek()[1] == ')':
+                break
+            self.consume('SYMBOL', ',')
+        self.consume('SYMBOL', ')')
+        self.consume('SYMBOL', ';')
+        
+        # print('tokens:', self.tokens)
+        # print("pos:", self.pos)
+        
+        return Decl(
+            name=function_name,
+            quals=[], align=None, storage=[], funcspec=[],
+            type=FuncDecl(
+                args=ParamList(params),
+                type=TypeDecl(function_name, [], None, IdentifierType([return_type]))
+            ),
+            init=None, bitsize=None
+        )
+
+    def parse_funcdef(self):
+        ...
+
+    def parse_compound(self):
+        ...
+
+    def parse_statement(self):
+        ...
+
+    def parse_expression_statement(self):
+        ...
+
+    def parse_expression(self):
+        ...
+
+    def parse_declaration(self):
+        ...
+
+    def parse_type(self):
+        ...
+
+    def parse_identifier(self):
+        ...
 
 # evaluator ======================================================================
+
+
 class Evaluator(NodeVisitor):
     def __init__(self):
         self.variables = {}
@@ -762,8 +940,7 @@ class Evaluator(NodeVisitor):
     def visit_FuncCall(self, node):
         # Handle function calls
         pass
-    
-    
+
 
 # main function ============================================================================================
 def main():
@@ -782,10 +959,65 @@ def main():
 
     tokens = Lexer(source_code).tokenize()
     # print("Tokens:", tokens)
-    # ast = Parser(tokens).parse_program(tokens)
-    # ast.show()
+    ast = Parser(tokens).parse()
+    ast.show()
     # evaluate(ast)
 
 
 if __name__ == "__main__":
     main()
+
+# if __name__ == "__main__":
+#     # Expression: 2 + 3
+#     binop = BinaryOp(op='+',
+#                      left=Constant('int', 2),
+#                      right=Constant('int', 3))
+
+#     # Declaration: int a = 2 + 3;
+#     decl = Decl(
+#         name='a',
+#         quals=[], align=None, storage=[], funcspec=[],
+#         type=TypeDecl('a', [], None, IdentifierType(['int'])),
+#         init=binop,
+#         bitsize=None
+#     )
+
+#     # Function call: printf("%d", a);
+#     printf_call = FuncCall(
+#         name=ID('printf'),
+#         args=ExprList([
+#             Constant('string', '"%d"'),
+#             ID('a')
+#         ])
+#     )
+
+#     # Return statement: return 0;
+#     ret = Return(Constant('int', 0))
+
+#     # Function body (compound)
+#     body = Compound([
+#         decl,
+#         printf_call,
+#         ret
+#     ])
+
+#     # Function definition: int main() { ... }
+#     funcdef = FuncDef(
+#         decl=Decl(
+#             name='main',
+#             quals=[], align=None, storage=[], funcspec=[],
+#             type=FuncDecl(
+#                 args=ParamList([]),
+#                 type=TypeDecl('main', [], None, IdentifierType(['int']))
+#             ),
+#             init=None, bitsize=None
+#         ),
+#         param_decls=[],
+#         body=body
+#     )
+
+#     # Full program
+#     file_ast = FileAST(ext=[funcdef])
+
+#     # Show it
+#     file_ast.show()
