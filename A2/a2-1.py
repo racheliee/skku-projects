@@ -594,27 +594,6 @@ class ParamList(Node):
     attr_names = ()
 
 
-class PtrDecl(Node):
-    __slots__ = ('quals', 'type', 'coord', '__weakref__')
-
-    def __init__(self, quals, type, coord=None):
-        self.quals = quals
-        self.type = type
-        self.coord = coord
-
-    def children(self):
-        nodelist = []
-        if self.type is not None:
-            nodelist.append(("type", self.type))
-        return tuple(nodelist)
-
-    def __iter__(self):
-        if self.type is not None:
-            yield self.type
-
-    attr_names = ('quals', )
-
-
 class Return(Node):
     __slots__ = ('expr', 'coord', '__weakref__')
 
@@ -780,6 +759,262 @@ class Lexer:
 
 # parser ======================================================================
 class Parser:
+    types = ['int', 'float', 'double', 'void']
+
+    def __init__(self, tokens):
+        self.tokens = tokens
+        self.pos = 0
+
+    def peek(self):
+        if self.pos < len(self.tokens):
+            return self.tokens[self.pos]
+        return None
+
+    def consume(self, expected_type=None, expected_val=None):
+        ' this changes the position of the token stream '
+        curr = self.peek()
+        if curr is None:
+            return None
+        tok_type, tok_val = curr
+
+        if expected_type and tok_type != expected_type:
+            return None
+        if expected_val and tok_val != expected_val:
+            return None
+
+        self.pos += 1
+        return curr
+
+    def is_prototype(self):
+        ''' return True if the current token is a function prototype (ends with ;) '''
+        pos = self.pos
+
+        if pos + 2 >= len(self.tokens):  # keyword + id
+            return False
+
+        pos += 3
+        depth = 1
+        while pos < len(self.tokens) and depth > 0:
+            curr_val = self.tokens[pos][1]
+            if curr_val == '(':
+                depth += 1
+            elif curr_val == ')':
+                depth -= 1
+            pos += 1
+
+        if pos >= len(self.tokens) or self.tokens[pos][1] != ';':
+            return False
+
+        return True
+
+    def parse(self):
+        elements = []
+
+        # no need to consider global variables
+        while self.peek() is not None:
+            token_type = self.is_prototype()
+        #    print("token_type:", token_type)
+            if token_type:
+                elements.append(self.parse_prototype())
+            else:
+                elements.append(self.parse_funcdef())
+        return FileAST(elements)
+
+    def parse_prototype(self):
+        return_type = self.consume('KEYWORD')[1]
+        function_name = self.consume('ID')[1]
+        self.consume('SYMBOL', '(')
+
+        params = []
+        while self.peek() is not None and self.peek()[1] != ')':
+            # print("params:", self.peek())
+            param_type = self.parse_type()
+            param_name = self.parse_identifier()
+            params.append(Decl(
+                name=param_name,
+                quals=[], align=[], storage=[], funcspec=[],
+                type=TypeDecl(param_name, [], None,
+                              IdentifierType([param_type])),
+                init=None, bitsize=None
+            ))
+            if self.peek()[1] == ')':
+                break
+            self.consume('SYMBOL', ',')
+        self.consume('SYMBOL', ')')
+        self.consume('SYMBOL', ';')
+
+        # print('tokens:', self.tokens)
+        # print("pos:", self.pos)
+
+        return Decl(
+            name=function_name,
+            quals=[], align=[], storage=[], funcspec=[],
+            type=FuncDecl(
+                args=ParamList(params),
+                type=TypeDecl(function_name, [], None,
+                              IdentifierType([return_type]))
+            ),
+            init=None, bitsize=None
+        )
+
+    def parse_funcdef(self):
+        return_type = self.consume('KEYWORD')[1]
+        function_name = self.consume('ID')[1]
+        self.consume('SYMBOL', '(')
+
+        params = []
+        while self.peek() is not None and self.peek()[1] != ')':
+            # print("params:", self.peek())
+            param_type = self.parse_type()
+            param_name = self.parse_identifier()
+            params.append(Decl(
+                name=param_name,
+                quals=[], align=[], storage=[], funcspec=[],
+                type=TypeDecl(param_name, [], None,
+                              IdentifierType([param_type])),
+                init=None, bitsize=None
+            ))
+            if self.peek()[1] == ')':
+                break
+            self.consume('SYMBOL', ',')
+        self.consume('SYMBOL', ')')
+        self.consume('SYMBOL', '{')
+
+        # print("tokens", self.tokens)
+        # print("pos: ", self.pos)
+        
+        # check for declarations/statements in function --> basically it's a compound statement
+        body = []
+        typ, tok = self.peek()
+        while typ is not None and tok != '}':
+            # print(self.peek()[1])
+            if typ == 'KEYWORD' and tok in self.types:
+                body.append(self.parse_declaration())
+            else:
+                # print("parse_statement")
+                body.append(self.parse_statement())
+            
+            typ, tok = self.peek()
+            
+        self.consume('SYMBOL', '}')
+
+        # print("decls:", decls)
+
+        return FuncDef(
+            decl=Decl(
+                name=function_name,
+                quals=[], align=[], storage=[], funcspec=[],
+                type=FuncDecl(
+                    args=ParamList(params),
+                    type=TypeDecl(function_name, [], None,
+                                  IdentifierType([return_type]))
+                ),
+                init=None, bitsize=None
+            ),
+            param_decls=[],  # leave empty; otherwise, Decl is printed twice for param args
+            body=Compound(body)
+        )
+
+    def parse_statement(self):
+        '''
+        single unit of execution
+        - declaration, assignment, function call, return, compound, expressions
+        '''
+        typ, tok = self.peek()
+        if typ is None or tok is None:
+            return None
+        
+        if typ == 'KEYWORD' and tok == 'return':
+            return self.parse_return()
+        if typ == 'ID':
+            ...
+        if typ == 'KEYWORD':...
+            
+        
+
+    def parse_expression(self):
+        '''
+        something that may evaluate to a value
+        ex: a + b, 3, foo(1)
+        '''
+        left = self.parse_term()
+        curr = self.peek()
+        
+        
+        
+    def parse_compound(self): ...
+
+    def parse_term(self):
+        typ, tok = self.peek()
+        if typ is None or tok is None:
+            return None
+        
+        print("parse_term:", typ, tok)
+        
+        if typ == 'NUM':
+            self.consume('NUM')
+            return Constant('int', tok)
+        elif typ == 'FLOAT':
+            return Constant('float', tok)
+        elif typ == 'STRING': # there shouldn't be any cases though i think?
+            return Constant('string', tok)
+        elif typ == 'ID':
+            return ID(tok)
+        elif typ == 'KEYWORD' and tok in self.types:
+            ...
+        elif typ == 'SYMBOL':
+            ...
+        
+    
+    
+    def parse_declaration(self):
+        typ, tok = self.peek()
+        if typ is None or tok is None:
+            return None
+        if typ == 'KEYWORD' and tok in self.types:
+            var_type = self.consume('KEYWORD')[1]
+            var_name = self.consume('ID')[1]
+            self.consume('SYMBOL', ';')
+
+            return Decl(
+                name=var_name,
+                quals=[], align=[], storage=[], funcspec=[],
+                type=TypeDecl(
+                    var_name, [], None, IdentifierType([var_type])
+                ),
+                init=None, bitsize=None
+            )
+            
+    def parse_type(self):
+        typ, tok = self.peek()
+        if typ is None or tok is None:
+            return None
+        if typ == 'KEYWORD' and tok in self.types:
+            return self.consume('KEYWORD')[1]
+        return None
+
+    def parse_identifier(self):
+        if self.peek() is None:
+            return None
+        if self.peek()[0] == 'ID':
+            return self.consume('ID')[1]
+        return None
+    
+    def parse_return(self):
+        if self.peek() is None:
+            return None
+        self.consume('KEYWORD', 'return')
+        # print("consume return")
+        return_statement = self.parse_term()
+        print("term parsed:", return_statement)
+        self.consume('SYMBOL', ';')
+        return Return(expr= return_statement, coord=None)
+    
+
+# evaluator ======================================================================
+
+
+class Evaluator(NodeVisitor):
     precedence = (
         ('left', 'LOR'),
         ('left', 'LAND'),
@@ -792,183 +1027,6 @@ class Parser:
         ('left', 'PLUS', 'MINUS'),
         ('left', 'TIMES', 'DIVIDE', 'MOD')
     )
-    types = ['int', 'float', 'double', 'void']
-
-    def __init__(self, tokens):
-        self.tokens = tokens
-        self.pos = 0
-        
-    def peek(self):
-        if self.pos < len(self.tokens):
-            return self.tokens[self.pos]
-        return None
-    
-    def consume(self, expected_type=None, expected_val = None):
-        ' this changes the position of the token stream '
-        curr = self.peek()
-        if curr is None:
-            return None
-    
-        tok_type, tok_val = curr
-
-        if expected_type and tok_type != expected_type:
-            return None
-        if expected_val and tok_val != expected_val:
-            return None
-
-        self.pos += 1
-        return curr
-    
-    def is_prototype(self):
-        ''' return True if the current token is a function prototype (ends with ;) '''
-        pos = self.pos
-        
-        if pos + 2 >= len(self.tokens): # keyword + id
-            return False
-        
-        pos += 3
-        depth = 1
-        while pos < len(self.tokens) and depth > 0:
-            curr_val = self.tokens[pos][1]
-            if curr_val == '(':
-                depth += 1
-            elif curr_val == ')':
-                depth -= 1
-            pos += 1
-        
-        if pos >= len(self.tokens) or self.tokens[pos][1] != ';':
-            return False
-        
-        return True
-        
-        
-    def parse(self):
-        elements = []
-        
-        # no need to consider global variables
-        while self.peek() is not None:
-           token_type = self.is_prototype()
-        #    print("token_type:", token_type)
-           if token_type:
-                elements.append(self.parse_prototype()) 
-           else:
-                elements.append(self.parse_funcdef())
-        return FileAST(elements)
-    
-    def parse_prototype(self):
-        return_type = self.consume('KEYWORD')[1]
-        function_name = self.consume('ID')[1]
-        self.consume('SYMBOL','(')
-        
-        params = []
-        while self.peek() is not None and self.peek()[1] != ')':
-            # print("params:", self.peek())
-            param_type = self.parse_type()
-            param_name = self.parse_identifier()
-            params.append(Decl(
-                name=param_name,
-                quals=[], align=[], storage=[], funcspec=[],
-                type=TypeDecl(param_name, [], None, IdentifierType([param_type])),
-                init=None, bitsize=None
-            ))
-            if self.peek()[1] == ')':
-                break
-            self.consume('SYMBOL', ',')
-        self.consume('SYMBOL', ')')
-        self.consume('SYMBOL', ';')
-        
-        # print('tokens:', self.tokens)
-        # print("pos:", self.pos)
-        
-        return Decl(
-            name=function_name,
-            quals=[], align=[], storage=[], funcspec=[],
-            type=FuncDecl(
-                args=ParamList(params),
-                type=TypeDecl(function_name, [], None, IdentifierType([return_type]))
-            ),
-            init=None, bitsize=None
-        )
-
-    def parse_funcdef(self):
-        return_type = self.consume('KEYWORD')[1]
-        function_name = self.consume('ID')[1]
-        self.consume('SYMBOL','(')
-        
-        params = []
-        while self.peek() is not None and self.peek()[1] != ')':
-            # print("params:", self.peek())
-            param_type = self.parse_type()
-            param_name = self.parse_identifier()
-            params.append(Decl(
-                name=param_name,
-                quals=[], align=[], storage=[], funcspec=[],
-                type=TypeDecl(param_name, [], None, IdentifierType([param_type])),
-                init=None, bitsize=None
-            ))
-            if self.peek()[1] == ')':
-                break
-            self.consume('SYMBOL', ',')
-        self.consume('SYMBOL', ')')
-        self.consume('SYMBOL', '{')
-        
-        decls = []
-        while self.peek() is not None and self.peek()[1] != '}':
-            if self.peek()[0] == 'KEYWORD':
-                decls.append(self.parse_declaration())
-            else:
-                decls.append(self.parse_statement())
-        self.consume('SYMBOL', '}')
-        
-        # print("decls:", decls)
-        
-        return FuncDef(
-            decl=Decl(
-                name=function_name,
-                quals=[], align=[], storage=[], funcspec=[],
-                type=FuncDecl(
-                    args=ParamList(params),
-                    type=TypeDecl(function_name, [], None, IdentifierType([return_type]))
-                ),
-                init=None, bitsize=None
-            ),
-            param_decls=params,
-            body=Compound(decls)
-        )
-
-    def parse_compound(self):
-        ...
-
-    def parse_statement(self):
-        ...
-
-    def parse_expression_statement(self):
-        ...
-
-    def parse_expression(self):
-        ...
-
-    def parse_declaration(self):
-        ...
-
-    def parse_type(self):
-        if self.peek() is None:
-            return None
-        if self.peek()[0] == 'KEYWORD' and self.peek()[1] in self.types:
-            return self.consume('KEYWORD')[1]
-        return None
-
-    def parse_identifier(self):
-        if self.peek() is None:
-            return None
-        if self.peek()[0] == 'ID':
-            return self.consume('ID')[1]
-        return None
-
-# evaluator ======================================================================
-
-
-class Evaluator(NodeVisitor):
     def __init__(self):
         self.variables = {}
         self.functions = {}
@@ -1010,7 +1068,7 @@ def main():
         sys.exit(1)
 
     tokens = Lexer(source_code).tokenize()
-    # print("Tokens:", tokens)
+    print("Tokens:", tokens)
     ast = Parser(tokens).parse()
     ast.show()
     # evaluate(ast)
@@ -1018,58 +1076,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# if __name__ == "__main__":
-#     # Expression: 2 + 3
-#     binop = BinaryOp(op='+',
-#                      left=Constant('int', 2),
-#                      right=Constant('int', 3))
-
-#     # Declaration: int a = 2 + 3;
-#     decl = Decl(
-#         name='a',
-#         quals=[], align=None, storage=[], funcspec=[],
-#         type=TypeDecl('a', [], None, IdentifierType(['int'])),
-#         init=binop,
-#         bitsize=None
-#     )
-
-#     # Function call: printf("%d", a);
-#     printf_call = FuncCall(
-#         name=ID('printf'),
-#         args=ExprList([
-#             Constant('string', '"%d"'),
-#             ID('a')
-#         ])
-#     )
-
-#     # Return statement: return 0;
-#     ret = Return(Constant('int', 0))
-
-#     # Function body (compound)
-#     body = Compound([
-#         decl,
-#         printf_call,
-#         ret
-#     ])
-
-#     # Function definition: int main() { ... }
-#     funcdef = FuncDef(
-#         decl=Decl(
-#             name='main',
-#             quals=[], align=None, storage=[], funcspec=[],
-#             type=FuncDecl(
-#                 args=ParamList([]),
-#                 type=TypeDecl('main', [], None, IdentifierType(['int']))
-#             ),
-#             init=None, bitsize=None
-#         ),
-#         param_decls=[],
-#         body=body
-#     )
-
-#     # Full program
-#     file_ast = FileAST(ext=[funcdef])
-
-#     # Show it
-#     file_ast.show()
