@@ -2,14 +2,14 @@
 import sys
 
 
-def _repr(obj):
-    """
-    Get the representation of an object, with dedicated pprint-like format for lists.
-    """
-    if isinstance(obj, list):
-        return '[' + (',\n '.join((_repr(e).replace('\n', '\n ') for e in obj))) + '\n]'
-    else:
-        return repr(obj)
+# def _repr(obj):
+#     """
+#     Get the representation of an object, with dedicated pprint-like format for lists.
+#     """
+#     if isinstance(obj, list):
+#         return '[' + (',\n '.join((_repr(e).replace('\n', '\n ') for e in obj))) + '\n]'
+#     else:
+#         return repr(obj)
 
 
 class Node(object):
@@ -17,25 +17,25 @@ class Node(object):
     """ Abstract base class for AST nodes.
     """
 
-    def __repr__(self):
-        """ Generates a python representation of the current node
-        """
-        result = self.__class__.__name__ + '('
+    # def __repr__(self):
+    #     """ Generates a python representation of the current node
+    #     """
+    #     result = self.__class__.__name__ + '('
 
-        indent = ''
-        separator = ''
-        for name in self.__slots__[:-2]:
-            result += separator
-            result += indent
-            result += name + '=' + (_repr(getattr(self, name)).replace(
-                '\n', '\n  ' + (' ' * (len(name) + len(self.__class__.__name__)))))
+    #     indent = ''
+    #     separator = ''
+    #     for name in self.__slots__[:-2]:
+    #         result += separator
+    #         result += indent
+    #         result += name + '=' + (_repr(getattr(self, name)).replace(
+    #             '\n', '\n  ' + (' ' * (len(name) + len(self.__class__.__name__)))))
 
-            separator = ','
-            indent = '\n ' + (' ' * len(self.__class__.__name__))
+    #         separator = ','
+    #         indent = '\n ' + (' ' * len(self.__class__.__name__))
 
-        result += indent + ')'
+    #     result += indent + ')'
 
-        return result
+    #     return result
 
     def children(self):
         """ A sequence of all children that are Nodes
@@ -208,29 +208,29 @@ class Compound(Node):
     attr_names = ()
 
 
-class CompoundLiteral(Node):
-    __slots__ = ('type', 'init', 'coord', '__weakref__')
+# class CompoundLiteral(Node):
+#     __slots__ = ('type', 'init', 'coord', '__weakref__')
 
-    def __init__(self, type, init, coord=None):
-        self.type = type
-        self.init = init
-        self.coord = coord
+#     def __init__(self, type, init, coord=None):
+#         self.type = type
+#         self.init = init
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        if self.type is not None:
-            nodelist.append(("type", self.type))
-        if self.init is not None:
-            nodelist.append(("init", self.init))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         if self.type is not None:
+#             nodelist.append(("type", self.type))
+#         if self.init is not None:
+#             nodelist.append(("init", self.init))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        if self.type is not None:
-            yield self.type
-        if self.init is not None:
-            yield self.init
+#     def __iter__(self):
+#         if self.type is not None:
+#             yield self.type
+#         if self.init is not None:
+#             yield self.init
 
-    attr_names = ()
+#     attr_names = ()
 
 
 class Constant(Node):
@@ -293,60 +293,60 @@ class Decl(Node):
     attr_names = ('name', 'quals', 'align', 'storage', 'funcspec', )
 
 
-class DeclList(Node):
-    __slots__ = ('decls', 'coord', '__weakref__')
+# class DeclList(Node):
+#     __slots__ = ('decls', 'coord', '__weakref__')
 
-    def __init__(self, decls, coord=None):
-        self.decls = decls
-        self.coord = coord
+#     def __init__(self, decls, coord=None):
+#         self.decls = decls
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        for i, child in enumerate(self.decls or []):
-            nodelist.append(("decls[%d]" % i, child))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         for i, child in enumerate(self.decls or []):
+#             nodelist.append(("decls[%d]" % i, child))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        for child in (self.decls or []):
-            yield child
+#     def __iter__(self):
+#         for child in (self.decls or []):
+#             yield child
 
-    attr_names = ()
-
-
-class Default(Node):
-    __slots__ = ('stmts', 'coord', '__weakref__')
-
-    def __init__(self, stmts, coord=None):
-        self.stmts = stmts
-        self.coord = coord
-
-    def children(self):
-        nodelist = []
-        for i, child in enumerate(self.stmts or []):
-            nodelist.append(("stmts[%d]" % i, child))
-        return tuple(nodelist)
-
-    def __iter__(self):
-        for child in (self.stmts or []):
-            yield child
-
-    attr_names = ()
+#     attr_names = ()
 
 
-class EmptyStatement(Node):
-    __slots__ = ('coord', '__weakref__')
+# class Default(Node):
+#     __slots__ = ('stmts', 'coord', '__weakref__')
 
-    def __init__(self, coord=None):
-        self.coord = coord
+#     def __init__(self, stmts, coord=None):
+#         self.stmts = stmts
+#         self.coord = coord
 
-    def children(self):
-        return ()
+#     def children(self):
+#         nodelist = []
+#         for i, child in enumerate(self.stmts or []):
+#             nodelist.append(("stmts[%d]" % i, child))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        return
-        yield
+#     def __iter__(self):
+#         for child in (self.stmts or []):
+#             yield child
 
-    attr_names = ()
+#     attr_names = ()
+
+
+# class EmptyStatement(Node):
+#     __slots__ = ('coord', '__weakref__')
+
+#     def __init__(self, coord=None):
+#         self.coord = coord
+
+#     def children(self):
+#         return ()
+
+#     def __iter__(self):
+#         return
+#         yield
+
+#     attr_names = ()
 
 
 class ExprList(Node):
@@ -508,45 +508,45 @@ class IdentifierType(Node):
     attr_names = ('names', )
 
 
-class InitList(Node):
-    __slots__ = ('exprs', 'coord', '__weakref__')
+# class InitList(Node):
+#     __slots__ = ('exprs', 'coord', '__weakref__')
 
-    def __init__(self, exprs, coord=None):
-        self.exprs = exprs
-        self.coord = coord
+#     def __init__(self, exprs, coord=None):
+#         self.exprs = exprs
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        for i, child in enumerate(self.exprs or []):
-            nodelist.append(("exprs[%d]" % i, child))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         for i, child in enumerate(self.exprs or []):
+#             nodelist.append(("exprs[%d]" % i, child))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        for child in (self.exprs or []):
-            yield child
+#     def __iter__(self):
+#         for child in (self.exprs or []):
+#             yield child
 
-    attr_names = ()
+#     attr_names = ()
 
 
-class Label(Node):
-    __slots__ = ('name', 'stmt', 'coord', '__weakref__')
+# class Label(Node):
+#     __slots__ = ('name', 'stmt', 'coord', '__weakref__')
 
-    def __init__(self, name, stmt, coord=None):
-        self.name = name
-        self.stmt = stmt
-        self.coord = coord
+#     def __init__(self, name, stmt, coord=None):
+#         self.name = name
+#         self.stmt = stmt
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        if self.stmt is not None:
-            nodelist.append(("stmt", self.stmt))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         if self.stmt is not None:
+#             nodelist.append(("stmt", self.stmt))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        if self.stmt is not None:
-            yield self.stmt
+#     def __iter__(self):
+#         if self.stmt is not None:
+#             yield self.stmt
 
-    attr_names = ('name', )
+#     attr_names = ('name', )
 
 
 class NamedInitializer(Node):
@@ -637,50 +637,50 @@ class TypeDecl(Node):
     attr_names = ('declname', 'quals', 'align', )
 
 
-class Typedef(Node):
-    __slots__ = ('name', 'quals', 'storage', 'type', 'coord', '__weakref__')
+# class Typedef(Node):
+#     __slots__ = ('name', 'quals', 'storage', 'type', 'coord', '__weakref__')
 
-    def __init__(self, name, quals, storage, type, coord=None):
-        self.name = name
-        self.quals = quals
-        self.storage = storage
-        self.type = type
-        self.coord = coord
+#     def __init__(self, name, quals, storage, type, coord=None):
+#         self.name = name
+#         self.quals = quals
+#         self.storage = storage
+#         self.type = type
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        if self.type is not None:
-            nodelist.append(("type", self.type))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         if self.type is not None:
+#             nodelist.append(("type", self.type))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        if self.type is not None:
-            yield self.type
+#     def __iter__(self):
+#         if self.type is not None:
+#             yield self.type
 
-    attr_names = ('name', 'quals', 'storage', )
+#     attr_names = ('name', 'quals', 'storage', )
 
 
-class Typename(Node):
-    __slots__ = ('name', 'quals', 'align', 'type', 'coord', '__weakref__')
+# class Typename(Node):
+#     __slots__ = ('name', 'quals', 'align', 'type', 'coord', '__weakref__')
 
-    def __init__(self, name, quals, align, type, coord=None):
-        self.name = name
-        self.quals = quals
-        self.align = align
-        self.type = type
-        self.coord = coord
+#     def __init__(self, name, quals, align, type, coord=None):
+#         self.name = name
+#         self.quals = quals
+#         self.align = align
+#         self.type = type
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        if self.type is not None:
-            nodelist.append(("type", self.type))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         if self.type is not None:
+#             nodelist.append(("type", self.type))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        if self.type is not None:
-            yield self.type
+#     def __iter__(self):
+#         if self.type is not None:
+#             yield self.type
 
-    attr_names = ('name', 'quals', 'align', )
+#     attr_names = ('name', 'quals', 'align', )
 
 
 class UnaryOp(Node):
@@ -729,7 +729,8 @@ class Lexer:
             if c == '"':
                 in_string = not in_string
             elif c == '%' and not in_string:
-                self.source_code = self.source_code[:i] + " % " + self.source_code[i+1:]
+                self.source_code = self.source_code[:i] + \
+                    " % " + self.source_code[i+1:]
 
         raw_tokens = self.source_code.split()
         # print("Raw tokens:", raw_tokens)
@@ -759,28 +760,30 @@ class Lexer:
 # parser ======================================================================
 class Parser:
     types = ['int', 'float', 'double', 'void']
-    precedence = {
-        '|': 1,
-        '^': 2,
-        '&': 3,
-        '<<': 4, '>>': 4,
-        '+': 5, '-': 5,
-        '*': 6, '/': 6, '%': 6,
+    precedence = { # from the provided reference
+        '||': 0,  # weakest binding
+        '&&': 1,
+        '|': 2,
+        '^': 3,
+        '&': 4,
+        '==': 5, '!=': 5,
+        '>': 6, '>=': 6, '<': 6, '<=': 6,
+        '>>': 7, '<<': 7,
+        '+': 8, '-': 8,
+        '*': 9, '/': 9, '%': 9  # strongest binding
     }
 
     def __init__(self, tokens):
         self.tokens = tokens
         self.pos = 0
 
-    def peek(self, offset=0):
-        ' this does not change the position of the token stream; just checks next or offset amt'
+    def _peek(self, offset=0): # no change in pos btw!!! only checks the next token
         if self.pos + offset < len(self.tokens):
             return self.tokens[self.pos + offset]
         return None
 
-    def consume(self, expected_type=None, expected_val=None):
-        ' this changes the position of the token stream '
-        curr = self.peek()
+    def consume(self, expected_type=None, expected_val=None): # advances pos
+        curr = self._peek()
         if curr is None:
             return None
         tok_type, tok_val = curr
@@ -793,8 +796,9 @@ class Parser:
         self.pos += 1
         return curr
 
-    def is_prototype(self):
-        ''' return True if the current token is a function prototype (ends with ;) '''
+    def _is_prototype(self):
+        # return True if the current token is a function prototype (ends with ;)
+        # used to check if it's a function prototype or a function definition
         pos = self.pos
 
         if pos + 2 >= len(self.tokens):  # keyword + id
@@ -819,25 +823,25 @@ class Parser:
         elements = []
 
         # no need to consider global variables
-        while self.peek() is not None:
-            token_type = self.is_prototype()
+        while self._peek() is not None:
+            token_type = self._is_prototype()
         #    print("token_type:", token_type)
             if token_type:
-                elements.append(self.parse_prototype())
+                elements.append(self._parse_prototype())
             else:
-                elements.append(self.parse_funcdef())
+                elements.append(self._parse_funcdef())
         return FileAST(elements)
 
-    def parse_prototype(self):
+    def _parse_prototype(self):
         return_type = self.consume('KEYWORD')[1]
         function_name = self.consume('ID')[1]
         self.consume('SYMBOL', '(')
 
         params = []
-        while self.peek() is not None and self.peek()[1] != ')':
-            # print("params:", self.peek())
-            param_type = self.parse_type()
-            param_name = self.parse_identifier()
+        while self._peek() is not None and self._peek()[1] != ')':
+            # print("params:", self._peek())
+            param_type = self._parse_type()
+            param_name = self._parse_identifier()
             params.append(Decl(
                 name=param_name,
                 quals=[], align=[], storage=[], funcspec=[],
@@ -845,7 +849,7 @@ class Parser:
                               IdentifierType([param_type])),
                 init=None, bitsize=None
             ))
-            if self.peek()[1] == ')':
+            if self._peek()[1] == ')':
                 break
             self.consume('SYMBOL', ',')
         self.consume('SYMBOL', ')')
@@ -865,16 +869,16 @@ class Parser:
             init=None, bitsize=None
         )
 
-    def parse_funcdef(self):
+    def _parse_funcdef(self):
         return_type = self.consume('KEYWORD')[1]
         function_name = self.consume('ID')[1]
         self.consume('SYMBOL', '(')
 
         params = []
-        while self.peek() is not None and self.peek()[1] != ')':
-            # print("params:", self.peek())
-            param_type = self.parse_type()
-            param_name = self.parse_identifier()
+        while self._peek() is not None and self._peek()[1] != ')':
+            # print("params:", self._peek())
+            param_type = self._parse_type()
+            param_name = self._parse_identifier()
             params.append(Decl(
                 name=param_name,
                 quals=[], align=[], storage=[], funcspec=[],
@@ -882,7 +886,7 @@ class Parser:
                               IdentifierType([param_type])),
                 init=None, bitsize=None
             ))
-            if self.peek()[1] == ')':
+            if self._peek()[1] == ')':
                 break
             self.consume('SYMBOL', ',')
         self.consume('SYMBOL', ')')
@@ -893,16 +897,16 @@ class Parser:
 
         # check for declarations/statements in function --> basically it's a compound statement
         body = []
-        typ, tok = self.peek()
+        typ, tok = self._peek()
         while typ is not None and tok != '}':
-            # print(self.peek()[1])
+            # print(self._peek()[1])
             if typ == 'KEYWORD' and tok in self.types:
-                body.append(self.parse_declaration())
+                body.append(self._parse_declaration())
             else:
                 # print("parse_statement")
-                body.append(self.parse_statement())
+                body.append(self._parse_statement())
 
-            typ, tok = self.peek()
+            typ, tok = self._peek()
 
         self.consume('SYMBOL', '}')
 
@@ -923,82 +927,81 @@ class Parser:
             body=Compound(body)
         )
 
-    def parse_statement(self):
-        '''
-        single unit of execution
-        - declaration, assignment, function call, return, compound, expressions
-        '''
-        typ, tok = self.peek()
+    def _parse_statement(self):
+        # statement: single unit of execution
+        # declaration, assignment, function call, return, compound, expressions 임!! 그냥 한줄이라고 생각하면 댐
+        
+        typ, tok = self._peek()
         if typ is None or tok is None:
             return None
 
         if typ == 'KEYWORD':
             if tok == 'return':
-                return self.parse_return()
+                return self._parse_return()
             elif tok in self.types:
-                return self.parse_declaration()
+                return self._parse_declaration()
         elif typ == 'ID':
-            next_typ, next_tok = self.peek(1)
+            next_typ, next_tok = self._peek(1)
 
             if next_typ == 'SYMBOL' and next_tok == '=':  # assignment
-                return self.parse_assignment()
+                return self._parse_assignment()
             elif next_typ == 'SYMBOL' and next_tok == '(':  # function call
-                print("parse_func_call")
-                return self.parse_func_call()
+                # print("parse_func_call")
+                return self._parse_func_call()
             elif next_typ == 'SYMBOL' and next_tok == ';':  # just an identifier
                 self.consume('ID')
                 self.consume('SYMBOL', ';')
                 return ID(tok)
             else:
-                print("parse_expression")
-                return self.parse_expression()
-        
+                # print("parse_expression")
+                return self._parse_expression()
 
-    def parse_expression(self, min_prec=0):
+    def _parse_expression(self, min_prec=0):
         '''
         something that may evaluate to a value
         ex: a + b, 3, foo(1)
         '''
-        left = self.parse_term()
-        print("parse_expression left:", left)
-        
+        left = self._parse_term()
+        # print("parse_expression left:", left)
+
         while True:
-            operator = self.peek()
-            
-            if operator is None or operator[0] != 'SYMBOL' or operator[1] not in self.precedence: # don't think precendence needs to be checked but just in cases lol
+            operator = self._peek()
+
+            # don't think precendence needs to be checked but just in cases lol
+            if operator is None or operator[0] != 'SYMBOL' or operator[1] not in self.precedence:
                 break
-            
+
             op_prec = self.precedence[operator[1]]
             if op_prec < min_prec:
                 break
-            
+
             self.consume('SYMBOL', operator[1])
-            right = self.parse_expression(op_prec + 1)
+            right = self._parse_expression(op_prec + 1)
             left = BinaryOp(operator[1], left, right)
-        
+
         self.consume('SYMBOL', ';')
-        
+
         return left
 
-    def parse_func_call(self):
-        typ, tok = self.peek()
+    def _parse_func_call(self):
+        typ, tok = self._peek()
         if typ is None or tok is None:
             return None
-        print("parse_func_call:", typ, tok)
+        # print("parse_func_call:", typ, tok)
         if typ == 'ID':
             function_name = self.consume('ID')[1]
             self.consume('SYMBOL', '(')
 
             args = []
-            while self.peek() is not None and self.peek()[1] != ')':
-                args.append(self.parse_term())
-                if self.peek()[1] == ')':
+            while self._peek() is not None and self._peek()[1] != ')':
+                args.append(self._parse_term())
+                if self._peek()[1] == ')':
                     break
                 self.consume('SYMBOL', ',')
             self.consume('SYMBOL', ')')
             self.consume('SYMBOL', ';')
-            
-            print("args:", args)
+
+            # print("args:", args)
 
             return FuncCall(
                 name=ID(function_name),
@@ -1006,55 +1009,56 @@ class Parser:
             )
         return None
 
-    def parse_assignment(self):
-        typ, tok = self.peek()
+    def _parse_assignment(self):
+        typ, tok = self._peek()
         if typ is None or tok is None:
             return None
 
-        print("parse_assignment:", typ, tok)
+        # print("parse_assignment:", typ, tok)
         if typ == 'ID':
             var_name = self.consume('ID')[1]
             self.consume('SYMBOL', '=')
-            expr = self.parse_expression()
-            print("expr:", expr)
+            expr = self._parse_expression()
+            # print("expr:", expr)
             self.consume('SYMBOL', ';')
             return Assignment(
                 op='=',
                 lvalue=ID(var_name),
                 rvalue=expr
             )
-        elif typ == 'KEYWORD': # there shouldn't be any?
+        elif typ == 'KEYWORD':  # there shouldn't be any?
             ...
         elif typ == 'SYMBOL':
             if tok == '-':
                 self.consume('SYMBOL', '-')
-                expr = self.parse_term()
+                expr = self._parse_term()
                 return UnaryOp('-', expr)
             elif tok == '(':
                 self.consume('SYMBOL', '(')
-                expr = self.parse_expression()
+                expr = self._parse_expression()
                 self.consume('SYMBOL', ')')
                 return expr
         elif typ == 'NUM':
             self.consume('NUM')
             return Constant('int', tok)
-        elif typ == 'FLOAT': # double check with float & double calcs
+        elif typ == 'FLOAT':  # double check with float & double calcs
             self.consume('FLOAT')
-            return Constant('double', tok) 
-        elif typ == 'STRING': # strings are only used for printf (double check this)
+            return Constant('double', tok)
+
+        elif typ == 'STRING':  # strings are only used for printf (double check this)
             self.consume('STRING')
             return Constant('string', tok)
 
-    def parse_compound(self): 
+    def parse_compound(self):
         # wired in within funcdef... no conditionals or loops so i guess none needed?
         ...
 
-    def parse_term(self):
-        typ, tok = self.peek()
+    def _parse_term(self):
+        typ, tok = self._peek()
         if typ is None or tok is None:
             return None
 
-        print("parse_term:", typ, tok)
+        # print("parse_term:", typ, tok)
 
         if typ == 'NUM':
             self.consume('NUM')
@@ -1067,39 +1071,39 @@ class Parser:
             return Constant('string', tok)
         elif typ == 'ID':
             # check if it's a function call
-            next_typ, next_tok = self.peek(1)
+            next_typ, next_tok = self._peek(1)
             if next_typ == 'SYMBOL' and next_tok == '(':
-                return self.parse_func_call()
+                return self._parse_func_call()
             elif next_typ == 'SYMBOL' and next_tok == '=':
-                return self.parse_assignment()
+                return self._parse_assignment()
             self.consume('ID')
             self.consume('SYMBOL', ';')
             return ID(tok)
         elif typ == 'SYMBOL':
             if tok == '(':
                 self.consume('SYMBOL', '(')
-                expr = self.parse_expression()
+                expr = self._parse_expression()
                 self.consume('SYMBOL', ')')
                 return expr
             elif tok == '-':
                 self.consume('SYMBOL', '-')
-                expr = self.parse_term()
+                expr = self._parse_term()
                 return UnaryOp('-', expr)
 
-    def parse_declaration(self):
-        typ, tok = self.peek()
+    def _parse_declaration(self):
+        typ, tok = self._peek()
         if typ is None or tok is None:
             return None
-        
+
         init = None
-        print("parse_declaration:", typ, tok)
+        # print("parse_declaration:", typ, tok)
         if typ == 'KEYWORD' and tok in self.types:
             var_type = self.consume('KEYWORD')[1]
             var_name = self.consume('ID')[1]
-            
-            if self.peek() is not None and self.peek()[0] == 'SYMBOL' and self.peek()[1] == '=':
+
+            if self._peek() is not None and self._peek()[0] == 'SYMBOL' and self._peek()[1] == '=':
                 self.consume('SYMBOL', '=')
-                init = self.parse_expression()
+                init = self._parse_expression()
             else:
                 self.consume('SYMBOL', ';')
 
@@ -1113,27 +1117,27 @@ class Parser:
                 bitsize=None
             )
 
-    def parse_type(self):
-        typ, tok = self.peek()
+    def _parse_type(self):
+        typ, tok = self._peek()
         if typ is None or tok is None:
             return None
         if typ == 'KEYWORD' and tok in self.types:
             return self.consume('KEYWORD')[1]
         return None
 
-    def parse_identifier(self):
-        if self.peek() is None:
+    def _parse_identifier(self):
+        if self._peek() is None:
             return None
-        if self.peek()[0] == 'ID':
+        if self._peek()[0] == 'ID':
             return self.consume('ID')[1]
         return None
 
-    def parse_return(self):
-        if self.peek() is None:
+    def _parse_return(self):
+        if self._peek() is None:
             return None
         self.consume('KEYWORD', 'return')
         # print("consume return")
-        return_statement = self.parse_term()
+        return_statement = self._parse_term()
         # print("term parsed:", return_statement)
         self.consume('SYMBOL', ';')
         return Return(expr=return_statement, coord=None)
@@ -1143,41 +1147,60 @@ class Parser:
 
 
 class Evaluator(NodeVisitor):
-    precedence = (
-        ('left', 'LOR'),
-        ('left', 'LAND'),
-        ('left', 'OR'),
-        ('left', 'XOR'),
-        ('left', 'AND'),
-        ('left', 'EQ', 'NE'),
-        ('left', 'GT', 'GE', 'LT', 'LE'),
-        ('left', 'RSHIFT', 'LSHIFT'),
-        ('left', 'PLUS', 'MINUS'),
-        ('left', 'TIMES', 'DIVIDE', 'MOD')
-    )
-
+    precedence = { # same as parser's precedence
+        '||': 0,  # weakest binding
+        '&&': 1,
+        '|': 2,
+        '^': 3,
+        '&': 4,
+        '==': 5, '!=': 5,
+        '>': 6, '>=': 6, '<': 6, '<=': 6,
+        '>>': 7, '<<': 7,
+        '+': 8, '-': 8,
+        '*': 9, '/': 9, '%': 9  # strongest binding
+    }
     def __init__(self):
         self.variables = {}
         self.functions = {}
 
-    def visit_Assignment(self, node):
+    def file_ast(self, node): ...
+
+    def func_def(self, node):
+        self.variables = {} # reset for each function
+        self.visit(node.body)
+
+    def compound(self, node):
+        for statements in node.block_items:
+            self.visit(statements)
+            # if self.return_statement
+
+    def decl(self, node): ...
+
+    def assignment(self, node):
         # Handle assignment
         pass
 
-    def visit_BinaryOp(self, node):
+    def binary_op(self, node):
         # Handle binary operations
         pass
 
-    def visit_Constant(self, node):
-        # Handle constants
-        pass
+    def constant(self, node):
+        return node.value
 
-    def visit_ID(self, node):
-        # Handle identifiers
-        pass
+    def unary_op(self, node):
+        if node.op == '-':
+            return -self.visit(node.expr)
+        return self.visit(node.expr)
 
-    def visit_FuncCall(self, node):
+    def id(self, node):
+        return self.variables.get(node.name)
+
+    def func_call(self, node):
         # Handle function calls
+        pass
+
+    def return_statement(self, node):
+        # Handle return statements
         pass
 
 
@@ -1197,11 +1220,12 @@ def main():
         sys.exit(1)
 
     tokens = Lexer(source_code).tokenize()
-    print("Tokens:", tokens)
+    # print("Tokens:", tokens)
     ast = Parser(tokens).parse()
     ast.show()
     # print("Computation Result: ", end="") # no this is going to be printed for each line of printf
-    # evaluate(ast)
+    # evaluator = Evaluator()
+    # evaluator.visit(ast)
 
 
 if __name__ == "__main__":
