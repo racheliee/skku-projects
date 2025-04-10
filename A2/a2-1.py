@@ -594,7 +594,7 @@ class Lexer:
                     " % " + self.source_code[i+1:]
 
         raw_tokens = self.source_code.split()
-        print("Raw tokens:", raw_tokens)
+        # print("Raw tokens:", raw_tokens)
 
         # add to tokens in form of (TYPE, VALUE)
         # types can be KEYWORD, ID, STRING, NUM, FLOAT, SYMBOL
@@ -704,7 +704,7 @@ class Parser:
 
         params = []
         while self._peek() is not None and self._peek()[1] != ')':
-            print("params:", self._peek())
+            # print("params:", self._peek())
             param_type = self._parse_type()
             param_name = self._parse_identifier()
             params.append(Decl(
@@ -720,8 +720,8 @@ class Parser:
         self._consume('SYMBOL', ')')
         self._consume('SYMBOL', ';')
 
-        print('tokens:', self._tokens)
-        print("pos:", self._pos)
+        # print('tokens:', self._tokens)
+        # print("pos:", self._pos)
 
         return Decl(
             name=function_name,
@@ -741,7 +741,7 @@ class Parser:
 
         params = []
         while self._peek() is not None and self._peek()[1] != ')':
-            print("params:", self._peek())
+            # print("params:", self._peek())
             param_type = self._parse_type()
             param_name = self._parse_identifier()
             params.append(Decl(
@@ -757,18 +757,18 @@ class Parser:
         self._consume('SYMBOL', ')')
         self._consume('SYMBOL', '{')
 
-        print("tokens", self._tokens)
-        print("pos: ", self._pos)
+        # print("tokens", self._tokens)
+        # print("pos: ", self._pos)
 
         # check for declarations/statements in function --> basically it's a compound statement
         body = []
         typ, tok = self._peek()
         while typ is not None and tok != '}':
-            print(self._peek()[1])
+            # print(self._peek()[1])
             if typ == 'KEYWORD' and tok in self._types:
                 body.append(self._parse_declaration())
             else:
-                print("parse_statement")
+                # print("parse_statement")
                 body.append(self._parse_statement())
 
             typ, tok = self._peek()
@@ -811,14 +811,14 @@ class Parser:
             if next_typ == 'SYMBOL' and next_tok == '=':  # assignment
                 return self._parse_assignment()
             elif next_typ == 'SYMBOL' and next_tok == '(':  # function call
-                print("parse_func_call")
+                # print("parse_func_call")
                 return self._parse_func_call()
             elif next_typ == 'SYMBOL' and next_tok == ';':  # just an identifier
                 self._consume('ID')
                 self._consume('SYMBOL', ';')
                 return ID(tok)
             else:
-                print("parse_expression")
+                # print("parse_expression")
                 return self._parse_expression()
 
     def _parse_expression(self, min_prec=0):
@@ -827,7 +827,7 @@ class Parser:
         ex: a + b, 3, foo(1)
         '''
         left = self._parse_term()
-        print("parse_expression left:", left)
+        # print("parse_expression left:", left)
 
         while True:
             operator = self._peek()
@@ -852,7 +852,7 @@ class Parser:
         typ, tok = self._peek()
         if typ is None or tok is None:
             return None
-        print("parse_func_call:", typ, tok)
+        # print("parse_func_call:", typ, tok)
         if typ == 'ID':
             function_name = self._consume('ID')[1]
             self._consume('SYMBOL', '(')
@@ -866,7 +866,7 @@ class Parser:
             self._consume('SYMBOL', ')')
             self._consume('SYMBOL', ';')
 
-            print("args:", args)
+            # print("args:", args)
 
             return FuncCall(
                 name=ID(function_name),
@@ -879,12 +879,12 @@ class Parser:
         if typ is None or tok is None:
             return None
 
-        print("parse_assignment:", typ, tok)
+        # print("parse_assignment:", typ, tok)
         if typ == 'ID':
             var_name = self._consume('ID')[1]
             self._consume('SYMBOL', '=')
             expr = self._parse_expression()
-            print("expr:", expr)
+            # print("expr:", expr)
             self._consume('SYMBOL', ';')
             return Assignment(
                 op='=',
@@ -924,7 +924,7 @@ class Parser:
         if typ is None or tok is None:
             return None
 
-        print("parse_term:", typ, tok)
+        # print("parse_term:", typ, tok)
 
         if typ == 'NUM':
             self._consume('NUM')
@@ -962,7 +962,7 @@ class Parser:
             return None
 
         init = None
-        print("parse_declaration:", typ, tok)
+        # print("parse_declaration:", typ, tok)
         if typ == 'KEYWORD' and tok in self._types:
             var_type = self._consume('KEYWORD')[1]
             var_name = self._consume('ID')[1]
@@ -1002,9 +1002,9 @@ class Parser:
         if self._peek() is None:
             return None
         self._consume('KEYWORD', 'return')
-        print("consume return")
+        # print("consume return")
         return_statement = self._parse_term()
-        print("term parsed:", return_statement)
+        # print("term parsed:", return_statement)
         self._consume('SYMBOL', ';')
         return Return(expr=return_statement, coord=None)
 
@@ -1037,7 +1037,7 @@ class Evaluator(NodeVisitor):
     def _eval_FileAST(self, node):
         # add all of the functions in the _function dictonary
         for ext in node.ext:
-            # print("adding ext: ", ext)
+            print("adding ext: ", ext.decl.name)
             self._functions[ext.decl.name] = ext
         
         # start by visiting the main function
@@ -1048,9 +1048,11 @@ class Evaluator(NodeVisitor):
         # print("visiting funcdef: ", node.decl.name)
         self._variables = {}  # reset for each function
         self._return_val = None
-        self.visit(node.body)
+        
+        is_not_main = node.decl.name != 'main'
+        self._eval_Compound(node.body, in_function = is_not_main)
 
-    def _eval_Compound(self, node):
+    def _eval_Compound(self, node, in_function = False):
         # print("visiting compound: ", node)
         if node.block_items is None:
             return
@@ -1058,7 +1060,7 @@ class Evaluator(NodeVisitor):
         for statements in node.block_items:
             self.visit(statements)
             # check if a statement was a return statement (for early checkout)
-            if self._return_val is not None:
+            if in_function and self._return_val is not None:
                 return
 
     def _eval_Decl(self, node):
@@ -1141,7 +1143,7 @@ class Evaluator(NodeVisitor):
         return value
 
     def _eval_FuncCall(self, node):
-        print("visiting funcCall: ", node.name.name)
+        # print("visiting funcCall: ", node.name.name)
         name = node.name.name
         if name == 'printf':
             format_type = node.args.exprs[0].value
@@ -1158,18 +1160,17 @@ class Evaluator(NodeVisitor):
         # the user defined functions
         if name in self._functions:
             func = self._functions[name]
-            args = node.args.exprs
+            args = node.args.exprs if node.args is not None else []
+            evaluated_args = [self.visit(arg) for arg in args]  
             
             # save the current variables 
             old_vars = self._variables.copy()
             
-            new_vars = {}
-            for val, arg_name in enumerate(func.decl.type.args.params):
-                new_vars[arg_name.name] = args[val]
-            self._variables = new_vars
+            param_names = [param.name for param in func.decl.type.args.params]
+            self._variables = {name: val for name, val in zip(param_names, evaluated_args)}
             
             self._return_val = None
-            self.visit(func.body)
+            self._eval_Compound(func.body, in_function = True)
             
             # restore the old variables
             self._variables = old_vars
@@ -1200,7 +1201,7 @@ def main():
         sys.exit(1)
 
     tokens = Lexer(source_code).tokenize()
-    print("Tokens:", tokens)
+    # print("Tokens:", tokens)
     ast = Parser(tokens).parse()
     ast.show()
     # print("Computation Result: ", end="") # no this is going to be printed for each line of printf
