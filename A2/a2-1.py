@@ -707,7 +707,7 @@ class UnaryOp(Node):
 
 
 class Lexer:
-    _keywords = {'int', 'float', 'double', 'return', 'void', 'printf'}
+    _keywords = {'int', 'float', 'double', 'return', 'void'}
     _symbols = [';', '{', '}', '(', ')', ',', '=', '+',
                 '-', '*', '/', '%', '&', '|', '^', '<<', '>>']
 
@@ -729,8 +729,7 @@ class Lexer:
             if c == '"':
                 in_string = not in_string
             elif c == '%' and not in_string:
-                self.source_code = self.source_code[:i] + \
-                    " % " + self.source_code[i+1:]
+                self.source_code = self.source_code[:i] + " % " + self.source_code[i+1:]
 
         raw_tokens = self.source_code.split()
         # print("Raw tokens:", raw_tokens)
@@ -933,21 +932,27 @@ class Parser:
         if typ is None or tok is None:
             return None
 
-        if typ == 'KEYWORD' and tok == 'return':
-            return self.parse_return()
-        if typ == 'ID':
+        if typ == 'KEYWORD':
+            if tok == 'return':
+                return self.parse_return()
+            elif tok in self.types:
+                return self.parse_declaration()
+        elif typ == 'ID':
             next_typ, next_tok = self.peek(1)
 
             if next_typ == 'SYMBOL' and next_tok == '=':  # assignment
                 return self.parse_assignment()
             elif next_typ == 'SYMBOL' and next_tok == '(':  # function call
+                print("parse_func_call")
                 return self.parse_func_call()
             elif next_typ == 'SYMBOL' and next_tok == ';':  # just an identifier
                 self.consume('ID')
                 self.consume('SYMBOL', ';')
                 return ID(tok)
-        if typ == 'KEYWORD':
-            ...
+            else:
+                print("parse_expression")
+                return self.parse_expression()
+        
 
     def parse_expression(self, min_prec=0):
         '''
@@ -955,6 +960,7 @@ class Parser:
         ex: a + b, 3, foo(1)
         '''
         left = self.parse_term()
+        print("parse_expression left:", left)
         
         while True:
             operator = self.peek()
@@ -967,8 +973,10 @@ class Parser:
                 break
             
             self.consume('SYMBOL', operator[1])
-            right = self.parse_expression(op_prec)
+            right = self.parse_expression(op_prec + 1)
             left = BinaryOp(operator[1], left, right)
+        
+        self.consume('SYMBOL', ';')
         
         return left
 
@@ -976,6 +984,7 @@ class Parser:
         typ, tok = self.peek()
         if typ is None or tok is None:
             return None
+        print("parse_func_call:", typ, tok)
         if typ == 'ID':
             function_name = self.consume('ID')[1]
             self.consume('SYMBOL', '(')
@@ -988,6 +997,8 @@ class Parser:
                 self.consume('SYMBOL', ',')
             self.consume('SYMBOL', ')')
             self.consume('SYMBOL', ';')
+            
+            print("args:", args)
 
             return FuncCall(
                 name=ID(function_name),
@@ -1005,40 +1016,54 @@ class Parser:
             var_name = self.consume('ID')[1]
             self.consume('SYMBOL', '=')
             expr = self.parse_expression()
-            # print("expr:", expr)
+            print("expr:", expr)
             self.consume('SYMBOL', ';')
             return Assignment(
                 op='=',
                 lvalue=ID(var_name),
                 rvalue=expr
             )
-        elif typ == 'KEYWORD':
+        elif typ == 'KEYWORD': # there shouldn't be any?
             ...
         elif typ == 'SYMBOL':
-            ...
+            if tok == '-':
+                self.consume('SYMBOL', '-')
+                expr = self.parse_term()
+                return UnaryOp('-', expr)
+            elif tok == '(':
+                self.consume('SYMBOL', '(')
+                expr = self.parse_expression()
+                self.consume('SYMBOL', ')')
+                return expr
         elif typ == 'NUM':
-            ...
-        elif typ == 'FLOAT':
-            ...
-        # strings are only used for printf (double check this)
-        elif typ == 'STRING':
-            ...
+            self.consume('NUM')
+            return Constant('int', tok)
+        elif typ == 'FLOAT': # double check with float & double calcs
+            self.consume('FLOAT')
+            return Constant('double', tok) 
+        elif typ == 'STRING': # strings are only used for printf (double check this)
+            self.consume('STRING')
+            return Constant('string', tok)
 
-    def parse_compound(self): ...
+    def parse_compound(self): 
+        # wired in within funcdef... no conditionals or loops so i guess none needed?
+        ...
 
     def parse_term(self):
         typ, tok = self.peek()
         if typ is None or tok is None:
             return None
 
-        # print("parse_term:", typ, tok)
+        print("parse_term:", typ, tok)
 
         if typ == 'NUM':
             self.consume('NUM')
             return Constant('int', tok)
         elif typ == 'FLOAT':
+            self.consume('FLOAT')
             return Constant('double', tok)
         elif typ == 'STRING':  # there shouldn't be any cases though i think?
+            self.consume('STRING')
             return Constant('string', tok)
         elif typ == 'ID':
             # check if it's a function call
@@ -1065,10 +1090,18 @@ class Parser:
         typ, tok = self.peek()
         if typ is None or tok is None:
             return None
+        
+        init = None
+        print("parse_declaration:", typ, tok)
         if typ == 'KEYWORD' and tok in self.types:
             var_type = self.consume('KEYWORD')[1]
             var_name = self.consume('ID')[1]
-            self.consume('SYMBOL', ';')
+            
+            if self.peek() is not None and self.peek()[0] == 'SYMBOL' and self.peek()[1] == '=':
+                self.consume('SYMBOL', '=')
+                init = self.parse_expression()
+            else:
+                self.consume('SYMBOL', ';')
 
             return Decl(
                 name=var_name,
@@ -1076,7 +1109,8 @@ class Parser:
                 type=TypeDecl(
                     var_name, [], None, IdentifierType([var_type])
                 ),
-                init=None, bitsize=None
+                init=init,
+                bitsize=None
             )
 
     def parse_type(self):
@@ -1166,6 +1200,7 @@ def main():
     print("Tokens:", tokens)
     ast = Parser(tokens).parse()
     ast.show()
+    # print("Computation Result: ", end="") # no this is going to be printed for each line of printf
     # evaluate(ast)
 
 
