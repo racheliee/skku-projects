@@ -5,6 +5,7 @@ import sys
 # Nodes (from reference code provided) ===================================================================
 class Node(object):
     __slots__ = ()
+
     def children(self):
         pass
 
@@ -173,6 +174,7 @@ class Compound(Node):
 
     attr_names = ()
 
+
 class Constant(Node):
     '''
     literal value
@@ -239,6 +241,7 @@ class Decl(Node):
             yield self.bitsize
 
     attr_names = ('name', 'quals', 'align', 'storage', 'funcspec', )
+
 
 class ExprList(Node):
     '''
@@ -464,7 +467,19 @@ class IdentifierType(Node):
 
     attr_names = ('names', )
 
+
 class ParamList(Node):
+    '''
+    parameter list that goes into functions
+    like this:
+    ParamList: 
+          Decl: x, [], [], [], []
+            TypeDecl: x, [], None
+              IdentifierType: ['int']
+          Decl: y, [], [], [], []
+            TypeDecl: y, [], None
+              IdentifierType: ['int']
+    '''
     __slots__ = ('params', 'coord', '__weakref__')
 
     def __init__(self, params, coord=None):
@@ -568,8 +583,10 @@ class UnaryOp(Node):
 
 
 class Lexer:
+    # keywords? reserved words (don't include printf!! that should be an id)
     _keywords = {'int', 'float', 'double', 'return', 'void'}
     _symbols = [';', '{', '}', '(', ')', ',', '=', '+',
+                # operators, (), {} that are considered
                 '-', '*', '/', '%', '&', '|', '^', '<<', '>>']
 
     def __init__(self, source_code):
@@ -636,7 +653,7 @@ class Parser:
         '*': 9, '/': 9, '%': 9  # strongest binding
     }
     _tokens: list[tuple[str, str]]  # list of tokens (type, value)
-    _pos: int # current position in the token list
+    _pos: int  # current position in the token list
 
     def __init__(self, tokens):
         self._tokens = tokens
@@ -647,18 +664,19 @@ class Parser:
             return self._tokens[self._pos + offset]
         return None
 
-    def _consume(self, expected_type=None, expected_val=None):  # advances pos
+    def _consume(self, expected_type=None, expected_val=None):
         curr = self._peek()
         if curr is None:
             return None
         tok_type, tok_val = curr
 
+        # checks to make sure we're looking at the correct token
         if expected_type and tok_type != expected_type:
             return None
         if expected_val and tok_val != expected_val:
             return None
 
-        self._pos += 1
+        self._pos += 1  # advances pos
         return curr
 
     def _is_prototype(self):
@@ -671,6 +689,7 @@ class Parser:
 
         pos += 3
         depth = 1
+        # pass through the params
         while pos < len(self._tokens) and depth > 0:
             curr_val = self._tokens[pos][1]
             if curr_val == '(':
@@ -679,6 +698,7 @@ class Parser:
                 depth -= 1
             pos += 1
 
+        # if there is a ; after the args, it is a prototype
         if pos >= len(self._tokens) or self._tokens[pos][1] != ';':
             return False
 
@@ -687,7 +707,7 @@ class Parser:
     def parse(self):
         elements = []
 
-        # no need to consider global variables
+        # no need to consider global variables, so just check for functions and function prototypes
         while self._peek() is not None:
             token_type = self._is_prototype()
         #    print("token_type:", token_type)
@@ -703,18 +723,19 @@ class Parser:
         self._consume('SYMBOL', '(')
 
         params = []
+        # loop through the parameters
         while self._peek() is not None and self._peek()[1] != ')':
             # print("params:", self._peek())
             param_type = self._parse_type()
             param_name = self._parse_identifier()
-            params.append(Decl(
+            params.append(Decl(  # add the declaration of the param
                 name=param_name,
                 quals=[], align=[], storage=[], funcspec=[],
                 type=TypeDecl(param_name, [], None,
                               IdentifierType([param_type])),
                 init=None, bitsize=None
             ))
-            if self._peek()[1] == ')':
+            if self._peek()[1] == ')':  # if it's the end of the parameter list, break
                 break
             self._consume('SYMBOL', ',')
         self._consume('SYMBOL', ')')
@@ -739,7 +760,7 @@ class Parser:
         function_name = self._consume('ID')[1]
         self._consume('SYMBOL', '(')
 
-        params = []
+        params = []  # loop through the function parameters
         while self._peek() is not None and self._peek()[1] != ')':
             # print("params:", self._peek())
             param_type = self._parse_type()
@@ -760,14 +781,16 @@ class Parser:
         # print("tokens", self._tokens)
         # print("pos: ", self._pos)
 
+        # loop through the body of the function
         # check for declarations/statements in function --> basically it's a compound statement
         body = []
         typ, tok = self._peek()
         while typ is not None and tok != '}':
             # print(self._peek()[1])
+            # if it starts with a type (int, float, etc), then its a declaration
             if typ == 'KEYWORD' and tok in self._types:
                 body.append(self._parse_declaration())
-            else:
+            else:  # otherwise parse the expressino
                 # print("parse_statement")
                 body.append(self._parse_statement())
 
@@ -800,7 +823,7 @@ class Parser:
         if typ is None or tok is None:
             return None
 
-        if typ == 'KEYWORD':
+        if typ == 'KEYWORD':  # keywords include int, float, double, return
             if tok == 'return':
                 return self._parse_return()
             elif tok in self._types:
@@ -829,18 +852,22 @@ class Parser:
         left = self._parse_term()
         # print("parse_expression left:", left)
 
+        # loop until the expression ends; recursion
         while True:
             operator = self._peek()
 
             # don't think precendence needs to be checked but just in cases lol
+            # no more need to parse if there is no operator; i.e. end of expression
             if operator is None or operator[0] != 'SYMBOL' or operator[1] not in self._precedence:
                 break
 
+            # check the precedence of the ops
             op_prec = self._precedence[operator[1]]
             if op_prec < min_prec:
                 break
 
             self._consume('SYMBOL', operator[1])
+            # parse recursively if its an expression again
             right = self._parse_expression(op_prec + 1)
             left = BinaryOp(operator[1], left, right)
 
@@ -857,10 +884,10 @@ class Parser:
             function_name = self._consume('ID')[1]
             self._consume('SYMBOL', '(')
 
-            args = []
+            args = []  # look over the arguments of the function
             while self._peek() is not None and self._peek()[1] != ')':
                 args.append(self._parse_term())
-                if self._peek()[1] == ')':
+                if self._peek()[1] == ')':  # break if its the end
                     break
                 self._consume('SYMBOL', ',')
             self._consume('SYMBOL', ')')
@@ -894,16 +921,16 @@ class Parser:
         elif typ == 'KEYWORD':  # there shouldn't be any?
             ...
         elif typ == 'SYMBOL':
-            if tok == '-':
+            if tok == '-':  # minus sign
                 self._consume('SYMBOL', '-')
                 expr = self._parse_term()
                 return UnaryOp('-', expr)
-            elif tok == '(':
+            elif tok == '(':  # a = (b+c)와 같은 경우 처리
                 self._consume('SYMBOL', '(')
                 expr = self._parse_expression()
                 self._consume('SYMBOL', ')')
                 return expr
-        elif typ == 'NUM':
+        elif typ == 'NUM':  # constant
             self._consume('NUM')
             return Constant('int', tok)
         elif typ == 'FLOAT':  # double check with float & double calcs
@@ -926,32 +953,33 @@ class Parser:
 
         # print("parse_term:", typ, tok)
 
-        if typ == 'NUM':
+        if typ == 'NUM':  # constant
             self._consume('NUM')
             return Constant('int', tok)
-        elif typ == 'FLOAT':
+        elif typ == 'FLOAT':  # constant
             self._consume('FLOAT')
             return Constant('double', tok)
-        elif typ == 'STRING':  # there shouldn't be any cases though i think?
+        elif typ == 'STRING':  # there shouldn't be any cases though i think? maybe for the print f args
             self._consume('STRING')
             return Constant('string', tok)
         elif typ == 'ID':
             # check if it's a function call
             next_typ, next_tok = self._peek(1)
+            # id() would be a function call
             if next_typ == 'SYMBOL' and next_tok == '(':
                 return self._parse_func_call()
-            elif next_typ == 'SYMBOL' and next_tok == '=':
+            elif next_typ == 'SYMBOL' and next_tok == '=':  # id = would be an assignment
                 return self._parse_assignment()
             self._consume('ID')
             self._consume('SYMBOL', ';')
             return ID(tok)
         elif typ == 'SYMBOL':
-            if tok == '(':
+            if tok == '(':  # beginning of an expression
                 self._consume('SYMBOL', '(')
                 expr = self._parse_expression()
                 self._consume('SYMBOL', ')')
                 return expr
-            elif tok == '-':
+            elif tok == '-':  # minus sign
                 self._consume('SYMBOL', '-')
                 expr = self._parse_term()
                 return UnaryOp('-', expr)
@@ -967,10 +995,11 @@ class Parser:
             var_type = self._consume('KEYWORD')[1]
             var_name = self._consume('ID')[1]
 
+            # int a = 뒤에 뭐가 주저리주저리
             if self._peek() is not None and self._peek()[0] == 'SYMBOL' and self._peek()[1] == '=':
                 self._consume('SYMBOL', '=')
                 init = self._parse_expression()
-            else:
+            else:  # simple declaration like int a;
                 self._consume('SYMBOL', ';')
 
             return Decl(
@@ -1003,6 +1032,7 @@ class Parser:
             return None
         self._consume('KEYWORD', 'return')
         # print("consume return")
+        # return statements won't have expressions (과제 제약조건)
         return_statement = self._parse_term()
         # print("term parsed:", return_statement)
         self._consume('SYMBOL', ';')
@@ -1013,21 +1043,9 @@ class Parser:
 
 
 class Evaluator(NodeVisitor):
-    _precedence = {  # same as parser's precedence
-        '||': 0,  # weakest binding
-        '&&': 1,
-        '|': 2,
-        '^': 3,
-        '&': 4,
-        '==': 5, '!=': 5,
-        '>': 6, '>=': 6, '<': 6, '<=': 6,
-        '>>': 7, '<<': 7,
-        '+': 8, '-': 8,
-        '*': 9, '/': 9, '%': 9  # strongest binding
-    }
-    _variables: dict[str, any]  #{name: value}
-    _functions: dict[str, FuncDef]  #{name: FuncDef}
-    _return_val: any #return val of the function
+    _variables: dict[str, any]  # {name: value}
+    _functions: dict[str, FuncDef]  # {name: FuncDef}
+    _return_val: any  # return val of the function
 
     def __init__(self):
         self._variables = {}
@@ -1037,31 +1055,35 @@ class Evaluator(NodeVisitor):
     def _eval_FileAST(self, node):
         # add all of the functions in the _function dictonary
         for ext in node.ext:
-            if isinstance(ext, FuncDef): # ok this gonna crash if it's not here, cuz there's also func prototypes
+            # ok this gonna crash if it's not here, cuz there's also func prototypes
+            if isinstance(ext, FuncDef):
                 # print("adding ext: ", ext.decl.name)
                 self._functions[ext.decl.name] = ext
             elif isinstance(ext, Decl):
                 if isinstance(ext.type, FuncDecl):
                     # print("adding ext: ", ext.name)
                     self._functions[ext.name] = ext
-        
+
         # start by visiting the main function (hopefully it exists and it not a prototype)
         if 'main' in self._functions:
             self.visit(self._functions['main'])
 
     def _eval_FuncDef(self, node: Node):
         # print("visiting funcdef: ", node.decl.name)
-        self._variables = {}  # reset for each function
+        # reset for each function
+        self._variables = {}
         self._return_val = None
-        
-        is_not_main = node.decl.name != 'main'
-        self._eval_Compound(node.body, in_function = is_not_main)
 
-    def _eval_Compound(self, node, in_function = False):
+        # check if we're currenlty in the main function body or not
+        is_not_main = node.decl.name != 'main'
+        self._eval_Compound(node.body, in_function=is_not_main)
+
+    def _eval_Compound(self, node, in_function=False):
         # print("visiting compound: ", node)
-        if node.block_items is None:
+        if node.block_items is None:  # no statements in the function
             return
 
+        # visit each statement in the function
         for statements in node.block_items:
             self.visit(statements)
             # check if a statement was a return statement (for early checkout)
@@ -1072,25 +1094,25 @@ class Evaluator(NodeVisitor):
         # print("visiting decl: ", node.name)
         if node.init is not None:
             # print("init:", node.init)
+            # checkout the declaration value
             self._variables[node.name] = self.visit(node.init)
         else:
             self._variables[node.name] = None
-            
 
     def _eval_Assignment(self, node):
         # print("lvalue:", node.lvalue.name)
         # print("rvalue:", node.rvalue.name)
+        # assign the values to the name; left side = right side
         self._variables[node.lvalue.name] = self.visit(node.rvalue)
 
     def _eval_BinaryOp(self, node):
         # print("visiting binaryop: ", node.op)
         left = self.visit(node.left)
         right = self.visit(node.right)
-    
-        
+
         # print("left:", left)
         # print("right:", right)
-        match node.op: 
+        match node.op:
             # 토론방: binary operator (+, -, *, /, %), bitwise operator(^, |, &, <<, >>) 만 고려하셔도 무방합니다.
             case '+':
                 return left + right
@@ -1099,13 +1121,13 @@ class Evaluator(NodeVisitor):
             case '*':
                 return left * right
             case '/':
-                if right != 0: # match c's rounding towards zero behaviour
+                if right != 0:  # match c's rounding towards zero behaviour
                     if isinstance(left, int) and isinstance(right, int):
                         return int(left / right)
                     else:
                         return left / right  # flopat & double
             case '%':
-                if right != 0: # match c's mod behaviour
+                if right != 0:  # match c's mod behaviour
                     return left - int(left / right) * right
             case '^':
                 return left ^ right
@@ -1115,44 +1137,47 @@ class Evaluator(NodeVisitor):
                 return left & right
             case '<<':
                 # to match c's overflow behaviour
-                res =  (left << right) & 0xFFFFFFFF
+                res = (left << right) & 0xFFFFFFFF
                 if res & (1 << 31):
                     res -= (1 << 32)
                 return res
             case '>>':
                 # to match c's overflow behaviour
                 left = left & 0xFFFFFFFF
-                
+
                 if left & (1 << 31):
                     left -= (1 << 32)
                 return left >> right
-                
 
     def _eval_Constant(self, node):
         # print("visiting constant: ", node.value)
         if node.type == 'int':
             return int(node.value)
-        elif node.type == 'float':
+        elif node.type == 'float' or node.type == 'double':
+            # i think python lets float work like a double...?
             return float(node.value)
 
         return node.value
 
     def _eval_UnaryOp(self, node):
         # print("visiting unaryop: ", node)
-        if node.op == '-':
+        if node.op == '-':  # this is the only unary operator we need to check for
             return -self.visit(node.expr)
         return self.visit(node.expr)
 
     def _eval_ID(self, node):
         # print("visiting id: ", node.name)
         value = self._variables.get(node.name)
+        # if it's still a node (ex: var name) visit again to get the actual value, otherwise it would be a constant
         if isinstance(value, Node):
             return self.visit(value)
         return value
 
     def _eval_FuncCall(self, node):
         # print("visiting funcCall: ", node.name.name)
-        name = node.name.name
+        name = node.name.name  # function name
+
+        # special case for printf
         if name == 'printf':
             format_type = node.args.exprs[0].value
             arg = self.visit(node.args.exprs[1])  # there's only one arg
@@ -1165,33 +1190,34 @@ class Evaluator(NodeVisitor):
                 print(f"Computation Result: {float(arg):.6f}")
             return
 
-        # the user defined functions
+        # the user defined functions, go visit and compute
         if name in self._functions:
-            func = self._functions[name]
-            args = node.args.exprs if node.args is not None else []
-            evaluated_args = [self.visit(arg) for arg in args]  
-            
-            # save the current variables 
+            func = self._functions[name]  # get the function from the list
+            args = node.args.exprs if node.args is not None else []  # arguments of the function
+            # in case there is an argument like foo(int x), it needs to be evaled
+            evaluated_args = [self.visit(arg) for arg in args]
+
+            # save the current variables
             old_vars = self._variables.copy()
-            
+
+            # map the parameter names and their types
             param_names = [param.name for param in func.decl.type.args.params]
-            self._variables = {name: val for name, val in zip(param_names, evaluated_args)}
-            
+            self._variables = {name: val for name,
+                               val in zip(param_names, evaluated_args)}
+
             self._return_val = None
-            self._eval_Compound(func.body, in_function = True)
-            
+            # evaluated function body
+            self._eval_Compound(func.body, in_function=True)
+
             # restore the old variables
             self._variables = old_vars
-            
+
             # return the value of the function
             return self._return_val
-            
-             
 
     def _eval_Return(self, node):
         # print("visiting return: ", node)
         self._return_val = self.visit(node.expr)
-        # return self.visit(node.expr)
 
 
 # main function ============================================================================================
