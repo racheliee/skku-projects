@@ -1037,10 +1037,15 @@ class Evaluator(NodeVisitor):
     def _eval_FileAST(self, node):
         # add all of the functions in the _function dictonary
         for ext in node.ext:
-            print("adding ext: ", ext.decl.name)
-            self._functions[ext.decl.name] = ext
+            if isinstance(ext, FuncDef): # ok this gonna crash if it's not here, cuz there's also func prototypes
+                # print("adding ext: ", ext.decl.name)
+                self._functions[ext.decl.name] = ext
+            elif isinstance(ext, Decl):
+                if isinstance(ext.type, FuncDecl):
+                    # print("adding ext: ", ext.name)
+                    self._functions[ext.name] = ext
         
-        # start by visiting the main function
+        # start by visiting the main function (hopefully it exists and it not a prototype)
         if 'main' in self._functions:
             self.visit(self._functions['main'])
 
