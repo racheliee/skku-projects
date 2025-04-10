@@ -1099,11 +1099,14 @@ class Evaluator(NodeVisitor):
             case '*':
                 return left * right
             case '/':
-                if right != 0:
-                    return left / right
+                if right != 0: # match c's rounding towards zero behaviour
+                    if isinstance(left, int) and isinstance(right, int):
+                        return int(left / right)
+                    else:
+                        return left / right  # flopat & double
             case '%':
-                if right != 0:
-                    return left % right
+                if right != 0: # match c's mod behaviour
+                    return left - int(left / right) * right
             case '^':
                 return left ^ right
             case '|':
