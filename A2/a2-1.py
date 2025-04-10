@@ -11,7 +11,7 @@ import sys
 #     else:
 #         return repr(obj)
 
-
+# Nodes (from reference code provided) ===================================================================
 class Node(object):
     __slots__ = ()
     """ Abstract base class for AST nodes.
@@ -88,7 +88,7 @@ class NodeVisitor(object):
 
         visitor = self._method_cache.get(node.__class__.__name__, None)
         if visitor is None:
-            method = 'visit_' + node.__class__.__name__
+            method = '_eval_' + node.__class__.__name__
             visitor = getattr(self, method, self.generic_visit)
             self._method_cache[node.__class__.__name__] = visitor
 
@@ -549,29 +549,29 @@ class IdentifierType(Node):
 #     attr_names = ('name', )
 
 
-class NamedInitializer(Node):
-    __slots__ = ('name', 'expr', 'coord', '__weakref__')
+# class NamedInitializer(Node):
+#     __slots__ = ('name', 'expr', 'coord', '__weakref__')
 
-    def __init__(self, name, expr, coord=None):
-        self.name = name
-        self.expr = expr
-        self.coord = coord
+#     def __init__(self, name, expr, coord=None):
+#         self.name = name
+#         self.expr = expr
+#         self.coord = coord
 
-    def children(self):
-        nodelist = []
-        if self.expr is not None:
-            nodelist.append(("expr", self.expr))
-        for i, child in enumerate(self.name or []):
-            nodelist.append(("name[%d]" % i, child))
-        return tuple(nodelist)
+#     def children(self):
+#         nodelist = []
+#         if self.expr is not None:
+#             nodelist.append(("expr", self.expr))
+#         for i, child in enumerate(self.name or []):
+#             nodelist.append(("name[%d]" % i, child))
+#         return tuple(nodelist)
 
-    def __iter__(self):
-        if self.expr is not None:
-            yield self.expr
-        for child in (self.name or []):
-            yield child
+#     def __iter__(self):
+#         if self.expr is not None:
+#             yield self.expr
+#         for child in (self.name or []):
+#             yield child
 
-    attr_names = ()
+#     attr_names = ()
 
 
 class ParamList(Node):
@@ -717,6 +717,7 @@ class Lexer:
 
     def tokenize(self):
         for symbol in self._symbols:
+            # add space around all symbols except mod (bc we need to take care of "%d" and stuff in printf)
             if symbol != "%":
                 self.source_code = self.source_code.replace(
                     symbol, f" {symbol} ")
@@ -725,7 +726,6 @@ class Lexer:
         in_string = False
         for i in range(len(self.source_code)):
             c = self.source_code[i]
-
             if c == '"':
                 in_string = not in_string
             elif c == '%' and not in_string:
@@ -735,6 +735,8 @@ class Lexer:
         raw_tokens = self.source_code.split()
         # print("Raw tokens:", raw_tokens)
 
+        # add to tokens in form of (TYPE, VALUE)
+        # types can be KEYWORD, ID, STRING, NUM, FLOAT, SYMBOL
         for tok in raw_tokens:
             if tok in self._keywords:
                 self.tokens.append(('KEYWORD', tok))
@@ -760,7 +762,7 @@ class Lexer:
 # parser ======================================================================
 class Parser:
     types = ['int', 'float', 'double', 'void']
-    precedence = { # from the provided reference
+    precedence = {  # from the provided reference
         '||': 0,  # weakest binding
         '&&': 1,
         '|': 2,
@@ -777,12 +779,12 @@ class Parser:
         self.tokens = tokens
         self.pos = 0
 
-    def _peek(self, offset=0): # no change in pos btw!!! only checks the next token
+    def _peek(self, offset=0):  # no change in pos btw!!! only checks the next token
         if self.pos + offset < len(self.tokens):
             return self.tokens[self.pos + offset]
         return None
 
-    def consume(self, expected_type=None, expected_val=None): # advances pos
+    def consume(self, expected_type=None, expected_val=None):  # advances pos
         curr = self._peek()
         if curr is None:
             return None
@@ -930,7 +932,7 @@ class Parser:
     def _parse_statement(self):
         # statement: single unit of execution
         # declaration, assignment, function call, return, compound, expressions 임!! 그냥 한줄이라고 생각하면 댐
-        
+
         typ, tok = self._peek()
         if typ is None or tok is None:
             return None
@@ -1045,7 +1047,8 @@ class Parser:
             self.consume('FLOAT')
             return Constant('double', tok)
 
-        elif typ == 'STRING':  # strings are only used for printf (double check this)
+        # strings are only used for printf (double check this)
+        elif typ == 'STRING':
             self.consume('STRING')
             return Constant('string', tok)
 
@@ -1147,7 +1150,7 @@ class Parser:
 
 
 class Evaluator(NodeVisitor):
-    precedence = { # same as parser's precedence
+    precedence = {  # same as parser's precedence
         '||': 0,  # weakest binding
         '&&': 1,
         '|': 2,
@@ -1159,47 +1162,82 @@ class Evaluator(NodeVisitor):
         '+': 8, '-': 8,
         '*': 9, '/': 9, '%': 9  # strongest binding
     }
+
     def __init__(self):
         self.variables = {}
         self.functions = {}
 
-    def file_ast(self, node): ...
+    def _eval_FileAST(self, node):
+        for ext in node.ext:
+            print("visiting ext: ", ext)
+            self.visit(ext)
 
-    def func_def(self, node):
-        self.variables = {} # reset for each function
+    def _eval_FuncDef(self, node):
+        print("visiting funcdef: ", node.decl.name)
+        self.variables = {}  # reset for each function
         self.visit(node.body)
 
-    def compound(self, node):
+    def _eval_Compound(self, node):
+        print("visiting compound: ", node)
+        if node.block_items is None:
+            return
+
         for statements in node.block_items:
             self.visit(statements)
-            # if self.return_statement
 
-    def decl(self, node): ...
+    def _eval_Decl(self, node):
+        print("visiting decl: ", node.name)
+        if node.init is not None:
+            print("init:", node.init)
+            self.variables[node.name] = self.visit(node.init)
+        else:
+            self.variables[node.name] = None
+            
 
-    def assignment(self, node):
-        # Handle assignment
-        pass
+    def _eval_Assignment(self, node):
+        print("lvalue:", node.lvalue.name)
+        print("rvalue:", node.rvalue.name)
+        self.variables[node.lvalue.name] = self.visit(node.rvalue)
 
-    def binary_op(self, node):
+    def _eval_BinaryOp(self, node):
+        print("visiting binaryop: ", node.op)
         # Handle binary operations
         pass
 
-    def constant(self, node):
+    def _eval_Constant(self, node):
+        print("visiting constant: ", node)
         return node.value
 
-    def unary_op(self, node):
+    def _eval_UnaryOp(self, node):
+        print("visiting unaryop: ", node)
         if node.op == '-':
             return -self.visit(node.expr)
         return self.visit(node.expr)
 
-    def id(self, node):
+    def _eval_ID(self, node):
+        print("visiting id: ", node.name)
         return self.variables.get(node.name)
 
-    def func_call(self, node):
-        # Handle function calls
-        pass
+    def _eval_FuncCall(self, node):
+        print("visiting funcCall: ", node.name.name)
+        name = node.name.name
+        if name == 'printf':
+            format_type = node.args.exprs[0].value
+            arg = self.visit(node.args.exprs[1])  # there's only one arg
 
-    def return_statement(self, node):
+            if format_type == '"%d"':
+                print(f"Computation Result: {int(arg)}")
+            elif format_type == '"%f"':
+                print(f"Computation Result: {float(arg):.6f}")
+            elif format_type == '"%lf"':
+                print(f"Computation Result: {float(arg):.6f}")
+            return
+
+        # the user defined functions
+        # todo
+
+    def _eval_Return(self, node):
+        print("visiting return: ", node)
         # Handle return statements
         pass
 
@@ -1212,7 +1250,6 @@ def main():
         sys.exit(1)
 
     try:
-        # check if file exists
         with open(sys.argv[1], 'r') as f:
             source_code = f.read()
     except Exception as e:
@@ -1224,8 +1261,8 @@ def main():
     ast = Parser(tokens).parse()
     ast.show()
     # print("Computation Result: ", end="") # no this is going to be printed for each line of printf
-    # evaluator = Evaluator()
-    # evaluator.visit(ast)
+    evaluator = Evaluator()
+    evaluator.visit(ast)
 
 
 if __name__ == "__main__":
