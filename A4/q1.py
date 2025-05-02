@@ -25,10 +25,10 @@ for n in random_number_list:
 for idx, n in enumerate(random_number_list):
     num_digits = len(str(n))
     print(n, end=' '*(5 - num_digits), flush=True)
-    if ((idx + 1) % 20) == 0 and idx != 0: # new line every 20 numbers
+    if ((idx + 1) % 20) == 0 and idx != 0:  # new line every 20 numbers
         print()
 
-print("--"*20) # divider
+print("--"*20)  # divider
 
 ranges = [" 1 -  20", "21 -  40", "41 -  60", "61 -  80", "81 - 100"]
 
