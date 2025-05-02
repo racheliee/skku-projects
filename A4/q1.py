@@ -30,7 +30,7 @@ for idx, n in enumerate(random_number_list):
 
 print("--"*20) # divider
 
-ranges = ["1-20", "21-40", "41-60", "61-80", "81-100"]
+ranges = [" 1 -  20", "21 -  40", "41 -  60", "61 -  80", "81 - 100"]
 
 for i in range(len(count)):
     print(f"{ranges[i]}: ", end='')
