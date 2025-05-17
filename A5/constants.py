@@ -34,5 +34,10 @@ Choose (1/2/3): '''
 PROGRAM_OPTIONS = '''
 === Select Option ===
 1. view
-2. 
+2. buy TICKER QTY
+3. sell TICKER QTY
+4. portfolio
+5. history
+6. auto on/off
+7. logout
 '''

@@ -1,1 +1,9 @@
-{}
+{
+  "test": {
+    "username": "test",
+    "password": "Testtest!",
+    "strategy": "RANDOM",
+    "balance": 10000,
+    "portfolio": {}
+  }
+}

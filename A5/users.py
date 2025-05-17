@@ -6,18 +6,19 @@ users = {}
 
 
 class User:
-    def __init__(self, username: str, password: str, strategy: StrategyType, balance: float = INITIAL_BALANCE):
+    def __init__(self, username: str, password: str, strategy: StrategyType, auto: bool = False, balance: float = INITIAL_BALANCE):
         self.username = username
         self.password = password
         self.strategy = strategy
+        self.auto = auto
         self.balance = balance
         self.portfolio = {}
 
     def to_dict(self):
         return {
-            'username': self.username,
             'password': self.password,
             'strategy': self.strategy.name,
+            'auto': self.auto,
             'balance': self.balance,
             'portfolio': self.portfolio
         }
@@ -41,6 +42,7 @@ def load_users():
                     username=username,
                     password=user_data["password"],
                     strategy=StrategyType[user_data["strategy"]],
+                    auto=user_data["auto"],
                     balance=user_data["balance"]
                 )
         except json.JSONDecodeError:
@@ -108,14 +110,14 @@ def register() -> None:
     return
 
 
-def login() -> bool:
+def login() -> User:
     username = input("Username: ")
     password = input("Password: ")
-    
+
     if username in users and users[username].password == password:
         print(f"Welcome, {username}!")
-        return True
+        return users[username]
 
     else:
         print("Invalid username or password.")
-        return False
+        return None
