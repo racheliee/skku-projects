@@ -5,7 +5,7 @@ from market import Market
 from typing import Dict
 from dataclasses import dataclass, field
 from portfolio import Holding
-from transactions import log_transaction
+from transactions import log_transaction, display_history
 
 
 @dataclass
@@ -275,7 +275,7 @@ def register() -> None:
     return
 
 
-def login() -> User:
+def login() -> User | None:
     username = input("Username: ")
     password = input("Password: ")
 
@@ -302,7 +302,7 @@ def login_options(user: User, market: Market) -> None:
             elif options == "4":
                 user.portfolio_summary(market)
             elif options == "5":
-                print("History")
+                display_history(user.username)
             elif options == "6":
                 user.toggle_auto()
             elif options == "7":

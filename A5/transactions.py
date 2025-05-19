@@ -77,5 +77,14 @@ def log_transaction(username: str, ticker: str, action: str, qty: int, price: fl
     save_transactions()  # optional probs; transaction history should be saved at exit
 
 
-def display_history(username: str):
-    pass
+def display_history(username: str) -> None:
+    history = transactions.get(username, [])
+    
+    if not history:
+        print("\nNo transaction history found.")
+        return
+
+    print("\n==== Transactions ====")
+    for ts in reversed(history):
+        print(f"{ts.time} - {ts.action.value} {ts.qty} {ts.ticker} @${ts.price:.2f}")
+    print()
