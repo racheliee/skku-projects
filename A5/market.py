@@ -4,27 +4,26 @@ import threading
 import time
 import random
 from datetime import datetime
+from dataclasses import dataclass
 from typing import Dict
 from constants import MARKET_FILE_NAME, DEFAULT_STOCK, MARKET_UPDATE_INTERVAL, MAX_MARKET_HISTORY, MIN_FLUCTUATION, MAX_FLUCTUATION
 
 
+@dataclass
 class Stock:
-    def __init__(self, ticker: str, history: list[dict]):
-        self.ticker = ticker
-        self.history = history
+    ticker: str
+    history: list[dict]
 
-    def to_dict(self):
-        return {
-            'history': self.history
-        }
+    def to_dict(self) -> Dict:
+        return {'history': self.history}
 
-    def get_current_price(self):
+    def get_current_price(self) -> float | None:
         return self.history[-1]['price'] if self.history else None
 
-    def get_latest_volume(self):
+    def get_latest_volume(self) -> int | None:
         return self.history[-1]['volume'] if self.history else None
 
-    def update(self, price: float, volume: int, timestamp: str):
+    def update(self, price: float, volume: int, timestamp: str) -> None:
         self.history.append({
             "time": timestamp,
             "price": price,
@@ -35,14 +34,14 @@ class Stock:
 
 
 class Market:
-    def __init__(self):
+    def __init__(self) -> None:
         self.stocks: Dict[str, Stock] = {}  # key: ticker, value: Stock
         self._running = False
         self.lock = threading.Lock()
 
-    def _load_market(self):
+    def _load_market(self) -> None:
         default_data = {t: {"history": []} for t in DEFAULT_STOCK}
-        
+
         if not os.path.exists(MARKET_FILE_NAME):
             default_data = {ticker: {"history": []}
                             for ticker in DEFAULT_STOCK}
@@ -60,13 +59,13 @@ class Market:
         for ticker, data in raw_data.items():
             self.stocks[ticker] = Stock(ticker, data['history'])
 
-    def _save_market(self):
+    def _save_market(self) -> None:
         data = {ticker: stock.to_dict()
                 for ticker, stock in self.stocks.items()}
         with open(MARKET_FILE_NAME, 'w') as f:
             json.dump(data, f, indent=2)
 
-    def _update_market(self):
+    def _update_market(self) -> None:
         for stock in self.stocks.values():
             latest_price = stock.get_current_price() or random.uniform(100, 500)
             new_price = round(
@@ -83,7 +82,7 @@ class Market:
             stock.update(new_price, new_volume, timestamp)
         self._save_market()
 
-    def _run_market(self):
+    def _run_market(self) -> None:
         # print("market thread started.")
         while self._running:
             try:
@@ -93,7 +92,7 @@ class Market:
                 print(f"Error updating market: {e}")
             time.sleep(MARKET_UPDATE_INTERVAL)
 
-    def open(self):
+    def open(self) -> None:
         if self._running:
             return
         self._running = True
@@ -101,13 +100,13 @@ class Market:
         # print(f"loaded stocks: {list(self.stocks.keys())}")
         threading.Thread(target=self._run_market, daemon=True).start()
 
-    def close(self):
+    def close(self) -> None:
         if not self._running:
             return
         self._running = False
         self._save_market()
 
-    def view(self):
+    def view(self) -> None:
         '''
         Command: view AAPL (or any ticker)
         • Shows:
@@ -115,7 +114,7 @@ class Market:
             • Lastest 5 price
             • Lastest 5 volumes
         '''
-        print() # formatting purposes
+        print()  # formatting purposes
         for ticker, stock in self.stocks.items():
             print(
                 f"[{ticker}]: ${stock.get_current_price() or 0.0:.2f} Vol:{stock.get_latest_volume() or 0}")

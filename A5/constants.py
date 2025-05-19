@@ -23,12 +23,16 @@ MIN_FLUCTUATION = -100
 
 MAX_FLUCTUATION = 100
 
+DEFAULT_STOCK = ["AAPL", "GOOGL", "TSLA"]
+
 class StrategyType(Enum):
     RANDOM = 1
     MOVING_AVERAGE = 2
     MOMENTUM = 3
 
-DEFAULT_STOCK = ["AAPL", "GOOGL", "TSLA"]
+class ActionType(Enum):
+    BUY  = "BUY"
+    SELL = "SELL"
 
 PROGRAM_PROMPT = '''
 === Stock Trading Simulation ===

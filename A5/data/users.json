@@ -17,7 +17,28 @@
     "password": "Adminadmin!",
     "strategy": "MOVING_AVERAGE",
     "auto": false,
-    "balance": 10000,
-    "portfolio": {}
+    "balance": 8397.77,
+    "portfolio": {
+      "GOOGL": {
+        "qty": 4,
+        "avg_price": 240.0
+      },
+      "AAPL": {
+        "qty": 1,
+        "avg_price": 295.55
+      }
+    }
+  },
+  "rachel": {
+    "password": "Adminadmin!",
+    "strategy": "RANDOM",
+    "auto": false,
+    "balance": 9560.18,
+    "portfolio": {
+      "AAPL": {
+        "qty": 2,
+        "avg_price": 219.91
+      }
+    }
   }
 }

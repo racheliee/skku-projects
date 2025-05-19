@@ -1,0 +1,25 @@
+{
+  "joony": [
+    {
+      "time": "2025-05-20 01:19:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 3,
+      "price": 226.53
+    },
+    {
+      "time": "2025-05-20 01:20:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 295.55
+    },
+    {
+      "time": "2025-05-20 01:20:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 280.41
+    }
+  ]
+}

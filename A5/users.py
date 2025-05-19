@@ -1,21 +1,23 @@
 import json
 import os
-from constants import MIN_PASSWORD_LENGTH, STRATEGY_OPTIONS, INITIAL_BALANCE, USER_FILE_NAME, StrategyType, PROGRAM_OPTIONS
+from constants import MIN_PASSWORD_LENGTH, STRATEGY_OPTIONS, INITIAL_BALANCE, USER_FILE_NAME, StrategyType, PROGRAM_OPTIONS, DEFAULT_STOCK, ActionType
 from market import Market
+from typing import Dict
+from dataclasses import dataclass, field
+from portfolio import Holding
+from transactions import log_transaction
 
-users = {}
 
-
+@dataclass
 class User:
-    def __init__(self, username: str, password: str, strategy: StrategyType, auto: bool = False, balance: float = INITIAL_BALANCE):
-        self.username = username
-        self.password = password
-        self.strategy = strategy
-        self.auto = auto
-        self.balance = balance
-        self.portfolio = {}
+    username: str
+    password: str
+    strategy: StrategyType
+    auto: bool = False
+    balance: float = INITIAL_BALANCE
+    portfolio: Dict[str, Holding] = field(default_factory=dict)
 
-    def to_dict(self):
+    def to_dict(self) -> Dict:
         return {
             'password': self.password,
             'strategy': self.strategy.name,
@@ -23,26 +25,73 @@ class User:
             'balance': self.balance,
             'portfolio': self.portfolio
         }
-    
-    def toggle_auto(self):
+
+    def toggle_auto(self) -> None:
         self.auto = not self.auto
-        
-    def buy_stock(self, ticker: str, qty: int):
-        '''
-        1. Display user's current balance and portfolio.
-        2. Prompt: "Enter stock ticker and quantity to buy”
-        3. Validate input:
-            • Ticker must be valid (AAPL, TSLA, GOOG).
-            • Quantity must be a positive integer.
-        4. Check sufficient balance.
-        5. If valid, execute trade:
-            • Deduct cost from balance.
-            • Add shares to portfolio.
-        6. Log transaction in transactions.json
-        '''
-        pass
-    
-    def sell_stock(self, ticker: str, qty: int):
+
+        if self.auto:
+            print("Auto-trade enabled")
+        else:
+            print("Auto-trade disabled")
+
+    def buy_stock(self, market: Market) -> None:
+        print("====== Buy Menu ======"
+              + f"\nAvailable Cash: ${self.balance:.2f}"
+              + "\nYour Holdings:")
+
+        if len(self.portfolio) == 0:
+            print("    (No stocks owned)")
+        else:
+            for stock, h in self.portfolio.items():
+                print(
+                    f"    {stock}: {h.qty} shares @ avg {h.avg_price:.2f}")
+
+        # get ticker
+        while True:
+            ticker = input(
+                f"Enter ticker ({DEFAULT_STOCK}) or 'back' to return: ").upper()
+            if ticker == 'BACK':
+                return
+            if ticker not in DEFAULT_STOCK:
+                print("Invalid ticker. Please try again.")
+                continue
+            break
+
+        # get quantity
+        while True:
+            try:
+                qty = int(input("Enter quantity to buy: "))
+                if qty <= 0:
+                    raise ValueError
+                break
+            except ValueError:
+                print("Invalid quantity. Please enter a positive integer.")
+
+        # check balance
+        curr_price = market.stocks[ticker].get_current_price()
+        if curr_price is None:
+            print("Market data not yet available. Please try again in 10 seconds.")
+            return
+        cost = curr_price * qty
+        if cost > self.balance:
+            print(f"Insufficient funds to buy {qty} shares of {ticker}.")
+            return
+
+        # execute trade
+        self.balance -= cost
+        current_holdings = self.portfolio.get(
+            ticker, Holding(0, 0.0))
+        new_qty = current_holdings.qty + qty
+        new_avg_price = (
+            (current_holdings.avg_price * current_holdings.qty) + (curr_price * qty)) / new_qty  # weighted avg
+        self.portfolio[ticker] = Holding(new_qty, new_avg_price)
+
+        # log transaction
+        log_transaction(self.username, ticker, ActionType.BUY, qty, curr_price)
+
+        print(f"Bought {qty} {ticker} @ ${curr_price:.2f}")
+
+    def sell_stock(self, market: Market) -> None:
         '''
         1. Display user's current balance and portfolio.
         2. Prompt: "Enter stock ticker and quantity to sell”
@@ -58,11 +107,12 @@ class User:
             • Log transaction in transactions.json
         '''
         pass
-    
 
 
+users: Dict[str, User] = {}
 
-def load_users():
+
+def load_users() -> None:
     # create file if it doesn't exist
     if not os.path.exists(USER_FILE_NAME):
         with open(USER_FILE_NAME, 'w') as file:
@@ -83,17 +133,31 @@ def load_users():
                     auto=user_data["auto"],
                     balance=user_data["balance"]
                 )
+                for ticker, h in user_data["portfolio"].items():
+                    users[username].portfolio[ticker] = Holding.from_dict(h)
         except json.JSONDecodeError:
             # print("Error loading user data.")
             users.clear()
             save_users()
 
 
-def save_users():
-    json_users = {username: user.to_dict() for username, user in users.items()}
+def save_users() -> None:
+    serializable = {}
+    for username, user in users.items():
+        data = {
+            "password": user.password,
+            "strategy": user.strategy.name,
+            "auto":     user.auto,
+            "balance":  user.balance,
+            "portfolio": {
+                ticker: hold.to_dict()
+                for ticker, hold in user.portfolio.items()
+            }
+        }
+        serializable[username] = data
 
-    with open(USER_FILE_NAME, 'w') as file:
-        json.dump(json_users, file, indent=2)
+    with open(USER_FILE_NAME, "w") as f:
+        json.dump(serializable, f, indent=2)
 
 
 def _is_valid_reg_username(username: str) -> bool:
@@ -160,6 +224,7 @@ def login() -> User:
         print("Invalid username or password.")
         return None
 
+
 def login_options(user: User, market: Market) -> None:
     while True:
         try:
@@ -168,9 +233,9 @@ def login_options(user: User, market: Market) -> None:
             if options == "1":
                 market.view()
             elif options == "2":
-                print("Buy")
+                user.buy_stock(market)
             elif options == "3":
-                print("Sell")
+                user.sell_stock(market)
             elif options == "4":
                 print("Portfolio")
             elif options == "5":

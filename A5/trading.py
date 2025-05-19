@@ -2,26 +2,29 @@ import atexit
 from constants import PROGRAM_PROMPT
 from market import Market
 from users import register, login, save_users, load_users, login_options
+from transactions import load_transactions, save_transactions
 
 global_market = None 
 
 def _setup():
     global global_market
     load_users()
+    load_transactions()
     global_market = Market()
     global_market.open()
 
 
 def _cleanup():
     save_users()
+    save_transactions()
     global_market.close()
     return
 
 
-atexit.register(_cleanup)  # run cleanup function on exit
+atexit.register(_cleanup)  # run cleanup on exit
 
 
-def main():  # main function where the program starts
+def main():  # program entry point
     user = None
 
     while True:
