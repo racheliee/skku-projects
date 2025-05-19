@@ -1,14 +1,20 @@
 import atexit
 from constants import PROGRAM_PROMPT
-from users import register, login, save_users, load_users
+from market import Market
+from users import register, login, save_users, load_users, login_options
 
+global_market = None 
 
 def _setup():
+    global global_market
     load_users()
+    global_market = Market()
+    global_market.open()
 
 
 def _cleanup():
     save_users()
+    global_market.close()
     return
 
 
@@ -28,7 +34,8 @@ def main():  # main function where the program starts
                 if user is None:
                     continue
                 else:
-                    pass
+                    login_options(user, global_market)
+                    user = None
             elif menu == "3":
                 print("Goodbye!")
                 break

@@ -1,8 +1,22 @@
 {
+  "1": {
+    "password": "Adminadmin!",
+    "strategy": "MOMENTUM",
+    "auto": false,
+    "balance": 10000,
+    "portfolio": {}
+  },
   "test": {
-    "username": "test",
-    "password": "Testtest!",
-    "strategy": "RANDOM",
+    "password": "Adminadmin!",
+    "strategy": "MOVING_AVERAGE",
+    "auto": false,
+    "balance": 10000,
+    "portfolio": {}
+  },
+  "joony": {
+    "password": "Adminadmin!",
+    "strategy": "MOVING_AVERAGE",
+    "auto": false,
     "balance": 10000,
     "portfolio": {}
   }

@@ -3,6 +3,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
+os.makedirs(DATA_DIR, exist_ok=True)
 
 MARKET_FILE_NAME = os.path.join(DATA_DIR, 'market.json')
 
@@ -14,11 +15,20 @@ MIN_PASSWORD_LENGTH = 8
 
 INITIAL_BALANCE = 10000
 
+MARKET_UPDATE_INTERVAL = 10
+
+MAX_MARKET_HISTORY = 30
+
+MIN_FLUCTUATION = -100
+
+MAX_FLUCTUATION = 100
+
 class StrategyType(Enum):
     RANDOM = 1
     MOVING_AVERAGE = 2
     MOMENTUM = 3
 
+DEFAULT_STOCK = ["AAPL", "GOOGL", "TSLA"]
 
 PROGRAM_PROMPT = '''
 === Stock Trading Simulation ===
@@ -33,11 +43,11 @@ Choose (1/2/3): '''
 
 PROGRAM_OPTIONS = '''
 === Select Option ===
-1. view
-2. buy TICKER QTY
-3. sell TICKER QTY
-4. portfolio
-5. history
-6. auto on/off
-7. logout
+1. View : View current price and volume for all tickers
+2. Buy : Purchase a quantity of a specific stock
+3. Sell : Sell a quantity of a specific stock
+4. Portfolio : Show the user's cash and stock holdings
+5. History : View transaction history
+6. Auto on/off : Enable or disable auto-trading using the selected strategy
+7. Logout : Return to the initial login/register screen
 '''

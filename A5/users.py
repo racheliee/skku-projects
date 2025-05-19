@@ -1,6 +1,7 @@
 import json
 import os
-from constants import MIN_PASSWORD_LENGTH, STRATEGY_OPTIONS, INITIAL_BALANCE, USER_FILE_NAME, StrategyType
+from constants import MIN_PASSWORD_LENGTH, STRATEGY_OPTIONS, INITIAL_BALANCE, USER_FILE_NAME, StrategyType, PROGRAM_OPTIONS
+from market import Market
 
 users = {}
 
@@ -22,6 +23,43 @@ class User:
             'balance': self.balance,
             'portfolio': self.portfolio
         }
+    
+    def toggle_auto(self):
+        self.auto = not self.auto
+        
+    def buy_stock(self, ticker: str, qty: int):
+        '''
+        1. Display user's current balance and portfolio.
+        2. Prompt: "Enter stock ticker and quantity to buy”
+        3. Validate input:
+            • Ticker must be valid (AAPL, TSLA, GOOG).
+            • Quantity must be a positive integer.
+        4. Check sufficient balance.
+        5. If valid, execute trade:
+            • Deduct cost from balance.
+            • Add shares to portfolio.
+        6. Log transaction in transactions.json
+        '''
+        pass
+    
+    def sell_stock(self, ticker: str, qty: int):
+        '''
+        1. Display user's current balance and portfolio.
+        2. Prompt: "Enter stock ticker and quantity to sell”
+        3. Validate input:
+            • Ticker must be valid (AAPL, TSLA, GOOG).
+            • Quantity must be a positive integer.
+        4. Check sufficient shares.
+        5. If valid, execute trade:
+            • Calculates the proceeds = current price × quantity.
+            • Adds the proceeds to the user's balance.
+            • Deducts the shares from the user's portfolio.
+            • If the number of shares reaches zero, the stock is removed from the portfolio.
+            • Log transaction in transactions.json
+        '''
+        pass
+    
+
 
 
 def load_users():
@@ -121,3 +159,34 @@ def login() -> User:
     else:
         print("Invalid username or password.")
         return None
+
+def login_options(user: User, market: Market) -> None:
+    while True:
+        try:
+            print(PROGRAM_OPTIONS)
+            options = input(f"{user.username} > ")
+            if options == "1":
+                market.view()
+            elif options == "2":
+                print("Buy")
+            elif options == "3":
+                print("Sell")
+            elif options == "4":
+                print("Portfolio")
+            elif options == "5":
+                print("History")
+            elif options == "6":
+                user.toggle_auto()
+            elif options == "7":
+                print("Logout")
+                break
+            else:
+                print("Invalid selection. Please try again.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+        except (KeyboardInterrupt, EOFError):
+            print("\nUser interrupted. Logging out...")
+            break
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+    return
