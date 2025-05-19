@@ -91,8 +91,8 @@ class User:
 
     def sell_stock(self, market: Market) -> None:
         print("====== Sell Menu ======"
-          + f"\nAvailable Cash: ${self.balance:.2f}"
-          + "\nYour Holdings:")
+              + f"\nAvailable Cash: ${self.balance:.2f}"
+              + "\nYour Holdings:")
 
         if not self.portfolio:
             print("    (No stocks owned)")
@@ -103,7 +103,8 @@ class User:
 
         # pick a ticker
         while True:
-            choice = input(f"Enter ticker ({', '.join(self.portfolio.keys())}) or 'back': ").upper()
+            choice = input(
+                f"Enter ticker ({', '.join(self.portfolio.keys())}) or 'back': ").upper()
             if choice == 'BACK':
                 return
             if choice not in self.portfolio:
@@ -143,10 +144,32 @@ class User:
             del self.portfolio[ticker]
 
         # log & save
-        log_transaction(self.username, ticker, ActionType.SELL, qty, curr_price)
+        log_transaction(self.username, ticker,
+                        ActionType.SELL, qty, curr_price)
         save_users()  # optional
 
         print(f"Sold {qty} {ticker} @ ${proceeds:.2f}")
+
+    def portfolio_summary(self, market: Market) -> None:
+        print(f"\nCash: ${self.balance:.2f}")
+
+        total_eval = self.balance
+        for ticker, h in self.portfolio.items():
+            curr_price = market.stocks[ticker].get_current_price()
+
+            pos_val = h.qty * curr_price if curr_price else 0
+            total_eval += pos_val
+
+            if h.avg_price > 0:
+                pl_percentage = ((curr_price - h.avg_price) / h.avg_price) * 100
+            else:
+                pl_percentage = 0.0
+            sign = "+" if pl_percentage >= 0 else "-"
+
+            print(f"{ticker}: {h.qty} @avg${h.avg_price:.2f} -> ${curr_price:.2f}  ({sign}{pl_percentage:.2f}%)")
+            
+        print(f"Total: ${total_eval:.2f}")
+        return
 
 
 users: Dict[str, User] = {}
@@ -277,7 +300,7 @@ def login_options(user: User, market: Market) -> None:
             elif options == "3":
                 user.sell_stock(market)
             elif options == "4":
-                print("Portfolio")
+                user.portfolio_summary(market)
             elif options == "5":
                 print("History")
             elif options == "6":
