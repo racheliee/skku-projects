@@ -59,13 +59,11 @@ class User:
 
         # get quantity
         while True:
-            try:
-                qty = int(input("Enter quantity to buy: "))
-                if qty <= 0:
-                    raise ValueError
-                break
-            except ValueError:
+            qty = int(input("Enter quantity to buy: "))
+            if qty <= 0:
                 print("Invalid quantity. Please enter a positive integer.")
+                continue
+            break
 
         # check balance
         curr_price = market.stocks[ticker].get_current_price()
@@ -92,21 +90,63 @@ class User:
         print(f"Bought {qty} {ticker} @ ${curr_price:.2f}")
 
     def sell_stock(self, market: Market) -> None:
-        '''
-        1. Display user's current balance and portfolio.
-        2. Prompt: "Enter stock ticker and quantity to sell”
-        3. Validate input:
-            • Ticker must be valid (AAPL, TSLA, GOOG).
-            • Quantity must be a positive integer.
-        4. Check sufficient shares.
-        5. If valid, execute trade:
-            • Calculates the proceeds = current price × quantity.
-            • Adds the proceeds to the user's balance.
-            • Deducts the shares from the user's portfolio.
-            • If the number of shares reaches zero, the stock is removed from the portfolio.
-            • Log transaction in transactions.json
-        '''
-        pass
+        print("====== Sell Menu ======"
+          + f"\nAvailable Cash: ${self.balance:.2f}"
+          + "\nYour Holdings:")
+
+        if not self.portfolio:
+            print("    (No stocks owned)")
+            return
+        else:
+            for ticker, h in self.portfolio.items():
+                print(f"    {ticker}: {h.qty} shares @ avg ${h.avg_price:.2f}")
+
+        # pick a ticker
+        while True:
+            choice = input(f"Enter ticker ({', '.join(self.portfolio.keys())}) or 'back': ").upper()
+            if choice == 'BACK':
+                return
+            if choice not in self.portfolio:
+                print("Invalid ticker. Please try again.")
+                continue
+            ticker = choice
+            break
+
+        # pick quantity
+        while True:
+            qty = int(input("Enter quantity to sell: "))
+            if qty <= 0:
+                print("Invalid quantity. Please enter a positive integer.")
+                continue
+            break
+
+        # check quantity
+        holding = self.portfolio[ticker]
+        if qty > holding.qty:
+            print(f"You only have {holding.qty} shares of {ticker}.")
+            return
+
+        # get price
+        curr_price = market.stocks[ticker].get_current_price()
+        if curr_price is None:
+            print("Market data not ready. Try again later.")
+            return
+
+        # execute trade
+        proceeds = curr_price * qty
+        self.balance += proceeds
+
+        remaining = holding.qty - qty
+        if remaining > 0:
+            self.portfolio[ticker] = Holding(remaining, holding.avg_price)
+        else:
+            del self.portfolio[ticker]
+
+        # log & save
+        log_transaction(self.username, ticker, ActionType.SELL, qty, curr_price)
+        save_users()  # optional
+
+        print(f"Sold {qty} {ticker} @ ${proceeds:.2f}")
 
 
 users: Dict[str, User] = {}
