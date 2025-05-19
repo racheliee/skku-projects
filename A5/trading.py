@@ -9,13 +9,17 @@ global_market = None
 
 def _setup():
     global global_market
+    global auto_trader
     load_users()
     load_transactions()
     global_market = Market()
     global_market.open()
+    return
 
 
 def _cleanup():
+    global global_market
+    global auto_trader
     save_users()
     save_transactions()
     global_market.close()

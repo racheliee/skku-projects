@@ -33,8 +33,53 @@ class User:
         else:
             print("Auto-trade disabled")
 
-    def buy_stock(self, market: Market) -> None:
-        print("====== Buy Menu ======"
+    def execute_trade(self, ticker: str, qty: int, market: Market, action: ActionType, auto=False) -> None:
+        # check balance
+        curr_price = market.stocks[ticker].get_current_price()
+        if curr_price is None:
+            print("Market data not yet available. Please try again in 10 seconds.")
+            return
+
+        if action == ActionType.BUY:
+            cost = curr_price * qty
+            if cost > self.balance:
+                print(f"Insufficient funds to buy {qty} shares of {ticker}.")
+                return
+
+            # execute trade
+            self.balance -= cost
+            current_holdings = self.portfolio.get(ticker, Holding(0, 0.0))
+            new_qty = current_holdings.qty + qty
+            new_avg_price = (
+                (current_holdings.avg_price * current_holdings.qty) + (curr_price * qty)) / new_qty  # weighted avg
+            self.portfolio[ticker] = Holding(new_qty, new_avg_price)
+
+        elif action == ActionType.SELL:
+            # check quantity
+            holding = self.portfolio[ticker]
+            if qty > holding.qty:
+                print(f"You only have {holding.qty} shares of {ticker}.")
+                return
+            # execute trade
+            proceeds = curr_price * qty
+            self.balance += proceeds
+
+            remaining = holding.qty - qty
+            if remaining > 0:
+                self.portfolio[ticker] = Holding(remaining, holding.avg_price)
+            else:
+                del self.portfolio[ticker]
+
+        # log transaction
+        log_transaction(self.username, ticker, action, qty, curr_price)
+
+        if not auto:
+            action_str = "Bought" if action == ActionType.BUY else "Sold"
+            print(f"{action_str} {qty} {ticker} @ ${curr_price:.2f}")
+
+    def get_trade_options(self, action: ActionType) -> tuple[str, int] | None:
+        menu = "Buy" if action == ActionType.BUY else "Sell"
+        print(f"====== {menu} Menu ======"
               + f"\nAvailable Cash: ${self.balance:.2f}"
               + "\nYour Holdings:")
 
@@ -50,7 +95,7 @@ class User:
             ticker = input(
                 f"Enter ticker ({DEFAULT_STOCK}) or 'back' to return: ").upper()
             if ticker == 'BACK':
-                return
+                return None
             if ticker not in DEFAULT_STOCK:
                 print("Invalid ticker. Please try again.")
                 continue
@@ -64,90 +109,19 @@ class User:
                 continue
             break
 
-        # check balance
-        curr_price = market.stocks[ticker].get_current_price()
-        if curr_price is None:
-            print("Market data not yet available. Please try again in 10 seconds.")
+        return ticker, qty
+
+    def buy_stock(self, market: Market) -> None:
+        [ticker, qty] = self.get_trade_options(ActionType.BUY)
+        if ticker is None or qty is None:
             return
-        cost = curr_price * qty
-        if cost > self.balance:
-            print(f"Insufficient funds to buy {qty} shares of {ticker}.")
-            return
-
-        # execute trade
-        self.balance -= cost
-        current_holdings = self.portfolio.get(
-            ticker, Holding(0, 0.0))
-        new_qty = current_holdings.qty + qty
-        new_avg_price = (
-            (current_holdings.avg_price * current_holdings.qty) + (curr_price * qty)) / new_qty  # weighted avg
-        self.portfolio[ticker] = Holding(new_qty, new_avg_price)
-
-        # log transaction
-        log_transaction(self.username, ticker, ActionType.BUY, qty, curr_price)
-
-        print(f"Bought {qty} {ticker} @ ${curr_price:.2f}")
+        self.execute_trade(ticker, qty, market, ActionType.BUY)
 
     def sell_stock(self, market: Market) -> None:
-        print("====== Sell Menu ======"
-              + f"\nAvailable Cash: ${self.balance:.2f}"
-              + "\nYour Holdings:")
-
-        if not self.portfolio:
-            print("    (No stocks owned)")
+        [ticker, qty] = self.get_trade_options(ActionType.SELL)
+        if ticker is None or qty is None:
             return
-        else:
-            for ticker, h in self.portfolio.items():
-                print(f"    {ticker}: {h.qty} shares @ avg ${h.avg_price:.2f}")
-
-        # pick a ticker
-        while True:
-            choice = input(
-                f"Enter ticker ({', '.join(self.portfolio.keys())}) or 'back': ").upper()
-            if choice == 'BACK':
-                return
-            if choice not in self.portfolio:
-                print("Invalid ticker. Please try again.")
-                continue
-            ticker = choice
-            break
-
-        # pick quantity
-        while True:
-            qty = int(input("Enter quantity to sell: "))
-            if qty <= 0:
-                print("Invalid quantity. Please enter a positive integer.")
-                continue
-            break
-
-        # check quantity
-        holding = self.portfolio[ticker]
-        if qty > holding.qty:
-            print(f"You only have {holding.qty} shares of {ticker}.")
-            return
-
-        # get price
-        curr_price = market.stocks[ticker].get_current_price()
-        if curr_price is None:
-            print("Market data not ready. Try again later.")
-            return
-
-        # execute trade
-        proceeds = curr_price * qty
-        self.balance += proceeds
-
-        remaining = holding.qty - qty
-        if remaining > 0:
-            self.portfolio[ticker] = Holding(remaining, holding.avg_price)
-        else:
-            del self.portfolio[ticker]
-
-        # log & save
-        log_transaction(self.username, ticker,
-                        ActionType.SELL, qty, curr_price)
-        save_users()  # optional
-
-        print(f"Sold {qty} {ticker} @ ${proceeds:.2f}")
+        self.execute_trade(ticker, qty, market, ActionType.SELL)
 
     def portfolio_summary(self, market: Market) -> None:
         print(f"\nCash: ${self.balance:.2f}")

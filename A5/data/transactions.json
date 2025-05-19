@@ -34,6 +34,211 @@
       "action": "BUY",
       "qty": 4,
       "price": 694.79
+    },
+    {
+      "time": "2025-05-20 02:36:35",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 4,
+      "price": 699.14
+    },
+    {
+      "time": "2025-05-20 02:38:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 2,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 02:40:54",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 943.37
+    },
+    {
+      "time": "2025-05-20 02:48:41",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 3,
+      "price": 743.62
+    },
+    {
+      "time": "2025-05-20 02:49:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 4,
+      "price": 774.58
+    },
+    {
+      "time": "2025-05-20 02:56:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 02:57:14",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 3,
+      "price": 812.69
+    },
+    {
+      "time": "2025-05-20 02:58:06",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 859.19
+    },
+    {
+      "time": "2025-05-20 02:58:28",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 4,
+      "price": 895.05
+    },
+    {
+      "time": "2025-05-20 03:52:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 567.31
+    },
+    {
+      "time": "2025-05-20 03:52:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 186.9
+    },
+    {
+      "time": "2025-05-20 03:52:19",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 826.84
+    },
+    {
+      "time": "2025-05-20 03:52:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 569.25
+    },
+    {
+      "time": "2025-05-20 03:52:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 186.72
+    },
+    {
+      "time": "2025-05-20 03:52:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 835.94
+    },
+    {
+      "time": "2025-05-20 03:52:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 517.5
+    },
+    {
+      "time": "2025-05-20 03:52:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 155.17
+    },
+    {
+      "time": "2025-05-20 03:52:39",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 859.27
+    },
+    {
+      "time": "2025-05-20 03:52:49",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 546.03
+    },
+    {
+      "time": "2025-05-20 03:52:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 88.96
+    },
+    {
+      "time": "2025-05-20 03:52:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 930.91
+    },
+    {
+      "time": "2025-05-20 03:52:59",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 560.75
+    },
+    {
+      "time": "2025-05-20 03:52:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 173.87
+    }
+  ],
+  "rachel": [
+    {
+      "time": "2025-05-20 03:51:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 5,
+      "price": 257.03
+    },
+    {
+      "time": "2025-05-20 03:51:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 3,
+      "price": 179.62
+    },
+    {
+      "time": "2025-05-20 03:52:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 5,
+      "price": 567.31
+    },
+    {
+      "time": "2025-05-20 03:52:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 4,
+      "price": 186.72
+    },
+    {
+      "time": "2025-05-20 03:52:39",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 4,
+      "price": 517.5
+    },
+    {
+      "time": "2025-05-20 03:52:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 3,
+      "price": 560.75
     }
   ]
 }

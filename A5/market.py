@@ -7,8 +7,6 @@ from datetime import datetime
 from dataclasses import dataclass
 from typing import Dict
 from constants import MARKET_FILE_NAME, DEFAULT_STOCK, MARKET_UPDATE_INTERVAL, MAX_MARKET_HISTORY, MIN_FLUCTUATION, MAX_FLUCTUATION
-
-
 @dataclass
 class Stock:
     ticker: str
@@ -88,6 +86,13 @@ class Market:
             try:
                 with self.lock:
                     self._update_market()
+                    
+                    from users import users
+                    from strategy import STRATEGY_OPTIONS
+                    
+                    for user in users.values():
+                        if user.auto:
+                            STRATEGY_OPTIONS[user.strategy].execute(user, self)
             except Exception as e:
                 print(f"Error updating market: {e}")
             time.sleep(MARKET_UPDATE_INTERVAL)
@@ -107,13 +112,6 @@ class Market:
         self._save_market()
 
     def view(self) -> None:
-        '''
-        Command: view AAPL (or any ticker)
-        • Shows:
-            • Current price
-            • Lastest 5 price
-            • Lastest 5 volumes
-        '''
         print()  # formatting purposes
         for ticker, stock in self.stocks.items():
             print(
