@@ -17,7 +17,7 @@ INITIAL_BALANCE = 10000
 
 MARKET_UPDATE_INTERVAL = 10
 
-MAX_MARKET_HISTORY = 30
+MAX_MARKET_HISTORY = 70
 
 MIN_FLUCTUATION = -100
 
@@ -25,14 +25,17 @@ MAX_FLUCTUATION = 100
 
 DEFAULT_STOCK = ["AAPL", "GOOGL", "TSLA"]
 
+
 class StrategyType(Enum):
     RANDOM = 1
     MOVING_AVERAGE = 2
     MOMENTUM = 3
 
+
 class ActionType(Enum):
-    BUY  = "BUY"
+    BUY = "BUY"
     SELL = "SELL"
+
 
 PROGRAM_PROMPT = '''
 === Stock Trading Simulation ===

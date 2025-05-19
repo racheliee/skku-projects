@@ -20,6 +20,20 @@
       "action": "BUY",
       "qty": 1,
       "price": 280.41
+    },
+    {
+      "time": "2025-05-20 01:33:23",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 2,
+      "price": 269.08
+    },
+    {
+      "time": "2025-05-20 02:03:21",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 4,
+      "price": 694.79
     }
   ]
 }

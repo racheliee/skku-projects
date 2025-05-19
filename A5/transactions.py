@@ -3,7 +3,25 @@ import os
 from datetime import datetime
 from constants import TRANSACTION_FILE_NAME, ActionType
 from dataclasses import dataclass, asdict
-from typing import Dict, List
+from typing import Dict, List, Self
+
+
+@dataclass
+class Holding:
+    qty:       int
+    avg_price: float
+
+    def to_dict(self) -> Dict:
+        return {
+            'qty':       self.qty,
+            'avg_price': self.avg_price
+        }
+
+    def from_dict(d: dict) -> Self:
+        return Holding(
+            qty=d['qty'],
+            avg_price=d['avg_price']
+        )
 
 
 @dataclass
@@ -65,21 +83,21 @@ def save_transactions() -> None:
 
 def log_transaction(username: str, ticker: str, action: str, qty: int, price: float):
     ts = Transaction(
-        time= datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        ticker= ticker,
-        action= action,
+        time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        ticker=ticker,
+        action=action,
         qty=qty,
         price=price,
     )
-    
+
     transactions.setdefault(username, []).append(ts)
-    
+
     save_transactions()  # optional probs; transaction history should be saved at exit
 
 
 def display_history(username: str) -> None:
     history = transactions.get(username, [])
-    
+
     if not history:
         print("\nNo transaction history found.")
         return

@@ -4,7 +4,8 @@ from market import Market
 from users import register, login, save_users, load_users, login_options
 from transactions import load_transactions, save_transactions
 
-global_market = None 
+global_market = None
+
 
 def _setup():
     global global_market

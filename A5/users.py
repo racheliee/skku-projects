@@ -4,8 +4,7 @@ from constants import MIN_PASSWORD_LENGTH, STRATEGY_OPTIONS, INITIAL_BALANCE, US
 from market import Market
 from typing import Dict
 from dataclasses import dataclass, field
-from portfolio import Holding
-from transactions import log_transaction, display_history
+from transactions import log_transaction, display_history, Holding
 
 
 @dataclass
@@ -161,13 +160,15 @@ class User:
             total_eval += pos_val
 
             if h.avg_price > 0:
-                pl_percentage = ((curr_price - h.avg_price) / h.avg_price) * 100
+                pl_percentage = (
+                    (curr_price - h.avg_price) / h.avg_price) * 100
             else:
                 pl_percentage = 0.0
             sign = "+" if pl_percentage >= 0 else "-"
 
-            print(f"{ticker}: {h.qty} @avg${h.avg_price:.2f} -> ${curr_price:.2f}  ({sign}{pl_percentage:.2f}%)")
-            
+            print(
+                f"{ticker}: {h.qty} @avg${h.avg_price:.2f} -> ${curr_price:.2f}  ({sign}{pl_percentage:.2f}%)")
+
         print(f"Total: ${total_eval:.2f}")
         return
 

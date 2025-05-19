@@ -17,15 +17,19 @@
     "password": "Adminadmin!",
     "strategy": "MOVING_AVERAGE",
     "auto": false,
-    "balance": 8397.77,
+    "balance": 6156.77,
     "portfolio": {
       "GOOGL": {
-        "qty": 4,
+        "qty": 2,
         "avg_price": 240.0
       },
       "AAPL": {
         "qty": 1,
         "avg_price": 295.55
+      },
+      "TSLA": {
+        "qty": 4,
+        "avg_price": 694.79
       }
     }
   },
