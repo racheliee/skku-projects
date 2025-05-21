@@ -92,7 +92,9 @@ class Market:
                     
                     for user in users.values():
                         if user.auto:
-                            STRATEGY_OPTIONS[user.strategy].execute(user, self)
+                            strat = STRATEGY_OPTIONS.get(user.strategy)
+                            if strat:
+                                strat.execute(user, self)
             except Exception as e:
                 print(f"Error updating market: {e}")
             time.sleep(MARKET_UPDATE_INTERVAL)

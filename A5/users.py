@@ -37,13 +37,15 @@ class User:
         # check balance
         curr_price = market.stocks[ticker].get_current_price()
         if curr_price is None:
-            print("Market data not yet available. Please try again in 10 seconds.")
+            if not auto:
+                print("Market data not yet available. Please try again in 10 seconds.")
             return
 
         if action == ActionType.BUY:
             cost = curr_price * qty
             if cost > self.balance:
-                print(f"Insufficient funds to buy {qty} shares of {ticker}.")
+                if not auto:
+                    print(f"Insufficient funds to buy {qty} shares of {ticker}.")
                 return
 
             # execute trade
@@ -55,6 +57,12 @@ class User:
             self.portfolio[ticker] = Holding(new_qty, new_avg_price)
 
         elif action == ActionType.SELL:
+            # check if user owns the stock
+            if ticker not in self.portfolio:
+                if not auto:
+                    print(f"You don't own any shares of {ticker}.")
+                return
+            
             # check quantity
             holding = self.portfolio[ticker]
             if qty > holding.qty:
@@ -103,7 +111,8 @@ class User:
 
         # get quantity
         while True:
-            qty = int(input("Enter quantity to buy: "))
+            action_str = "buy" if action == ActionType.BUY else "sell"
+            qty = int(input(f"Enter quantity to {action_str}: "))
             if qty <= 0:
                 print("Invalid quantity. Please enter a positive integer.")
                 continue
@@ -138,7 +147,7 @@ class User:
                     (curr_price - h.avg_price) / h.avg_price) * 100
             else:
                 pl_percentage = 0.0
-            sign = "+" if pl_percentage >= 0 else "-"
+            sign = "+" if pl_percentage >= 0 else ""
 
             print(
                 f"{ticker}: {h.qty} @avg${h.avg_price:.2f} -> ${curr_price:.2f}  ({sign}{pl_percentage:.2f}%)")
