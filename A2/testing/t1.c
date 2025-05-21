@@ -1,4 +1,3 @@
-#include <stdio.h>
 int userDefined1();
 
 int userDefined1() {
