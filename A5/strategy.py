@@ -27,7 +27,7 @@ class MovingAverageStrategy(Strategy):
             stock_prices = [p['price'] for p in stock.history]
 
             if len(stock_prices) < STRATEGY_LONG:
-                print("Auto-trading is on pause until enough market data is available.")
+                # print("Auto-trading is on pause until enough market data is available.")
                 continue
 
             short_avg = mean(stock_prices[-STRATEGY_SHORT:])
@@ -47,7 +47,7 @@ class MomentumStrategy(Strategy):
             stock_prices = [p['price'] for p in stock.history]
 
             if len(stock_prices) < STRATEGY_MOMENTUM + 1:
-                print("Auto-trading is on pause until enough market data is available.")
+                # print("Auto-trading is on pause until enough market data is available.")
                 continue
             
             old_price = stock_prices[-STRATEGY_MOMENTUM - 1]

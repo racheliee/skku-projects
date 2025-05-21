@@ -99,9 +99,10 @@ class User:
                     f"    {stock}: {h.qty} shares @ avg {h.avg_price:.2f}")
 
         # get ticker
+        ticker_prompt = DEFAULT_STOCK if action == ActionType.BUY else self.portfolio.keys()
         while True:
             ticker = input(
-                f"Enter ticker ({DEFAULT_STOCK}) or 'back' to return: ").upper()
+                f"Enter ticker ({ticker_prompt}) or 'back' to return: ").upper()
             if ticker == 'BACK':
                 return None
             if ticker not in DEFAULT_STOCK:
@@ -112,24 +113,29 @@ class User:
         # get quantity
         while True:
             action_str = "buy" if action == ActionType.BUY else "sell"
-            qty = int(input(f"Enter quantity to {action_str}: "))
-            if qty <= 0:
+            qty_input = input(f"Enter quantity to {action_str}: ")
+            try:
+                qty = int(qty_input)
+                if qty <= 0:
+                    raise ValueError
+                break
+            except ValueError:
                 print("Invalid quantity. Please enter a positive integer.")
-                continue
-            break
 
-        return ticker, qty
+        return ticker, int(qty)
 
     def buy_stock(self, market: Market) -> None:
-        [ticker, qty] = self.get_trade_options(ActionType.BUY)
-        if ticker is None or qty is None:
+        result = self.get_trade_options(ActionType.BUY)
+        if result is None:
             return
+        ticker, qty = result
         self.execute_trade(ticker, qty, market, ActionType.BUY)
 
     def sell_stock(self, market: Market) -> None:
-        [ticker, qty] = self.get_trade_options(ActionType.SELL)
-        if ticker is None or qty is None:
+        result = self.get_trade_options(ActionType.SELL)
+        if result is None:
             return
+        ticker, qty = result
         self.execute_trade(ticker, qty, market, ActionType.SELL)
 
     def portfolio_summary(self, market: Market) -> None:

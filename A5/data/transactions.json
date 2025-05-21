@@ -1,244 +1,8949 @@
 {
+  "gayeon": [
+    {
+      "time": "2025-05-20 03:57:21",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 278.19
+    },
+    {
+      "time": "2025-05-20 03:57:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 385.45
+    },
+    {
+      "time": "2025-05-20 03:57:21",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 443.26
+    },
+    {
+      "time": "2025-05-20 03:57:31",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 331.52
+    },
+    {
+      "time": "2025-05-20 03:57:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 446.23
+    },
+    {
+      "time": "2025-05-20 03:57:31",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 379.04
+    },
+    {
+      "time": "2025-05-20 03:57:34",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 2,
+      "price": 331.52
+    },
+    {
+      "time": "2025-05-20 03:57:41",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 366.96
+    },
+    {
+      "time": "2025-05-20 03:57:41",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 534.11
+    },
+    {
+      "time": "2025-05-20 03:57:41",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 463.24
+    },
+    {
+      "time": "2025-05-20 04:07:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 290.84
+    },
+    {
+      "time": "2025-05-20 04:07:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 571.98
+    },
+    {
+      "time": "2025-05-20 04:07:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 453.6
+    },
+    {
+      "time": "2025-05-20 04:07:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 366.4
+    },
+    {
+      "time": "2025-05-20 04:07:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 518.68
+    },
+    {
+      "time": "2025-05-20 04:07:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 458.77
+    },
+    {
+      "time": "2025-05-20 04:08:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 321.54
+    },
+    {
+      "time": "2025-05-20 04:08:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 574.03
+    },
+    {
+      "time": "2025-05-20 04:08:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 405.22
+    },
+    {
+      "time": "2025-05-20 04:08:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 387.82
+    },
+    {
+      "time": "2025-05-20 04:08:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 623.43
+    },
+    {
+      "time": "2025-05-20 04:08:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 370.73
+    },
+    {
+      "time": "2025-05-20 04:30:44",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 715.7
+    },
+    {
+      "time": "2025-05-20 04:30:44",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 86.4
+    },
+    {
+      "time": "2025-05-20 04:30:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 10,
+      "price": 715.7
+    },
+    {
+      "time": "2025-05-20 04:30:54",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 656.32
+    },
+    {
+      "time": "2025-05-20 04:30:54",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 167.84
+    },
+    {
+      "time": "2025-05-20 04:30:54",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 783.24
+    },
+    {
+      "time": "2025-05-20 04:31:04",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 752.47
+    },
+    {
+      "time": "2025-05-20 04:31:04",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 76.14
+    },
+    {
+      "time": "2025-05-20 04:31:04",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 879.22
+    },
+    {
+      "time": "2025-05-20 04:31:14",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 695.65
+    },
+    {
+      "time": "2025-05-20 04:31:14",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 7.75
+    },
+    {
+      "time": "2025-05-20 04:31:14",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 864.23
+    },
+    {
+      "time": "2025-05-20 04:31:24",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 678.38
+    },
+    {
+      "time": "2025-05-20 04:31:24",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 04:31:24",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 843.97
+    },
+    {
+      "time": "2025-05-20 04:31:34",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 613.02
+    },
+    {
+      "time": "2025-05-20 04:31:34",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 92.35
+    },
+    {
+      "time": "2025-05-20 04:31:34",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 744.69
+    },
+    {
+      "time": "2025-05-20 20:53:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 556.67
+    },
+    {
+      "time": "2025-05-20 20:53:40",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 161.09
+    },
+    {
+      "time": "2025-05-20 20:53:40",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 708.06
+    },
+    {
+      "time": "2025-05-20 20:53:50",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 507.63
+    },
+    {
+      "time": "2025-05-20 20:53:50",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 214.78
+    },
+    {
+      "time": "2025-05-20 20:53:50",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 636.48
+    },
+    {
+      "time": "2025-05-20 20:54:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 475.88
+    },
+    {
+      "time": "2025-05-20 20:54:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 304.46
+    },
+    {
+      "time": "2025-05-20 20:54:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 651.8
+    },
+    {
+      "time": "2025-05-20 20:54:50",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 574.24
+    },
+    {
+      "time": "2025-05-20 20:54:50",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 297.45
+    },
+    {
+      "time": "2025-05-20 20:54:50",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 933.04
+    },
+    {
+      "time": "2025-05-20 20:55:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 590.17
+    },
+    {
+      "time": "2025-05-20 20:55:00",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 284.46
+    },
+    {
+      "time": "2025-05-20 20:55:00",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 868.25
+    },
+    {
+      "time": "2025-05-20 20:55:10",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 531.71
+    },
+    {
+      "time": "2025-05-20 20:55:10",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 208.64
+    },
+    {
+      "time": "2025-05-20 20:55:20",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 589.78
+    },
+    {
+      "time": "2025-05-20 20:55:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 180.41
+    },
+    {
+      "time": "2025-05-20 20:55:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 147.81
+    },
+    {
+      "time": "2025-05-20 20:55:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 99.93
+    },
+    {
+      "time": "2025-05-20 20:55:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 55.47
+    },
+    {
+      "time": "2025-05-20 20:56:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 591.2
+    },
+    {
+      "time": "2025-05-20 20:56:00",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 20:56:10",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 100.87
+    },
+    {
+      "time": "2025-05-20 20:56:20",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 505.59
+    },
+    {
+      "time": "2025-05-20 20:56:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 109.36
+    },
+    {
+      "time": "2025-05-20 20:56:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 503.43
+    },
+    {
+      "time": "2025-05-20 20:56:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 539.59
+    },
+    {
+      "time": "2025-05-20 20:56:50",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 444.82
+    },
+    {
+      "time": "2025-05-20 20:57:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 345.26
+    },
+    {
+      "time": "2025-05-20 20:57:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 20:57:00",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1181.18
+    },
+    {
+      "time": "2025-05-20 20:59:03",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 500.23
+    },
+    {
+      "time": "2025-05-20 20:59:03",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 127.63
+    },
+    {
+      "time": "2025-05-20 20:59:03",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1136.37
+    },
+    {
+      "time": "2025-05-20 20:59:13",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 473.06
+    },
+    {
+      "time": "2025-05-20 20:59:13",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 48.74
+    },
+    {
+      "time": "2025-05-20 20:59:13",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1169.31
+    },
+    {
+      "time": "2025-05-20 20:59:23",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 20:59:23",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1182.46
+    },
+    {
+      "time": "2025-05-20 20:59:33",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 668.55
+    },
+    {
+      "time": "2025-05-20 20:59:33",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 30.82
+    },
+    {
+      "time": "2025-05-20 20:59:33",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1146.47
+    },
+    {
+      "time": "2025-05-20 20:59:43",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 590.62
+    },
+    {
+      "time": "2025-05-20 20:59:43",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 37.51
+    },
+    {
+      "time": "2025-05-20 20:59:43",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1172.65
+    },
+    {
+      "time": "2025-05-20 20:59:53",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 684.88
+    },
+    {
+      "time": "2025-05-20 20:59:53",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1119.54
+    },
+    {
+      "time": "2025-05-20 21:00:03",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 632.29
+    },
+    {
+      "time": "2025-05-20 21:00:13",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 547.96
+    },
+    {
+      "time": "2025-05-20 21:00:23",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 567.2
+    },
+    {
+      "time": "2025-05-20 21:00:33",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 485.22
+    },
+    {
+      "time": "2025-05-20 21:00:33",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 50.59
+    },
+    {
+      "time": "2025-05-20 21:00:33",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1320.49
+    },
+    {
+      "time": "2025-05-20 21:00:43",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 413.93
+    },
+    {
+      "time": "2025-05-20 21:00:43",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 73.12
+    },
+    {
+      "time": "2025-05-20 21:00:53",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 409.78
+    },
+    {
+      "time": "2025-05-20 21:00:53",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 70.07
+    },
+    {
+      "time": "2025-05-20 21:00:59",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 471.13
+    },
+    {
+      "time": "2025-05-20 21:00:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 97.57
+    },
+    {
+      "time": "2025-05-20 21:01:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 175.19
+    },
+    {
+      "time": "2025-05-20 21:01:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 197.49
+    },
+    {
+      "time": "2025-05-20 21:01:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 549.43
+    },
+    {
+      "time": "2025-05-20 21:01:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 193.13
+    },
+    {
+      "time": "2025-05-20 21:01:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 120.49
+    },
+    {
+      "time": "2025-05-21 14:36:47",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 112.43
+    },
+    {
+      "time": "2025-05-21 14:36:47",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1351.94
+    },
+    {
+      "time": "2025-05-21 14:36:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 609.45
+    },
+    {
+      "time": "2025-05-21 14:36:57",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 40.78
+    },
+    {
+      "time": "2025-05-21 14:37:07",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 591.25
+    },
+    {
+      "time": "2025-05-21 14:37:07",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 23.39
+    },
+    {
+      "time": "2025-05-21 14:37:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1367.09
+    },
+    {
+      "time": "2025-05-21 14:37:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 561.79
+    },
+    {
+      "time": "2025-05-21 14:37:17",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 23.72
+    },
+    {
+      "time": "2025-05-21 14:37:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1461.3
+    },
+    {
+      "time": "2025-05-21 14:37:27",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 566.43
+    },
+    {
+      "time": "2025-05-21 14:37:27",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 25.07
+    },
+    {
+      "time": "2025-05-21 14:37:27",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1439.49
+    },
+    {
+      "time": "2025-05-21 14:37:37",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 618.69
+    },
+    {
+      "time": "2025-05-21 14:37:37",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 14:37:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 590.06
+    },
+    {
+      "time": "2025-05-21 14:37:57",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 515.65
+    },
+    {
+      "time": "2025-05-21 14:38:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 538.45
+    },
+    {
+      "time": "2025-05-21 14:38:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 32.21
+    },
+    {
+      "time": "2025-05-21 14:38:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1323.29
+    },
+    {
+      "time": "2025-05-21 14:38:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 497.85
+    },
+    {
+      "time": "2025-05-21 14:38:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 132.21
+    },
+    {
+      "time": "2025-05-21 14:38:17",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1360.58
+    },
+    {
+      "time": "2025-05-21 14:38:27",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 580.17
+    },
+    {
+      "time": "2025-05-21 14:38:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 102.24
+    },
+    {
+      "time": "2025-05-21 14:38:27",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1290.7
+    },
+    {
+      "time": "2025-05-21 14:38:37",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 623.18
+    },
+    {
+      "time": "2025-05-21 14:38:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 161.77
+    },
+    {
+      "time": "2025-05-21 14:38:37",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1216.38
+    },
+    {
+      "time": "2025-05-21 14:38:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 592.26
+    },
+    {
+      "time": "2025-05-21 14:38:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 181.05
+    },
+    {
+      "time": "2025-05-21 14:38:47",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1151.12
+    },
+    {
+      "time": "2025-05-21 14:38:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 563.38
+    },
+    {
+      "time": "2025-05-21 14:38:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 250.57
+    },
+    {
+      "time": "2025-05-21 14:38:57",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1177.01
+    },
+    {
+      "time": "2025-05-21 14:39:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 489.16
+    },
+    {
+      "time": "2025-05-21 14:39:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 219.6
+    },
+    {
+      "time": "2025-05-21 14:39:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1178.18
+    },
+    {
+      "time": "2025-05-21 14:39:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 444.73
+    },
+    {
+      "time": "2025-05-21 14:39:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 197.54
+    },
+    {
+      "time": "2025-05-21 14:39:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.08
+    },
+    {
+      "time": "2025-05-21 14:39:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 192.94
+    },
+    {
+      "time": "2025-05-21 14:39:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1314.76
+    },
+    {
+      "time": "2025-05-21 14:39:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 503.11
+    },
+    {
+      "time": "2025-05-21 14:39:37",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 111.64
+    },
+    {
+      "time": "2025-05-21 14:39:37",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1302.22
+    },
+    {
+      "time": "2025-05-21 14:39:47",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 415.16
+    },
+    {
+      "time": "2025-05-21 14:39:47",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 134.86
+    },
+    {
+      "time": "2025-05-21 14:39:47",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1309.36
+    },
+    {
+      "time": "2025-05-21 14:39:57",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 352.12
+    },
+    {
+      "time": "2025-05-21 14:39:57",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 163.06
+    },
+    {
+      "time": "2025-05-21 14:39:57",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1383.49
+    },
+    {
+      "time": "2025-05-21 14:40:07",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 190.37
+    },
+    {
+      "time": "2025-05-21 14:40:07",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1441.39
+    },
+    {
+      "time": "2025-05-21 14:40:17",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 447.06
+    },
+    {
+      "time": "2025-05-21 14:40:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 223.26
+    },
+    {
+      "time": "2025-05-21 14:40:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1377.15
+    },
+    {
+      "time": "2025-05-21 14:40:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 454.63
+    },
+    {
+      "time": "2025-05-21 14:40:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 286.53
+    },
+    {
+      "time": "2025-05-21 14:40:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1325.98
+    },
+    {
+      "time": "2025-05-21 14:40:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 194.34
+    },
+    {
+      "time": "2025-05-21 14:41:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 200.25
+    },
+    {
+      "time": "2025-05-21 14:41:38",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 294.45
+    },
+    {
+      "time": "2025-05-21 14:42:48",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1582.44
+    },
+    {
+      "time": "2025-05-21 14:42:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 641.52
+    },
+    {
+      "time": "2025-05-21 14:42:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 621.48
+    },
+    {
+      "time": "2025-05-21 14:42:58",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1535.35
+    },
+    {
+      "time": "2025-05-21 14:43:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 703.48
+    },
+    {
+      "time": "2025-05-21 14:43:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 661.19
+    },
+    {
+      "time": "2025-05-21 14:43:08",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1591.77
+    },
+    {
+      "time": "2025-05-21 14:43:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 659.89
+    },
+    {
+      "time": "2025-05-21 14:43:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 688.26
+    },
+    {
+      "time": "2025-05-21 14:43:18",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1625.25
+    },
+    {
+      "time": "2025-05-21 14:43:28",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 732.71
+    },
+    {
+      "time": "2025-05-21 14:43:28",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 728.87
+    },
+    {
+      "time": "2025-05-21 14:43:38",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 655.74
+    },
+    {
+      "time": "2025-05-21 14:43:38",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1637.35
+    },
+    {
+      "time": "2025-05-21 14:43:48",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 698.6
+    },
+    {
+      "time": "2025-05-21 14:43:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 603.44
+    },
+    {
+      "time": "2025-05-21 14:43:48",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1704.28
+    },
+    {
+      "time": "2025-05-21 14:44:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 654.57
+    },
+    {
+      "time": "2025-05-21 14:44:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 699.25
+    },
+    {
+      "time": "2025-05-21 14:44:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 668.04
+    },
+    {
+      "time": "2025-05-21 14:44:38",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 695.05
+    },
+    {
+      "time": "2025-05-21 14:44:58",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 632.9
+    },
+    {
+      "time": "2025-05-21 14:45:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 658.9
+    },
+    {
+      "time": "2025-05-21 14:45:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 656.53
+    },
+    {
+      "time": "2025-05-21 14:45:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 725.19
+    },
+    {
+      "time": "2025-05-21 14:45:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 609.04
+    },
+    {
+      "time": "2025-05-21 14:45:28",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1882.18
+    },
+    {
+      "time": "2025-05-21 14:45:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 688.53
+    },
+    {
+      "time": "2025-05-21 14:45:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 633.67
+    },
+    {
+      "time": "2025-05-21 14:45:38",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1829.96
+    },
+    {
+      "time": "2025-05-21 14:45:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 743.74
+    },
+    {
+      "time": "2025-05-21 14:45:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 611.29
+    },
+    {
+      "time": "2025-05-21 14:45:48",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1818.33
+    },
+    {
+      "time": "2025-05-21 14:45:58",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 751.16
+    },
+    {
+      "time": "2025-05-21 14:45:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 698.25
+    },
+    {
+      "time": "2025-05-21 14:45:58",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1868.15
+    },
+    {
+      "time": "2025-05-21 14:46:08",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 737.86
+    },
+    {
+      "time": "2025-05-21 14:46:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 621.05
+    },
+    {
+      "time": "2025-05-21 14:46:08",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1830.03
+    },
+    {
+      "time": "2025-05-21 14:46:28",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1783.93
+    },
+    {
+      "time": "2025-05-21 14:46:39",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 968.39
+    },
+    {
+      "time": "2025-05-21 14:46:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 742.91
+    },
+    {
+      "time": "2025-05-21 14:46:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 570.11
+    },
+    {
+      "time": "2025-05-21 14:46:59",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1850.75
+    },
+    {
+      "time": "2025-05-21 14:47:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 929.67
+    },
+    {
+      "time": "2025-05-21 14:47:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 559.32
+    },
+    {
+      "time": "2025-05-21 14:47:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1874.74
+    },
+    {
+      "time": "2025-05-21 14:47:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 642.88
+    },
+    {
+      "time": "2025-05-21 14:47:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1052.48
+    },
+    {
+      "time": "2025-05-21 14:47:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 690.54
+    },
+    {
+      "time": "2025-05-21 14:47:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 953.69
+    },
+    {
+      "time": "2025-05-21 14:47:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 666.13
+    },
+    {
+      "time": "2025-05-21 14:47:39",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1915.57
+    },
+    {
+      "time": "2025-05-21 14:47:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 645.94
+    },
+    {
+      "time": "2025-05-21 14:47:49",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1817.97
+    },
+    {
+      "time": "2025-05-21 14:47:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1051.41
+    },
+    {
+      "time": "2025-05-21 14:47:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 649.2
+    },
+    {
+      "time": "2025-05-21 14:47:59",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1787.26
+    },
+    {
+      "time": "2025-05-21 14:48:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1086.84
+    },
+    {
+      "time": "2025-05-21 14:48:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 594.63
+    },
+    {
+      "time": "2025-05-21 14:48:09",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1832.71
+    },
+    {
+      "time": "2025-05-21 14:48:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1076.36
+    },
+    {
+      "time": "2025-05-21 14:48:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 614.11
+    },
+    {
+      "time": "2025-05-21 14:48:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1791.43
+    },
+    {
+      "time": "2025-05-21 14:48:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1171.36
+    },
+    {
+      "time": "2025-05-21 14:48:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 516.55
+    },
+    {
+      "time": "2025-05-21 14:48:29",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1837.17
+    },
+    {
+      "time": "2025-05-21 14:48:39",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1203.06
+    },
+    {
+      "time": "2025-05-21 14:48:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 468.09
+    },
+    {
+      "time": "2025-05-21 14:48:39",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1798.88
+    },
+    {
+      "time": "2025-05-21 14:48:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1131.45
+    },
+    {
+      "time": "2025-05-21 14:48:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 477.52
+    },
+    {
+      "time": "2025-05-21 14:48:59",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1046.81
+    },
+    {
+      "time": "2025-05-21 14:48:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 572.33
+    },
+    {
+      "time": "2025-05-21 14:49:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1046.07
+    },
+    {
+      "time": "2025-05-21 14:49:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 635.84
+    },
+    {
+      "time": "2025-05-21 14:49:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 946.72
+    },
+    {
+      "time": "2025-05-21 14:49:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 689.86
+    },
+    {
+      "time": "2025-05-21 14:49:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 942.06
+    },
+    {
+      "time": "2025-05-21 14:49:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 622.07
+    },
+    {
+      "time": "2025-05-21 14:49:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 961.7
+    },
+    {
+      "time": "2025-05-21 14:49:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 550.38
+    },
+    {
+      "time": "2025-05-21 14:49:49",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1037.46
+    },
+    {
+      "time": "2025-05-21 14:49:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 649.93
+    },
+    {
+      "time": "2025-05-21 14:49:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1127.04
+    },
+    {
+      "time": "2025-05-21 14:49:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 601.11
+    },
+    {
+      "time": "2025-05-21 14:49:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1769.6
+    },
+    {
+      "time": "2025-05-21 14:50:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1056.38
+    },
+    {
+      "time": "2025-05-21 14:50:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 539.37
+    },
+    {
+      "time": "2025-05-21 14:50:10",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1702.19
+    },
+    {
+      "time": "2025-05-21 14:50:20",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 957.16
+    },
+    {
+      "time": "2025-05-21 14:50:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 508.99
+    },
+    {
+      "time": "2025-05-21 14:50:20",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1733.12
+    },
+    {
+      "time": "2025-05-21 14:50:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 861.87
+    },
+    {
+      "time": "2025-05-21 14:50:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 558.28
+    },
+    {
+      "time": "2025-05-21 14:50:30",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1801.97
+    },
+    {
+      "time": "2025-05-21 14:50:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 894.52
+    },
+    {
+      "time": "2025-05-21 14:50:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 478.7
+    },
+    {
+      "time": "2025-05-21 14:50:50",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 822.87
+    },
+    {
+      "time": "2025-05-21 14:50:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 522.38
+    },
+    {
+      "time": "2025-05-21 14:50:50",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1977.21
+    },
+    {
+      "time": "2025-05-21 14:51:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 819.74
+    },
+    {
+      "time": "2025-05-21 14:51:00",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 446.49
+    },
+    {
+      "time": "2025-05-21 14:51:00",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2065.46
+    },
+    {
+      "time": "2025-05-21 14:51:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 883.26
+    },
+    {
+      "time": "2025-05-21 14:51:20",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 785.32
+    },
+    {
+      "time": "2025-05-21 14:51:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 819.21
+    },
+    {
+      "time": "2025-05-21 14:51:30",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 571.8
+    },
+    {
+      "time": "2025-05-21 14:51:30",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1947.87
+    },
+    {
+      "time": "2025-05-21 14:51:50",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1952.99
+    },
+    {
+      "time": "2025-05-21 14:52:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 831.44
+    },
+    {
+      "time": "2025-05-21 14:52:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 592.1
+    },
+    {
+      "time": "2025-05-21 14:52:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1917.93
+    },
+    {
+      "time": "2025-05-21 14:52:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 792.46
+    },
+    {
+      "time": "2025-05-21 14:52:10",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 509.37
+    },
+    {
+      "time": "2025-05-21 14:52:10",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2002.02
+    },
+    {
+      "time": "2025-05-21 14:52:20",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 854.0
+    },
+    {
+      "time": "2025-05-21 14:52:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 480.08
+    },
+    {
+      "time": "2025-05-21 14:52:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 489.14
+    },
+    {
+      "time": "2025-05-21 14:52:40",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 854.48
+    },
+    {
+      "time": "2025-05-21 14:52:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 390.43
+    },
+    {
+      "time": "2025-05-21 14:53:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 742.01
+    },
+    {
+      "time": "2025-05-21 14:53:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 643.46
+    },
+    {
+      "time": "2025-05-21 14:53:40",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2137.85
+    },
+    {
+      "time": "2025-05-21 14:53:50",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2063.37
+    },
+    {
+      "time": "2025-05-21 14:54:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 494.1
+    },
+    {
+      "time": "2025-05-21 14:54:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2083.45
+    },
+    {
+      "time": "2025-05-21 14:54:11",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 738.93
+    },
+    {
+      "time": "2025-05-21 14:54:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 516.04
+    },
+    {
+      "time": "2025-05-21 14:54:11",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2169.52
+    },
+    {
+      "time": "2025-05-21 14:54:21",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 685.85
+    },
+    {
+      "time": "2025-05-21 14:54:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 610.72
+    },
+    {
+      "time": "2025-05-21 14:54:21",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2221.09
+    },
+    {
+      "time": "2025-05-21 14:54:31",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 621.64
+    },
+    {
+      "time": "2025-05-21 14:54:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 702.25
+    },
+    {
+      "time": "2025-05-21 14:54:31",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2233.31
+    },
+    {
+      "time": "2025-05-21 14:54:41",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 522.77
+    },
+    {
+      "time": "2025-05-21 14:54:41",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 680.87
+    },
+    {
+      "time": "2025-05-21 14:54:51",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 464.0
+    },
+    {
+      "time": "2025-05-21 14:54:51",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 638.57
+    },
+    {
+      "time": "2025-05-21 14:55:01",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 547.96
+    },
+    {
+      "time": "2025-05-21 14:55:01",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 731.69
+    },
+    {
+      "time": "2025-05-21 14:55:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 642.89
+    },
+    {
+      "time": "2025-05-21 14:55:51",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2173.1
+    },
+    {
+      "time": "2025-05-21 14:56:01",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 784.26
+    },
+    {
+      "time": "2025-05-21 14:56:01",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2106.79
+    },
+    {
+      "time": "2025-05-21 14:56:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 738.05
+    },
+    {
+      "time": "2025-05-21 14:56:11",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2178.26
+    },
+    {
+      "time": "2025-05-21 14:56:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 788.26
+    },
+    {
+      "time": "2025-05-21 14:56:21",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2226.52
+    },
+    {
+      "time": "2025-05-21 14:56:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 747.46
+    },
+    {
+      "time": "2025-05-21 14:56:31",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2284.66
+    },
+    {
+      "time": "2025-05-21 14:56:41",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 698.27
+    },
+    {
+      "time": "2025-05-21 14:56:41",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2355.51
+    },
+    {
+      "time": "2025-05-21 14:56:51",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 430.77
+    },
+    {
+      "time": "2025-05-21 14:56:51",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 692.7
+    },
+    {
+      "time": "2025-05-21 14:56:51",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2298.01
+    },
+    {
+      "time": "2025-05-21 14:57:01",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 705.66
+    },
+    {
+      "time": "2025-05-21 14:57:11",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 326.63
+    },
+    {
+      "time": "2025-05-21 14:57:11",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 693.95
+    },
+    {
+      "time": "2025-05-21 14:57:11",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2162.53
+    },
+    {
+      "time": "2025-05-21 14:57:21",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 741.13
+    },
+    {
+      "time": "2025-05-21 14:57:21",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2253.92
+    },
+    {
+      "time": "2025-05-21 14:57:32",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 326.56
+    },
+    {
+      "time": "2025-05-21 14:57:32",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 647.28
+    },
+    {
+      "time": "2025-05-21 14:57:32",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2188.37
+    },
+    {
+      "time": "2025-05-21 14:57:42",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 328.23
+    },
+    {
+      "time": "2025-05-21 14:57:42",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 585.49
+    },
+    {
+      "time": "2025-05-21 14:57:42",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2135.35
+    },
+    {
+      "time": "2025-05-21 14:57:52",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 577.32
+    },
+    {
+      "time": "2025-05-21 14:57:52",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2178.79
+    },
+    {
+      "time": "2025-05-21 14:58:02",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 497.2
+    },
+    {
+      "time": "2025-05-21 14:58:12",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 540.75
+    },
+    {
+      "time": "2025-05-21 14:58:22",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 340.62
+    },
+    {
+      "time": "2025-05-21 14:58:22",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 587.73
+    },
+    {
+      "time": "2025-05-21 14:58:32",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 419.34
+    },
+    {
+      "time": "2025-05-21 14:58:32",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 667.61
+    },
+    {
+      "time": "2025-05-21 14:58:42",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 515.38
+    },
+    {
+      "time": "2025-05-21 14:58:42",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 742.92
+    },
+    {
+      "time": "2025-05-21 14:58:52",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 537.46
+    },
+    {
+      "time": "2025-05-21 14:58:52",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 652.42
+    },
+    {
+      "time": "2025-05-21 14:59:02",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 635.94
+    },
+    {
+      "time": "2025-05-21 14:59:02",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 642.64
+    },
+    {
+      "time": "2025-05-21 14:59:12",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 608.82
+    },
+    {
+      "time": "2025-05-21 14:59:12",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 586.57
+    },
+    {
+      "time": "2025-05-21 14:59:22",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 610.06
+    },
+    {
+      "time": "2025-05-21 14:59:22",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 556.29
+    },
+    {
+      "time": "2025-05-21 14:59:22",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2038.87
+    },
+    {
+      "time": "2025-05-21 15:16:51",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 615.21
+    },
+    {
+      "time": "2025-05-21 15:16:51",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.87
+    },
+    {
+      "time": "2025-05-21 15:16:51",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2011.63
+    },
+    {
+      "time": "2025-05-21 15:17:01",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 528.82
+    },
+    {
+      "time": "2025-05-21 15:17:01",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 590.32
+    },
+    {
+      "time": "2025-05-21 15:17:11",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 583.46
+    },
+    {
+      "time": "2025-05-21 15:17:11",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 609.57
+    },
+    {
+      "time": "2025-05-21 15:17:21",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 554.03
+    },
+    {
+      "time": "2025-05-21 15:17:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 650.68
+    },
+    {
+      "time": "2025-05-21 15:17:31",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 495.71
+    },
+    {
+      "time": "2025-05-21 15:17:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 697.24
+    },
+    {
+      "time": "2025-05-21 15:17:41",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 486.61
+    },
+    {
+      "time": "2025-05-21 15:17:41",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 691.59
+    },
+    {
+      "time": "2025-05-21 15:17:51",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 426.01
+    },
+    {
+      "time": "2025-05-21 15:17:51",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 619.83
+    },
+    {
+      "time": "2025-05-21 15:18:01",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 371.82
+    },
+    {
+      "time": "2025-05-21 15:18:01",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 663.93
+    },
+    {
+      "time": "2025-05-21 15:18:11",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 339.68
+    },
+    {
+      "time": "2025-05-21 15:18:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 643.83
+    },
+    {
+      "time": "2025-05-21 15:18:22",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 249.38
+    },
+    {
+      "time": "2025-05-21 15:18:22",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 723.43
+    },
+    {
+      "time": "2025-05-21 15:18:32",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 302.04
+    },
+    {
+      "time": "2025-05-21 15:18:32",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 703.91
+    },
+    {
+      "time": "2025-05-21 15:18:42",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 282.63
+    },
+    {
+      "time": "2025-05-21 15:18:42",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 726.79
+    },
+    {
+      "time": "2025-05-21 15:18:52",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 340.33
+    },
+    {
+      "time": "2025-05-21 15:18:52",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 673.87
+    },
+    {
+      "time": "2025-05-21 15:18:52",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1948.93
+    },
+    {
+      "time": "2025-05-21 15:19:02",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 578.94
+    },
+    {
+      "time": "2025-05-21 15:19:12",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 567.97
+    },
+    {
+      "time": "2025-05-21 15:19:12",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1976.38
+    },
+    {
+      "time": "2025-05-21 15:19:22",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 540.42
+    },
+    {
+      "time": "2025-05-21 15:19:32",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.17
+    },
+    {
+      "time": "2025-05-21 15:19:42",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 543.74
+    },
+    {
+      "time": "2025-05-21 15:19:52",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 590.36
+    },
+    {
+      "time": "2025-05-21 15:19:52",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2038.12
+    },
+    {
+      "time": "2025-05-21 15:20:53",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 511.74
+    },
+    {
+      "time": "2025-05-21 15:21:03",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 119.26
+    },
+    {
+      "time": "2025-05-21 15:21:03",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 472.8
+    },
+    {
+      "time": "2025-05-21 15:21:03",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2125.57
+    },
+    {
+      "time": "2025-05-21 15:21:13",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 22.58
+    },
+    {
+      "time": "2025-05-21 15:21:13",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 503.78
+    },
+    {
+      "time": "2025-05-21 15:21:13",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2218.49
+    },
+    {
+      "time": "2025-05-21 15:21:23",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:21:23",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 411.21
+    },
+    {
+      "time": "2025-05-21 15:21:23",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2169.43
+    },
+    {
+      "time": "2025-05-21 15:21:33",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:21:33",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 425.53
+    },
+    {
+      "time": "2025-05-21 15:21:33",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2126.43
+    },
+    {
+      "time": "2025-05-21 15:21:43",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 28.34
+    },
+    {
+      "time": "2025-05-21 15:21:43",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 407.89
+    },
+    {
+      "time": "2025-05-21 15:21:43",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2157.23
+    },
+    {
+      "time": "2025-05-21 15:21:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 79.46
+    },
+    {
+      "time": "2025-05-21 15:21:47",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2172.42
+    },
+    {
+      "time": "2025-05-21 15:21:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 119.37
+    },
+    {
+      "time": "2025-05-21 15:21:57",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2183.62
+    },
+    {
+      "time": "2025-05-21 15:22:07",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 69.93
+    },
+    {
+      "time": "2025-05-21 15:22:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2132.8
+    },
+    {
+      "time": "2025-05-21 15:22:17",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 140.24
+    },
+    {
+      "time": "2025-05-21 15:22:17",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2062.9
+    },
+    {
+      "time": "2025-05-21 15:22:25",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 56.13
+    },
+    {
+      "time": "2025-05-21 15:22:35",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:22:45",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:22:56",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 99.06
+    },
+    {
+      "time": "2025-05-21 15:22:56",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 337.39
+    },
+    {
+      "time": "2025-05-21 15:22:56",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2225.25
+    },
+    {
+      "time": "2025-05-21 15:23:06",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 86.32
+    },
+    {
+      "time": "2025-05-21 15:23:06",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 330.59
+    },
+    {
+      "time": "2025-05-21 15:23:06",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2199.61
+    },
+    {
+      "time": "2025-05-21 15:23:16",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 182.48
+    },
+    {
+      "time": "2025-05-21 15:23:16",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 297.36
+    },
+    {
+      "time": "2025-05-21 15:23:16",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2107.65
+    },
+    {
+      "time": "2025-05-21 15:23:26",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 247.32
+    },
+    {
+      "time": "2025-05-21 15:23:26",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 356.06
+    },
+    {
+      "time": "2025-05-21 15:23:36",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 211.0
+    },
+    {
+      "time": "2025-05-21 15:23:36",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 431.86
+    },
+    {
+      "time": "2025-05-21 15:23:36",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2094.03
+    },
+    {
+      "time": "2025-05-21 15:23:46",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 259.31
+    },
+    {
+      "time": "2025-05-21 15:23:46",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 408.3
+    },
+    {
+      "time": "2025-05-21 15:23:46",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2080.06
+    },
+    {
+      "time": "2025-05-21 15:23:56",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 343.97
+    },
+    {
+      "time": "2025-05-21 15:23:56",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 478.78
+    },
+    {
+      "time": "2025-05-21 15:23:56",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2017.41
+    },
+    {
+      "time": "2025-05-21 15:24:06",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 355.45
+    },
+    {
+      "time": "2025-05-21 15:24:06",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 477.1
+    },
+    {
+      "time": "2025-05-21 15:24:16",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 361.17
+    },
+    {
+      "time": "2025-05-21 15:24:16",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 555.92
+    },
+    {
+      "time": "2025-05-21 15:24:26",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 401.91
+    },
+    {
+      "time": "2025-05-21 15:24:26",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 487.67
+    },
+    {
+      "time": "2025-05-21 15:24:36",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 484.6
+    },
+    {
+      "time": "2025-05-21 15:24:36",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 475.28
+    },
+    {
+      "time": "2025-05-21 15:24:46",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 504.04
+    },
+    {
+      "time": "2025-05-21 15:24:46",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 487.58
+    },
+    {
+      "time": "2025-05-21 15:24:56",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 544.41
+    },
+    {
+      "time": "2025-05-21 15:24:56",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 454.08
+    },
+    {
+      "time": "2025-05-21 15:25:06",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 476.02
+    },
+    {
+      "time": "2025-05-21 15:25:06",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 402.58
+    },
+    {
+      "time": "2025-05-21 15:25:16",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 472.27
+    },
+    {
+      "time": "2025-05-21 15:25:26",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 496.78
+    },
+    {
+      "time": "2025-05-21 15:25:26",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 433.5
+    },
+    {
+      "time": "2025-05-21 15:25:37",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 591.42
+    },
+    {
+      "time": "2025-05-21 15:25:37",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 415.25
+    },
+    {
+      "time": "2025-05-21 15:25:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 659.09
+    },
+    {
+      "time": "2025-05-21 15:25:57",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 412.24
+    },
+    {
+      "time": "2025-05-21 15:26:17",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 417.43
+    },
+    {
+      "time": "2025-05-21 15:26:27",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 740.16
+    },
+    {
+      "time": "2025-05-21 15:26:47",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 385.13
+    },
+    {
+      "time": "2025-05-21 15:26:57",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 332.41
+    },
+    {
+      "time": "2025-05-21 15:27:07",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 351.28
+    },
+    {
+      "time": "2025-05-21 15:27:17",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 908.04
+    },
+    {
+      "time": "2025-05-21 15:29:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1067.11
+    },
+    {
+      "time": "2025-05-21 15:29:28",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 473.16
+    },
+    {
+      "time": "2025-05-21 15:29:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 995.26
+    },
+    {
+      "time": "2025-05-21 15:29:38",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 541.77
+    },
+    {
+      "time": "2025-05-21 15:29:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1001.53
+    },
+    {
+      "time": "2025-05-21 15:29:48",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 599.32
+    },
+    {
+      "time": "2025-05-21 15:29:58",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 932.1
+    },
+    {
+      "time": "2025-05-21 15:29:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 580.33
+    },
+    {
+      "time": "2025-05-21 15:30:08",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 852.73
+    },
+    {
+      "time": "2025-05-21 15:30:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 501.4
+    },
+    {
+      "time": "2025-05-21 15:30:18",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 858.98
+    },
+    {
+      "time": "2025-05-21 15:30:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 537.53
+    },
+    {
+      "time": "2025-05-21 15:30:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 911.57
+    },
+    {
+      "time": "2025-05-21 15:30:28",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 541.69
+    },
+    {
+      "time": "2025-05-21 15:30:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 962.12
+    },
+    {
+      "time": "2025-05-21 15:30:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 502.83
+    },
+    {
+      "time": "2025-05-21 15:30:48",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1003.91
+    },
+    {
+      "time": "2025-05-21 15:30:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 589.11
+    },
+    {
+      "time": "2025-05-21 15:30:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 933.69
+    },
+    {
+      "time": "2025-05-21 15:30:58",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 572.42
+    },
+    {
+      "time": "2025-05-21 15:31:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1027.15
+    },
+    {
+      "time": "2025-05-21 15:31:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 614.3
+    },
+    {
+      "time": "2025-05-21 15:31:08",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1718.68
+    },
+    {
+      "time": "2025-05-21 15:31:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 439.73
+    },
+    {
+      "time": "2025-05-21 15:31:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 498.46
+    },
+    {
+      "time": "2025-05-21 15:32:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1039.29
+    },
+    {
+      "time": "2025-05-21 15:32:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 596.25
+    },
+    {
+      "time": "2025-05-21 15:32:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 518.76
+    },
+    {
+      "time": "2025-05-21 15:32:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1760.19
+    },
+    {
+      "time": "2025-05-21 15:32:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1102.61
+    },
+    {
+      "time": "2025-05-21 15:32:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 443.15
+    },
+    {
+      "time": "2025-05-21 15:32:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1842.88
+    },
+    {
+      "time": "2025-05-21 15:32:39",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1870.93
+    },
+    {
+      "time": "2025-05-21 15:32:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1214.9
+    },
+    {
+      "time": "2025-05-21 15:32:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 576.9
+    },
+    {
+      "time": "2025-05-21 15:32:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 609.32
+    },
+    {
+      "time": "2025-05-21 15:33:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1077.14
+    },
+    {
+      "time": "2025-05-21 15:33:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 536.63
+    },
+    {
+      "time": "2025-05-21 15:33:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 575.96
+    },
+    {
+      "time": "2025-05-21 15:33:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1102.71
+    },
+    {
+      "time": "2025-05-21 15:33:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 546.38
+    },
+    {
+      "time": "2025-05-21 15:33:49",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1061.65
+    },
+    {
+      "time": "2025-05-21 15:33:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 575.41
+    },
+    {
+      "time": "2025-05-21 15:33:59",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1044.06
+    },
+    {
+      "time": "2025-05-21 15:33:59",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 616.03
+    },
+    {
+      "time": "2025-05-21 15:33:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2002.05
+    },
+    {
+      "time": "2025-05-21 15:34:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1052.48
+    },
+    {
+      "time": "2025-05-21 15:34:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 589.13
+    },
+    {
+      "time": "2025-05-21 15:34:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2093.23
+    },
+    {
+      "time": "2025-05-21 15:34:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1036.21
+    },
+    {
+      "time": "2025-05-21 15:34:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 767.7
+    },
+    {
+      "time": "2025-05-21 15:35:09",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1982.03
+    },
+    {
+      "time": "2025-05-21 15:35:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1257.63
+    },
+    {
+      "time": "2025-05-21 15:35:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 888.2
+    },
+    {
+      "time": "2025-05-21 15:35:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1888.87
+    },
+    {
+      "time": "2025-05-21 15:35:30",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1207.83
+    },
+    {
+      "time": "2025-05-21 15:35:30",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 848.71
+    },
+    {
+      "time": "2025-05-21 15:35:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 821.61
+    },
+    {
+      "time": "2025-05-21 15:35:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 917.5
+    },
+    {
+      "time": "2025-05-21 15:36:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1418.04
+    },
+    {
+      "time": "2025-05-21 15:36:10",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 810.89
+    },
+    {
+      "time": "2025-05-21 15:36:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 883.43
+    },
+    {
+      "time": "2025-05-21 15:36:30",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1436.48
+    },
+    {
+      "time": "2025-05-21 15:36:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 819.92
+    },
+    {
+      "time": "2025-05-21 15:36:40",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1475.4
+    },
+    {
+      "time": "2025-05-21 15:38:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 61.98
+    },
+    {
+      "time": "2025-05-21 15:38:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 82.46
+    },
+    {
+      "time": "2025-05-21 15:39:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 166.92
+    },
+    {
+      "time": "2025-05-21 15:39:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 87.57
+    },
+    {
+      "time": "2025-05-21 15:39:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:40:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 45.39
+    },
+    {
+      "time": "2025-05-21 15:40:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 69.31
+    },
+    {
+      "time": "2025-05-21 15:40:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 42.71
+    },
+    {
+      "time": "2025-05-21 15:40:19",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:40:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 57.87
+    },
+    {
+      "time": "2025-05-21 15:40:39",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 146.69
+    },
+    {
+      "time": "2025-05-21 15:41:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 928.17
+    },
+    {
+      "time": "2025-05-21 15:41:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 151.11
+    },
+    {
+      "time": "2025-05-21 15:41:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 875.29
+    },
+    {
+      "time": "2025-05-21 15:41:39",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 86.01
+    },
+    {
+      "time": "2025-05-21 15:41:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 968.53
+    },
+    {
+      "time": "2025-05-21 15:41:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 165.27
+    },
+    {
+      "time": "2025-05-21 15:41:59",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 86.31
+    },
+    {
+      "time": "2025-05-21 15:42:09",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 112.87
+    },
+    {
+      "time": "2025-05-21 15:42:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 103.23
+    },
+    {
+      "time": "2025-05-21 15:42:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 64.73
+    },
+    {
+      "time": "2025-05-21 15:42:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 163.0
+    },
+    {
+      "time": "2025-05-21 15:42:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:42:39",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 196.57
+    },
+    {
+      "time": "2025-05-21 15:42:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:42:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 287.01
+    },
+    {
+      "time": "2025-05-21 15:42:56",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 70.02
+    },
+    {
+      "time": "2025-05-21 15:43:06",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1087.82
+    },
+    {
+      "time": "2025-05-21 15:43:06",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 93.67
+    },
+    {
+      "time": "2025-05-21 15:43:06",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 273.05
+    },
+    {
+      "time": "2025-05-21 15:43:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 188.83
+    },
+    {
+      "time": "2025-05-21 15:43:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 271.37
+    },
+    {
+      "time": "2025-05-21 15:43:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 232.41
+    },
+    {
+      "time": "2025-05-21 15:43:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 195.81
+    },
+    {
+      "time": "2025-05-21 15:43:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1050.12
+    },
+    {
+      "time": "2025-05-21 15:43:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 266.11
+    },
+    {
+      "time": "2025-05-21 15:43:37",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 180.24
+    },
+    {
+      "time": "2025-05-21 15:43:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 350.35
+    },
+    {
+      "time": "2025-05-21 15:43:47",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 221.55
+    },
+    {
+      "time": "2025-05-21 15:43:57",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1081.8
+    },
+    {
+      "time": "2025-05-21 15:43:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 346.56
+    },
+    {
+      "time": "2025-05-21 15:43:57",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 298.52
+    },
+    {
+      "time": "2025-05-21 15:44:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1019.76
+    },
+    {
+      "time": "2025-05-21 15:44:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 339.31
+    },
+    {
+      "time": "2025-05-21 15:44:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 266.47
+    },
+    {
+      "time": "2025-05-21 15:44:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 941.05
+    },
+    {
+      "time": "2025-05-21 15:44:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 407.4
+    },
+    {
+      "time": "2025-05-21 15:44:17",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 177.98
+    },
+    {
+      "time": "2025-05-21 15:44:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 992.12
+    },
+    {
+      "time": "2025-05-21 15:44:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 506.55
+    },
+    {
+      "time": "2025-05-21 15:44:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 212.64
+    },
+    {
+      "time": "2025-05-21 15:44:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1026.53
+    },
+    {
+      "time": "2025-05-21 15:44:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 584.29
+    },
+    {
+      "time": "2025-05-21 15:44:37",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 170.41
+    },
+    {
+      "time": "2025-05-21 15:44:47",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1116.4
+    },
+    {
+      "time": "2025-05-21 15:44:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 574.08
+    },
+    {
+      "time": "2025-05-21 15:44:47",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 182.34
+    },
+    {
+      "time": "2025-05-21 15:44:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1089.38
+    },
+    {
+      "time": "2025-05-21 15:44:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 584.24
+    },
+    {
+      "time": "2025-05-21 15:44:57",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 223.54
+    },
+    {
+      "time": "2025-05-21 15:45:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 996.02
+    },
+    {
+      "time": "2025-05-21 15:45:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 646.31
+    },
+    {
+      "time": "2025-05-21 15:45:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 208.63
+    },
+    {
+      "time": "2025-05-21 15:45:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 941.04
+    },
+    {
+      "time": "2025-05-21 15:45:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 705.68
+    },
+    {
+      "time": "2025-05-21 15:45:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 296.19
+    },
+    {
+      "time": "2025-05-21 15:45:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 957.96
+    },
+    {
+      "time": "2025-05-21 15:45:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 710.56
+    },
+    {
+      "time": "2025-05-21 15:45:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 308.88
+    },
+    {
+      "time": "2025-05-21 15:45:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 886.11
+    },
+    {
+      "time": "2025-05-21 15:45:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 622.7
+    },
+    {
+      "time": "2025-05-21 15:45:37",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 400.18
+    },
+    {
+      "time": "2025-05-21 15:45:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 950.94
+    },
+    {
+      "time": "2025-05-21 15:45:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 540.59
+    },
+    {
+      "time": "2025-05-21 15:45:48",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 387.7
+    },
+    {
+      "time": "2025-05-21 15:45:58",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1022.87
+    },
+    {
+      "time": "2025-05-21 15:45:58",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 513.65
+    },
+    {
+      "time": "2025-05-21 15:45:58",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 330.36
+    },
+    {
+      "time": "2025-05-21 15:46:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1041.68
+    },
+    {
+      "time": "2025-05-21 15:46:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 521.43
+    },
+    {
+      "time": "2025-05-21 15:46:08",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 349.99
+    },
+    {
+      "time": "2025-05-21 15:46:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 988.75
+    },
+    {
+      "time": "2025-05-21 15:46:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 546.47
+    },
+    {
+      "time": "2025-05-21 15:46:18",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 361.65
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 907.22
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 607.75
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 330.4
+    },
+    {
+      "time": "2025-05-21 15:46:38",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 954.48
+    },
+    {
+      "time": "2025-05-21 15:46:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 568.44
+    },
+    {
+      "time": "2025-05-21 15:46:38",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 398.62
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1046.99
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 584.32
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 380.45
+    },
+    {
+      "time": "2025-05-21 15:46:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1030.85
+    },
+    {
+      "time": "2025-05-21 15:46:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 543.0
+    },
+    {
+      "time": "2025-05-21 15:46:58",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 410.7
+    },
+    {
+      "time": "2025-05-21 15:47:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1066.55
+    },
+    {
+      "time": "2025-05-21 15:47:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 481.07
+    },
+    {
+      "time": "2025-05-21 15:47:08",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 466.65
+    },
+    {
+      "time": "2025-05-21 15:47:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 399.26
+    },
+    {
+      "time": "2025-05-21 15:47:18",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 428.48
+    },
+    {
+      "time": "2025-05-21 15:47:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 459.02
+    },
+    {
+      "time": "2025-05-21 15:47:28",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 378.44
+    },
+    {
+      "time": "2025-05-21 15:47:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 475.06
+    },
+    {
+      "time": "2025-05-21 15:47:38",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 380.26
+    },
+    {
+      "time": "2025-05-21 15:47:48",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1180.27
+    },
+    {
+      "time": "2025-05-21 15:47:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 515.54
+    },
+    {
+      "time": "2025-05-21 15:47:48",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 369.23
+    },
+    {
+      "time": "2025-05-21 15:47:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1094.32
+    },
+    {
+      "time": "2025-05-21 15:47:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 438.37
+    },
+    {
+      "time": "2025-05-21 15:48:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1023.11
+    },
+    {
+      "time": "2025-05-21 15:48:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 611.17
+    },
+    {
+      "time": "2025-05-21 15:48:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 992.85
+    },
+    {
+      "time": "2025-05-21 15:48:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 638.66
+    },
+    {
+      "time": "2025-05-21 15:48:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 394.99
+    }
+  ],
   "joony": [
     {
-      "time": "2025-05-20 01:19:39",
+      "time": "2025-05-20 04:08:05",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 5,
+      "price": 366.4
+    },
+    {
+      "time": "2025-05-20 04:08:09",
       "ticker": "GOOGL",
       "action": "BUY",
       "qty": 3,
-      "price": 226.53
-    },
-    {
-      "time": "2025-05-20 01:20:08",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 1,
-      "price": 295.55
-    },
-    {
-      "time": "2025-05-20 01:20:19",
-      "ticker": "GOOGL",
-      "action": "BUY",
-      "qty": 1,
-      "price": 280.41
-    },
-    {
-      "time": "2025-05-20 01:33:23",
-      "ticker": "GOOGL",
-      "action": "SELL",
-      "qty": 2,
-      "price": 269.08
-    },
-    {
-      "time": "2025-05-20 02:03:21",
-      "ticker": "TSLA",
-      "action": "BUY",
-      "qty": 4,
-      "price": 694.79
-    },
-    {
-      "time": "2025-05-20 02:36:35",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 4,
-      "price": 699.14
-    },
-    {
-      "time": "2025-05-20 02:38:59",
-      "ticker": "GOOGL",
-      "action": "BUY",
-      "qty": 2,
-      "price": 1
-    },
-    {
-      "time": "2025-05-20 02:40:54",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 1,
-      "price": 943.37
-    },
-    {
-      "time": "2025-05-20 02:48:41",
-      "ticker": "TSLA",
-      "action": "BUY",
-      "qty": 3,
-      "price": 743.62
-    },
-    {
-      "time": "2025-05-20 02:49:00",
-      "ticker": "TSLA",
-      "action": "SELL",
-      "qty": 4,
-      "price": 774.58
-    },
-    {
-      "time": "2025-05-20 02:56:47",
-      "ticker": "GOOGL",
-      "action": "BUY",
-      "qty": 1,
-      "price": 1
-    },
-    {
-      "time": "2025-05-20 02:57:14",
-      "ticker": "AAPL",
-      "action": "SELL",
-      "qty": 3,
-      "price": 812.69
-    },
-    {
-      "time": "2025-05-20 02:58:06",
-      "ticker": "AAPL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 859.19
-    },
-    {
-      "time": "2025-05-20 02:58:28",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 4,
-      "price": 895.05
-    },
-    {
-      "time": "2025-05-20 03:52:19",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 1,
-      "price": 567.31
-    },
-    {
-      "time": "2025-05-20 03:52:19",
-      "ticker": "GOOGL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 186.9
-    },
-    {
-      "time": "2025-05-20 03:52:19",
-      "ticker": "TSLA",
-      "action": "BUY",
-      "qty": 1,
-      "price": 826.84
-    },
-    {
-      "time": "2025-05-20 03:52:29",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 1,
-      "price": 569.25
-    },
-    {
-      "time": "2025-05-20 03:52:29",
-      "ticker": "GOOGL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 186.72
-    },
-    {
-      "time": "2025-05-20 03:52:29",
-      "ticker": "TSLA",
-      "action": "BUY",
-      "qty": 1,
-      "price": 835.94
-    },
-    {
-      "time": "2025-05-20 03:52:39",
-      "ticker": "AAPL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 517.5
-    },
-    {
-      "time": "2025-05-20 03:52:39",
-      "ticker": "GOOGL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 155.17
-    },
-    {
-      "time": "2025-05-20 03:52:39",
-      "ticker": "TSLA",
-      "action": "BUY",
-      "qty": 1,
-      "price": 859.27
-    },
-    {
-      "time": "2025-05-20 03:52:49",
-      "ticker": "AAPL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 546.03
-    },
-    {
-      "time": "2025-05-20 03:52:49",
-      "ticker": "GOOGL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 88.96
-    },
-    {
-      "time": "2025-05-20 03:52:49",
-      "ticker": "TSLA",
-      "action": "BUY",
-      "qty": 1,
-      "price": 930.91
-    },
-    {
-      "time": "2025-05-20 03:52:59",
-      "ticker": "AAPL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 560.75
-    },
-    {
-      "time": "2025-05-20 03:52:59",
-      "ticker": "GOOGL",
-      "action": "SELL",
-      "qty": 1,
-      "price": 173.87
+      "price": 574.03
     }
   ],
   "rachel": [
     {
-      "time": "2025-05-20 03:51:49",
+      "time": "2025-05-20 04:08:32",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 463.95
+    },
+    {
+      "time": "2025-05-20 04:08:32",
       "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 627.46
+    },
+    {
+      "time": "2025-05-20 04:10:31",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 503.06
+    },
+    {
+      "time": "2025-05-20 04:10:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 727.18
+    },
+    {
+      "time": "2025-05-20 04:10:41",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 551.89
+    },
+    {
+      "time": "2025-05-20 04:10:41",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 713.98
+    },
+    {
+      "time": "2025-05-20 04:10:51",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 640.25
+    },
+    {
+      "time": "2025-05-20 04:10:51",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 705.61
+    },
+    {
+      "time": "2025-05-20 04:11:43",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 601.22
+    },
+    {
+      "time": "2025-05-20 04:11:43",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 676.86
+    },
+    {
+      "time": "2025-05-20 04:11:53",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 531.96
+    },
+    {
+      "time": "2025-05-20 04:11:53",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 587.81
+    },
+    {
+      "time": "2025-05-20 04:16:55",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 558.97
+    },
+    {
+      "time": "2025-05-20 04:16:55",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 570.3
+    },
+    {
+      "time": "2025-05-20 04:17:14",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 608.88
+    },
+    {
+      "time": "2025-05-20 04:17:14",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 524.98
+    },
+    {
+      "time": "2025-05-20 04:17:24",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 605.98
+    },
+    {
+      "time": "2025-05-20 04:17:24",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 494.03
+    },
+    {
+      "time": "2025-05-20 04:17:34",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 576.57
+    },
+    {
+      "time": "2025-05-20 04:17:34",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 410.07
+    },
+    {
+      "time": "2025-05-20 04:17:34",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 246.24
+    },
+    {
+      "time": "2025-05-20 04:17:44",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 642.89
+    },
+    {
+      "time": "2025-05-20 04:21:03",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 507.43
+    },
+    {
+      "time": "2025-05-20 04:21:03",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 442.32
+    },
+    {
+      "time": "2025-05-20 04:21:13",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 586.82
+    },
+    {
+      "time": "2025-05-20 04:21:13",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 434.33
+    },
+    {
+      "time": "2025-05-20 04:21:23",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 596.3
+    },
+    {
+      "time": "2025-05-20 04:21:23",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 532.85
+    },
+    {
+      "time": "2025-05-20 04:21:33",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 638.45
+    },
+    {
+      "time": "2025-05-20 04:21:33",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 549.39
+    },
+    {
+      "time": "2025-05-20 04:21:43",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 678.53
+    },
+    {
+      "time": "2025-05-20 04:21:43",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 644.1
+    },
+    {
+      "time": "2025-05-20 04:21:51",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 3,
+      "price": 678.53
+    },
+    {
+      "time": "2025-05-20 04:21:53",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 696.17
+    },
+    {
+      "time": "2025-05-20 04:21:53",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 694.9
+    },
+    {
+      "time": "2025-05-20 04:22:03",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 641.4
+    },
+    {
+      "time": "2025-05-20 04:22:03",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 758.97
+    },
+    {
+      "time": "2025-05-20 04:22:13",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 680.97
+    },
+    {
+      "time": "2025-05-20 04:30:14",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 619.77
+    },
+    {
+      "time": "2025-05-20 04:30:24",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 651.7
+    },
+    {
+      "time": "2025-05-20 04:30:24",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 718.73
+    },
+    {
+      "time": "2025-05-20 04:30:34",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 715.25
+    },
+    {
+      "time": "2025-05-20 04:30:34",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 652.37
+    },
+    {
+      "time": "2025-05-20 04:30:44",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 715.7
+    },
+    {
+      "time": "2025-05-20 04:30:44",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 751.72
+    },
+    {
+      "time": "2025-05-20 04:30:54",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 656.32
+    },
+    {
+      "time": "2025-05-20 04:30:54",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 783.24
+    },
+    {
+      "time": "2025-05-20 04:31:04",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 752.47
+    },
+    {
+      "time": "2025-05-20 04:31:04",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 76.14
+    },
+    {
+      "time": "2025-05-20 04:31:14",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 7.75
+    },
+    {
+      "time": "2025-05-20 04:31:24",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 04:31:34",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 613.02
+    },
+    {
+      "time": "2025-05-20 04:31:34",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 92.35
+    },
+    {
+      "time": "2025-05-20 04:31:34",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 744.69
+    },
+    {
+      "time": "2025-05-20 20:53:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 556.67
+    },
+    {
+      "time": "2025-05-20 20:53:40",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 161.09
+    },
+    {
+      "time": "2025-05-20 20:53:40",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 708.06
+    },
+    {
+      "time": "2025-05-20 20:53:50",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 507.63
+    },
+    {
+      "time": "2025-05-20 20:53:50",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 214.78
+    },
+    {
+      "time": "2025-05-20 20:53:50",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 636.48
+    },
+    {
+      "time": "2025-05-20 20:54:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 475.88
+    },
+    {
+      "time": "2025-05-20 20:54:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 304.46
+    },
+    {
+      "time": "2025-05-20 20:54:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 651.8
+    },
+    {
+      "time": "2025-05-20 20:54:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 433.63
+    },
+    {
+      "time": "2025-05-20 20:54:10",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 266.61
+    },
+    {
+      "time": "2025-05-20 20:54:10",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 686.22
+    },
+    {
+      "time": "2025-05-20 20:54:20",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 454.54
+    },
+    {
+      "time": "2025-05-20 20:54:20",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 282.87
+    },
+    {
+      "time": "2025-05-20 20:54:20",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 769.81
+    },
+    {
+      "time": "2025-05-20 20:54:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 451.93
+    },
+    {
+      "time": "2025-05-20 20:54:30",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 221.94
+    },
+    {
+      "time": "2025-05-20 20:54:30",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 847.45
+    },
+    {
+      "time": "2025-05-20 20:54:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 506.51
+    },
+    {
+      "time": "2025-05-20 20:54:40",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 294.52
+    },
+    {
+      "time": "2025-05-20 20:54:40",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 893.28
+    },
+    {
+      "time": "2025-05-20 20:54:50",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 574.24
+    },
+    {
+      "time": "2025-05-20 20:54:50",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 297.45
+    },
+    {
+      "time": "2025-05-20 20:54:50",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 933.04
+    },
+    {
+      "time": "2025-05-20 20:55:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 590.17
+    },
+    {
+      "time": "2025-05-20 20:55:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 284.46
+    },
+    {
+      "time": "2025-05-20 20:55:10",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 531.71
+    },
+    {
+      "time": "2025-05-20 20:55:10",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 208.64
+    },
+    {
+      "time": "2025-05-20 20:55:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 180.41
+    },
+    {
+      "time": "2025-05-20 20:55:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 147.81
+    },
+    {
+      "time": "2025-05-20 20:55:40",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 730.77
+    },
+    {
+      "time": "2025-05-20 20:55:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 99.93
+    },
+    {
+      "time": "2025-05-20 20:55:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 55.47
+    },
+    {
+      "time": "2025-05-20 20:56:00",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 20:56:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 548.06
+    },
+    {
+      "time": "2025-05-20 20:56:10",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 100.87
+    },
+    {
+      "time": "2025-05-20 20:56:20",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 505.59
+    },
+    {
+      "time": "2025-05-20 20:56:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 109.36
+    },
+    {
+      "time": "2025-05-20 20:56:20",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1140.3
+    },
+    {
+      "time": "2025-05-20 20:56:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 503.43
+    },
+    {
+      "time": "2025-05-20 20:56:30",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 114.22
+    },
+    {
+      "time": "2025-05-20 20:56:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 539.59
+    },
+    {
+      "time": "2025-05-20 20:56:40",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 50.48
+    },
+    {
+      "time": "2025-05-20 20:56:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 20:57:00",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-20 20:57:10",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 7.56
+    },
+    {
+      "time": "2025-05-20 20:57:10",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1137.26
+    },
+    {
+      "time": "2025-05-21 14:36:57",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1370.33
+    },
+    {
+      "time": "2025-05-21 14:37:07",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 591.25
+    },
+    {
+      "time": "2025-05-21 14:37:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1367.09
+    },
+    {
+      "time": "2025-05-21 14:37:17",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 561.79
+    },
+    {
+      "time": "2025-05-21 14:37:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1461.3
+    },
+    {
+      "time": "2025-05-21 14:37:57",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 515.65
+    },
+    {
+      "time": "2025-05-21 14:38:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 538.45
+    },
+    {
+      "time": "2025-05-21 14:38:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1323.29
+    },
+    {
+      "time": "2025-05-21 14:38:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 132.21
+    },
+    {
+      "time": "2025-05-21 14:38:17",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1360.58
+    },
+    {
+      "time": "2025-05-21 14:38:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 102.24
+    },
+    {
+      "time": "2025-05-21 14:38:27",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1290.7
+    },
+    {
+      "time": "2025-05-21 14:38:37",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 623.18
+    },
+    {
+      "time": "2025-05-21 14:38:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 161.77
+    },
+    {
+      "time": "2025-05-21 14:38:37",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1216.38
+    },
+    {
+      "time": "2025-05-21 14:38:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 592.26
+    },
+    {
+      "time": "2025-05-21 14:38:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 181.05
+    },
+    {
+      "time": "2025-05-21 14:38:47",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1151.12
+    },
+    {
+      "time": "2025-05-21 14:38:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 563.38
+    },
+    {
+      "time": "2025-05-21 14:38:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 250.57
+    },
+    {
+      "time": "2025-05-21 14:38:57",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1177.01
+    },
+    {
+      "time": "2025-05-21 14:39:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 489.16
+    },
+    {
+      "time": "2025-05-21 14:39:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 219.6
+    },
+    {
+      "time": "2025-05-21 14:39:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1178.18
+    },
+    {
+      "time": "2025-05-21 14:39:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 444.73
+    },
+    {
+      "time": "2025-05-21 14:39:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 197.54
+    },
+    {
+      "time": "2025-05-21 14:39:17",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1234.94
+    },
+    {
+      "time": "2025-05-21 14:39:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.08
+    },
+    {
+      "time": "2025-05-21 14:39:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 192.94
+    },
+    {
+      "time": "2025-05-21 14:39:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1314.76
+    },
+    {
+      "time": "2025-05-21 14:39:37",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 111.64
+    },
+    {
+      "time": "2025-05-21 14:39:37",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1302.22
+    },
+    {
+      "time": "2025-05-21 14:39:47",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 134.86
+    },
+    {
+      "time": "2025-05-21 14:39:47",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1309.36
+    },
+    {
+      "time": "2025-05-21 14:39:57",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 163.06
+    },
+    {
+      "time": "2025-05-21 14:39:57",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1383.49
+    },
+    {
+      "time": "2025-05-21 14:40:07",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 190.37
+    },
+    {
+      "time": "2025-05-21 14:40:07",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1441.39
+    },
+    {
+      "time": "2025-05-21 14:40:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 223.26
+    },
+    {
+      "time": "2025-05-21 14:40:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1377.15
+    },
+    {
+      "time": "2025-05-21 14:40:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 286.53
+    },
+    {
+      "time": "2025-05-21 14:40:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1325.98
+    },
+    {
+      "time": "2025-05-21 14:42:48",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1582.44
+    },
+    {
+      "time": "2025-05-21 14:42:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 641.52
+    },
+    {
+      "time": "2025-05-21 14:42:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 621.48
+    },
+    {
+      "time": "2025-05-21 14:42:58",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1535.35
+    },
+    {
+      "time": "2025-05-21 14:43:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 703.48
+    },
+    {
+      "time": "2025-05-21 14:43:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 661.19
+    },
+    {
+      "time": "2025-05-21 14:43:08",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1591.77
+    },
+    {
+      "time": "2025-05-21 14:43:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 659.89
+    },
+    {
+      "time": "2025-05-21 14:43:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 688.26
+    },
+    {
+      "time": "2025-05-21 14:43:18",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1625.25
+    },
+    {
+      "time": "2025-05-21 14:43:28",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 732.71
+    },
+    {
+      "time": "2025-05-21 14:43:28",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 728.87
+    },
+    {
+      "time": "2025-05-21 14:43:38",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 655.74
+    },
+    {
+      "time": "2025-05-21 14:43:58",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 634.85
+    },
+    {
+      "time": "2025-05-21 14:44:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 749.35
+    },
+    {
+      "time": "2025-05-21 14:44:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 654.57
+    },
+    {
+      "time": "2025-05-21 14:44:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 699.25
+    },
+    {
+      "time": "2025-05-21 14:44:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 700.34
+    },
+    {
+      "time": "2025-05-21 14:44:28",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 755.51
+    },
+    {
+      "time": "2025-05-21 14:44:58",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 632.9
+    },
+    {
+      "time": "2025-05-21 14:45:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 658.9
+    },
+    {
+      "time": "2025-05-21 14:45:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 797.0
+    },
+    {
+      "time": "2025-05-21 14:45:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 656.53
+    },
+    {
+      "time": "2025-05-21 14:45:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 725.19
+    },
+    {
+      "time": "2025-05-21 14:45:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 609.04
+    },
+    {
+      "time": "2025-05-21 14:45:28",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1882.18
+    },
+    {
+      "time": "2025-05-21 14:45:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 688.53
+    },
+    {
+      "time": "2025-05-21 14:45:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 633.67
+    },
+    {
+      "time": "2025-05-21 14:45:38",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1829.96
+    },
+    {
+      "time": "2025-05-21 14:45:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 743.74
+    },
+    {
+      "time": "2025-05-21 14:45:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 611.29
+    },
+    {
+      "time": "2025-05-21 14:45:58",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 751.16
+    },
+    {
+      "time": "2025-05-21 14:45:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 698.25
+    },
+    {
+      "time": "2025-05-21 14:46:08",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 737.86
+    },
+    {
+      "time": "2025-05-21 14:46:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 621.05
+    },
+    {
+      "time": "2025-05-21 14:46:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 827.77
+    },
+    {
+      "time": "2025-05-21 14:46:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 673.56
+    },
+    {
+      "time": "2025-05-21 14:46:28",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1783.93
+    },
+    {
+      "time": "2025-05-21 14:46:38",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 968.39
+    },
+    {
+      "time": "2025-05-21 14:46:38",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 742.91
+    },
+    {
+      "time": "2025-05-21 14:46:39",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1848.37
+    },
+    {
+      "time": "2025-05-21 14:46:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 914.55
+    },
+    {
+      "time": "2025-05-21 14:46:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 643.4
+    },
+    {
+      "time": "2025-05-21 14:46:49",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1831.18
+    },
+    {
+      "time": "2025-05-21 14:46:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1010.86
+    },
+    {
+      "time": "2025-05-21 14:46:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 570.11
+    },
+    {
+      "time": "2025-05-21 14:46:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1850.75
+    },
+    {
+      "time": "2025-05-21 14:47:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 559.32
+    },
+    {
+      "time": "2025-05-21 14:47:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 642.88
+    },
+    {
+      "time": "2025-05-21 14:47:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1052.48
+    },
+    {
+      "time": "2025-05-21 14:47:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 690.54
+    },
+    {
+      "time": "2025-05-21 14:47:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 666.13
+    },
+    {
+      "time": "2025-05-21 14:47:59",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1787.26
+    },
+    {
+      "time": "2025-05-21 14:48:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1086.84
+    },
+    {
+      "time": "2025-05-21 14:48:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 594.63
+    },
+    {
+      "time": "2025-05-21 14:48:09",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1832.71
+    },
+    {
+      "time": "2025-05-21 14:48:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1076.36
+    },
+    {
+      "time": "2025-05-21 14:48:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 614.11
+    },
+    {
+      "time": "2025-05-21 14:48:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1791.43
+    },
+    {
+      "time": "2025-05-21 14:48:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1171.36
+    },
+    {
+      "time": "2025-05-21 14:48:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 516.55
+    },
+    {
+      "time": "2025-05-21 14:48:39",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1203.06
+    },
+    {
+      "time": "2025-05-21 14:48:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1131.45
+    },
+    {
+      "time": "2025-05-21 14:48:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1046.81
+    },
+    {
+      "time": "2025-05-21 14:49:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1046.07
+    },
+    {
+      "time": "2025-05-21 14:49:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 635.84
+    },
+    {
+      "time": "2025-05-21 14:49:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 946.72
+    },
+    {
+      "time": "2025-05-21 14:49:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 689.86
+    },
+    {
+      "time": "2025-05-21 14:49:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 942.06
+    },
+    {
+      "time": "2025-05-21 14:49:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 622.07
+    },
+    {
+      "time": "2025-05-21 14:49:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 961.7
+    },
+    {
+      "time": "2025-05-21 14:49:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 550.38
+    },
+    {
+      "time": "2025-05-21 14:49:49",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1037.46
+    },
+    {
+      "time": "2025-05-21 14:49:49",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 649.93
+    },
+    {
+      "time": "2025-05-21 14:49:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1706.46
+    },
+    {
+      "time": "2025-05-21 14:49:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 601.11
+    },
+    {
+      "time": "2025-05-21 14:50:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1056.38
+    },
+    {
+      "time": "2025-05-21 14:50:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 539.37
+    },
+    {
+      "time": "2025-05-21 14:50:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 508.99
+    },
+    {
+      "time": "2025-05-21 14:50:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 861.87
+    },
+    {
+      "time": "2025-05-21 14:50:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 558.28
+    },
+    {
+      "time": "2025-05-21 14:50:30",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1801.97
+    },
+    {
+      "time": "2025-05-21 14:50:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 894.52
+    },
+    {
+      "time": "2025-05-21 14:50:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 478.7
+    },
+    {
+      "time": "2025-05-21 14:50:40",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1882.78
+    },
+    {
+      "time": "2025-05-21 14:50:50",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 822.87
+    },
+    {
+      "time": "2025-05-21 14:51:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 819.74
+    },
+    {
+      "time": "2025-05-21 14:51:00",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2065.46
+    },
+    {
+      "time": "2025-05-21 14:51:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 883.26
+    },
+    {
+      "time": "2025-05-21 14:51:20",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 785.32
+    },
+    {
+      "time": "2025-05-21 14:51:30",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 819.21
+    },
+    {
+      "time": "2025-05-21 14:51:30",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1947.87
+    },
+    {
+      "time": "2025-05-21 14:51:40",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 757.4
+    },
+    {
+      "time": "2025-05-21 14:51:40",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 644.45
+    },
+    {
+      "time": "2025-05-21 14:51:40",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1917.66
+    },
+    {
+      "time": "2025-05-21 14:51:50",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 756.24
+    },
+    {
+      "time": "2025-05-21 14:51:50",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 604.97
+    },
+    {
+      "time": "2025-05-21 14:51:50",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1952.99
+    },
+    {
+      "time": "2025-05-21 14:52:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 831.44
+    },
+    {
+      "time": "2025-05-21 14:52:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 592.1
+    },
+    {
+      "time": "2025-05-21 14:52:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1917.93
+    },
+    {
+      "time": "2025-05-21 14:52:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 792.46
+    },
+    {
+      "time": "2025-05-21 14:52:10",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 509.37
+    },
+    {
+      "time": "2025-05-21 14:52:10",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2002.02
+    },
+    {
+      "time": "2025-05-21 14:52:20",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 854.0
+    },
+    {
+      "time": "2025-05-21 14:52:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 480.08
+    },
+    {
+      "time": "2025-05-21 14:52:20",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2044.4
+    },
+    {
+      "time": "2025-05-21 14:52:30",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 875.59
+    },
+    {
+      "time": "2025-05-21 14:52:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 489.14
+    },
+    {
+      "time": "2025-05-21 14:52:30",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2111.94
+    },
+    {
+      "time": "2025-05-21 14:52:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 390.43
+    },
+    {
+      "time": "2025-05-21 14:52:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 486.86
+    },
+    {
+      "time": "2025-05-21 14:53:00",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 742.01
+    },
+    {
+      "time": "2025-05-21 14:53:10",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 643.46
+    },
+    {
+      "time": "2025-05-21 14:53:10",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2197.6
+    },
+    {
+      "time": "2025-05-21 14:53:30",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2207.86
+    },
+    {
+      "time": "2025-05-21 14:53:40",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2137.85
+    },
+    {
+      "time": "2025-05-21 14:53:50",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2063.37
+    },
+    {
+      "time": "2025-05-21 14:54:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 653.1
+    },
+    {
+      "time": "2025-05-21 14:54:00",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 494.1
+    },
+    {
+      "time": "2025-05-21 14:54:00",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2083.45
+    },
+    {
+      "time": "2025-05-21 14:54:11",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 738.93
+    },
+    {
+      "time": "2025-05-21 14:54:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 516.04
+    },
+    {
+      "time": "2025-05-21 14:54:11",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2169.52
+    },
+    {
+      "time": "2025-05-21 14:54:21",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 685.85
+    },
+    {
+      "time": "2025-05-21 14:54:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 610.72
+    },
+    {
+      "time": "2025-05-21 14:54:21",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2221.09
+    },
+    {
+      "time": "2025-05-21 14:54:31",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 621.64
+    },
+    {
+      "time": "2025-05-21 14:54:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 702.25
+    },
+    {
+      "time": "2025-05-21 14:54:31",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2233.31
+    },
+    {
+      "time": "2025-05-21 14:54:41",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 522.77
+    },
+    {
+      "time": "2025-05-21 14:54:41",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 680.87
+    },
+    {
+      "time": "2025-05-21 14:54:51",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 464.0
+    },
+    {
+      "time": "2025-05-21 14:54:51",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 638.57
+    },
+    {
+      "time": "2025-05-21 14:55:01",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 547.96
+    },
+    {
+      "time": "2025-05-21 14:55:01",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 731.69
+    },
+    {
+      "time": "2025-05-21 14:55:11",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 630.59
+    },
+    {
+      "time": "2025-05-21 14:55:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 642.89
+    },
+    {
+      "time": "2025-05-21 14:55:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 720.65
+    },
+    {
+      "time": "2025-05-21 14:55:41",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2211.53
+    },
+    {
+      "time": "2025-05-21 14:55:51",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 821.57
+    },
+    {
+      "time": "2025-05-21 14:55:51",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2173.1
+    },
+    {
+      "time": "2025-05-21 14:56:01",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 784.26
+    },
+    {
+      "time": "2025-05-21 14:56:01",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2106.79
+    },
+    {
+      "time": "2025-05-21 14:56:11",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 738.05
+    },
+    {
+      "time": "2025-05-21 14:56:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 788.26
+    },
+    {
+      "time": "2025-05-21 14:56:31",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 747.46
+    },
+    {
+      "time": "2025-05-21 14:56:31",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2284.66
+    },
+    {
+      "time": "2025-05-21 14:56:41",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 698.27
+    },
+    {
+      "time": "2025-05-21 14:56:41",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2355.51
+    },
+    {
+      "time": "2025-05-21 14:56:51",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 692.7
+    },
+    {
+      "time": "2025-05-21 14:57:01",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 415.51
+    },
+    {
+      "time": "2025-05-21 14:57:01",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 705.66
+    },
+    {
+      "time": "2025-05-21 14:57:11",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 326.63
+    },
+    {
+      "time": "2025-05-21 14:57:11",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 693.95
+    },
+    {
+      "time": "2025-05-21 14:57:11",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2162.53
+    },
+    {
+      "time": "2025-05-21 14:57:21",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 255.0
+    },
+    {
+      "time": "2025-05-21 14:57:21",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 741.13
+    },
+    {
+      "time": "2025-05-21 14:57:21",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2253.92
+    },
+    {
+      "time": "2025-05-21 14:57:32",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 326.56
+    },
+    {
+      "time": "2025-05-21 14:57:32",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 647.28
+    },
+    {
+      "time": "2025-05-21 14:57:42",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 585.49
+    },
+    {
+      "time": "2025-05-21 14:57:52",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 577.32
+    },
+    {
+      "time": "2025-05-21 14:58:02",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 497.2
+    },
+    {
+      "time": "2025-05-21 14:58:12",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 540.75
+    },
+    {
+      "time": "2025-05-21 14:58:22",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 587.73
+    },
+    {
+      "time": "2025-05-21 14:58:32",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 419.34
+    },
+    {
+      "time": "2025-05-21 14:58:32",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 667.61
+    },
+    {
+      "time": "2025-05-21 14:58:42",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 515.38
+    },
+    {
+      "time": "2025-05-21 14:58:42",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 742.92
+    },
+    {
+      "time": "2025-05-21 14:58:52",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 537.46
+    },
+    {
+      "time": "2025-05-21 14:58:52",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 652.42
+    },
+    {
+      "time": "2025-05-21 14:59:02",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 635.94
+    },
+    {
+      "time": "2025-05-21 14:59:02",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 642.64
+    },
+    {
+      "time": "2025-05-21 14:59:12",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 608.82
+    },
+    {
+      "time": "2025-05-21 14:59:12",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 586.57
+    },
+    {
+      "time": "2025-05-21 14:59:22",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 610.06
+    },
+    {
+      "time": "2025-05-21 14:59:22",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 556.29
+    },
+    {
+      "time": "2025-05-21 15:16:51",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 615.21
+    },
+    {
+      "time": "2025-05-21 15:16:51",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.87
+    },
+    {
+      "time": "2025-05-21 15:17:01",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 528.82
+    },
+    {
+      "time": "2025-05-21 15:17:01",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 590.32
+    },
+    {
+      "time": "2025-05-21 15:17:01",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2016.29
+    },
+    {
+      "time": "2025-05-21 15:17:11",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 583.46
+    },
+    {
+      "time": "2025-05-21 15:17:11",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 609.57
+    },
+    {
+      "time": "2025-05-21 15:17:11",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1952.24
+    },
+    {
+      "time": "2025-05-21 15:17:21",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 554.03
+    },
+    {
+      "time": "2025-05-21 15:17:21",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 650.68
+    },
+    {
+      "time": "2025-05-21 15:17:31",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 495.71
+    },
+    {
+      "time": "2025-05-21 15:17:31",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 697.24
+    },
+    {
+      "time": "2025-05-21 15:17:41",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 486.61
+    },
+    {
+      "time": "2025-05-21 15:17:41",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 691.59
+    },
+    {
+      "time": "2025-05-21 15:17:51",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 426.01
+    },
+    {
+      "time": "2025-05-21 15:17:51",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 619.83
+    },
+    {
+      "time": "2025-05-21 15:18:01",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 371.82
+    },
+    {
+      "time": "2025-05-21 15:18:01",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 663.93
+    },
+    {
+      "time": "2025-05-21 15:18:11",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 339.68
+    },
+    {
+      "time": "2025-05-21 15:18:11",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 643.83
+    },
+    {
+      "time": "2025-05-21 15:18:21",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 249.38
+    },
+    {
+      "time": "2025-05-21 15:18:22",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 723.43
+    },
+    {
+      "time": "2025-05-21 15:18:32",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 703.91
+    },
+    {
+      "time": "2025-05-21 15:18:42",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 726.79
+    },
+    {
+      "time": "2025-05-21 15:18:52",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 673.87
+    },
+    {
+      "time": "2025-05-21 15:18:52",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1948.93
+    },
+    {
+      "time": "2025-05-21 15:19:02",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 578.94
+    },
+    {
+      "time": "2025-05-21 15:19:02",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1967.07
+    },
+    {
+      "time": "2025-05-21 15:19:12",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 567.97
+    },
+    {
+      "time": "2025-05-21 15:19:22",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 540.42
+    },
+    {
+      "time": "2025-05-21 15:19:22",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2040.53
+    },
+    {
+      "time": "2025-05-21 15:19:32",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.17
+    },
+    {
+      "time": "2025-05-21 15:19:42",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 543.74
+    },
+    {
+      "time": "2025-05-21 15:19:52",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 590.36
+    },
+    {
+      "time": "2025-05-21 15:19:55",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 688.66
+    },
+    {
+      "time": "2025-05-21 15:20:05",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 702.11
+    },
+    {
+      "time": "2025-05-21 15:20:53",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 511.74
+    },
+    {
+      "time": "2025-05-21 15:21:03",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 119.26
+    },
+    {
+      "time": "2025-05-21 15:21:03",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 472.8
+    },
+    {
+      "time": "2025-05-21 15:21:03",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2125.57
+    },
+    {
+      "time": "2025-05-21 15:21:13",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 22.58
+    },
+    {
+      "time": "2025-05-21 15:21:13",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 503.78
+    },
+    {
+      "time": "2025-05-21 15:21:13",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2218.49
+    },
+    {
+      "time": "2025-05-21 15:21:23",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:21:23",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 411.21
+    },
+    {
+      "time": "2025-05-21 15:21:23",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2169.43
+    },
+    {
+      "time": "2025-05-21 15:21:33",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:21:33",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2126.43
+    },
+    {
+      "time": "2025-05-21 15:21:43",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 28.34
+    },
+    {
+      "time": "2025-05-21 15:21:43",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2157.23
+    },
+    {
+      "time": "2025-05-21 15:21:47",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 79.46
+    },
+    {
+      "time": "2025-05-21 15:21:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 119.37
+    },
+    {
+      "time": "2025-05-21 15:21:57",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2183.62
+    },
+    {
+      "time": "2025-05-21 15:22:07",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 69.93
+    },
+    {
+      "time": "2025-05-21 15:22:07",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2132.8
+    },
+    {
+      "time": "2025-05-21 15:22:17",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 140.24
+    },
+    {
+      "time": "2025-05-21 15:22:25",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 56.13
+    },
+    {
+      "time": "2025-05-21 15:22:35",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:22:45",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:22:56",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 99.06
+    },
+    {
+      "time": "2025-05-21 15:22:56",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 337.39
+    },
+    {
+      "time": "2025-05-21 15:22:56",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2225.25
+    },
+    {
+      "time": "2025-05-21 15:23:06",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 86.32
+    },
+    {
+      "time": "2025-05-21 15:23:06",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 330.59
+    },
+    {
+      "time": "2025-05-21 15:23:06",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2199.61
+    },
+    {
+      "time": "2025-05-21 15:23:16",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 182.48
+    },
+    {
+      "time": "2025-05-21 15:23:16",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 297.36
+    },
+    {
+      "time": "2025-05-21 15:23:16",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2107.65
+    },
+    {
+      "time": "2025-05-21 15:23:26",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 247.32
+    },
+    {
+      "time": "2025-05-21 15:23:26",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 356.06
+    },
+    {
+      "time": "2025-05-21 15:23:26",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2147.61
+    },
+    {
+      "time": "2025-05-21 15:23:36",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 211.0
+    },
+    {
+      "time": "2025-05-21 15:23:36",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 431.86
+    },
+    {
+      "time": "2025-05-21 15:23:36",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2094.03
+    },
+    {
+      "time": "2025-05-21 15:23:46",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 259.31
+    },
+    {
+      "time": "2025-05-21 15:23:46",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 408.3
+    },
+    {
+      "time": "2025-05-21 15:23:46",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2080.06
+    },
+    {
+      "time": "2025-05-21 15:23:56",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 343.97
+    },
+    {
+      "time": "2025-05-21 15:23:56",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 478.78
+    },
+    {
+      "time": "2025-05-21 15:24:06",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 355.45
+    },
+    {
+      "time": "2025-05-21 15:24:06",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 477.1
+    },
+    {
+      "time": "2025-05-21 15:24:16",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 361.17
+    },
+    {
+      "time": "2025-05-21 15:24:16",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 555.92
+    },
+    {
+      "time": "2025-05-21 15:24:26",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 401.91
+    },
+    {
+      "time": "2025-05-21 15:24:26",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 487.67
+    },
+    {
+      "time": "2025-05-21 15:24:36",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 484.6
+    },
+    {
+      "time": "2025-05-21 15:24:36",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 475.28
+    },
+    {
+      "time": "2025-05-21 15:24:46",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 504.04
+    },
+    {
+      "time": "2025-05-21 15:24:46",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 487.58
+    },
+    {
+      "time": "2025-05-21 15:24:56",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 454.08
+    },
+    {
+      "time": "2025-05-21 15:25:06",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 476.02
+    },
+    {
+      "time": "2025-05-21 15:25:06",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 402.58
+    },
+    {
+      "time": "2025-05-21 15:25:16",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 472.27
+    },
+    {
+      "time": "2025-05-21 15:25:26",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 496.78
+    },
+    {
+      "time": "2025-05-21 15:25:26",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 433.5
+    },
+    {
+      "time": "2025-05-21 15:25:36",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 591.42
+    },
+    {
+      "time": "2025-05-21 15:25:36",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 415.25
+    },
+    {
+      "time": "2025-05-21 15:25:47",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 503.59
+    },
+    {
+      "time": "2025-05-21 15:25:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 660.61
+    },
+    {
+      "time": "2025-05-21 15:25:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 412.24
+    },
+    {
+      "time": "2025-05-21 15:26:17",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 417.43
+    },
+    {
+      "time": "2025-05-21 15:26:37",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 415.46
+    },
+    {
+      "time": "2025-05-21 15:26:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 818.96
+    },
+    {
+      "time": "2025-05-21 15:26:47",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 385.13
+    },
+    {
+      "time": "2025-05-21 15:26:57",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 332.41
+    },
+    {
+      "time": "2025-05-21 15:27:07",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 351.28
+    },
+    {
+      "time": "2025-05-21 15:27:17",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 908.04
+    },
+    {
+      "time": "2025-05-21 15:27:17",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 404.75
+    },
+    {
+      "time": "2025-05-21 15:27:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 432.34
+    },
+    {
+      "time": "2025-05-21 15:27:38",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 884.01
+    },
+    {
+      "time": "2025-05-21 15:29:18",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1021.27
+    },
+    {
+      "time": "2025-05-21 15:29:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 399.42
+    },
+    {
+      "time": "2025-05-21 15:29:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1067.11
+    },
+    {
+      "time": "2025-05-21 15:29:28",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 473.16
+    },
+    {
+      "time": "2025-05-21 15:29:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 995.26
+    },
+    {
+      "time": "2025-05-21 15:29:38",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 541.77
+    },
+    {
+      "time": "2025-05-21 15:29:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1001.53
+    },
+    {
+      "time": "2025-05-21 15:29:48",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 599.32
+    },
+    {
+      "time": "2025-05-21 15:29:58",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 932.1
+    },
+    {
+      "time": "2025-05-21 15:29:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 580.33
+    },
+    {
+      "time": "2025-05-21 15:30:08",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 852.73
+    },
+    {
+      "time": "2025-05-21 15:30:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 501.4
+    },
+    {
+      "time": "2025-05-21 15:30:18",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 858.98
+    },
+    {
+      "time": "2025-05-21 15:30:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 537.53
+    },
+    {
+      "time": "2025-05-21 15:30:28",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 911.57
+    },
+    {
+      "time": "2025-05-21 15:30:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 541.69
+    },
+    {
+      "time": "2025-05-21 15:30:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 962.12
+    },
+    {
+      "time": "2025-05-21 15:30:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 502.83
+    },
+    {
+      "time": "2025-05-21 15:30:48",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1003.91
+    },
+    {
+      "time": "2025-05-21 15:30:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 589.11
+    },
+    {
+      "time": "2025-05-21 15:30:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 933.69
+    },
+    {
+      "time": "2025-05-21 15:30:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 572.42
+    },
+    {
+      "time": "2025-05-21 15:30:58",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1678.06
+    },
+    {
+      "time": "2025-05-21 15:31:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1027.15
+    },
+    {
+      "time": "2025-05-21 15:31:08",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 614.3
+    },
+    {
+      "time": "2025-05-21 15:31:18",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 542.27
+    },
+    {
+      "time": "2025-05-21 15:31:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 528.33
+    },
+    {
+      "time": "2025-05-21 15:31:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 439.73
+    },
+    {
+      "time": "2025-05-21 15:31:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1109.08
+    },
+    {
+      "time": "2025-05-21 15:31:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 498.46
+    },
+    {
+      "time": "2025-05-21 15:32:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 596.25
+    },
+    {
+      "time": "2025-05-21 15:32:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1138.29
+    },
+    {
+      "time": "2025-05-21 15:32:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1760.19
+    },
+    {
+      "time": "2025-05-21 15:32:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1102.61
+    },
+    {
+      "time": "2025-05-21 15:32:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 443.15
+    },
+    {
+      "time": "2025-05-21 15:32:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 495.42
+    },
+    {
+      "time": "2025-05-21 15:32:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 576.9
+    },
+    {
+      "time": "2025-05-21 15:32:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1146.95
+    },
+    {
+      "time": "2025-05-21 15:33:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1077.14
+    },
+    {
+      "time": "2025-05-21 15:33:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 536.63
+    },
+    {
+      "time": "2025-05-21 15:33:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1164.1
+    },
+    {
+      "time": "2025-05-21 15:33:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 575.96
+    },
+    {
+      "time": "2025-05-21 15:33:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1102.71
+    },
+    {
+      "time": "2025-05-21 15:33:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 546.38
+    },
+    {
+      "time": "2025-05-21 15:33:39",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1946.88
+    },
+    {
+      "time": "2025-05-21 15:33:49",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1061.65
+    },
+    {
+      "time": "2025-05-21 15:33:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 575.41
+    },
+    {
+      "time": "2025-05-21 15:33:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1915.6
+    },
+    {
+      "time": "2025-05-21 15:33:59",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1044.06
+    },
+    {
+      "time": "2025-05-21 15:33:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 616.03
+    },
+    {
+      "time": "2025-05-21 15:33:59",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 2002.05
+    },
+    {
+      "time": "2025-05-21 15:34:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1052.48
+    },
+    {
+      "time": "2025-05-21 15:34:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 589.13
+    },
+    {
+      "time": "2025-05-21 15:34:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1109.87
+    },
+    {
+      "time": "2025-05-21 15:34:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 683.56
+    },
+    {
+      "time": "2025-05-21 15:34:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1036.21
+    },
+    {
+      "time": "2025-05-21 15:34:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 767.7
+    },
+    {
+      "time": "2025-05-21 15:34:39",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1128.19
+    },
+    {
+      "time": "2025-05-21 15:34:59",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 2045.81
+    },
+    {
+      "time": "2025-05-21 15:35:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1193.74
+    },
+    {
+      "time": "2025-05-21 15:35:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 906.67
+    },
+    {
+      "time": "2025-05-21 15:35:09",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1982.03
+    },
+    {
+      "time": "2025-05-21 15:35:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1257.63
+    },
+    {
+      "time": "2025-05-21 15:35:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 888.2
+    },
+    {
+      "time": "2025-05-21 15:35:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1888.87
+    },
+    {
+      "time": "2025-05-21 15:35:30",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1207.83
+    },
+    {
+      "time": "2025-05-21 15:35:30",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 848.71
+    },
+    {
+      "time": "2025-05-21 15:35:40",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 821.61
+    },
+    {
+      "time": "2025-05-21 15:35:50",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 917.5
+    },
+    {
+      "time": "2025-05-21 15:36:00",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1418.04
+    },
+    {
+      "time": "2025-05-21 15:36:00",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 907.67
+    },
+    {
+      "time": "2025-05-21 15:36:10",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 810.89
+    },
+    {
+      "time": "2025-05-21 15:36:20",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 883.43
+    },
+    {
+      "time": "2025-05-21 15:36:30",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1436.48
+    },
+    {
+      "time": "2025-05-21 15:36:30",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 819.92
+    },
+    {
+      "time": "2025-05-21 15:36:40",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 918.13
+    },
+    {
+      "time": "2025-05-21 15:39:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 166.92
+    },
+    {
+      "time": "2025-05-21 15:39:59",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 757.17
+    },
+    {
+      "time": "2025-05-21 15:39:59",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 87.57
+    },
+    {
+      "time": "2025-05-21 15:40:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 850.53
+    },
+    {
+      "time": "2025-05-21 15:40:09",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 45.39
+    },
+    {
+      "time": "2025-05-21 15:40:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 69.31
+    },
+    {
+      "time": "2025-05-21 15:40:19",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 42.71
+    },
+    {
+      "time": "2025-05-21 15:40:19",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:40:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 57.87
+    },
+    {
+      "time": "2025-05-21 15:40:49",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 106.23
+    },
+    {
+      "time": "2025-05-21 15:41:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 908.99
+    },
+    {
+      "time": "2025-05-21 15:41:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 125.85
+    },
+    {
+      "time": "2025-05-21 15:41:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 189.45
+    },
+    {
+      "time": "2025-05-21 15:41:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 976.26
+    },
+    {
+      "time": "2025-05-21 15:41:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 29.03
+    },
+    {
+      "time": "2025-05-21 15:41:19",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 114.49
+    },
+    {
+      "time": "2025-05-21 15:41:29",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 928.17
+    },
+    {
+      "time": "2025-05-21 15:41:29",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 8.27
+    },
+    {
+      "time": "2025-05-21 15:41:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 151.11
+    },
+    {
+      "time": "2025-05-21 15:41:39",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 875.29
+    },
+    {
+      "time": "2025-05-21 15:41:39",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:41:39",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 86.01
+    },
+    {
+      "time": "2025-05-21 15:41:49",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 968.53
+    },
+    {
+      "time": "2025-05-21 15:41:49",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 165.27
+    },
+    {
+      "time": "2025-05-21 15:41:59",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1058.98
+    },
+    {
+      "time": "2025-05-21 15:41:59",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 86.31
+    },
+    {
+      "time": "2025-05-21 15:42:09",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1124.71
+    },
+    {
+      "time": "2025-05-21 15:42:09",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 112.87
+    },
+    {
+      "time": "2025-05-21 15:42:19",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1074.75
+    },
+    {
+      "time": "2025-05-21 15:42:19",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 103.23
+    },
+    {
+      "time": "2025-05-21 15:42:29",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1048.78
+    },
+    {
+      "time": "2025-05-21 15:42:29",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 64.73
+    },
+    {
+      "time": "2025-05-21 15:42:29",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 163.0
+    },
+    {
+      "time": "2025-05-21 15:42:39",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:42:49",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1
+    },
+    {
+      "time": "2025-05-21 15:42:56",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 70.02
+    },
+    {
+      "time": "2025-05-21 15:43:06",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 93.67
+    },
+    {
+      "time": "2025-05-21 15:43:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1050.12
+    },
+    {
+      "time": "2025-05-21 15:43:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 266.11
+    },
+    {
+      "time": "2025-05-21 15:43:37",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 180.24
+    },
+    {
+      "time": "2025-05-21 15:43:47",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1125.57
+    },
+    {
+      "time": "2025-05-21 15:43:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 350.35
+    },
+    {
+      "time": "2025-05-21 15:43:47",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 221.55
+    },
+    {
+      "time": "2025-05-21 15:43:57",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1081.8
+    },
+    {
+      "time": "2025-05-21 15:43:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 346.56
+    },
+    {
+      "time": "2025-05-21 15:43:57",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 298.52
+    },
+    {
+      "time": "2025-05-21 15:44:07",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1019.76
+    },
+    {
+      "time": "2025-05-21 15:44:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 339.31
+    },
+    {
+      "time": "2025-05-21 15:44:07",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 266.47
+    },
+    {
+      "time": "2025-05-21 15:44:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 941.05
+    },
+    {
+      "time": "2025-05-21 15:44:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 407.4
+    },
+    {
+      "time": "2025-05-21 15:44:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 177.98
+    },
+    {
+      "time": "2025-05-21 15:44:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 992.12
+    },
+    {
+      "time": "2025-05-21 15:44:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 506.55
+    },
+    {
+      "time": "2025-05-21 15:44:27",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 212.64
+    },
+    {
+      "time": "2025-05-21 15:44:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1026.53
+    },
+    {
+      "time": "2025-05-21 15:44:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 584.29
+    },
+    {
+      "time": "2025-05-21 15:44:37",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 170.41
+    },
+    {
+      "time": "2025-05-21 15:44:47",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1116.4
+    },
+    {
+      "time": "2025-05-21 15:44:47",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 574.08
+    },
+    {
+      "time": "2025-05-21 15:44:57",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1089.38
+    },
+    {
+      "time": "2025-05-21 15:44:57",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 584.24
+    },
+    {
+      "time": "2025-05-21 15:45:07",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 996.02
+    },
+    {
+      "time": "2025-05-21 15:45:07",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 646.31
+    },
+    {
+      "time": "2025-05-21 15:45:17",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 941.04
+    },
+    {
+      "time": "2025-05-21 15:45:17",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 705.68
+    },
+    {
+      "time": "2025-05-21 15:45:17",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 296.19
+    },
+    {
+      "time": "2025-05-21 15:45:27",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 957.96
+    },
+    {
+      "time": "2025-05-21 15:45:27",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 710.56
+    },
+    {
+      "time": "2025-05-21 15:45:27",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 308.88
+    },
+    {
+      "time": "2025-05-21 15:45:37",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 886.11
+    },
+    {
+      "time": "2025-05-21 15:45:37",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 622.7
+    },
+    {
+      "time": "2025-05-21 15:45:47",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 950.94
+    },
+    {
+      "time": "2025-05-21 15:45:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 540.59
+    },
+    {
+      "time": "2025-05-21 15:45:48",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 387.7
+    },
+    {
+      "time": "2025-05-21 15:45:58",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1022.87
+    },
+    {
+      "time": "2025-05-21 15:45:58",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 513.65
+    },
+    {
+      "time": "2025-05-21 15:45:58",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 330.36
+    },
+    {
+      "time": "2025-05-21 15:46:08",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1041.68
+    },
+    {
+      "time": "2025-05-21 15:46:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 521.43
+    },
+    {
+      "time": "2025-05-21 15:46:08",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 349.99
+    },
+    {
+      "time": "2025-05-21 15:46:18",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 988.75
+    },
+    {
+      "time": "2025-05-21 15:46:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 546.47
+    },
+    {
+      "time": "2025-05-21 15:46:18",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 361.65
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 907.22
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 607.75
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 330.4
+    },
+    {
+      "time": "2025-05-21 15:46:38",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 954.48
+    },
+    {
+      "time": "2025-05-21 15:46:38",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 568.44
+    },
+    {
+      "time": "2025-05-21 15:46:38",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 398.62
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1046.99
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 584.32
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 380.45
+    },
+    {
+      "time": "2025-05-21 15:46:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1030.85
+    },
+    {
+      "time": "2025-05-21 15:46:58",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 543.0
+    },
+    {
+      "time": "2025-05-21 15:46:58",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 410.7
+    },
+    {
+      "time": "2025-05-21 15:47:08",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 481.07
+    },
+    {
+      "time": "2025-05-21 15:47:08",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 466.65
+    },
+    {
+      "time": "2025-05-21 15:47:18",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 399.26
+    },
+    {
+      "time": "2025-05-21 15:47:18",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 428.48
+    },
+    {
+      "time": "2025-05-21 15:47:28",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 459.02
+    },
+    {
+      "time": "2025-05-21 15:47:28",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 378.44
+    },
+    {
+      "time": "2025-05-21 15:47:38",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 475.06
+    },
+    {
+      "time": "2025-05-21 15:47:38",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 380.26
+    },
+    {
+      "time": "2025-05-21 15:47:48",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1180.27
+    },
+    {
+      "time": "2025-05-21 15:47:48",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 515.54
+    },
+    {
+      "time": "2025-05-21 15:47:48",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 369.23
+    },
+    {
+      "time": "2025-05-21 15:47:58",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 1094.32
+    },
+    {
+      "time": "2025-05-21 15:47:58",
+      "ticker": "TSLA",
+      "action": "SELL",
+      "qty": 1,
+      "price": 438.37
+    },
+    {
+      "time": "2025-05-21 15:48:09",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 1023.11
+    },
+    {
+      "time": "2025-05-21 15:48:09",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 611.17
+    },
+    {
+      "time": "2025-05-21 15:48:09",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 478.21
+    },
+    {
+      "time": "2025-05-21 15:48:19",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 1,
+      "price": 992.85
+    },
+    {
+      "time": "2025-05-21 15:48:19",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 638.66
+    },
+    {
+      "time": "2025-05-21 15:48:19",
+      "ticker": "TSLA",
+      "action": "BUY",
+      "qty": 1,
+      "price": 394.99
+    }
+  ],
+  "tester": [
+    {
+      "time": "2025-05-21 15:27:49",
+      "ticker": "AAPL",
+      "action": "BUY",
+      "qty": 10,
+      "price": 952.43
+    },
+    {
+      "time": "2025-05-21 15:39:18",
+      "ticker": "AAPL",
+      "action": "SELL",
+      "qty": 8,
+      "price": 791.46
+    },
+    {
+      "time": "2025-05-21 15:40:16",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 10,
+      "price": 45.39
+    },
+    {
+      "time": "2025-05-21 15:43:55",
+      "ticker": "GOOGL",
+      "action": "SELL",
+      "qty": 7,
+      "price": 350.35
+    },
+    {
+      "time": "2025-05-21 15:46:28",
+      "ticker": "GOOGL",
+      "action": "BUY",
+      "qty": 1,
+      "price": 607.75
+    },
+    {
+      "time": "2025-05-21 15:46:48",
+      "ticker": "TSLA",
       "action": "BUY",
       "qty": 5,
-      "price": 257.03
-    },
-    {
-      "time": "2025-05-20 03:51:59",
-      "ticker": "GOOGL",
-      "action": "BUY",
-      "qty": 3,
-      "price": 179.62
-    },
-    {
-      "time": "2025-05-20 03:52:19",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 5,
-      "price": 567.31
-    },
-    {
-      "time": "2025-05-20 03:52:29",
-      "ticker": "GOOGL",
-      "action": "BUY",
-      "qty": 4,
-      "price": 186.72
-    },
-    {
-      "time": "2025-05-20 03:52:39",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 4,
-      "price": 517.5
-    },
-    {
-      "time": "2025-05-20 03:52:59",
-      "ticker": "AAPL",
-      "action": "BUY",
-      "qty": 3,
-      "price": 560.75
+      "price": 380.45
     }
   ]
 }
