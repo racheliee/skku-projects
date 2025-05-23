@@ -55,3 +55,8 @@ The `Evaluator` visits AST nodes and computes the result:
 
 ```bash
 python a2.py example.c
+```
+
+## Miscellaneous
+- `./testing/test` holds the test cases that were used for grading the assignment. 6 out of the 10 test cases are provided.
+- the rest of the files under `./testing` folder hold test cases that were used to test the code myself and the script to generate the answers for the test cases.
