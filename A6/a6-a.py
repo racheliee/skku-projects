@@ -310,8 +310,8 @@ class Order():
     def printReceipt(self) -> None:
         receipt = f"Welcome to {self.store.name}\n"
         receipt += f"Staff: {self.staff.name}\n"
-        receipt += f"RECEIPT\n{datetime.datetime.now().strftime('%Y-%m-%d\n%H:%M:%S')}\n\n"
-        receipt += f"Customer ID: {self.customer.cid}\n"
+        receipt += f"Customer ID: {self.customer.cid}\n\n"
+        receipt += f"RECEIPT\n{datetime.datetime.now().strftime('%Y-%m-%d\n%H:%M:%S')}\n"
         receipt += f"ST # {self.store.sid}\n\n"
 
         receipt += f"{'Name':<10} {'Code':<15} {'Price':>5}  {'Qty':>3}\n"
