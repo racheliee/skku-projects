@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+import datetime
 
 
 class StoreChain(ABC):
@@ -309,10 +310,11 @@ class Order():
     def printReceipt(self) -> None:
         receipt = f"Welcome to {self.store.name}\n"
         receipt += f"Staff: {self.staff.name}\n"
+        receipt += f"RECEIPT\n{datetime.datetime.now().strftime('%Y-%m-%d\n%H:%M:%S')}\n\n"
         receipt += f"Customer ID: {self.customer.cid}\n"
         receipt += f"ST # {self.store.sid}\n\n"
-        receipt += "RECEIPT\n"
 
+        receipt += f"{'Name':<10} {'Code':<15} {'Price':>5}  {'Qty':>3}\n"
         total_price = 0
         total_points = 0
         for i, product in enumerate(self.prod_list):
@@ -324,15 +326,73 @@ class Order():
             total_points += line_points
 
         receipt += f"\nTOTAL\t\t{total_price:.2f}\n"
-        receipt += f"# ITEMS SOLD {sum(self.quantity)}\n"
-        receipt += f"Total Points: {total_points}\n"
+        receipt += f"# ITEMS SOLD {sum(self.quantity)}\n\n"
+        receipt += f"Total Points: {total_points}\n\n"
         receipt += "***CUSTOMER COPY***\n"
 
         print(receipt)
 
 
 def main():
-    pass
+    store = Store(1, "Kim's Convenience", "Seobu-reo 2066", "010-0000-0000")
+    print("=== Store Info ===")
+    print(store, end="\n\n")
+
+    # customers
+    c1 = Customer("2022310853", "Timothee Chalamet",
+                  "Seobu-reo 2066", 11111, "010-1111-1111", 3, ["GOLD"])
+    c2 = Customer("2021310853", "Kylie Jenner", "Seobu-reo 2066",
+                  22222, "010-2222-2222", 5, ["PLATINUM"])
+
+    print("=== Customers ===")
+    print(c1)
+    print(c2, end="\n\n")
+
+    # staff
+    s1 = Staff(10101, "999-88-7777", "Kim Kardashian",
+               "Seobu-reo 2066", "Cashier", 4000)
+    s2 = Staff(20202, "888-77-6666", "Khloe Kardashian",
+               "Seobu-reo 2066", "Manager", 5000)
+
+    print("=== Staff Members ===")
+    print(s1)
+    print(s2, end="\n\n")
+
+    while True:
+        try:
+            chosen_cid = int(
+                input("Choose a customer ID (11111 or 22222): "))
+            if chosen_cid not in [11111, 22222]:
+                raise ValueError
+            break
+        except ValueError:
+            print("Not a recognized customer ID. Please try again.")
+
+    # order
+    order = Order(store, c1 if chosen_cid == 202506101 else c2, s1, [], [])
+
+    print("\n=== Creating Order ===\nEnter products to add to the order (type 'done' to finish):")
+    while True:
+        name = input("Product Name: ")
+        if name.lower() == "done":
+            break
+        code = input("Product Code: ")
+        desc = input("Description: ")
+        try:
+            price = float(input("Price: "))
+            points = int(input("Points: "))
+            qty = int(input("Quantity: "))
+        except ValueError:
+            print(
+                "Invalid input. Please enter numeric values for price, points, and quantity.\n")
+            continue
+
+        product = Product(code, name, desc, price, points)
+        order.addProduct(product, qty)
+        print(f"Added {qty} x {name} to the order.\n")
+
+    print("\n=== FINAL RECEIPT ===")
+    order.printReceipt()
 
 
 if __name__ == "__main__":
