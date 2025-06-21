@@ -2,6 +2,9 @@
 
 This project implements a lightweight interpreter for a subset of the C programming language. It lexes, parses, and evaluates C-style code that includes function definitions, arithmetic and bitwise expressions, variable declarations, and basic control structures like `return`.
 
+Grade: 92/100
+
+
 ## Features
 
 - Supports C-style function declarations and definitions

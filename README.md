@@ -8,7 +8,7 @@ This repository contains solutions and writeups for programming assignments in t
 ## 📘 A1: Theory Assignment
 
 - **Objective**: Practice formal grammar and parsing fundamentals.
-- **Grade**: N/A 
+- **Grade**: 9 / 10
 - **Key Topics**:
   * Writing context-free grammars
   * Left-recursion elimination
@@ -29,7 +29,7 @@ This repository contains solutions and writeups for programming assignments in t
 ## 🧠 A3: Memory Allocation Benchmark
 
 - **Objective**: Measure and compare the performance of static, stack, and heap memory allocation in C++.
-- **Grade**: 100/100
+- **Grade**: 
 - **Key Features**:
   * Uses `chrono` for timing
   * Tests array operations across different memory types
@@ -39,7 +39,7 @@ This repository contains solutions and writeups for programming assignments in t
 ## 🐍 A4: Python Practice
 
 - **Objective**: Reinforce basic programming constructs using Python.
-- **Grade**: 100/100
+- **Grade**: 
 - **Key Features**:
   * `q1.py`: Generate & sort 200 random numbers, print them, and plot histogram
   * `q2.py`: Recursive vs. closed-form sum of numbers from 1 to n

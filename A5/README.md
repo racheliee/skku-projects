@@ -1,6 +1,6 @@
 # Assignment 5: Stock Trading Simulation
 
-**Grade:** N/A
+**Grade:** 100/100
 
 **Language:** Python 3.11
 
