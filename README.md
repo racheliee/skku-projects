@@ -29,7 +29,7 @@ This repository contains solutions and writeups for programming assignments in t
 ## 🧠 A3: Memory Allocation Benchmark
 
 - **Objective**: Measure and compare the performance of static, stack, and heap memory allocation in C++.
-- **Grade**: 
+- **Grade**: 9/10
 - **Key Features**:
   * Uses `chrono` for timing
   * Tests array operations across different memory types
@@ -39,7 +39,7 @@ This repository contains solutions and writeups for programming assignments in t
 ## 🐍 A4: Python Practice
 
 - **Objective**: Reinforce basic programming constructs using Python.
-- **Grade**: 
+- **Grade**: 10/10
 - **Key Features**:
   * `q1.py`: Generate & sort 200 random numbers, print them, and plot histogram
   * `q2.py`: Recursive vs. closed-form sum of numbers from 1 to n
@@ -55,3 +55,16 @@ This repository contains solutions and writeups for programming assignments in t
   * Users with different strategies (random, momentum, moving average)
   * Trades executed automatically in each simulation round
   * Strategy logic isolated in `strategies.py` for easy extension
+
+
+## 🛒 A6: Store Receipt & Scheme Practice
+
+- **Objective**: Model a simple store system using Python OOP and practice Scheme functional programming.
+- **Grade**: 20/20
+- **Key Features**:
+  - A6A: Python program to simulate a store receipt system with Store, Staff, Customer, Product, and Order classes
+    - Generates detailed receipts with price, quantity, and total reward points
+    - Follows OOP principles: encapsulation, inheritance, and abstraction
+  - A6B: Scheme solutions for list manipulation tasks (e.g., min/max, filtering, counting elements)
+    - Demonstrates recursive thinking and functional syntax in Scheme
+
