@@ -1,0 +1,85 @@
+{
+  "joony": {
+    "password": "Adminadmin!",
+    "strategy": "RANDOM",
+    "auto": false,
+    "balance": 6445.91,
+    "portfolio": {
+      "AAPL": {
+        "qty": 5,
+        "avg_price": 366.4
+      },
+      "GOOGL": {
+        "qty": 3,
+        "avg_price": 574.03
+      }
+    }
+  },
+  "rachel": {
+    "password": "Adminadmin!",
+    "strategy": "MOVING_AVERAGE",
+    "auto": true,
+    "balance": 415.6099999999923,
+    "portfolio": {
+      "AAPL": {
+        "qty": 5,
+        "avg_price": 1047.4467474060632
+      },
+      "GOOGL": {
+        "qty": 9,
+        "avg_price": 529.5224537037036
+      },
+      "TSLA": {
+        "qty": 6,
+        "avg_price": 405.91123809523816
+      }
+    }
+  },
+  "gayeon": {
+    "password": "Adminadmin!",
+    "strategy": "MOMENTUM",
+    "auto": true,
+    "balance": 1224.369999999998,
+    "portfolio": {
+      "AAPL": {
+        "qty": 9,
+        "avg_price": 989.2018395141149
+      },
+      "TSLA": {
+        "qty": 11,
+        "avg_price": 349.38611263736266
+      },
+      "GOOGL": {
+        "qty": 11,
+        "avg_price": 462.4357792207791
+      }
+    }
+  },
+  "admin": {
+    "password": "Adminadmin!",
+    "strategy": "MOVING_AVERAGE",
+    "auto": false,
+    "balance": 10000,
+    "portfolio": {}
+  },
+  "tester": {
+    "password": "Adminadmin!",
+    "strategy": "RANDOM",
+    "auto": false,
+    "balance": 6295.930000000002,
+    "portfolio": {
+      "AAPL": {
+        "qty": 2,
+        "avg_price": 952.43
+      },
+      "GOOGL": {
+        "qty": 4,
+        "avg_price": 185.98000000000002
+      },
+      "TSLA": {
+        "qty": 5,
+        "avg_price": 380.45
+      }
+    }
+  }
+}
