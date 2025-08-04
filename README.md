@@ -24,3 +24,9 @@
   - 24-2 CSE 150 Computer Networks (prof. Christina Parsa)
   - 24-2 CSE 183 Web Applications (prod. Luca De Alfaro)
   - 24-2 CSE 232 Distributed Systems (prof. Lindsey Kuper)
+
+## 25-1
+- [25-1 프로그래밍언어 | Programming Languages (prof. 타메르)](./프로그래밍언어%20|%20Programming%20Languages%20(SWE3006)/)
+- [25-1 확률및랜덤프로세스 | Probability and Random Processes (prof. 김중규)](./확률및랜덤프로세스%20|%20Probability%20and%20Random%20Processes%20(ICE2003)/)
+- [25-1 캡스톤설계프로젝트 | Capstone Design Project (prof. 타메르)](https://github.com/shj1081/betabae)
+- [25-1 시스템경영공학종합설계 | System Management Engineering Capstone Design (prof. 강석호)](https://github.com/racheliee/viralytics)
